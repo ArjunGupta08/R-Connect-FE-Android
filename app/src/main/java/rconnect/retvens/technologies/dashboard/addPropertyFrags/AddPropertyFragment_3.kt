@@ -1,4 +1,4 @@
-package rconnect.retvens.technologies.dashboard.chainDashboard.addPropertyFrags
+package rconnect.retvens.technologies.dashboard.addPropertyFrags
 
 import android.app.Dialog
 import android.graphics.Color

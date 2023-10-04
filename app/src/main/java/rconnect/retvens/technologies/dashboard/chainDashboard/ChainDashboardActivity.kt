@@ -9,9 +9,9 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import rconnect.retvens.technologies.R
-import rconnect.retvens.technologies.dashboard.chainDashboard.addPropertyFrags.AddPropertyFragment_2
-import rconnect.retvens.technologies.dashboard.chainDashboard.addPropertyFrags.AddPropertyFragment_1
-import rconnect.retvens.technologies.dashboard.chainDashboard.addPropertyFrags.AddPropertyFragment_3
+import rconnect.retvens.technologies.dashboard.addPropertyFrags.AddPropertyFragment_2
+import rconnect.retvens.technologies.dashboard.addPropertyFrags.AddPropertyFragment_1
+import rconnect.retvens.technologies.dashboard.addPropertyFrags.AddPropertyFragment_3
 import rconnect.retvens.technologies.databinding.ActivityChainDashboardBinding
 
 class ChainDashboardActivity : AppCompatActivity() {

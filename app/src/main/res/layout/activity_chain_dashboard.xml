@@ -55,36 +55,42 @@
                                     app:layout_constraintStart_toStartOf="parent"
                                     android:src="@drawable/png_hotel" />
 
-                                <TextView
-                                    android:id="@+id/hotelName"
+                                <LinearLayout
+                                    android:id="@+id/llH"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:orientation="vertical"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:layout_constraintStart_toEndOf="@+id/hotel_img"
-                                    android:text="Taj Hotel"
-                                    android:textColor="@color/secondary"
-                                    android:textSize="@dimen/H4"
-                                    android:fontFamily="@font/roboto_bold"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginTop="3dp"/>
-                                <TextView
-                                    android:id="@+id/hotelLocation"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    app:layout_constraintTop_toBottomOf="@id/hotelName"
-                                    app:layout_constraintStart_toEndOf="@+id/hotel_img"
-                                    android:text="Kanpur, UP"
-                                    android:textColor="@color/secondary"
-                                    android:textSize="@dimen/H4"
-                                    android:fontFamily="@font/roboto"
-                                    android:layout_marginStart="10dp" />
+                                    app:layout_constraintBottom_toBottomOf="@id/hotel_img">
+
+                                    <TextView
+                                        android:id="@+id/hotelName"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Taj Hotel"
+                                        android:textColor="@color/secondary"
+                                        android:textSize="@dimen/H5"
+                                        android:fontFamily="@font/roboto_bold"
+                                        android:layout_marginStart="10dp"/>
+                                    <TextView
+                                        android:id="@+id/hotelLocation"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Kanpur, UP"
+                                        android:textColor="@color/secondary"
+                                        android:textSize="@dimen/H6"
+                                        android:fontFamily="@font/roboto"
+                                        android:layout_marginStart="10dp" />
+
+                                </LinearLayout>
 
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:src="@drawable/svg_arrow_down"
                                     android:padding="10dp"
-                                    app:layout_constraintStart_toEndOf="@id/hotelLocation"
+                                    app:layout_constraintStart_toEndOf="@id/llH"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:layout_constraintBottom_toBottomOf="parent" />
@@ -117,35 +123,41 @@
                                     app:layout_constraintStart_toStartOf="parent"
                                     android:src="@drawable/png_hotel" />
 
-                                <TextView
-                                    android:id="@+id/name"
+                                <LinearLayout
+                                    android:id="@+id/llP"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:orientation="vertical"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:layout_constraintStart_toEndOf="@+id/profile"
-                                    android:text="Arjun"
-                                    android:textColor="@color/secondary"
-                                    android:textSize="@dimen/H4"
-                                    android:fontFamily="@font/roboto_bold"
-                                    android:layout_marginStart="10dp"/>
-                                <TextView
-                                    android:id="@+id/role"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    app:layout_constraintTop_toBottomOf="@id/name"
-                                    app:layout_constraintStart_toEndOf="@+id/profile"
-                                    android:text="Android"
-                                    android:textColor="@color/secondary"
-                                    android:textSize="@dimen/H4"
-                                    android:fontFamily="@font/roboto"
-                                    android:layout_marginStart="10dp" />
+                                    app:layout_constraintBottom_toBottomOf="@id/profile">
 
+                                    <TextView
+                                        android:id="@+id/name"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Arjun"
+                                        android:textColor="@color/secondary"
+                                        android:textSize="@dimen/H5"
+                                        android:fontFamily="@font/roboto_bold"
+                                        android:layout_marginStart="10dp"/>
+                                    <TextView
+                                        android:id="@+id/role"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Android"
+                                        android:textColor="@color/secondary"
+                                        android:textSize="@dimen/H6"
+                                        android:fontFamily="@font/roboto"
+                                        android:layout_marginStart="10dp" />
+
+                                </LinearLayout>
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:src="@drawable/svg_arrow_down"
                                     android:padding="10dp"
-                                    app:layout_constraintStart_toEndOf="@id/role"
+                                    app:layout_constraintStart_toEndOf="@id/llP"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:layout_constraintBottom_toBottomOf="parent" />
