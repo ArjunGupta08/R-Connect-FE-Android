@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">Channel Manager</string>
+
+    <string name="navigation_drawer_close" translatable="false">Close Drawer</string>
+    <string name="navigation_drawer_open" translatable="false">Open Drawer</string>
+
+    <!--Login and Signup Screen-->
+    <string name="world_s_only_one_stop_hotel_solution_software_with_ai">World\'s Only One Stop \nHotel Solution Software With AI</string>
+    <string name="log_in">Log in</string>
+    <string name="new_here_sign_up">New here?\nSign up</string>
+    <string name="a_complete_suite_of_hotel_solutions">A Complete Suite of Hotel Solutions</string>
+    <string name="existing_user_log_in">Existing User?\nLog in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="continue_with_r_own">Continue With R-Own</string>
+    <string name="terms_of_services">By clicking sign up button you are agreeing to our<b> Terms of services.</b></string>
+
+    <!--Forget Password Screen-->
+    <string name="reset_password">Reset Password</string>
+    <string name="enter_the_email_address_you_used">Enter the email address you used when you joined and we’ll send you instructions to reset your password.</string>
+    <string name="verification_code">verification code</string>
+    <string name="create_new_password">Create new password</string>
+
+    <!--Onboarding Screen-->
+    <string name="manage_all_your_properties_amp_n_guest_with_ease"><![CDATA[Manage all your properties &\n guest with ease]]></string>
+    <string name="single_property">Single Property</string>
+    <string name="property_chain">Property Chain</string>
+    <string name="tell_us_about_your_property">Tell us about your property</string>
+    <string name="thousands_property_owners_like_you_manage_their_properties_and_team_in_easy_way">Thousands property owners like you manage their properties and team in easy way</string>
+    <string name="next">Next</string>
+    <string name="let_s_create_your_hotel_s_profile">let’s create your hotel’s profile</string>
+    <string name="property_type_name">Property Type Name</string>
+    <string name="let_s_create_your_property_chain_s_profile">let’s create your property chain’s profile</string>
+    <string name="some_details_about_properties_in_your_chain">Some details about properties in your chain</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="cancel">Cancel</string>
+
+
+</resources>

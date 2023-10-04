@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="editTextWidth">400sp</dimen>
+
+    <dimen name="H0">28sp</dimen>
+    <dimen name="H1">24sp</dimen>
+    <dimen name="H2">22sp</dimen>
+    <dimen name="H3">20sp</dimen>
+    <dimen name="H4">18sp</dimen>
+    <dimen name="H5">16sp</dimen>
+    <dimen name="H6">14sp</dimen>
+
+                <!--Onboarding Screen Text Style-->
+    <!--Onboarding Screen Heading Text Style-->
+    <style name="OnboardingHeadingTextStyle" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textSize">25dp</item>
+    </style>
+    <!--Onboarding Screen Sub Heading Text Style-->
+    <style name="OnboardingSubHeadingTextStyle" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/roboto_light</item>
+        <item name="android:textSize">@dimen/H3</item>
+    </style>
+
+</resources>

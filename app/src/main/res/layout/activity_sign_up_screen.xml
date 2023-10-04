@@ -1,0 +1,805 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".onboarding.authentication.SignUpScreen">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/frame1"
+        android:layout_width="700dp"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/secondaryBackground">
+
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="300dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="25dp"
+            android:src="@drawable/svg_logo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/title1"
+            style="@style/OnboardingHeadingTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="@string/world_s_only_one_stop_hotel_solution_software_with_ai"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/logo"/>
+
+        <TextView
+            android:id="@+id/title2"
+            style="@style/OnboardingSubHeadingTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/a_complete_suite_of_hotel_solutions"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title1" />
+
+        <ImageView
+            android:layout_width="500dp"
+            android:layout_height="500dp"
+            android:src="@drawable/vector_request_demo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title2"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/frame2"
+        android:layout_width="0dp"
+        app:cardBackgroundColor="@color/primaryBackground"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toEndOf="@id/frame1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/primaryBackground">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/demoBackbtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/vector_back_btn"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="40dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="30dp"
+                    tools:layout_editor_absoluteY="15dp"
+                    tools:ignore="MissingConstraints" />
+
+                <LinearLayout
+                    android:id="@+id/loginTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/demoBackbtn">
+
+                    <TextView
+                        android:id="@+id/moveToLogin"
+                        android:layout_width="170dp"
+                        android:layout_height="match_parent"
+                        android:text="@string/existing_user_log_in"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:background="@drawable/corner_left_grey_background"
+                        android:textSize="@dimen/H5"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textFontWeight="500"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="60dp"
+                        android:background="@color/black"/>
+
+                    <TextView
+                        android:layout_width="170dp"
+                        android:layout_height="match_parent"
+                        android:text="@string/sign_up"
+                        android:textAlignment="center"
+                        android:background="@drawable/corner_right_black_background"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/H5"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textFontWeight="500"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </LinearLayout>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/continueWithR"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    app:layout_constraintTop_toBottomOf="@id/loginTitle"
+                    android:layout_marginTop="25dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:cardCornerRadius="10dp"
+                    app:strokeWidth="2dp"
+                    app:strokeColor="@color/secondary">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/continue_with_r_own"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textSize="17dp"
+                        android:layout_marginHorizontal="40dp"
+                        android:textColor="@color/secondary" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/black"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintTop_toTopOf="@id/or"
+                    app:layout_constraintBottom_toBottomOf="@id/or"
+                    app:layout_constraintStart_toStartOf="@id/continueWithR"
+                    app:layout_constraintEnd_toStartOf="@id/or"/>
+
+                <TextView
+                    android:id="@+id/or"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/continueWithR"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="10dp"
+                    android:text="or"
+                    android:textSize="15dp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/black"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintTop_toTopOf="@id/or"
+                    app:layout_constraintBottom_toBottomOf="@id/or"
+                    app:layout_constraintStart_toEndOf="@id/or"
+                    app:layout_constraintEnd_toEndOf="@id/continueWithR"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/rowncheckCard"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    style="@style/ThemeOverlay.Material3"
+                    app:strokeColor="@color/secondary"
+                    app:strokeWidth="2dp"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintTop_toBottomOf="@id/or"
+                    android:layout_marginStart="90dp"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <ImageView
+                        android:id="@+id/selectImport"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/check"
+                        android:visibility="gone" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:id="@+id/subHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:text="Import profile from R-Own - A Hotelier’s Community Application"
+                    android:textSize="16dp"
+                    android:textColor="@color/subtitle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/rowncheckCard"
+                    app:layout_constraintTop_toTopOf="@+id/rowncheckCard"
+                    app:layout_constraintBottom_toBottomOf="@+id/rowncheckCard"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/AccontLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/subHeading"
+                    android:visibility="visible">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/firstNameLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        android:hint="First Name*"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginStart="80dp"
+                        android:textColorHint="@color/black"
+                        app:boxStrokeColor="@color/black"
+                        app:hintTextColor="@color/secondary"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:boxCornerRadiusTopStart="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusTopEnd="10dp"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/black"
+                        app:layout_constraintEnd_toStartOf="@id/lastNameLayout"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/firstNameText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:inputType="text"
+                            android:textColorHint="@color/secondary"
+                            android:textColor="@color/secondary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/lastNameLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        android:hint="Last Name*"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginEnd="60dp"
+                        android:layout_marginStart="20dp"
+                        android:textColorHint="@color/black"
+                        app:boxStrokeColor="@color/black"
+                        app:hintTextColor="@color/secondary"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:boxCornerRadiusTopStart="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusTopEnd="10dp"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/black"
+                        app:layout_constraintStart_toEndOf="@id/firstNameLayout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/lastNameText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:inputType="text"
+                            android:textColorHint="@color/secondary"
+                            android:textColor="@color/secondary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/designationLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        android:hint="Designation*"
+                        android:textColorHint="@color/black"
+                        app:boxStrokeColor="@color/black"
+                        app:hintTextColor="@color/secondary"
+                        android:layout_marginTop="10dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:boxCornerRadiusTopStart="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusTopEnd="10dp"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/black"
+                        app:layout_constraintStart_toStartOf="@id/firstNameLayout"
+                        app:layout_constraintEnd_toEndOf="@id/lastNameLayout"
+                        app:layout_constraintTop_toBottomOf="@id/firstNameLayout">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/designationText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:inputType="text"
+                            android:textColorHint="@color/secondary"
+                            android:textColor="@color/secondary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/phoneLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        android:hint="Phone Number*"
+                        android:textColorHint="@color/black"
+                        app:boxStrokeColor="@color/black"
+                        app:hintTextColor="@color/secondary"
+                        android:layout_marginTop="10dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:boxCornerRadiusTopStart="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusTopEnd="10dp"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/black"
+                        app:layout_constraintEnd_toEndOf="@id/lastNameLayout"
+                        app:layout_constraintTop_toBottomOf="@id/designationLayout"
+                        app:layout_constraintStart_toStartOf="@id/firstNameLayout">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/phoneText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:inputType="text"
+                            android:textColorHint="@color/secondary"
+                            android:textColor="@color/secondary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/emailLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        android:hint="Email*"
+                        android:textColorHint="@color/black"
+                        app:boxStrokeColor="@color/black"
+                        app:hintTextColor="@color/secondary"
+                        android:layout_marginTop="20dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:boxCornerRadiusTopStart="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusTopEnd="10dp"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/black"
+                        app:layout_constraintStart_toStartOf="@id/firstNameLayout"
+                        app:layout_constraintEnd_toEndOf="@id/lastNameLayout"
+                        app:layout_constraintTop_toBottomOf="@id/phoneLayout">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/emailText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:inputType="text"
+                            android:textColorHint="@color/secondary"
+                            android:textColor="@color/secondary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/passwordLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        android:hint="Password*"
+                        android:textColorHint="@color/black"
+                        app:boxStrokeColor="@color/black"
+                        app:hintTextColor="@color/secondary"
+                        android:layout_marginTop="20dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:boxCornerRadiusTopStart="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusTopEnd="10dp"
+                        app:endIconMode="password_toggle"
+                        app:endIconTint="@color/black"
+                        app:layout_constraintEnd_toEndOf="@id/lastNameLayout"
+                        app:layout_constraintStart_toStartOf="@id/firstNameLayout"
+                        app:layout_constraintTop_toBottomOf="@id/emailLayout">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/passwordText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:inputType="text"
+                            android:textColorHint="@color/secondary"
+                            android:textColor="@color/secondary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/subHeadingTerm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/terms_of_services"
+                        android:textSize="16dp"
+                        android:textColor="@color/subtitle"
+                        android:layout_marginTop="12dp"
+                        app:layout_constraintEnd_toEndOf="@id/passwordLayout"
+                        app:layout_constraintTop_toBottomOf="@id/passwordLayout"
+                        app:layout_constraintStart_toStartOf="@id/passwordLayout"/>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_createAccount"
+                        android:layout_width="200dp"
+                        android:layout_height="50dp"
+                        app:layout_constraintTop_toBottomOf="@+id/subHeadingTerm"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="25dp"
+                        android:backgroundTint="@color/secondary"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/sign_up"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/roboto_bold"
+                            android:layout_gravity="center"
+                            android:textSize="@dimen/H4" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/ImportLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/subHeading"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:visibility="gone"
+                    >
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/countryCodeCard"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="3dp"
+                        app:strokeColor="@color/secondary"
+                        android:layout_marginTop="30dp"
+                        android:background="@color/white"
+                        android:layout_marginStart="85dp"
+                        app:layout_constraintTop_toTopOf="parent"
+
+                        app:layout_constraintStart_toStartOf="parent">
+
+<!--                        <com.hbb20.CountryCodePicker
+                            android:id="@+id/countryCode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:background="@color/white"
+                            app:ccpDialog_backgroundColor="@color/white"
+                            app:ccp_textSize="16dp"
+                            app:ccp_autoDetectCountry="true"
+                            app:ccp_showNameCode="false"
+                            tools:ignore="MissingClass" />-->
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/phoneCard"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="3dp"
+                        app:strokeColor="@color/secondary"
+                        android:background="@color/white"
+                        android:backgroundTint="@color/white"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="40dp"
+                        app:layout_constraintBottom_toBottomOf="@id/countryCodeCard"
+                        app:layout_constraintTop_toTopOf="@id/countryCodeCard"
+                        app:layout_constraintStart_toEndOf="@id/countryCodeCard">
+
+                        <EditText
+                            android:id="@+id/editPhone"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:elevation="2dp"
+                            android:hint="Enter Phone Number"
+                            android:imeOptions="actionDone"
+                            android:inputType="number"
+                            android:maxLength="10"
+                            android:maxLines="1"
+                            android:paddingHorizontal="15dp"
+                            android:paddingVertical="17dp"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textColorHint="#3C000021"
+                            android:textSize="16dp" />
+                    </com.google.android.material.card.MaterialCardView>
+
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/importCard"
+                        android:layout_width="160dp"
+                        android:layout_height="55dp"
+                        android:backgroundTint="@color/secondary"
+                        app:layout_constraintTop_toTopOf="@+id/phoneCard"
+                        app:layout_constraintBottom_toBottomOf="@+id/phoneCard"
+                        app:layout_constraintStart_toEndOf="@+id/phoneCard"
+                        android:layout_marginStart="30dp"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Import"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/roboto_bold"
+                            android:textSize="20dp"
+                            android:textColor="@color/primary"
+                            />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/fullnameImport_layout"
+                        android:layout_width="250dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        android:hint="Full Name*"
+                        android:layout_marginStart="80dp"
+                        app:layout_constraintTop_toBottomOf="@id/countryCodeCard"
+                        android:textColorHint="@color/black"
+                        app:boxStrokeColor="@color/black"
+                        app:hintTextColor="@color/secondary"
+                        android:layout_marginTop="30dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:boxCornerRadiusTopStart="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusTopEnd="10dp"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/black">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/fullnameImport_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:inputType="text"
+                            android:textColorHint="@color/secondary"
+                            android:textColor="@color/secondary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/usernameImport_layout"
+                        android:layout_width="250dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginEnd="60dp"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        android:hint="Username*"
+                        android:layout_marginStart="80dp"
+                        app:layout_constraintTop_toBottomOf="@id/countryCodeCard"
+                        android:textColorHint="@color/black"
+                        app:boxStrokeColor="@color/black"
+                        app:hintTextColor="@color/secondary"
+                        android:layout_marginTop="30dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:boxCornerRadiusTopStart="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusTopEnd="10dp"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/black">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/usernameImport_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:inputType="text"
+                            android:textColorHint="@color/secondary"
+                            android:textColor="@color/secondary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/DesignationImport_layout"
+                        android:layout_width="250dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginEnd="60dp"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        android:hint="Designation*"
+                        android:layout_marginStart="80dp"
+                        app:layout_constraintTop_toBottomOf="@+id/fullnameImport_layout"
+                        android:textColorHint="@color/black"
+                        app:boxStrokeColor="@color/black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:hintTextColor="@color/secondary"
+                        android:layout_marginTop="20dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:boxCornerRadiusTopStart="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusTopEnd="10dp"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/black">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/designationImport_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:inputType="text"
+                            android:textColorHint="@color/secondary"
+                            android:textColor="@color/secondary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/EmailImport_layout"
+                        android:layout_width="250dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginEnd="60dp"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        android:hint="Email*"
+                        android:layout_marginStart="80dp"
+                        app:layout_constraintTop_toBottomOf="@+id/DesignationImport_layout"
+                        android:textColorHint="@color/black"
+                        app:boxStrokeColor="@color/black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:hintTextColor="@color/secondary"
+                        android:layout_marginTop="20dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:boxCornerRadiusTopStart="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusTopEnd="10dp"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/black">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/emailImport_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:inputType="text"
+                            android:textColorHint="@color/secondary"
+                            android:textColor="@color/secondary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/passwordImport_layout"
+                        android:layout_width="250dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginEnd="60dp"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        android:hint="Password*"
+                        android:layout_marginStart="80dp"
+                        app:layout_constraintTop_toBottomOf="@+id/EmailImport_layout"
+                        android:textColorHint="@color/black"
+                        app:boxStrokeColor="@color/black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:hintTextColor="@color/secondary"
+                        android:layout_marginTop="20dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:boxCornerRadiusTopStart="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusTopEnd="10dp"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/black">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/passwordImport_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:inputType="text"
+                            android:textColorHint="@color/secondary"
+                            android:textColor="@color/secondary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/termcheckCard1"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        style="@style/ThemeOverlay.Material3"
+                        app:strokeColor="@color/secondary"
+                        app:strokeWidth="2dp"
+                        android:layout_marginTop="20dp"
+                        app:layout_constraintTop_toBottomOf="@+id/passwordImport_layout"
+                        android:layout_marginStart="90dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        >
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/check"
+                            android:visibility="gone" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:id="@+id/termHeading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toEndOf="@+id/termcheckCard1"
+                        app:layout_constraintTop_toTopOf="@+id/termcheckCard1"
+                        app:layout_constraintBottom_toBottomOf="@+id/termcheckCard1"
+                        android:layout_marginStart="10dp"
+                        android:text="I have read and agree to the Terms of Service"
+                        android:textSize="16dp"
+                        android:textColor="@color/subtitle"
+                        />
+
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="200dp"
+                        android:layout_height="50dp"
+                        app:layout_constraintTop_toBottomOf="@+id/termHeading"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="20dp"
+                        android:backgroundTint="@color/secondary"
+                        android:paddingBottom="15dp"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Next"
+                            android:textColor="@color/primary"
+                            android:fontFamily="@font/roboto_bold"
+                            android:layout_gravity="center"
+                            android:textSize="16dp"
+                            />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

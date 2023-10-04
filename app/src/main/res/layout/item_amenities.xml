@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_margin="5dp"
+        android:src="@drawable/svg_ac"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Child-friendly activities"
+            android:textSize="@dimen/H3"
+            android:layout_marginHorizontal="5dp"
+            android:textColor="@color/secondary"
+            android:fontFamily="@font/roboto"/>
+
+    <ImageView
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginHorizontal="5dp"
+        android:src="@drawable/svg_delete_lite"/>
+
+</LinearLayout>

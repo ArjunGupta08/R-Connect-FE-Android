@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="primary">#ACD037</color>
+    <color name="secondary">#272A3D</color>
+    <color name="textColor">#171717</color>
+    <color name="subtitle">#828282</color>
+    <color name="primaryBackground">#FFFFFF</color>
+    <color name="secondaryBackground">#F2F2F2</color>
+
+    <!--  GREY SHADES  -->
+    <color name="grey10">#DCDCDC</color>
+    <color name="grey20">#D3D3D3</color>
+    <color name="grey30">#C0C0C0</color>
+    <color name="grey40">#A9A9A9</color>
+
+</resources>

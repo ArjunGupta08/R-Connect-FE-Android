@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Authentication.LoginScreen">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/frame1"
+        android:layout_width="700dp"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/secondaryBackground">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="300dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/svg_logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/title1"
+            style="@style/OnboardingHeadingTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="@string/manage_all_your_properties_amp_n_guest_with_ease"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/logo"/>
+
+        <ImageView
+            android:id="@+id/coverImg"
+            android:layout_width="500dp"
+            android:layout_height="500dp"
+            android:src="@drawable/wait_for_service"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title1"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/frame2"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toEndOf="@id/frame1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/primaryBackground">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/demoBackbtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="40dp"
+                    android:src="@drawable/vector_back_btn"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteY="15dp" />
+
+                <LinearLayout
+                    android:id="@+id/llBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:orientation="horizontal"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@id/demoBackbtn"
+                    app:layout_constraintStart_toEndOf="@id/demoBackbtn"
+                    app:layout_constraintTop_toTopOf="@id/demoBackbtn">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="80dp"
+                        android:layout_height="4dp"
+                        app:cardBackgroundColor="@color/secondary"
+                        app:cardCornerRadius="5dp" />
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="80dp"
+                        android:layout_height="4dp"
+                        android:layout_marginHorizontal="5dp"
+                        app:cardBackgroundColor="@color/secondary"
+                        app:cardCornerRadius="5dp" />
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="80dp"
+                        android:layout_height="4dp"
+                        app:cardBackgroundColor="@color/secondary"
+                        app:cardCornerRadius="5dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="40dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llBar">
+
+                    <LinearLayout
+                        android:id="@+id/congratulationLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="50dp"
+                            android:fontFamily="@font/roboto_bold"
+                            android:text="And that’s it."
+                            android:textColor="@color/black"
+                            android:textFontWeight="500"
+                            android:textSize="@dimen/H2"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="50dp"
+                            android:fontFamily="@font/roboto"
+                            android:text="Congratulations!\nYou have successfully registered your Hotel Chain [chain_Name] with us.\n We just need to check a few things first, we will let you know when your one stop hotel solution is ready to go."
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/H4"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/dashLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="50dp"
+                            android:fontFamily="@font/roboto_bold"
+                            android:text="Good News!!!"
+                            android:textColor="@color/black"
+                            android:textFontWeight="500"
+                            android:textSize="@dimen/H2"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="50dp"
+                            android:fontFamily="@font/roboto"
+                            android:text="Your account has been verified and activated.\n\nNow you can manage all your properties, guest and a whole lot of other things in just one place."
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/H4"/>
+
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/goToDash"
+                            android:layout_width="200dp"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginStart="50dp"
+                            android:backgroundTint="@color/secondary"
+                            android:paddingBottom="15dp"
+                            >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Go To Dashboard"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/roboto_bold"
+                                android:layout_gravity="center"
+                                android:textFontWeight="500"
+                                android:textSize="@dimen/H5" />
+
+                        </com.google.android.material.card.MaterialCardView>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
