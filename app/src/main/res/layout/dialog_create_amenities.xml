@@ -167,7 +167,7 @@
 
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/amenitiesRecycler"
+            android:id="@+id/amenitiesIconRecycler"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="20dp"
@@ -204,8 +204,8 @@
             android:backgroundTint="@color/black"
             app:cardCornerRadius="10dp"
             android:focusable="true"
-            app:layout_constraintTop_toBottomOf="@id/amenitiesRecycler"
-            app:layout_constraintEnd_toEndOf="@id/amenitiesRecycler"
+            app:layout_constraintTop_toBottomOf="@id/amenitiesIconRecycler"
+            app:layout_constraintEnd_toEndOf="@id/amenitiesIconRecycler"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <TextView

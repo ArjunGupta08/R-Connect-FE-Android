@@ -52,6 +52,10 @@ class ChainDashboardActivity : AppCompatActivity() {
             }
         }
 
+        binding.continueBtn.setOnClickListener {
+//            replaceFragment(ViewPropertiesFragment())
+        }
+
         replaceFragment(AddPropertyFragment_1())
 
         binding.addPropertyBtn.setOnClickListener {

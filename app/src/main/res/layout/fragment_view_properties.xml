@@ -181,6 +181,7 @@
                 android:textSize="@dimen/H3"/>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/topPerformingPropertyRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -198,6 +199,7 @@
                 android:textSize="@dimen/H3"/>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/hotelsRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -215,6 +217,7 @@
                 android:textSize="@dimen/H3"/>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/resortsRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

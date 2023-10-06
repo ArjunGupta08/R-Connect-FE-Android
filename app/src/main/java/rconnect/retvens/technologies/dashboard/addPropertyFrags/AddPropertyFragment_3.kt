@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.TextView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.FragmentAddProperty3Binding
 
@@ -55,6 +57,28 @@ class AddPropertyFragment_3 : Fragment() {
             dialog.dismiss()
         }
 
+        val amenitiesRecycler = dialog.findViewById<RecyclerView>(R.id.amenitiesRecycler)
+        amenitiesRecycler.layoutManager = GridLayoutManager(requireContext(), 3)
+
+        val amenities = ArrayList<AddAmenitiesDataClass>()
+
+        amenities.add(AddAmenitiesDataClass("amenityName"))
+        amenities.add(AddAmenitiesDataClass("amenityName"))
+        amenities.add(AddAmenitiesDataClass("amenityName"))
+        amenities.add(AddAmenitiesDataClass("amenityName"))
+        amenities.add(AddAmenitiesDataClass("amenityName"))
+        amenities.add(AddAmenitiesDataClass("amenityName"))
+        amenities.add(AddAmenitiesDataClass("amenityName"))
+        amenities.add(AddAmenitiesDataClass("amenityName"))
+        amenities.add(AddAmenitiesDataClass("amenityName"))
+        amenities.add(AddAmenitiesDataClass("amenityName"))
+        amenities.add(AddAmenitiesDataClass("amenityName"))
+        amenities.add(AddAmenitiesDataClass("amenityName"))
+        amenities.add(AddAmenitiesDataClass("amenityName"))
+
+        val addAmenitiesAdapter = AddAmenitiesAdapter(requireContext(), amenities)
+        amenitiesRecycler.adapter = addAmenitiesAdapter
+
         dialog.show()
         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -72,6 +96,34 @@ class AddPropertyFragment_3 : Fragment() {
         cancel.setOnClickListener {
             dialog.dismiss()
         }
+
+        val amenitiesIconRecycler = dialog.findViewById<RecyclerView>(R.id.amenitiesIconRecycler)
+        amenitiesIconRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
+
+        val amenities = ArrayList<AmenitiesIconDataClass>()
+
+        amenities.add(AmenitiesIconDataClass(R.drawable.check))
+        amenities.add(AmenitiesIconDataClass(R.drawable.check))
+        amenities.add(AmenitiesIconDataClass(R.drawable.svg_keys))
+        amenities.add(AmenitiesIconDataClass(R.drawable.svg_keys))
+        amenities.add(AmenitiesIconDataClass(R.drawable.svg_add))
+        amenities.add(AmenitiesIconDataClass(R.drawable.svg_add))
+        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
+        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
+        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
+        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
+        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
+        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
+        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
+        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
+        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
+        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
+        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
+        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
+        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
+
+        val amenitiesIconAdapter = AmenitiesIconAdapter(requireContext(), amenities)
+        amenitiesIconRecycler.adapter = amenitiesIconAdapter
 
         dialog.show()
         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)

@@ -29,10 +29,16 @@ class FinalOnboardingScreen : AppCompatActivity() {
             bindingTab.congratulationLayout.isVisible = false
 
             bindingTab.coverImg.setImageDrawable(ContextCompat.getDrawable(applicationContext,R.drawable.svg_final_onboarding))
-        }, 2000)
+        }, 3000)
+
+        val isSingle = intent.getBooleanExtra("isSingle", false)
 
         bindingTab.goToDash.setOnClickListener {
-            startActivity(Intent(this, SingleDashboardActivity::class.java))
+            if (isSingle) {
+                startActivity(Intent(this, SingleDashboardActivity::class.java))
+            } else {
+                startActivity(Intent(this, ChainDashboardActivity::class.java))
+            }
         }
 
     }

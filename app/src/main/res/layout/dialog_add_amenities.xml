@@ -130,7 +130,6 @@
             app:spanCount="3"
             tools:listitem="@layout/item_amenities"
             app:layout_constraintBottom_toTopOf="@id/saveBtn"
-            app:layout_constraintStart_toStartOf="@id/search"
             app:layout_constraintTop_toBottomOf="@id/ll1"/>
 
 

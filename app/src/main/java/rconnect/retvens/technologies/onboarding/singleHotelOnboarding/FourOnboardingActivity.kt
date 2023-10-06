@@ -92,7 +92,9 @@ class FourOnboardingActivity : AppCompatActivity() {
         }
 
         binding.cardSingleNext.setOnClickListener {
-            startActivity(Intent(this, FinalOnboardingScreen::class.java))
+            val intent = Intent(this, FinalOnboardingScreen::class.java)
+            intent.putExtra("isSingle", true)
+            startActivity(intent)
         }
 
     }
