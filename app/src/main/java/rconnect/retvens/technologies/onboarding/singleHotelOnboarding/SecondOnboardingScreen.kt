@@ -1,10 +1,12 @@
 package rconnect.retvens.technologies.onboarding.singleHotelOnboarding
 
+import android.app.ActivityOptions
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.ActivitySecondOnboardingScreenBinding
+import rconnect.retvens.technologies.onboarding.FinalOnboardingScreen
 
 class SecondOnboardingScreen : AppCompatActivity() {
 
@@ -15,7 +17,14 @@ class SecondOnboardingScreen : AppCompatActivity() {
         setContentView(bindingTab.root)
 
         bindingTab.cardSingleNext.setOnClickListener {
-            startActivity(Intent(this,ThirdOnboardingActivity::class.java))
+            val intent = Intent(this,FinalOnboardingScreen::class.java)
+
+            val options = ActivityOptions.makeSceneTransitionAnimation(this,
+                android.util.Pair(bindingTab.logo,"logo_img"),
+                android.util.Pair(bindingTab.onBoardingImg,"onBoardingImg"),
+                android.util.Pair(bindingTab.demoBackbtn,"backBtn")).toBundle()
+
+            startActivity(intent, options)
         }
 
         bindingTab.demoBackbtn.setOnClickListener {

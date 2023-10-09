@@ -8,12 +8,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frame1"
-        android:layout_width="700dp"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/secondaryBackground"
+        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintEnd_toStartOf="@id/frame2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:background="@color/secondaryBackground">
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <ImageView
@@ -22,20 +24,21 @@
             android:layout_height="120dp"
             android:layout_marginTop="25dp"
             android:src="@drawable/svg_logo"
-            app:layout_constraintStart_toStartOf="parent"
+            android:transitionName="logo_img"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/title1"
             style="@style/OnboardingHeadingTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
             android:text="@string/world_s_only_one_stop_hotel_solution_software_with_ai"
+            android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/logo"/>
+            app:layout_constraintTop_toBottomOf="@id/logo" />
 
         <TextView
             android:id="@+id/title2"
@@ -48,13 +51,15 @@
             app:layout_constraintTop_toBottomOf="@+id/title1" />
 
         <ImageView
-            android:layout_width="500dp"
-            android:layout_height="500dp"
+            android:id="@+id/onBoardingImg"
+            android:layout_width="400dp"
+            android:layout_height="0dp"
+            android:transitionName="onBoardingImg"
             android:src="@drawable/vector_request_demo"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title2"/>
+            app:layout_constraintTop_toBottomOf="@id/title2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -70,6 +75,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fillViewport="true"
             android:background="@color/primaryBackground">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -83,6 +89,7 @@
                     android:src="@drawable/vector_back_btn"
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginTop="40dp"
+                    android:transitionName="backBtn"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="30dp"
                     tools:layout_editor_absoluteY="15dp"
@@ -94,6 +101,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="20dp"
+                    android:transitionName="login_board"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/demoBackbtn">
@@ -208,7 +216,7 @@
                         android:layout_height="wrap_content"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:hint="First Name*"
-                        android:layout_marginStart="80dp"
+                        android:layout_marginStart="50dp"
                         android:textColorHint="@color/black"
                         app:boxStrokeColor="@color/black"
                         app:hintTextColor="@color/secondary"
@@ -240,8 +248,8 @@
                         android:layout_height="wrap_content"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:hint="Last Name*"
-                        android:layout_marginEnd="60dp"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="50dp"
+                        android:layout_marginStart="10dp"
                         android:textColorHint="@color/black"
                         app:boxStrokeColor="@color/black"
                         app:hintTextColor="@color/secondary"
@@ -282,7 +290,8 @@
                         app:boxCornerRadiusBottomStart="10dp"
                         app:boxCornerRadiusBottomEnd="10dp"
                         app:boxCornerRadiusTopEnd="10dp"
-                        app:endIconMode="clear_text"
+                        app:endIconMode="custom"
+                        app:endIconDrawable="@drawable/svg_arrow_down"
                         app:endIconTint="@color/black"
                         app:layout_constraintStart_toStartOf="@id/firstNameLayout"
                         app:layout_constraintEnd_toEndOf="@id/lastNameLayout"
@@ -295,7 +304,9 @@
                             android:fontFamily="@font/roboto"
                             android:inputType="text"
                             android:textColorHint="@color/secondary"
-                            android:textColor="@color/secondary" />
+                            android:textColor="@color/secondary"
+                            android:editable="false"
+                            android:focusable="true"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -340,7 +351,7 @@
                         android:textColorHint="@color/black"
                         app:boxStrokeColor="@color/black"
                         app:hintTextColor="@color/secondary"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="10dp"
                         app:boxStrokeWidthFocused="2dp"
                         app:boxCornerRadiusTopStart="10dp"
                         app:boxCornerRadiusBottomStart="10dp"
@@ -372,7 +383,7 @@
                         android:textColorHint="@color/black"
                         app:boxStrokeColor="@color/black"
                         app:hintTextColor="@color/secondary"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="10dp"
                         app:boxStrokeWidthFocused="2dp"
                         app:boxCornerRadiusTopStart="10dp"
                         app:boxCornerRadiusBottomStart="10dp"
@@ -397,12 +408,13 @@
 
                     <TextView
                         android:id="@+id/subHeadingTerm"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:text="@string/terms_of_services"
                         android:textSize="16dp"
-                        android:textColor="@color/subtitle"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
                         android:layout_marginTop="12dp"
                         app:layout_constraintEnd_toEndOf="@id/passwordLayout"
                         app:layout_constraintTop_toBottomOf="@id/passwordLayout"
@@ -412,9 +424,11 @@
                         android:id="@+id/card_createAccount"
                         android:layout_width="200dp"
                         android:layout_height="50dp"
+                        android:transitionName="Btn"
                         app:layout_constraintTop_toBottomOf="@+id/subHeadingTerm"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginBottom="20dp"
                         android:layout_marginTop="25dp"
                         android:backgroundTint="@color/secondary"
                         >
