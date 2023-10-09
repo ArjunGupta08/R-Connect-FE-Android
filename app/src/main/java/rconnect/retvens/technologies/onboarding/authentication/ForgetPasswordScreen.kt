@@ -1,8 +1,10 @@
 package rconnect.retvens.technologies.onboarding.authentication
 
+import android.app.ActivityOptions
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Pair
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.ActivityForgetPasswordScreenBinding
 
@@ -19,7 +21,17 @@ class ForgetPasswordScreen : AppCompatActivity() {
         }
 
         bindingTab.resetCard.setOnClickListener {
-            startActivity(Intent(this, EnterVerificationCodeActivity::class.java))
+            val intent = (Intent(this, EnterVerificationCodeActivity::class.java))
+
+            val options = ActivityOptions.makeSceneTransitionAnimation(this,
+                Pair(bindingTab.logo,"logo_img"),
+                Pair(bindingTab.onBoardingImg,"onBoardingImg"),
+                Pair(bindingTab.forgotBackbtn,"backBtn"),
+                Pair(bindingTab.resetCard,"Btn")
+            ).toBundle()
+
+            startActivity(intent, options)
+
         }
     }
 }

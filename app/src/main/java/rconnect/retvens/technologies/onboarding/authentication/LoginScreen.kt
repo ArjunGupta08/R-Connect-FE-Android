@@ -27,16 +27,27 @@ class LoginScreen : AppCompatActivity() {
         parentLayout = findViewById(R.id.parent_layout)
 
         bindingTab.forgotPassText.setOnClickListener {
-            startActivity(Intent(this, ForgetPasswordScreen::class.java))
+            val intent = (Intent(this, ForgetPasswordScreen::class.java))
+
+            val options = ActivityOptions.makeSceneTransitionAnimation(this,
+                Pair(bindingTab.logo,"logo_img"),
+                Pair(bindingTab.onBoardingImg,"onBoardingImg"),
+                Pair(bindingTab.signInCard,"Btn")).toBundle()
+
+            startActivity(intent, options)
+
         }
 
         bindingTab.signUp.setOnClickListener {
             val intent = Intent(this, SignUpScreen::class.java)
-            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,
+
+            val options = ActivityOptions.makeSceneTransitionAnimation(this,
                 android.util.Pair(bindingTab.logo,"logo_img"),
                 android.util.Pair(bindingTab.onBoardingImg,"onBoardingImg"),
                 android.util.Pair(bindingTab.signInCard,"Btn"),
-                android.util.Pair(bindingTab.loginTitle,"login_board")).toBundle())
+                android.util.Pair(bindingTab.loginTitle,"login_board")).toBundle()
+
+            startActivity(intent, options)
         }
 
         bindingTab.signInCard.setOnClickListener {
