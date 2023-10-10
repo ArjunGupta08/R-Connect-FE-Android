@@ -5,10 +5,12 @@
 
     <color name="primary">#ACD037</color>
     <color name="secondary">#272A3D</color>
+    <color name="lightBlack">#717A8F</color>
     <color name="textColor">#171717</color>
     <color name="subtitle">#828282</color>
     <color name="primaryBackground">#FFFFFF</color>
     <color name="secondaryBackground">#F2F2F2</color>
+    <color name="unselectedBackground">#E6ECF5</color>
 
     <!--  GREY SHADES  -->
     <color name="grey10">#DCDCDC</color>

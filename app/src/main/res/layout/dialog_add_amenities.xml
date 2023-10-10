@@ -46,7 +46,7 @@
         </androidx.cardview.widget.CardView>
 
         <LinearLayout
-            android:id="@+id/ll1"
+            android:id="@+id/ll5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -117,8 +117,8 @@
             android:padding="10dp"
             android:textColor="@color/secondary"
             android:fontFamily="@font/roboto_bold"
-            app:layout_constraintTop_toTopOf="@id/ll1"
-            app:layout_constraintBottom_toBottomOf="@id/ll1"
+            app:layout_constraintTop_toTopOf="@id/ll5"
+            app:layout_constraintBottom_toBottomOf="@id/ll5"
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -130,7 +130,7 @@
             app:spanCount="3"
             tools:listitem="@layout/item_amenities"
             app:layout_constraintBottom_toTopOf="@id/saveBtn"
-            app:layout_constraintTop_toBottomOf="@id/ll1"/>
+            app:layout_constraintTop_toBottomOf="@id/ll5"/>
 
 
         <TextView

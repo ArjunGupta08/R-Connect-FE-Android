@@ -18,7 +18,7 @@
             android:name=".dashboard.singleDashboard.SingleDashboardActivity"
             android:exported="false" />
         <activity
-            android:name=".dashboard.chainDashboard.ChainDashboardActivity"
+            android:name=".dashboard.Dashboard.DashboardActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

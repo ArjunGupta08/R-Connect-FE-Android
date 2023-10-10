@@ -179,12 +179,46 @@
                         app:layout_constraintEnd_toEndOf="parent">
 
                         <ImageView
+                            android:id="@+id/galleryImg"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:src="@drawable/svg_gallery"
+                            android:scaleType="centerCrop"
                             android:layout_margin="10dp"/>
 
                     </com.google.android.material.card.MaterialCardView>
+
+                    <LinearLayout
+                        android:id="@+id/imageEditLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        android:gravity="center"
+                        android:weightSum="2"
+                        android:layout_marginTop="4dp"
+                        android:paddingHorizontal="8dp"
+                        app:layout_constraintBottom_toBottomOf="@id/cardGallery"
+                        app:layout_constraintTop_toTopOf="@id/cardGallery"
+                        app:layout_constraintStart_toEndOf="@id/cardGallery">
+
+                        <ImageView
+                            android:id="@+id/replaceImage"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            app:tint="@color/black"
+                            android:layout_weight="1"
+                            android:src="@drawable/svg_gallery_edit"/>
+
+                        <ImageView
+                            android:id="@+id/removeImage"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/svg_gallery_remove"
+                            android:layout_weight="1"
+                            app:tint="@color/black"/>
+
+                    </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/property_layout"

@@ -1,4 +1,4 @@
-package rconnect.retvens.technologies.dashboard.chainDashboard
+package rconnect.retvens.technologies.dashboard.Dashboard
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
-import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.ViewPropertiesDataClass
 import rconnect.retvens.technologies.databinding.FragmentViewPropertiesBinding
 

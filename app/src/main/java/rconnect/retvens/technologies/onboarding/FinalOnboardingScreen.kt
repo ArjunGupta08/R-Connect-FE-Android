@@ -7,8 +7,7 @@ import android.os.Handler
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import rconnect.retvens.technologies.R
-import rconnect.retvens.technologies.dashboard.chainDashboard.ChainDashboardActivity
-import rconnect.retvens.technologies.dashboard.singleDashboard.SingleDashboardActivity
+import rconnect.retvens.technologies.dashboard.Dashboard.DashboardActivity
 import rconnect.retvens.technologies.databinding.ActivityFinalOnboardingScreenBinding
 
 class FinalOnboardingScreen : AppCompatActivity() {
@@ -34,11 +33,11 @@ class FinalOnboardingScreen : AppCompatActivity() {
         val isSingle = intent.getBooleanExtra("isSingle", false)
 
         bindingTab.goToDash.setOnClickListener {
-            if (isSingle) {
-                startActivity(Intent(this, SingleDashboardActivity::class.java))
-            } else {
-                startActivity(Intent(this, ChainDashboardActivity::class.java))
-            }
+
+            val intent = Intent(this, DashboardActivity::class.java)
+            intent.putExtra("isSingle", isSingle)
+            startActivity(intent)
+
         }
 
     }

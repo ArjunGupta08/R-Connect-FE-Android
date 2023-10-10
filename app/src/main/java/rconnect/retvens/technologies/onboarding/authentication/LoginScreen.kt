@@ -8,9 +8,8 @@ import android.util.Pair
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.google.android.material.snackbar.Snackbar
 import rconnect.retvens.technologies.R
-import rconnect.retvens.technologies.dashboard.chainDashboard.ChainDashboardActivity
+import rconnect.retvens.technologies.dashboard.Dashboard.DashboardActivity
 import rconnect.retvens.technologies.databinding.ActivityLoginScreenBinding
 
 class LoginScreen : AppCompatActivity() {
@@ -59,7 +58,7 @@ class LoginScreen : AppCompatActivity() {
             } else if (bindingTab.password.text!!.isEmpty()) {
                 showSnackBarMessage("Please enter password")
             } else {
-                val intent = Intent(this, ChainDashboardActivity::class.java)
+                val intent = Intent(this, DashboardActivity::class.java)
                 startActivity(intent)
             }
 

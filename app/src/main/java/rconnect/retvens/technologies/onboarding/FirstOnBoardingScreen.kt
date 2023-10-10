@@ -31,6 +31,7 @@ class FirstOnBoardingScreen : AppCompatActivity() {
         bindingTab.cardSingle.setOnClickListener {
 
             isSingleSelected = true
+            isChainSelected = false
 
             val colorResId = R.color.grey10 // Replace with your color resource ID
             val color = ContextCompat.getColor(applicationContext, colorResId)
@@ -49,6 +50,7 @@ class FirstOnBoardingScreen : AppCompatActivity() {
         bindingTab.cardChain.setOnClickListener {
 
             isChainSelected = true
+            isSingleSelected = false
 
             val colorResId = R.color.grey10 // Replace with your color resource ID
             val color = ContextCompat.getColor(applicationContext, colorResId)

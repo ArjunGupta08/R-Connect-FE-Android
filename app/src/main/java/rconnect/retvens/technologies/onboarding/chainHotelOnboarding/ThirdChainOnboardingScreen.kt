@@ -4,6 +4,7 @@ import android.app.ActivityOptions
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import rconnect.retvens.technologies.databinding.ActivityThirdChainOnboardingScreenBinding
 import rconnect.retvens.technologies.onboarding.FinalOnboardingScreen
@@ -14,7 +15,9 @@ class ThirdChainOnboardingScreen : AppCompatActivity() {
 
     private lateinit var thirdChainOnboardingAdapter: ThirdChainOnboardingAdapter
     private var dataList = ArrayList<ThirdChainOnboardingDataClass>()
+
     private var roomCount = 1
+    private var rateCount = 1.00
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,16 +33,46 @@ class ThirdChainOnboardingScreen : AppCompatActivity() {
             addData()
         }
 
-//        bindingTab.remove.setOnClickListener {
-//            if (roomCount > 1){
-//                roomCount--
-//                bindingTab.roomCount.text = roomCount.toString()
-//            }
-//        }
-//        bindingTab.add.setOnClickListener {
-//                roomCount++
-//                bindingTab.roomCount.text = roomCount.toString()
-//        }
+        binding.roomCount.doAfterTextChanged {
+
+            if (binding.roomCount.text.toString() != "") {
+                var roomCountET = binding.roomCount.text.toString()
+                roomCount = roomCountET.toInt()
+            } else {
+//                Toast.makeText(applicationContext, "This field can not be empty", Toast.LENGTH_SHORT).show()
+            }
+
+        }
+
+        binding.removeRooms.setOnClickListener {
+            if (roomCount > 1){
+                roomCount--
+                binding.roomCount.setText("$roomCount")
+            }
+        }
+        binding.addRooms.setOnClickListener {
+                roomCount++
+                binding.roomCount.setText("$roomCount")
+        }
+
+        binding.rateCount.doAfterTextChanged {
+            if (binding.rateCount.text.toString() != "") {
+                var rateCountET = binding.rateCount.text.toString()
+                rateCount = rateCountET.toDouble()
+            } else {
+//                Toast.makeText(applicationContext, "This field can not be empty", Toast.LENGTH_SHORT).show()
+            }
+        }
+        binding.removeRate.setOnClickListener {
+            if (rateCount > 1){
+                rateCount--
+                binding.rateCount.setText("$rateCount")
+            }
+        }
+        binding.addRate.setOnClickListener {
+                rateCount++
+            binding.rateCount.setText("$rateCount")
+        }
 
         binding.cardSingleNext.setOnClickListener {
             val intent = (Intent(this, FinalOnboardingScreen::class.java))

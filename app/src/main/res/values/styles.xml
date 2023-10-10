@@ -2,6 +2,7 @@
 <resources>
 
     <dimen name="editTextWidth">400sp</dimen>
+    <dimen name="countingEditTextWidth">55dp</dimen>
 
     <dimen name="H0">28sp</dimen>
     <dimen name="H1">24sp</dimen>
@@ -25,6 +26,23 @@
         <item name="android:textStyle">bold</item>
         <item name="fontFamily">@font/roboto_light</item>
         <item name="android:textSize">@dimen/H3</item>
+    </style>
+
+                                    <!--ShapeableImageView-->
+    <style name="RoundedCornerImage">
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="SquareCornerImage">
+        <item name="cornerSize">5%</item>
+    </style>
+
+    <style name="SquareCornerImageM">
+        <item name="cornerSize">10%</item>
+    </style>
+
+    <style name="SquareCornerImageForCards">
+        <item name="cornerSize">15%</item>
     </style>
 
 </resources>

@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/amenityIcon"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_margin="5dp"
         android:src="@drawable/svg_ac"/>
 
@@ -18,15 +18,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Child-friendly activities"
-            android:textSize="@dimen/H3"
+            android:textSize="@dimen/H5"
             android:layout_marginHorizontal="5dp"
             android:textColor="@color/secondary"
             android:fontFamily="@font/roboto"/>
 
     <ImageView
         android:id="@+id/remove"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginHorizontal="5dp"
         android:src="@drawable/svg_delete_lite"/>
 
