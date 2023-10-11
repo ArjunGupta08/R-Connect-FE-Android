@@ -9,7 +9,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/secondaryBackground">
 
         <TextView
             android:id="@+id/aA"
@@ -55,15 +56,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
             android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="@id/aA"
             app:layout_constraintTop_toBottomOf="@id/aA"
-            app:cardBackgroundColor="@color/secondaryBackground">
+            app:cardBackgroundColor="@color/white">
 
             <EditText
                 android:id="@+id/search"
                 android:layout_width="@dimen/editTextWidth"
                 android:layout_height="40dp"
+                android:hint="Search"
                 android:layout_marginStart="10dp"
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/svg_search"
@@ -77,7 +80,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintHorizontal_bias="0.05"
             app:layout_constraintTop_toTopOf="@id/searchCard"
             app:layout_constraintEnd_toStartOf="@id/llView"
             app:layout_constraintBottom_toBottomOf="@id/searchCard"
@@ -139,7 +142,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginEnd="10dp"
-            android:gravity="center_vertical"
+            android:gravity="center"
             app:layout_constraintTop_toTopOf="@id/ll5"
             app:layout_constraintBottom_toBottomOf="@id/ll5"
             app:layout_constraintEnd_toEndOf="@id/addNewProperty">
@@ -151,11 +154,11 @@
                 android:textSize="@dimen/H3"
                 android:layout_marginHorizontal="5dp"
                 android:textColor="@color/secondary"
-                android:fontFamily="@font/roboto_medium"/>
+                android:fontFamily="@font/roboto"/>
 
             <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:scaleType="fitXY"
                 android:layout_marginHorizontal="5dp"
                 android:src="@drawable/svg_view_type"/>
@@ -184,16 +187,17 @@
                 android:id="@+id/topPerformingPropertyRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:foregroundGravity="center"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="6"
-                tools:listitem="@layout/item_properties"/>
+                app:spanCount="3"
+                tools:listitem="@layout/item_properties_2"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Hotels"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/roboto_medium"
                 android:textColor="@color/secondary"
                 android:textSize="@dimen/H3"/>
@@ -202,7 +206,7 @@
                 android:id="@+id/hotelsRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:foregroundGravity="center"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="6"
@@ -211,7 +215,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Resorts "
+                android:text="Resorts"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/roboto_medium"
                 android:textColor="@color/secondary"
                 android:textSize="@dimen/H3"/>
@@ -220,7 +225,7 @@
                 android:id="@+id/resortsRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:foregroundGravity="center"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="6"

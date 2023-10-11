@@ -11,6 +11,7 @@
     <color name="primaryBackground">#FFFFFF</color>
     <color name="secondaryBackground">#F2F2F2</color>
     <color name="unselectedBackground">#E6ECF5</color>
+    <color name="textInputStrokeColor">#E6ECF5</color>
 
     <!--  GREY SHADES  -->
     <color name="grey10">#DCDCDC</color>

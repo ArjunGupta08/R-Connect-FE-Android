@@ -1,19 +1,22 @@
 package rconnect.retvens.technologies.dashboard.addPropertyFrags
 
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -21,14 +24,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.Dashboard.ViewPropertiesFragment
 import rconnect.retvens.technologies.databinding.FragmentAddPropertyBinding
 
 
-class AddPropertyFragment : Fragment() {
+class AddPropertyFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var binding : FragmentAddPropertyBinding
 
@@ -54,6 +63,16 @@ class AddPropertyFragment : Fragment() {
         roboto = ResourcesCompat.getFont(requireContext(), R.font.roboto)!!
         robotoMedium = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)!!
 
+        lToRInAnimation(binding.propertyProfileLayout, requireContext())
+
+        // Get the SupportMapFragment and request notification
+        // when the map is ready to be used.
+
+        // Get the SupportMapFragment and request notification
+        // when the map is ready to be used.
+        val mapFrag = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFrag.getMapAsync(this)
+
         binding.continueBtn.setOnClickListener {
 
             if (page == 1){
@@ -66,8 +85,12 @@ class AddPropertyFragment : Fragment() {
                 binding.propertyProfile.textSize = 16.0f
                 binding.propertyProfile.typeface = roboto
 
+                binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+                binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+
                 binding.propertyProfileLayout.visibility = View.GONE
                 binding.addressLayout.visibility = View.VISIBLE
+                rToL_InAnimation(binding.addressLayout, requireContext())
 
             } else {
 
@@ -100,10 +123,11 @@ class AddPropertyFragment : Fragment() {
             binding.addressAndContacts.typeface = roboto
 
             binding.propertyProfileLayout.visibility = View.VISIBLE
+            lToRInAnimation(binding.propertyProfileLayout, requireContext())
             binding.addressLayout.visibility = View.GONE
 
             binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-            binding.propertyProfile.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+            binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
         }
 
         binding.addressAndContacts.setOnClickListener {
@@ -118,9 +142,10 @@ class AddPropertyFragment : Fragment() {
 
             binding.propertyProfileLayout.visibility = View.GONE
             binding.addressLayout.visibility = View.VISIBLE
+            rToL_InAnimation(binding.addressLayout, requireContext())
 
             binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-            binding.addressAndContacts.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+            binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
         }
 
         binding.add.setOnClickListener { openAddAmenitiesDialog() }
@@ -134,7 +159,33 @@ class AddPropertyFragment : Fragment() {
             openGallery()
         }
     }
+    private fun rToL_InAnimation(view: View, context: Context) {
+        // load the animation
+        val animSlideIn: Animation = AnimationUtils.loadAnimation(
+            context,
+            R.anim.r_to_l_in_animation
+        )
+        // start the animation
+        view.startAnimation(animSlideIn)
+    }
 
+    private fun lToRInAnimation(view: View, context: Context) {
+        // load the animation
+        val animSlideOut: Animation = AnimationUtils.loadAnimation(
+            context,
+            R.anim.l_to_r_in_animation
+        )
+        // start the animation
+        view.startAnimation(animSlideOut)
+    }
+
+    // This method is called when the map is ready to be used.
+    override fun onMapReady(googleMap: GoogleMap) {
+        // Add a marker in Sydney, Australia,
+        // and move the map's camera to the same location.
+        val myPos = LatLng(28.679079 , 77.069710)
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(myPos))
+    }
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent,PICK_IMAGE_REQUEST_CODE)

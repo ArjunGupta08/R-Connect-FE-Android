@@ -28,6 +28,36 @@
         <item name="android:textSize">@dimen/H3</item>
     </style>
 
+            <!-- OnBoarding Text Input Layout Theme-->
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
+        <item name="boxStrokeColor">@color/subtitle</item>
+        <item name="hintTextColor">@color/secondary</item>
+        <item name="boxCornerRadiusBottomStart">10dp</item>
+        <item name="boxCornerRadiusBottomEnd">10dp</item>
+        <item name="boxCornerRadiusTopEnd">10dp</item>
+        <item name="boxCornerRadiusTopStart">10dp</item>
+    </style>
+
+    <style name="ClickableTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <!--Box Stroke-->
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
+        <item name="boxStrokeColor">@color/subtitle</item>
+        <item name="android:textColorHint">@color/secondary</item>
+        <item name="hintTextColor">@color/secondary</item>
+        <!--End Icon-->
+        <item name="endIconMode">custom</item>
+        <item name="endIconDrawable">@drawable/svg_arrow_down</item>
+        <item name="endIconTint">@color/black</item>
+        <!--Radius-->
+        <item name="boxCornerRadiusBottomStart">10dp</item>
+        <item name="boxCornerRadiusBottomEnd">10dp</item>
+        <item name="boxCornerRadiusTopEnd">10dp</item>
+        <item name="boxCornerRadiusTopStart">10dp</item>
+    </style>
+
                                     <!--ShapeableImageView-->
     <style name="RoundedCornerImage">
         <item name="cornerSize">50%</item>

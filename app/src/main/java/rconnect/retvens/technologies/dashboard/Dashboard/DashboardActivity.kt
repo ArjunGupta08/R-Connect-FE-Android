@@ -46,9 +46,11 @@ class DashboardActivity : AppCompatActivity() {
         val isSingle = intent.getBooleanExtra("isSingle", false)
 
         if (isSingle){
+            binding.propertyTypeImage.setImageResource(R.drawable.png_bed)
             binding.letsText.text = "Let’s add rooms in properties"
             replaceFragment(AddRoomTypeFragment())
         } else {
+            binding.propertyTypeImage.setImageResource(R.drawable.svg_add_property)
             binding.letsText.text = "Let’s add your properties"
             replaceFragment(AddPropertyFragment())
         }

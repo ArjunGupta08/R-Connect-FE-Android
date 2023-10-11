@@ -50,13 +50,13 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
 
         binding.replaceImage.setOnClickListener {
             openGallery()
-            rightToLeftEditImageAnimation()
+            rightToLeftEditImageAnimation(binding.imageEditLayout)
         }
 
         binding.removeImage.setOnClickListener {
             imageUri = Uri.EMPTY
             binding.selectImg.setImageResource(R.drawable.svg_gallery)
-            rightToLeftEditImageAnimation()
+            rightToLeftEditImageAnimation(binding.imageEditLayout)
             isImageSelected = false
             setMargins(binding.selectImg, 15, 15, 15, 15)
         }
@@ -70,13 +70,13 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
                     // load the animation
                     val animFadein: Animation = AnimationUtils.loadAnimation(
                         applicationContext,
-                        R.anim.left_to_right_animation
+                        R.anim.l_to_r_in_animation
                     )
                     // start the animation
                     binding.imageEditLayout.startAnimation(animFadein)
                     isImageEdit = true
                 } else {
-                    rightToLeftEditImageAnimation()
+                    rightToLeftEditImageAnimation(binding.imageEditLayout)
                 }
             }
         }
@@ -106,15 +106,15 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
 
     }
 
-    private fun rightToLeftEditImageAnimation() {
+    private fun rightToLeftEditImageAnimation(view: View) {
         isImageEdit = false
         // load the animation
-        val animFadein: Animation = AnimationUtils.loadAnimation(
+        val animSlideIn: Animation = AnimationUtils.loadAnimation(
             applicationContext,
-            R.anim.right_to_left_animation
+            R.anim.l_to_r_out_animation
         )
         // start the animation
-        binding.imageEditLayout.startAnimation(animFadein)
+        view.startAnimation(animSlideIn)
         binding.imageEditLayout.isVisible = false
     }
 

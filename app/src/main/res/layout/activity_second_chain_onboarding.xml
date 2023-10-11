@@ -126,22 +126,24 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/heading">
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/heading"
+                    app:layout_constraintVertical_bias="0.0">
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/cardImg"
                         android:layout_width="110dp"
                         android:layout_height="0dp"
-                        android:layout_marginEnd="70dp"
                         android:layout_marginTop="5dp"
-                        app:strokeWidth="2dp"
-                        app:cardElevation="2dp"
+                        android:layout_marginEnd="70dp"
                         app:cardBackgroundColor="@color/white"
+                        app:cardElevation="2dp"
+                        app:layout_constraintBottom_toBottomOf="@id/nop"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/propertyChainLayout"
-                        app:layout_constraintBottom_toBottomOf="@id/nop">
+                        app:strokeWidth="2dp">
 
                         <ImageView
                             android:id="@+id/selectImg"
@@ -149,35 +151,37 @@
                             android:layout_height="match_parent"
                             android:layout_margin="10dp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/svg_gallery"/>
+                            android:src="@drawable/svg_gallery" />
 
                     </com.google.android.material.card.MaterialCardView>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:visibility="gone"
-                        android:orientation="vertical"
                         android:background="@color/white"
-                        app:layout_constraintTop_toBottomOf="@id/cardImg"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="@id/cardImg"
                         app:layout_constraintStart_toStartOf="@id/cardImg"
-                        app:layout_constraintEnd_toEndOf="@id/cardImg">
+                        app:layout_constraintTop_toBottomOf="@id/cardImg">
+
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/svg_upper_triangle"
                             android:elevation="20dp"
-                            app:tint="@color/lightBlack"/>
+                            android:src="@drawable/svg_upper_triangle"
+                            app:tint="@color/lightBlack" />
+
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            app:cardBackgroundColor="@color/lightBlack"
-                            app:cardElevation="12dp"
-                            android:elevation="20dp"
-                            android:layout_marginBottom="15dp"
                             android:layout_marginHorizontal="15dp"
-                            app:cardCornerRadius="12dp">
+                            android:layout_marginBottom="15dp"
+                            android:elevation="20dp"
+                            app:cardBackgroundColor="@color/lightBlack"
+                            app:cardCornerRadius="12dp"
+                            app:cardElevation="12dp">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -188,38 +192,42 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
-                                    android:padding="12dp"
-                                    android:orientation="vertical">
+                                    android:orientation="vertical"
+                                    android:padding="12dp">
+
                                     <ImageView
                                         android:layout_width="16dp"
                                         android:layout_height="16dp"
-                                        android:src="@drawable/svg_gallery_edit"/>
+                                        android:src="@drawable/svg_gallery_edit" />
+
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Replace"
+                                        android:fontFamily="@font/roboto_medium"
 
-                                        android:textColor="@color/white"
-                                        android:fontFamily="@font/roboto_medium"/>
+                                        android:text="Replace"
+                                        android:textColor="@color/white" />
                                 </LinearLayout>
 
                                 <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
-                                    android:padding="12dp"
-                                    android:orientation="vertical">
+                                    android:orientation="vertical"
+                                    android:padding="12dp">
+
                                     <ImageView
                                         android:layout_width="16dp"
                                         android:layout_height="16dp"
-                                        android:src="@drawable/svg_gallery_remove"/>
+                                        android:src="@drawable/svg_gallery_remove" />
+
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:fontFamily="@font/roboto_medium"
                                         android:text="Remove"
-                                        android:textColor="@color/white"
 
-                                        android:fontFamily="@font/roboto_medium"/>
+                                        android:textColor="@color/white" />
                                 </LinearLayout>
 
                             </LinearLayout>
@@ -231,56 +239,48 @@
                         android:id="@+id/imageEditLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
-                        android:orientation="vertical"
-                        android:visibility="gone"
-                        android:gravity="center"
-                        android:weightSum="2"
                         android:layout_marginTop="4dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
                         android:paddingHorizontal="8dp"
+                        android:visibility="gone"
+                        android:weightSum="2"
                         app:layout_constraintBottom_toBottomOf="@id/cardImg"
-                        app:layout_constraintTop_toTopOf="@id/cardImg"
-                        app:layout_constraintStart_toEndOf="@id/cardImg">
+                        app:layout_constraintStart_toEndOf="@id/cardImg"
+                        app:layout_constraintTop_toTopOf="@id/cardImg">
 
                         <ImageView
                             android:id="@+id/replaceImage"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
-                            app:tint="@color/black"
                             android:layout_weight="1"
-                            android:src="@drawable/svg_gallery_edit"/>
+                            android:src="@drawable/svg_gallery_edit"
+                            app:tint="@color/black" />
 
                         <ImageView
                             android:id="@+id/removeImage"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
-                            android:src="@drawable/svg_gallery_remove"
                             android:layout_weight="1"
-                            app:tint="@color/black"/>
+                            android:src="@drawable/svg_gallery_remove"
+                            app:tint="@color/black" />
 
                     </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/propertyChainLayout"
+                        style="@style/TextInputLayoutStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                        android:hint="Property Chain Name"
                         android:layout_marginStart="70dp"
-                        android:layout_marginEnd="10dp"
-                        android:textColorHint="@color/black"
-                        app:boxStrokeColor="@color/black"
-                        app:hintTextColor="@color/secondary"
                         android:layout_marginTop="20dp"
-                        app:boxStrokeWidthFocused="2dp"
-                        app:boxCornerRadiusTopStart="10dp"
-                        app:boxCornerRadiusBottomStart="10dp"
-                        app:boxCornerRadiusBottomEnd="10dp"
-                        app:boxCornerRadiusTopEnd="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:hint="Property Chain Name"
                         app:endIconMode="clear_text"
                         app:endIconTint="@color/black"
                         app:layout_constraintEnd_toStartOf="@id/cardImg"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent">
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/propertyChainText"
@@ -288,8 +288,8 @@
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
                             android:inputType="text"
-                            android:textColorHint="@color/secondary"
-                            android:textColor="@color/secondary" />
+                            android:textColor="@color/secondary"
+                            android:textColorHint="@color/secondary" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -297,13 +297,14 @@
                         android:id="@+id/nop"
                         android:layout_width="0dp"
                         android:layout_height="45dp"
-                        android:layout_marginTop="15dp"
-                        app:cardCornerRadius="10dp"
+                        app:strokeWidth="1dp"
                         app:strokeColor="@color/subtitle"
+                        android:layout_marginTop="15dp"
                         app:cardBackgroundColor="@color/white"
-                        app:layout_constraintTop_toBottomOf="@id/propertyChainLayout"
+                        app:cardCornerRadius="10dp"
+                        app:layout_constraintEnd_toEndOf="@id/propertyChainLayout"
                         app:layout_constraintStart_toStartOf="@id/propertyChainLayout"
-                        app:layout_constraintEnd_toEndOf="@id/propertyChainLayout">
+                        app:layout_constraintTop_toBottomOf="@id/propertyChainLayout">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
@@ -313,14 +314,14 @@
                                 android:id="@+id/rate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Number of Properties"
-                                android:textSize="16sp"
-                                android:textColor="@color/black"
-                                android:fontFamily="@font/roboto"
                                 android:layout_marginStart="16dp"
+                                android:fontFamily="@font/roboto"
+                                android:text="Number of Properties"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"/>
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -339,13 +340,13 @@
 
                                 <EditText
                                     android:id="@+id/propertyCountEditText"
+                                    style="@style/TextAppearance.AppCompat.Body1"
                                     android:layout_width="@dimen/countingEditTextWidth"
                                     android:layout_height="wrap_content"
-                                    style="@style/TextAppearance.AppCompat.Body1"
                                     android:background="@null"
                                     android:fontFamily="@font/roboto_bold"
-                                    android:text="1"
                                     android:inputType="number"
+                                    android:text="1"
                                     android:textAlignment="center"
                                     android:textColor="@color/black"
                                     android:textSize="@dimen/H5" />
@@ -364,24 +365,16 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/TaxNameLayout"
+                        style="@style/TextInputLayoutStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                        android:hint="Website link (optional)"
                         android:layout_marginTop="10dp"
-                        android:textColorHint="@color/black"
-                        app:boxStrokeColor="@color/black"
-                        app:hintTextColor="@color/secondary"
-                        app:boxStrokeWidthFocused="2dp"
-                        app:boxCornerRadiusTopStart="10dp"
-                        app:boxCornerRadiusBottomStart="10dp"
-                        app:boxCornerRadiusBottomEnd="10dp"
-                        app:boxCornerRadiusTopEnd="10dp"
+                        android:hint="Website link (optional)"
                         app:endIconMode="clear_text"
                         app:endIconTint="@color/black"
+                        app:layout_constraintEnd_toEndOf="@id/cardImg"
                         app:layout_constraintStart_toStartOf="@id/nop"
-                        app:layout_constraintTop_toBottomOf="@id/nop"
-                        app:layout_constraintEnd_toEndOf="@id/cardImg">
+                        app:layout_constraintTop_toBottomOf="@id/nop">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/TaxNameText"
@@ -389,28 +382,18 @@
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
                             android:inputType="text"
-                            android:textColorHint="@color/secondary"
-                            android:textColor="@color/secondary" />
+                            android:textColor="@color/secondary"
+                            android:textColorHint="@color/secondary" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/registrationNumberLayout"
+                        style="@style/ClickableTextInputLayoutStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                        android:hint="Property type"
-                        android:textColorHint="@color/black"
-                        app:boxStrokeColor="@color/black"
-                        app:hintTextColor="@color/secondary"
                         android:layout_marginTop="10dp"
-                        app:boxStrokeWidthFocused="2dp"
-                        app:boxCornerRadiusTopStart="10dp"
-                        app:boxCornerRadiusBottomStart="10dp"
-                        app:boxCornerRadiusBottomEnd="10dp"
-                        app:boxCornerRadiusTopEnd="10dp"
-                        app:endIconMode="custom"
-                        app:endIconDrawable="@drawable/svg_arrow_down"
+                        android:hint="Property type"
                         app:layout_constraintEnd_toEndOf="@id/TaxNameLayout"
                         app:layout_constraintStart_toStartOf="@id/TaxNameLayout"
                         app:layout_constraintTop_toBottomOf="@+id/TaxNameLayout">
@@ -419,33 +402,23 @@
                             android:id="@+id/registrationNumberText"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:clickable="true"
+                            android:editable="false"
+                            android:focusable="false"
                             android:fontFamily="@font/roboto"
                             android:inputType="text"
-                            android:textColorHint="@color/secondary"
                             android:textColor="@color/secondary"
-                            android:editable="false"
-                            android:clickable="true"
-                            android:focusable="false"/>
+                            android:textColorHint="@color/secondary" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/baseCurrencyLayout"
+                        style="@style/ClickableTextInputLayoutStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                        android:hint="Base Currency"
-                        android:textColorHint="@color/black"
-                        app:boxStrokeColor="@color/black"
-                        app:hintTextColor="@color/secondary"
                         android:layout_marginTop="10dp"
-                        app:boxStrokeWidthFocused="2dp"
-                        app:boxCornerRadiusTopStart="10dp"
-                        app:boxCornerRadiusBottomStart="10dp"
-                        app:boxCornerRadiusBottomEnd="10dp"
-                        app:boxCornerRadiusTopEnd="10dp"
-                        app:endIconMode="custom"
-                        app:endIconDrawable="@drawable/svg_arrow_down"
+                        android:hint="Base Currency"
                         app:layout_constraintEnd_toEndOf="@id/TaxNameLayout"
                         app:layout_constraintStart_toStartOf="@id/TaxNameLayout"
                         app:layout_constraintTop_toBottomOf="@+id/registrationNumberLayout">
@@ -454,13 +427,13 @@
                             android:id="@+id/baseCurrencyText"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:clickable="true"
+                            android:editable="false"
+                            android:focusable="false"
                             android:fontFamily="@font/roboto"
                             android:inputType="text"
-                            android:textColorHint="@color/secondary"
                             android:textColor="@color/secondary"
-                            android:editable="false"
-                            android:clickable="true"
-                            android:focusable="false"/>
+                            android:textColorHint="@color/secondary" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -468,20 +441,20 @@
                         android:id="@+id/card_SingleNext"
                         android:layout_width="170dp"
                         android:layout_height="50dp"
-                        android:transitionName="Btn"
                         android:backgroundTint="@color/secondary"
-                        app:layout_constraintVertical_bias="0.9"
+                        android:transitionName="Btn"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/cardImg"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="@id/cardImg">
+                        app:layout_constraintVertical_bias="0.9">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/roboto_bold"
                             android:text="@string/next"
                             android:textColor="@color/primary"
-                            android:fontFamily="@font/roboto_bold"
-                            android:layout_gravity="center"
                             android:textSize="@dimen/H5" />
 
                     </com.google.android.material.card.MaterialCardView>
