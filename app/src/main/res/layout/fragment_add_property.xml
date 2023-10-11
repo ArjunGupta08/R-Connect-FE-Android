@@ -186,7 +186,7 @@
                             android:layout_height="120dp"
                             android:src="@drawable/svg_gallery"
                             android:scaleType="centerCrop"
-                            app:shapeAppearance="@style/SquareCornerImageM"
+                            app:shapeAppearance="@style/RoundedCornerImage_10"
                             app:layout_constraintBottom_toBottomOf="@id/ll6"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="@id/ll6" />

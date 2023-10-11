@@ -1,4 +1,4 @@
-package rconnect.retvens.technologies.dashboard
+package rconnect.retvens.technologies.dashboard.Dashboard
 
 data class ViewPropertiesDataClass(
     val roomType:String,

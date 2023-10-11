@@ -20,6 +20,7 @@
         <item name="fontFamily">@font/roboto_bold</item>
         <item name="android:textSize">25dp</item>
     </style>
+
     <!--Onboarding Screen Sub Heading Text Style-->
     <style name="OnboardingSubHeadingTextStyle" parent="android:Widget.TextView">
         <item name="android:textColor">@color/black</item>
@@ -58,21 +59,21 @@
         <item name="boxCornerRadiusTopStart">10dp</item>
     </style>
 
-                                    <!--ShapeableImageView-->
-    <style name="RoundedCornerImage">
-        <item name="cornerSize">50%</item>
-    </style>
+                                    <!-- Shapeable ImageView -->
+                            <style name="RoundedCornerImage_Circle">
+                                <item name="cornerSize">50%</item>
+                            </style>
 
-    <style name="SquareCornerImage">
-        <item name="cornerSize">5%</item>
-    </style>
+                            <style name="RoundedCornerImage_5">
+                                <item name="cornerSize">5%</item>
+                            </style>
 
-    <style name="SquareCornerImageM">
-        <item name="cornerSize">10%</item>
-    </style>
+                            <style name="RoundedCornerImage_10">
+                                <item name="cornerSize">10%</item>
+                            </style>
 
-    <style name="SquareCornerImageForCards">
-        <item name="cornerSize">15%</item>
-    </style>
+                            <style name="RoundedCornerImage_15">
+                                <item name="cornerSize">15%</item>
+                            </style>
 
 </resources>

@@ -442,7 +442,6 @@
 
             </LinearLayout>
 
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -569,27 +568,6 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginStart="40dp"
                 app:layout_constraintTop_toBottomOf="@id/imagesT"/>
-
-<!--            <com.google.android.material.imageview.ShapeableImageView-->
-<!--                android:id="@+id/selectImage"-->
-<!--                android:layout_width="70dp"-->
-<!--                android:layout_height="70dp"-->
-<!--                android:layout_marginEnd="3dp"-->
-<!--                android:layout_marginTop="3dp"-->
-<!--                android:background="@color/unselectedBackground"-->
-<!--                app:shapeAppearance="@style/SquareCornerImageM"-->
-<!--                app:layout_constraintBottom_toBottomOf="@id/imagesRecycler"-->
-<!--                app:layout_constraintEnd_toEndOf="@id/imagesRecycler"-->
-<!--                app:layout_constraintTop_toBottomOf="@id/imagesRecycler"/>-->
-
-<!--            <ImageView-->
-<!--                android:layout_width="25dp"-->
-<!--                android:layout_height="25dp"-->
-<!--                android:src="@drawable/svg_add_plus"-->
-<!--                app:layout_constraintEnd_toEndOf="@id/selectImage"-->
-<!--                app:layout_constraintStart_toStartOf="@id/selectImage"-->
-<!--                app:layout_constraintTop_toTopOf="@id/selectImage"-->
-<!--                app:layout_constraintBottom_toBottomOf="@id/selectImage"/>-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

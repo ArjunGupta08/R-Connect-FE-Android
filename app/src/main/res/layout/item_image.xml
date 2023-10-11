@@ -9,16 +9,17 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginEnd="3dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginBottom="9dp"
         android:scaleType="centerCrop"
         android:background="@color/unselectedBackground"
-        app:shapeAppearance="@style/SquareCornerImageM"
+        app:shapeAppearance="@style/RoundedCornerImage_10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <ImageView
+        android:id="@+id/deleteImage"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:src="@drawable/svg_delete_lite"

@@ -175,6 +175,7 @@ class AddRoomTypeFragment : Fragment(), SelectImagesAdapter.OnItemClickListener 
 
                     selectedImagesList.add(SelectImagesDataClass(imageUri))
                     selectImagesAdapter = SelectImagesAdapter(requireContext(), selectedImagesList)
+                    selectImagesAdapter.setOnItemClickListener(this)
                     binding.imagesRecycler.adapter = selectImagesAdapter
 
                 }catch(e:RuntimeException){

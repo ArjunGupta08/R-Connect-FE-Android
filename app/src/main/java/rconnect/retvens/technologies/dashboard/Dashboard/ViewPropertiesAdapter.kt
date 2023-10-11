@@ -7,12 +7,20 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import rconnect.retvens.technologies.R
-import rconnect.retvens.technologies.dashboard.ViewPropertiesDataClass
 
-class ViewPropertiesAdapter(val context: Context, private val itemList: List<ViewPropertiesDataClass>) : RecyclerView.Adapter<ViewPropertiesAdapter.ViewHolder>() {
+class ViewPropertiesAdapter(val context: Context, private val itemList: List<ViewPropertiesDataClass>, val viewT : Int) : RecyclerView.Adapter<ViewPropertiesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_properties, parent, false)
+        val view : View
+
+        if (viewT == 1) {
+            view = LayoutInflater.from(parent.context).inflate(R.layout.item_properties, parent, false)
+        } else if (viewT == 2){
+            view = LayoutInflater.from(parent.context).inflate(R.layout.item_properties_2, parent, false)
+        } else {
+            view = LayoutInflater.from(parent.context).inflate(R.layout.item_properties, parent, false)
+        }
+
         return ViewHolder(view)
     }
 
