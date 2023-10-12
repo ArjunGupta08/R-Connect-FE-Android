@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
-import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -34,10 +33,13 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.Dashboard.ViewPropertiesFragment
+import rconnect.retvens.technologies.dashboard.addRoomType.SelectImagesAdapter
+import rconnect.retvens.technologies.dashboard.addRoomType.SelectImagesDataClass
 import rconnect.retvens.technologies.databinding.FragmentAddPropertyBinding
+import rconnect.retvens.technologies.utils.fadeOutAnimation
+import rconnect.retvens.technologies.utils.fadeInAnimation
 
-
-class AddPropertyFragment : Fragment(), OnMapReadyCallback {
+class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectImagesAdapter.OnItemClickListener {
 
     private lateinit var binding : FragmentAddPropertyBinding
 
@@ -48,6 +50,15 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
     private var PICK_IMAGE_REQUEST_CODE : Int = 0
 
     private var page = 1
+
+    lateinit var selectImagesAdapter: SelectImagesAdapter
+    private var selectedImagesList = ArrayList<SelectImagesDataClass>()
+
+    private var isPropertyLogo = true
+
+    private var isImageSelected = false
+    private var isImageEdited = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -67,11 +78,15 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
 
         // Get the SupportMapFragment and request notification
         // when the map is ready to be used.
-
-        // Get the SupportMapFragment and request notification
-        // when the map is ready to be used.
         val mapFrag = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFrag.getMapAsync(this)
+
+        binding.imagesRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
+        binding.imagesRecycler.setHasFixedSize(true)
+
+        selectImagesAdapter = SelectImagesAdapter(requireContext(), selectedImagesList)
+        selectImagesAdapter.setOnItemClickListener(this)
+        binding.imagesRecycler.adapter = selectImagesAdapter
 
         binding.continueBtn.setOnClickListener {
 
@@ -150,15 +165,44 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
 
         binding.add.setOnClickListener { openAddAmenitiesDialog() }
 
-        propertyProfile()
-
-    }
-
-    private fun propertyProfile() {
-        binding.propertyLogoCard.setOnClickListener{
+        binding.replaceImage.setOnClickListener {
             openGallery()
+            fadeOutAnimation(binding.imageEditLayout, requireContext())
+            isImageEdited = false
+            binding.imageEditLayout.isVisible = false
         }
+
+        binding.removeImage.setOnClickListener {
+            imageUri = Uri.EMPTY
+            isImageSelected = false
+            binding.propertyLogoImage.setImageURI(imageUri)
+            binding.propertyLogoImage.isVisible = false
+            binding.propertyLogoLayout.isVisible = true
+            fadeOutAnimation(binding.imageEditLayout, requireContext())
+            isImageEdited = false
+            binding.imageEditLayout.isVisible = false
+        }
+
+        binding.propertyLogoCard.setOnClickListener {
+            if (!isImageSelected){
+                isPropertyLogo = true
+                openGallery()
+            } else {
+                if (!isImageEdited) {
+                    binding.imageEditLayout.isVisible = true
+                    // load the animation
+                    fadeInAnimation(binding.imageEditLayout, requireContext())
+                    isImageEdited = true
+                } else {
+                    fadeOutAnimation(binding.imageEditLayout, requireContext())
+                    binding.imageEditLayout.isVisible = false
+                    isImageEdited = false
+                }
+            }
+        }
+
     }
+
     private fun rToL_InAnimation(view: View, context: Context) {
         // load the animation
         val animSlideIn: Animation = AnimationUtils.loadAnimation(
@@ -198,9 +242,18 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
             imageUri = data.data!!
             if (imageUri != null) {
                 try {
-                    binding.propertyLogoImage.setImageURI(imageUri)
-                    binding.propertyLogoImage.isVisible = true
-                    binding.propertyLogoLayout.isVisible = false
+                    if (isPropertyLogo) {
+                        binding.propertyLogoImage.setImageURI(imageUri)
+                        binding.propertyLogoImage.isVisible = true
+                        binding.propertyLogoLayout.isVisible = false
+                        isImageSelected = true
+                    } else {
+                        selectedImagesList.add(SelectImagesDataClass(imageUri))
+                        selectImagesAdapter =
+                            SelectImagesAdapter(requireContext(), selectedImagesList)
+                        selectImagesAdapter.setOnItemClickListener(this)
+                        binding.imagesRecycler.adapter = selectImagesAdapter
+                    }
                 }catch(e:RuntimeException){
                     Log.d("cropperOnPersonal", e.toString())
                 }catch(e:ClassCastException){
@@ -296,6 +349,11 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+    }
+
+    override fun onAddButtonClick() {
+        isPropertyLogo = false
+        openGallery()
     }
 
 }
