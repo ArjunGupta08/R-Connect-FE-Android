@@ -11,6 +11,7 @@
     <dimen name="H4">18sp</dimen>
     <dimen name="H5">16sp</dimen>
     <dimen name="H6">14sp</dimen>
+    <dimen name="H7">12sp</dimen>
 
                 <!--Onboarding Screen Text Style-->
     <!--Onboarding Screen Heading Text Style-->

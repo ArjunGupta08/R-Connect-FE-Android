@@ -17,6 +17,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/offerHeadingTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Diwali Delight"
@@ -24,7 +25,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/roboto_medium"
             android:textColor="@color/secondary"
-            android:textSize="@dimen/H3"/>
+            android:textSize="@dimen/H4"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -34,7 +35,7 @@
             android:layout_marginTop="5dp"
             android:fontFamily="@font/roboto_medium"
             android:textColor="@color/secondary"
-            android:textSize="@dimen/H4"/>
+            android:textSize="@dimen/H5"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -44,7 +45,7 @@
             android:layout_marginTop="5dp"
             android:fontFamily="@font/roboto"
             android:textColor="@color/secondary"
-            android:textSize="@dimen/H6"/>
+            android:textSize="@dimen/H7"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -60,7 +61,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-
+                android:layout_marginStart="9dp"
                 android:src="@drawable/svg_phone"/>
         </LinearLayout>
 
