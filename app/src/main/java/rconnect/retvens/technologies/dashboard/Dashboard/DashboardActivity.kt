@@ -10,6 +10,7 @@ import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.addPropertyFrags.AddPropertyFragment
 import rconnect.retvens.technologies.dashboard.addRoomType.AddRoomTypeFragment
 import rconnect.retvens.technologies.databinding.ActivityDashboardBinding
+import rconnect.retvens.technologies.utils.bottomSlideInAnimation
 
 class DashboardActivity : AppCompatActivity() {
 
@@ -58,6 +59,7 @@ class DashboardActivity : AppCompatActivity() {
         binding.addPropertyBtn.setOnClickListener {
             binding.welcomeLayout.isVisible = false
             binding.dashboardFragmentContainer.isVisible = true
+            bottomSlideInAnimation(binding.dashboardFragmentContainer, applicationContext)
         }
 
     }

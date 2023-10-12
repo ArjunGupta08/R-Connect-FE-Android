@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Authentication.LoginScreen">
+    tools:context=".onboarding.singleHotelOnboarding.SecondOnboardingScreen">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frame1"
@@ -167,7 +167,7 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/cardGallery"
-                        android:layout_width="110dp"
+                        android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:layout_marginEnd="60dp"
                         android:layout_marginTop="5dp"
@@ -175,6 +175,7 @@
                         app:cardCornerRadius="10dp"
                         app:strokeWidth="2dp"
                         app:cardBackgroundColor="@color/white"
+                        app:layout_constraintDimensionRatio="1:1"
                         app:layout_constraintTop_toTopOf="@id/property_layout"
                         app:layout_constraintBottom_toBottomOf="@id/propertyTypeLayout"
                         app:layout_constraintEnd_toEndOf="parent">

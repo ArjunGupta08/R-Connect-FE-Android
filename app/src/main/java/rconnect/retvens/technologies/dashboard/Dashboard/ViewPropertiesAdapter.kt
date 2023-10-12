@@ -17,6 +17,8 @@ class ViewPropertiesAdapter(val context: Context, private val itemList: List<Vie
             view = LayoutInflater.from(parent.context).inflate(R.layout.item_properties, parent, false)
         } else if (viewT == 2){
             view = LayoutInflater.from(parent.context).inflate(R.layout.item_properties_2, parent, false)
+        } else if (viewT == 3){
+            view = LayoutInflater.from(parent.context).inflate(R.layout.item_properties_3, parent, false)
         } else {
             view = LayoutInflater.from(parent.context).inflate(R.layout.item_properties, parent, false)
         }

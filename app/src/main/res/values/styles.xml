@@ -59,6 +59,13 @@
         <item name="boxCornerRadiusTopStart">10dp</item>
     </style>
 
+    <!--Card View Theme-->
+    <style name="CardViewTheme" parent="CardView">
+        <item name="android:outlineAmbientShadowColor">@color/shadowColor</item>
+        <item name="android:shadowColor">@color/shadowColor</item>
+        <item name="android:outlineSpotShadowColor">@color/shadowColor</item>
+    </style>
+
                                     <!-- Shapeable ImageView -->
                             <style name="RoundedCornerImage_Circle">
                                 <item name="cornerSize">50%</item>

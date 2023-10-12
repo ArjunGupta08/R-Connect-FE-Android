@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".dashboard.Dashboard.ViewPropertiesFragment"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".dashboard.promotions.PromotionsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
             android:id="@+id/aA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="All Properties"
+            android:text="Promotions"
             android:fontFamily="@font/roboto_bold"
             android:textColor="@color/secondary"
             android:textSize="@dimen/H2"
@@ -41,7 +41,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+  Add New Property"
+                android:text="+  Create Promotion"
                 android:layout_gravity="center"
                 android:fontFamily="@font/roboto_bold"
                 android:textSize="@dimen/H5"
@@ -168,143 +168,17 @@
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/allProp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:visibility="gone"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="4dp"
-            android:outlineAmbientShadowColor="@color/shadowColor"
-            android:outlineSpotShadowColor="@color/shadowColor"
-            app:layout_constraintEnd_toEndOf="@id/llView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/searchCard">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:id="@+id/items_linear"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="11">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/roboto"
-                        android:text="H-Code"
-                        android:textColor="@color/subtitle"
-                        android:textSize="@dimen/H6" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:fontFamily="@font/roboto"
-                        android:text="Property Name"
-                        android:textColor="@color/subtitle"
-                        android:textSize="@dimen/H6" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/roboto"
-                        android:text="Property Type"
-                        android:textColor="@color/subtitle"
-                        android:textSize="@dimen/H6" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/roboto"
-                        android:text="Location"
-                        android:textColor="@color/subtitle"
-                        android:textSize="@dimen/H6" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/roboto"
-                        android:text="Occupancy"
-                        android:textColor="@color/subtitle"
-                        android:textSize="@dimen/H6" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/roboto"
-                        android:text="Total Rooms"
-                        android:textColor="@color/subtitle"
-                        android:textSize="@dimen/H6" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/roboto"
-                        android:text="Amenities"
-                        android:textColor="@color/subtitle"
-                        android:textSize="@dimen/H6" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/roboto"
-                        android:text="Status"
-                        android:textColor="@color/subtitle"
-                        android:textSize="@dimen/H6" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/roboto"
-                        android:text="Actions"
-                        android:textColor="@color/subtitle"
-                        android:textSize="@dimen/H6" />
-
-                </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/allRecycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:listitem="@layout/item_properties_3" />
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
             android:id="@+id/propLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            style="@style/CardViewTheme"
             android:visibility="visible"
-            android:layout_marginTop="20dp"
+            android:layout_marginVertical="20dp"
             app:cardCornerRadius="16dp"
             app:cardElevation="4dp"
-            android:outlineAmbientShadowColor="@color/shadowColor"
-            android:outlineSpotShadowColor="@color/shadowColor"
+            app:layout_constraintVertical_bias="0.0"
             app:layout_constraintEnd_toEndOf="@id/llView"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/searchCard"
             app:layout_constraintStart_toStartOf="@id/searchCard">
 
@@ -317,7 +191,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Top Performing Properties"
+                    android:text="Live Promotions"
                     android:fontFamily="@font/roboto_medium"
                     android:textColor="@color/secondary"
                     android:textSize="@dimen/H3"/>
@@ -330,12 +204,12 @@
                     android:foregroundGravity="center"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:spanCount="6"
-                    tools:listitem="@layout/item_properties"/>
+                    tools:listitem="@layout/item_promotions"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hotels"
+                    android:text="Expired"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/roboto_medium"
                     android:textColor="@color/secondary"
@@ -348,27 +222,7 @@
                     android:layout_marginTop="15dp"
                     android:foregroundGravity="center"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="6"
-                    tools:listitem="@layout/item_properties"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Resorts"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/roboto_medium"
-                    android:textColor="@color/secondary"
-                    android:textSize="@dimen/H3"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/resortsRecycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:foregroundGravity="center"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="6"
-                    tools:listitem="@layout/item_properties"/>
+                    app:spanCount="6"/>
 
             </LinearLayout>
 

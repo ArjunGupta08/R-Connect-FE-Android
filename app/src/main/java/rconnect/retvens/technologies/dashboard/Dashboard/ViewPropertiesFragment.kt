@@ -5,8 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.addPropertyFrags.AddPropertyFragment
 import rconnect.retvens.technologies.databinding.FragmentViewPropertiesBinding
+import rconnect.retvens.technologies.utils.Const
+import rconnect.retvens.technologies.utils.bottomSlideInAnimation
 
 class ViewPropertiesFragment : Fragment() {
     lateinit var binding:FragmentViewPropertiesBinding
@@ -52,6 +58,22 @@ class ViewPropertiesFragment : Fragment() {
             } else if (viewT == 2) {
                 viewT = 3
 
+                binding.allRecycler.layoutManager = LinearLayoutManager(requireContext())
+                binding.allRecycler.setHasFixedSize(true)
+
+                binding.viewTypeIcon.setImageResource(R.drawable.svg_view_type_2)
+
+                binding.allProp.visibility = View.VISIBLE
+                binding.propLayout.visibility = View.GONE
+
+            } else if (viewT == 3) {
+                viewT = 1
+
+                binding.allProp.visibility = View.GONE
+                binding.propLayout.visibility = View.VISIBLE
+
+                binding.viewTypeIcon.setImageResource(R.drawable.svg_view_type)
+
                 binding.topPerformingPropertyRecyclerView.layoutManager = GridLayoutManager(requireContext(), 6)
                 binding.topPerformingPropertyRecyclerView.setHasFixedSize(true)
 
@@ -63,6 +85,7 @@ class ViewPropertiesFragment : Fragment() {
             }
 
             val viewPropertiesAdapter = ViewPropertiesAdapter(requireContext(), list, viewT)
+            binding.allRecycler.adapter = viewPropertiesAdapter
             binding.topPerformingPropertyRecyclerView.adapter = viewPropertiesAdapter
             binding.hotelsRecycler.adapter = viewPropertiesAdapter
             binding.resortsRecycler.adapter = viewPropertiesAdapter
@@ -78,5 +101,19 @@ class ViewPropertiesFragment : Fragment() {
         binding.topPerformingPropertyRecyclerView.adapter = viewPropertiesAdapter
         binding.hotelsRecycler.adapter = viewPropertiesAdapter
         binding.resortsRecycler.adapter = viewPropertiesAdapter
+
+        binding.addNewProperty.setOnClickListener {
+
+            Const.isAddingNewProperty = true
+            val dashboardFragmentContainer = requireActivity().findViewById<FrameLayout>(R.id.dashboardFragmentContainer)
+
+            val childFragment: Fragment = AddPropertyFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.dashboardFragmentContainer,childFragment)
+            transaction.commit()
+
+            bottomSlideInAnimation(dashboardFragmentContainer, requireContext())
+
+        }
     }
 }

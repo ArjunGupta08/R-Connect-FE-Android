@@ -13,13 +13,14 @@
         android:background="@color/secondaryBackground">
 
         <TextView
+            android:id="@+id/addPropertyHeading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/secondary"
             android:text="Add Property"
-            android:textSize="@dimen/H1"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
+            android:textSize="@dimen/H2"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="30dp"
             android:fontFamily="@font/roboto_bold"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
@@ -33,7 +34,7 @@
             android:fontFamily="@font/roboto_bold"
             android:textSize="@dimen/H5"
             android:padding="15dp"
-            android:layout_marginEnd="25dp"
+            android:layout_marginEnd="20dp"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="@id/continueBtn"
             app:layout_constraintTop_toTopOf="@id/continueBtn"
@@ -42,14 +43,14 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/continueBtn"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="45dp"
+            android:layout_marginEnd="20dp"
             android:clickable="true"
             android:backgroundTint="@color/black"
             app:cardCornerRadius="10dp"
             android:focusable="true"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/addPropertyHeading"
+            app:layout_constraintTop_toTopOf="@id/addPropertyHeading"
             app:layout_constraintEnd_toEndOf="parent">
 
             <TextView

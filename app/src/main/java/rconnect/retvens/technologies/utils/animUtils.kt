@@ -15,12 +15,21 @@ import rconnect.retvens.technologies.R
     // start the animation
     view.startAnimation(animSlideIn)
 }
-
 fun fadeOutAnimation(view: View, context: Context) {
     // load the animation
     val animSlideIn: Animation = AnimationUtils.loadAnimation(
         context,
         R.anim.fade_out_animation
+    )
+    // start the animation
+    view.startAnimation(animSlideIn)
+}
+
+fun bottomSlideInAnimation(view: View, context: Context) {
+    // load the animation
+    val animSlideIn: Animation = AnimationUtils.loadAnimation(
+        context,
+        R.anim.bottom_slide_in
     )
     // start the animation
     view.startAnimation(animSlideIn)

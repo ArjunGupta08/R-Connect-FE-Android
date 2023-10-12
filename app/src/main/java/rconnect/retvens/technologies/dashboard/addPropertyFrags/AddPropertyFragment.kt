@@ -36,6 +36,7 @@ import rconnect.retvens.technologies.dashboard.Dashboard.ViewPropertiesFragment
 import rconnect.retvens.technologies.dashboard.addRoomType.SelectImagesAdapter
 import rconnect.retvens.technologies.dashboard.addRoomType.SelectImagesDataClass
 import rconnect.retvens.technologies.databinding.FragmentAddPropertyBinding
+import rconnect.retvens.technologies.utils.Const
 import rconnect.retvens.technologies.utils.fadeOutAnimation
 import rconnect.retvens.technologies.utils.fadeInAnimation
 
@@ -96,6 +97,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectImagesAdapter.
 
                 binding.addressAndContacts.textSize = 20.0f
                 binding.addressAndContacts.typeface = robotoMedium
+                binding.addressAndContacts.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
 
                 binding.propertyProfile.textSize = 16.0f
                 binding.propertyProfile.typeface = roboto
@@ -119,12 +121,22 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectImagesAdapter.
 
         binding.cancel.setOnClickListener {
 
-            val welcomeLayout = requireActivity().findViewById<LinearLayout>(R.id.welcomeLayout)
-            welcomeLayout.visibility = View.VISIBLE
+            if (Const.isAddingNewProperty){
+                Const.isAddingNewProperty = false
 
-            val dashboardFragmentContainer = requireActivity().findViewById<FrameLayout>(R.id.dashboardFragmentContainer)
-            dashboardFragmentContainer.visibility = View.GONE
+                val childFragment: Fragment = ViewPropertiesFragment()
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.dashboardFragmentContainer,childFragment)
+                transaction.commit()
 
+            } else {
+                val welcomeLayout = requireActivity().findViewById<LinearLayout>(R.id.welcomeLayout)
+                welcomeLayout.visibility = View.VISIBLE
+
+                val dashboardFragmentContainer =
+                    requireActivity().findViewById<FrameLayout>(R.id.dashboardFragmentContainer)
+                dashboardFragmentContainer.visibility = View.GONE
+            }
         }
 
         binding.propertyProfile.setOnClickListener {
