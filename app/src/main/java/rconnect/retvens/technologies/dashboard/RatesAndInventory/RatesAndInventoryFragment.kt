@@ -16,7 +16,9 @@ class RatesAndInventoryFragment : Fragment() {
 
     private lateinit var bindingTab:FragmentRatesAndInventoryBinding
     private lateinit var calenderAdapter:CalenderAdapter
+    private lateinit var inventoryAdapter: RoomsInventoryAdapter
     private val cal = Calendar.getInstance(Locale.ENGLISH)
+    private  var mList: ArrayList<String> = ArrayList();
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +36,8 @@ class RatesAndInventoryFragment : Fragment() {
         bindingTab.calenderRecycler.layoutManager = LinearLayoutManager(requireContext(),
             LinearLayoutManager.HORIZONTAL,false)
 
+        bindingTab.calenderRecycler.isNestedScrollingEnabled = false
+
 
         calenderAdapter = CalenderAdapter()
         setUpCalendar()
@@ -41,6 +45,29 @@ class RatesAndInventoryFragment : Fragment() {
 
         bindingTab.calenderRecycler.adapter = calenderAdapter
         calenderAdapter.notifyDataSetChanged()
+
+
+        bindingTab.inventoryRecycler.layoutManager = LinearLayoutManager(requireContext())
+        inventoryAdapter = RoomsInventoryAdapter(requireContext(),mList)
+
+        setInventory()
+        bindingTab.inventoryRecycler.adapter = inventoryAdapter
+        inventoryAdapter.notifyDataSetChanged()
+    }
+
+    private fun setInventory() {
+        mList.add("7")
+        mList.add("7")
+        mList.add("7")
+        mList.add("6")
+        mList.add("6")
+        mList.add("6")
+        mList.add("6")
+        mList.add("6")
+        mList.add("6")
+        mList.add("6")
+        mList.add("6")
+
 
     }
 

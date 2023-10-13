@@ -26,17 +26,19 @@
 
         <activity
             android:name=".dashboard.Dashboard.DashboardActivity"
-            android:exported="false" />
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true" /> <!-- Authentication Activities -->
         <activity
             android:name=".onboarding.authentication.LoginScreen"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity
             android:name=".onboarding.authentication.SignUpScreen"
