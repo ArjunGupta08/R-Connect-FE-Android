@@ -1,9 +1,13 @@
 package rconnect.retvens.technologies.dashboard.Dashboard
 
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
@@ -18,6 +22,8 @@ import rconnect.retvens.technologies.databinding.ActivityDashboardBinding
 import rconnect.retvens.technologies.utils.bottomSlideInAnimation
 
 class DashboardActivity : AppCompatActivity() {
+
+    var isRateOpen = false
 
     private lateinit var binding: ActivityDashboardBinding
 
@@ -78,14 +84,32 @@ class DashboardActivity : AppCompatActivity() {
         binding.bookingCard.setOnClickListener {
             isCardSelected(binding.bookingCard, binding.bookingTxt)
             replaceFragment(ViewPropertiesFragment())
-
             if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
                 binding.drawerLayout.closeDrawer(GravityCompat.START)
             }
         }
         binding.ratesCard.setOnClickListener {
             isCardSelected(binding.ratesCard, binding.ratesTxt)
-            binding.rateDropDown.setImageResource(R.drawable.svg_up)
+//            binding.rateDropDown.setImageResource(R.drawable.svg_up)
+            if (!isRateOpen){
+                binding.rateLayout.isVisible = true
+//                binding.ratesCard.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.black))
+//                binding.ratesTxt.setTextColor(ContextCompat.getColor(applicationContext, R.color.white))
+                val draw = ContextCompat.getDrawable(this, R.drawable.svg_up)
+                draw?.colorFilter = PorterDuffColorFilter(Color.WHITE,PorterDuff.Mode.SRC_ATOP)
+                binding.rateDropDown.setImageDrawable(draw)
+                isRateOpen = true
+            }
+            else{
+                binding.rateLayout.isVisible = false
+                val draw = ContextCompat.getDrawable(this, R.drawable.svg_arrow_down)
+                draw?.colorFilter = PorterDuffColorFilter(Color.BLACK,PorterDuff.Mode.SRC_ATOP)
+                binding.rateDropDown.setImageDrawable(draw)
+                binding.ratesCard.setCardBackgroundColor(ContextCompat.getColor(applicationContext,R.color.white))
+                binding.ratesTxt.setTextColor(ContextCompat.getColor(applicationContext,R.color.black))
+                isRateOpen = false
+            }
+
 //            binding.rateDropDown
         }
         binding.reportsCard.setOnClickListener {
@@ -94,6 +118,7 @@ class DashboardActivity : AppCompatActivity() {
         binding.promotionsCard.setOnClickListener {
             isCardSelected(binding.promotionsCard, binding.promotionsTxt)
             replaceFragment(PromotionsFragment())
+
 
             if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
                 binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -154,13 +179,13 @@ class DashboardActivity : AppCompatActivity() {
             )
         )
 
-        binding.ratesCard.setCardBackgroundColor(
-            ContextCompat.getColor(
-                applicationContext,
-                R.color.white
-            )
-        )
-        binding.ratesTxt.setTextColor(ContextCompat.getColor(applicationContext, R.color.textColor))
+//        binding.ratesCard.setCardBackgroundColor(
+//            ContextCompat.getColor(
+//                applicationContext,
+//                R.color.white
+//            )
+//        )
+//        binding.ratesTxt.setTextColor(ContextCompat.getColor(applicationContext, R.color.textColor))
 
         binding.promotionsCard.setCardBackgroundColor(
             ContextCompat.getColor(

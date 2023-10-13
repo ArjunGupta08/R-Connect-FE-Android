@@ -26,52 +26,66 @@
 
         <activity
             android:name=".dashboard.Dashboard.DashboardActivity"
-            android:exported="false" >
+            android:screenOrientation="landscape"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="landscape"
+            android:exported="true" /> <!-- Authentication Activities -->
+        <activity
+            android:name=".onboarding.authentication.LoginScreen"
+            android:screenOrientation="landscape"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:exported="true" /> <!-- Authentication Activities -->
-        <activity
-            android:name=".onboarding.authentication.LoginScreen"
-            android:exported="true">
-
-        </activity>
-        <activity
             android:name=".onboarding.authentication.SignUpScreen"
+            android:screenOrientation="landscape"
             android:exported="true" />
         <activity
             android:name=".onboarding.authentication.ForgetPasswordScreen"
+            android:screenOrientation="landscape"
             android:exported="true" />
         <activity
             android:name=".onboarding.authentication.EnterVerificationCodeActivity"
+            android:screenOrientation="landscape"
             android:exported="true" />
         <activity
             android:name=".onboarding.authentication.CreateNewPasswordActivity"
-            android:exported="true" /> <!-- Onboarding Activities -->
+            android:screenOrientation="landscape"
+            android:exported="true" />
+
+        <!-- Onboarding Activities -->
         <activity
             android:name=".onboarding.FirstOnBoardingScreen"
+            android:screenOrientation="landscape"
             android:exported="true" />
         <activity
             android:name=".onboarding.singleHotelOnboarding.SecondOnboardingScreen"
+            android:screenOrientation="landscape"
             android:exported="true" />
         <activity
             android:name=".onboarding.singleHotelOnboarding.ThirdOnboardingActivity"
+            android:screenOrientation="landscape"
             android:exported="true" />
         <activity
             android:name=".onboarding.singleHotelOnboarding.FourOnboardingActivity"
+            android:screenOrientation="landscape"
             android:exported="true" />
         <activity
             android:name=".onboarding.chainHotelOnboarding.SecondChainOnboardingActivity"
+            android:screenOrientation="landscape"
             android:exported="true" />
         <activity
             android:name=".onboarding.chainHotelOnboarding.ThirdChainOnboardingScreen"
+            android:screenOrientation="landscape"
             android:exported="true" />
         <activity
             android:name=".onboarding.FinalOnboardingScreen"
+            android:screenOrientation="landscape"
             android:exported="true" />
 
         <meta-data

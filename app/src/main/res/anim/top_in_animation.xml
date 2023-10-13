@@ -2,8 +2,9 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android">
 
     <translate
-        android:fromYDelta="1%"
-        android:toYDelta="100%p"
+        android:fillAfter="true"
+        android:fromYDelta="0%p"
+        android:toYDelta="84%p"
         android:duration="@android:integer/config_shortAnimTime"/>
 
 </set>
