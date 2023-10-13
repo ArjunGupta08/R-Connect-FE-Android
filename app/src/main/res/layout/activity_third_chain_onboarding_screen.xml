@@ -455,7 +455,7 @@
                             android:textColor="@color/white"
                             android:fontFamily="@font/roboto_bold"
                             android:layout_gravity="center"
-                            android:textSize="@dimen/H4" />
+                            android:textSize="@dimen/H5" />
 
                     </androidx.cardview.widget.CardView>
 
