@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
+    android:background="@color/secondaryBackground"
     tools:context=".dashboard.addRoomType.AddRoomTypeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,12 +13,13 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/secondary"
-            android:text="Add Room Type"
+            android:text="Create Room Type"
             android:textSize="@dimen/H2"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="15dp"
             android:fontFamily="@font/roboto_bold"
             app:layout_constraintTop_toTopOf="parent"
@@ -32,7 +34,7 @@
             android:fontFamily="@font/roboto_bold"
             android:textSize="@dimen/H5"
             android:padding="15dp"
-            android:layout_marginEnd="25dp"
+            android:layout_marginEnd="20dp"
             android:textColor="@color/black"
             app:layout_constraintEnd_toStartOf="@id/continueBtn"
             app:layout_constraintBottom_toBottomOf="@id/continueBtn"
@@ -42,14 +44,14 @@
             android:id="@+id/continueBtn"
             android:layout_width="110dp"
             android:layout_height="45dp"
-            android:layout_marginTop="15dp"
             android:layout_marginEnd="20dp"
             android:clickable="true"
             android:backgroundTint="@color/black"
             app:cardCornerRadius="10dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:focusable="true">
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="@id/heading"
+            app:layout_constraintTop_toTopOf="@id/heading"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -62,13 +64,28 @@
 
         </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/CardViewTheme"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toEndOf="@id/continueBtn"
+            app:layout_constraintStart_toStartOf="@id/heading"
+            app:layout_constraintTop_toBottomOf="@id/continueBtn">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingVertical="10dp">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/frame1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/continueBtn"
-            app:layout_constraintEnd_toStartOf="@id/frame2"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/frame2">
 
             <LinearLayout
                 android:id="@+id/ll7"
@@ -158,153 +175,8 @@
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        app:strokeWidth="2dp"
-                        android:layout_weight="1">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            android:gravity="center"
-                            android:layout_marginVertical="5dp"
-                            app:layout_constraintEnd_toEndOf="@id/registrationNumberLayout"
-                            app:layout_constraintBottom_toBottomOf="@id/rate"
-                            app:layout_constraintTop_toTopOf="@id/rate">
-
-                            <ImageView
-                                android:id="@+id/removeBaseOccupancy"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/svg_remove"
-                                android:layout_marginStart="15dp"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"/>
-
-                            <LinearLayout
-                                android:layout_width="130dp"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:orientation="vertical"
-                                app:layout_constraintEnd_toStartOf="@id/addBaseOccupancy"
-                                app:layout_constraintStart_toEndOf="@id/removeBaseOccupancy"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Base Occupancy"
-                                    android:textAlignment="center"
-                                    android:textSize="@dimen/H6"
-                                    android:textColor="@color/black"
-                                    android:fontFamily="@font/roboto"/>
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="1"
-                                    android:textAlignment="center"
-                                    android:textSize="16sp"
-                                    android:textColor="@color/black"
-                                    android:fontFamily="@font/roboto_bold"/>
-                            </LinearLayout>
-
-                            <ImageView
-                                android:id="@+id/addBaseOccupancy"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/svg_add"
-                                android:layout_marginEnd="15dp"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"/>
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:strokeWidth="2dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_weight="1">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            android:gravity="center"
-                            android:layout_marginVertical="5dp"
-                            app:layout_constraintEnd_toEndOf="@id/registrationNumberLayout"
-                            app:layout_constraintBottom_toBottomOf="@id/rate"
-                            app:layout_constraintTop_toTopOf="@id/rate">
-
-                            <ImageView
-                                android:id="@+id/removeMaxOccupancy"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/svg_remove"
-                                android:layout_marginStart="15dp"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"/>
-
-                            <LinearLayout
-                                android:layout_width="130dp"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:orientation="vertical"
-                                app:layout_constraintEnd_toStartOf="@id/addMaxOccupancy"
-                                app:layout_constraintStart_toEndOf="@id/removeMaxOccupancy"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Max Occupancy"
-                                    android:textAlignment="center"
-                                    android:textSize="@dimen/H6"
-                                    android:textColor="@color/black"
-                                    android:fontFamily="@font/roboto"/>
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="1"
-                                    android:textAlignment="center"
-                                    android:textSize="16sp"
-                                    android:textColor="@color/black"
-                                    android:fontFamily="@font/roboto_bold"/>
-                            </LinearLayout>
-
-                            <ImageView
-                                android:id="@+id/addMaxOccupancy"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/svg_add"
-                                android:layout_marginEnd="15dp"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"/>
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2"
-                    android:layout_marginTop="20dp">
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:strokeWidth="2dp"
+                        app:strokeWidth="1dp"
+                        app:cardBackgroundColor="@color/white"
                         android:layout_weight="1">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -343,7 +215,7 @@
                                     android:text="Max Adults"
                                     android:textAlignment="center"
                                     android:textSize="@dimen/H6"
-                                    android:textColor="@color/black"
+                                    android:textColor="@color/subtitle"
                                     android:fontFamily="@font/roboto"/>
                                 <TextView
                                     android:layout_width="match_parent"
@@ -352,7 +224,7 @@
                                     android:textAlignment="center"
                                     android:textSize="16sp"
                                     android:textColor="@color/black"
-                                    android:fontFamily="@font/roboto_bold"/>
+                                    android:fontFamily="@font/roboto"/>
                             </LinearLayout>
 
                             <ImageView
@@ -372,7 +244,8 @@
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        app:strokeWidth="2dp"
+                        app:strokeWidth="1dp"
+                        app:cardBackgroundColor="@color/white"
                         android:layout_marginStart="10dp"
                         android:layout_weight="1">
 
@@ -412,7 +285,7 @@
                                     android:text="Max Adults"
                                     android:textAlignment="center"
                                     android:textSize="@dimen/H6"
-                                    android:textColor="@color/black"
+                                    android:textColor="@color/subtitle"
                                     android:fontFamily="@font/roboto"/>
                                 <TextView
                                     android:layout_width="match_parent"
@@ -421,11 +294,307 @@
                                     android:textAlignment="center"
                                     android:textSize="16sp"
                                     android:textColor="@color/black"
-                                    android:fontFamily="@font/roboto_bold"/>
+                                    android:fontFamily="@font/roboto"/>
                             </LinearLayout>
 
                             <ImageView
                                 android:id="@+id/addMaxChild"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/svg_add"
+                                android:layout_marginEnd="15dp"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:layout_marginTop="20dp">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:strokeWidth="1dp"
+                        app:cardBackgroundColor="@color/white"
+                        android:layout_weight="1">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:layout_marginVertical="5dp"
+                            app:layout_constraintEnd_toEndOf="@id/registrationNumberLayout"
+                            app:layout_constraintBottom_toBottomOf="@id/rate"
+                            app:layout_constraintTop_toTopOf="@id/rate">
+
+                            <ImageView
+                                android:id="@+id/removeBaseOccupancy"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/svg_remove"
+                                android:layout_marginStart="15dp"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"/>
+
+                            <LinearLayout
+                                android:layout_width="130dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                app:layout_constraintEnd_toStartOf="@id/addBaseOccupancy"
+                                app:layout_constraintStart_toEndOf="@id/removeBaseOccupancy"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Max Occupancy"
+                                    android:textAlignment="center"
+                                    android:textSize="@dimen/H6"
+                                    android:textColor="@color/subtitle"
+                                    android:fontFamily="@font/roboto"/>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="1"
+                                    android:textAlignment="center"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="@font/roboto"/>
+                            </LinearLayout>
+
+                            <ImageView
+                                android:id="@+id/addBaseOccupancy"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/svg_add"
+                                android:layout_marginEnd="15dp"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:strokeWidth="1dp"
+                        app:cardBackgroundColor="@color/white"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:layout_marginVertical="5dp"
+                            app:layout_constraintEnd_toEndOf="@id/registrationNumberLayout"
+                            app:layout_constraintBottom_toBottomOf="@id/rate"
+                            app:layout_constraintTop_toTopOf="@id/rate">
+
+                            <ImageView
+                                android:id="@+id/removeMaxOccupancy"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/svg_remove"
+                                android:layout_marginStart="15dp"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"/>
+
+                            <LinearLayout
+                                android:layout_width="130dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                app:layout_constraintEnd_toStartOf="@id/addMaxOccupancy"
+                                app:layout_constraintStart_toEndOf="@id/removeMaxOccupancy"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Room Rate"
+                                    android:textAlignment="center"
+                                    android:textSize="@dimen/H6"
+                                    android:textColor="@color/subtitle"
+                                    android:fontFamily="@font/roboto"/>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="₹ 1,500.00"
+                                    android:textAlignment="center"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="@font/roboto"/>
+                            </LinearLayout>
+
+                            <ImageView
+                                android:id="@+id/addMaxOccupancy"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/svg_add"
+                                android:layout_marginEnd="15dp"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:layout_marginTop="20dp">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:strokeWidth="1dp"
+                        app:cardBackgroundColor="@color/white"
+                        android:layout_weight="1">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:layout_marginVertical="5dp"
+                            app:layout_constraintEnd_toEndOf="@id/registrationNumberLayout"
+                            app:layout_constraintBottom_toBottomOf="@id/rate"
+                            app:layout_constraintTop_toTopOf="@id/rate">
+
+                            <ImageView
+                                android:id="@+id/removeExtraAdultRate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/svg_remove"
+                                android:layout_marginStart="15dp"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"/>
+
+                            <LinearLayout
+                                android:layout_width="130dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                app:layout_constraintEnd_toStartOf="@id/addExtraAdultRate"
+                                app:layout_constraintStart_toEndOf="@id/removeExtraAdultRate"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Extra Adult Rate"
+                                    android:textAlignment="center"
+                                    android:textSize="@dimen/H6"
+                                    android:textColor="@color/subtitle"
+                                    android:fontFamily="@font/roboto"/>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="1"
+                                    android:textAlignment="center"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="@font/roboto"/>
+                            </LinearLayout>
+
+                            <ImageView
+                                android:id="@+id/addExtraAdultRate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/svg_add"
+                                android:layout_marginEnd="15dp"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:strokeWidth="1dp"
+                        app:cardBackgroundColor="@color/white"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:layout_marginVertical="5dp"
+                            app:layout_constraintEnd_toEndOf="@id/registrationNumberLayout"
+                            app:layout_constraintBottom_toBottomOf="@id/rate"
+                            app:layout_constraintTop_toTopOf="@id/rate">
+
+                            <ImageView
+                                android:id="@+id/removeMaxChildRate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/svg_remove"
+                                android:layout_marginStart="15dp"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"/>
+
+                            <LinearLayout
+                                android:layout_width="130dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                app:layout_constraintEnd_toStartOf="@id/addMaxChildRate"
+                                app:layout_constraintStart_toEndOf="@id/removeMaxChildRate"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Extra Child Rate"
+                                    android:textAlignment="center"
+                                    android:textSize="@dimen/H6"
+                                    android:textColor="@color/subtitle"
+                                    android:fontFamily="@font/roboto"/>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="₹ 1,500.00"
+                                    android:textAlignment="center"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="@font/roboto"/>
+                            </LinearLayout>
+
+                            <ImageView
+                                android:id="@+id/addMaxChildRate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/svg_add"
@@ -473,7 +642,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="2"
+                app:spanCount="3"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="30dp"
                 tools:listitem="@layout/item_amenities"
@@ -486,8 +655,8 @@
             android:id="@+id/frame2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/frame1"
-            app:layout_constraintTop_toBottomOf="@id/continueBtn"
             app:layout_constraintEnd_toEndOf="parent">
 
             <LinearLayout
@@ -513,10 +682,11 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="8dp"
+                    style="@style/CardViewTheme"
+                    android:layout_marginVertical="13dp"
                     android:layout_marginHorizontal="20dp"
                     app:cardCornerRadius="10dp"
-                    app:cardElevation="6dp">
+                    app:cardElevation="4dp">
 
                     <EditText
                         android:layout_width="match_parent"
@@ -539,7 +709,7 @@
                 android:layout_height="wrap_content"
                 android:text="Images"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:fontFamily="@font/roboto_medium"
                 android:textSize="@dimen/H4"
                 android:textColor="@color/secondary"
@@ -570,6 +740,9 @@
                 app:layout_constraintTop_toBottomOf="@id/imagesT"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

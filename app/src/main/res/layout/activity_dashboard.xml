@@ -261,9 +261,9 @@
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="340dp"
-        android:layout_gravity="start"
         android:layout_height="match_parent"
         android:background="@color/primaryBackground"
+        android:layout_gravity="start"
         app:itemTextColor="#000000">
 
         <androidx.core.widget.NestedScrollView
@@ -292,15 +292,15 @@
                     app:layout_constraintStart_toStartOf="parent">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
                     <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="140dp"
+                        android:layout_width="220dp"
+                        android:layout_height="60dp"
                         android:layout_marginHorizontal="20dp"
-                        android:src="@drawable/logo_latest"/>
+                        android:src="@drawable/r_connect_logu"/>
                 </LinearLayout>
 
                     <LinearLayout
@@ -311,8 +311,10 @@
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/dashboard_card"
-                            android:layout_width="250dp"
+                            android:layout_width="match_parent"
                             android:layout_height="@dimen/nav_cards_height"
+                            android:layout_marginEnd="50dp"
+                            android:layout_marginTop="25dp"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:cardCornerRadius="12dp"
@@ -344,9 +346,10 @@
                         </com.google.android.material.card.MaterialCardView>
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/booking_card"
-                            android:layout_width="250dp"
+                            android:layout_width="match_parent"
                             android:layout_height="@dimen/nav_cards_height"
                             app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginEnd="50dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:cardCornerRadius="10dp"
                             app:strokeColor="@color/primaryBackground"
@@ -377,32 +380,42 @@
                         </com.google.android.material.card.MaterialCardView>
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/rates_card"
-                            android:layout_width="250dp"
-                            android:layout_height="@dimen/nav_cards_height"
+                            android:layout_width="match_parent"
+                            android:layout_marginEnd="50dp"
+                            android:layout_height="wrap_content"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:cardCornerRadius="10dp"
                             app:strokeColor="@color/primaryBackground"
-                            app:cardBackgroundColor="@color/primaryBackground">
-                            <LinearLayout
+                            app:cardBackgroundColor="@color/white">
+                            <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal">
+                                android:layout_height="match_parent"
+                                android:layout_marginBottom="9dp"
+                                android:layout_marginTop="9dp">
                                 <ImageView
+                                    android:id="@+id/img_rate"
                                     android:layout_width="35dp"
                                     android:layout_height="35dp"
+                                    app:layout_constraintVertical_bias="0"
                                     android:src="@drawable/svg_rates"
                                     android:layout_marginStart="9dp"
-                                    android:layout_marginVertical="15dp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
                                     app:tint="@color/lightBlack"/>
                                 <TextView
                                     android:id="@+id/rates_txt"
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
+                                    app:layout_constraintVertical_bias="0"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginTop="6dp"
                                     android:text="Rates and Inventory"
+                                    app:layout_constraintStart_toEndOf="@id/img_rate"
+                                    app:layout_constraintTop_toTopOf="@id/img_rate"
+                                    app:layout_constraintBottom_toBottomOf="@id/img_rate"
                                     android:fontFamily="@font/roboto_medium"
-                                    android:textColor="@color/textColor"
+                                    android:textColor="@color/black"
                                     android:layout_marginStart="10dp"
                                     android:textSize="@dimen/H4" />
                                 <ImageView
@@ -410,14 +423,154 @@
                                     android:layout_width="25dp"
                                     android:layout_height="30dp"
                                     android:src="@drawable/svg_arrow_down"
-                                    app:tint="@color/black"
-                                    android:layout_marginStart="-25dp" />
-                            </LinearLayout>
+                                    app:layout_constraintVertical_bias="0"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    android:layout_marginEnd="19dp"
+                                    app:layout_constraintTop_toTopOf="@id/rates_txt"
+                                    app:layout_constraintBottom_toBottomOf="@id/rates_txt"
+                                    app:tint="@color/black"/>
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/rate_layout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:visibility="gone"
+                                    app:layout_constraintTop_toBottomOf="@id/img_rate">
+                                <LinearLayout
+                                    android:id="@+id/ll1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:background="@color/black"
+                                    android:layout_marginStart="20dp"
+                                    android:layout_marginTop="12dp"
+                                    android:paddingStart="20dp"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical">
+                                    <ImageView
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
+                                        android:src="@drawable/svg_chart"
+                                        app:tint="@color/white"/>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Room Types"
+                                        android:fontFamily="@font/roboto_medium"
+                                        android:textColor="@color/white"
+                                        android:layout_marginStart="10dp"
+                                        android:textSize="@dimen/H4" />
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/ll2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/black"
+                                    android:layout_marginStart="20dp"
+                                    android:layout_marginTop="12dp"
+                                    app:layout_constraintTop_toBottomOf="@id/ll1"
+                                    android:paddingStart="20dp"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical">
+                                    <ImageView
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
+                                        android:src="@drawable/svg_chart"
+                                        app:tint="@color/white"/>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Rate Types"
+                                        android:fontFamily="@font/roboto_medium"
+                                        android:textColor="@color/white"
+                                        android:layout_marginStart="10dp"
+                                        android:textSize="@dimen/H4" />
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/ll3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/black"
+                                    android:layout_marginStart="20dp"
+                                    android:layout_marginTop="12dp"
+                                    app:layout_constraintTop_toBottomOf="@id/ll2"
+                                    android:paddingStart="20dp"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical">
+                                    <ImageView
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
+                                        android:src="@drawable/svg_chart"
+                                        app:tint="@color/white"/>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Rate Plans"
+                                        android:fontFamily="@font/roboto_medium"
+                                        android:textColor="@color/white"
+                                        android:layout_marginStart="10dp"
+                                        android:textSize="@dimen/H4" />
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/ll4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/black"
+                                    android:layout_marginStart="20dp"
+                                    android:layout_marginTop="12dp"
+                                    app:layout_constraintTop_toBottomOf="@id/ll3"
+                                    android:paddingStart="20dp"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical">
+                                    <ImageView
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
+                                        android:src="@drawable/svg_chart"
+                                        app:tint="@color/white"/>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Extras &amp; Inclusions"
+                                        android:fontFamily="@font/roboto_medium"
+                                        android:textColor="@color/white"
+                                        android:layout_marginStart="10dp"
+                                        android:textSize="@dimen/H4" />
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/ll5"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/black"
+                                    android:layout_marginStart="20dp"
+                                    android:layout_marginTop="12dp"
+                                    app:layout_constraintTop_toBottomOf="@id/ll4"
+                                    android:paddingStart="20dp"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical">
+                                    <ImageView
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
+                                        android:src="@drawable/svg_chart"
+                                        app:tint="@color/white"/>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Amenities"
+                                        android:fontFamily="@font/roboto_medium"
+                                        android:textColor="@color/white"
+                                        android:layout_marginStart="10dp"
+                                        android:textSize="@dimen/H4" />
+                                </LinearLayout>
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
 
                         </com.google.android.material.card.MaterialCardView>
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/promotions_card"
-                            android:layout_width="250dp"
+                            android:layout_width="match_parent"
+                            android:layout_marginEnd="50dp"
                             android:layout_height="@dimen/nav_cards_height"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -426,7 +579,7 @@
                             app:cardBackgroundColor="@color/primaryBackground">
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
                                 <ImageView
@@ -434,7 +587,6 @@
                                     android:layout_height="35dp"
                                     android:src="@drawable/svg_promotion_"
                                     android:layout_marginStart="9dp"
-                                    android:layout_marginVertical="15dp"
                                     app:tint="@color/lightBlack"/>
                                 <TextView
                                     android:id="@+id/promotions_txt"
@@ -450,7 +602,8 @@
                         </com.google.android.material.card.MaterialCardView>
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/channel_card"
-                            android:layout_width="250dp"
+                            android:layout_width="match_parent"
+                            android:layout_marginEnd="50dp"
                             android:layout_height="@dimen/nav_cards_height"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -483,7 +636,8 @@
                         </com.google.android.material.card.MaterialCardView>
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/reports_card"
-                            android:layout_width="250dp"
+                            android:layout_width="match_parent"
+                            android:layout_marginEnd="50dp"
                             android:layout_height="@dimen/nav_cards_height"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -516,29 +670,37 @@
                         </com.google.android.material.card.MaterialCardView>
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/others_card"
-                            android:layout_width="250dp"
+                            android:layout_width="match_parent"
                             android:layout_height="@dimen/nav_cards_height"
+                            android:layout_marginEnd="50dp"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:cardCornerRadius="10dp"
                             app:strokeColor="@color/primaryBackground"
                             app:cardBackgroundColor="@color/primaryBackground">
-                            <LinearLayout
+                            <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
                                 <ImageView
+                                    android:id="@+id/img_other"
                                     android:layout_width="35dp"
                                     android:layout_height="35dp"
                                     android:src="@drawable/svg_others_"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
                                     android:layout_marginStart="9dp"
                                     android:layout_marginVertical="15dp"
                                     app:tint="@color/lightBlack"/>
                                 <TextView
                                     android:id="@+id/others_txt"
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toEndOf="@id/img_other"
                                     android:text="Others"
                                     android:fontFamily="@font/roboto_medium"
                                     android:textColor="@color/textColor"
@@ -547,16 +709,21 @@
                                 <ImageView
                                     android:layout_width="25dp"
                                     android:layout_height="30dp"
+                                    android:layout_marginEnd="19dp"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
                                     android:src="@drawable/svg_arrow_down"
                                     app:tint="@color/black"
                                     android:layout_marginStart="-50dp" />
-                            </LinearLayout>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
 
                         </com.google.android.material.card.MaterialCardView>
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/pms_card"
-                        android:layout_width="250dp"
+                        android:layout_width="match_parent"
                         android:layout_height="@dimen/nav_cards_height"
+                        android:layout_marginEnd="50dp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:cardCornerRadius="10dp"
@@ -588,7 +755,8 @@
                     </com.google.android.material.card.MaterialCardView>
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/help_card"
-                        android:layout_width="250dp"
+                        android:layout_width="match_parent"
+                        android:layout_marginEnd="50dp"
                         android:layout_height="@dimen/nav_cards_height"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -621,7 +789,8 @@
                     </com.google.android.material.card.MaterialCardView>
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/setting_card"
-                        android:layout_width="250dp"
+                        android:layout_width="match_parent"
+                        android:layout_marginEnd="50dp"
                         android:layout_height="@dimen/nav_cards_height"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

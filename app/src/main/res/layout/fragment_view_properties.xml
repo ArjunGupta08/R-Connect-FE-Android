@@ -176,7 +176,7 @@
             app:cardCornerRadius="16dp"
             app:cardElevation="4dp"
             app:layout_constraintEnd_toEndOf="@id/llView"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/searchCard"
             app:layout_constraintTop_toBottomOf="@id/searchCard">
 
             <LinearLayout
