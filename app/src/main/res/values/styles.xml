@@ -49,6 +49,19 @@
         <item name="boxCornerRadiusTopStart">10dp</item>
     </style>
 
+    //SubHeadingTextBold
+    <style name="subHeadingTextBold" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/black</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textSize">@dimen/H5</item>
+    </style>
+
+    <style name="subText" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/secondary</item>
+        <item name="fontFamily">@font/roboto_light</item>
+        <item name="android:textSize">@dimen/H6</item>
+    </style>
+
     <style name="ClickableTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <!--Box Stroke-->
         <item name="boxStrokeWidth">0.5dp</item>

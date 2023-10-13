@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.google.android.material.card.MaterialCardView
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.RatesAndInventory.RatesAndInventoryFragment
 import rconnect.retvens.technologies.dashboard.addPropertyFrags.AddPropertyFragment
 import rconnect.retvens.technologies.dashboard.addRoomType.AddRoomTypeFragment
 import rconnect.retvens.technologies.dashboard.promotions.PromotionsFragment
@@ -112,6 +113,12 @@ class DashboardActivity : AppCompatActivity() {
         }
         binding.settingCard.setOnClickListener {
             isCardSelected(binding.settingCard, binding.settingTxt)
+        }
+
+        binding.ratesCard.setOnClickListener {
+            replaceFragment(RatesAndInventoryFragment())
+            binding.welcomeLayout.isVisible = false
+            binding.dashboardFragmentContainer.isVisible = true
         }
 
     }
