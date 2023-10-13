@@ -203,7 +203,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Next"
-                        android:textColor="@color/primary"
+                        android:textColor="@color/white"
                         android:fontFamily="@font/roboto_bold"
                         android:layout_gravity="center"
                         android:textSize="@dimen/H5"
