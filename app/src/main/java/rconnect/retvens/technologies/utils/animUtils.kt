@@ -34,3 +34,23 @@ fun bottomSlideInAnimation(view: View, context: Context) {
     // start the animation
     view.startAnimation(animSlideIn)
 }
+
+fun leftInAnimation(view: View, context: Context) {
+    // load the animation
+    val animSlideIn: Animation = AnimationUtils.loadAnimation(
+        context,
+        R.anim.l_to_r_in_animation
+    )
+    // start the animation
+    view.startAnimation(animSlideIn)
+}
+
+fun rightInAnimation(view: View, context: Context) {
+    // load the animation
+    val animSlideIn: Animation = AnimationUtils.loadAnimation(
+        context,
+        R.anim.r_to_l_in_animation
+    )
+    // start the animation
+    view.startAnimation(animSlideIn)
+}

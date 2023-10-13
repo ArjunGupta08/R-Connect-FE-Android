@@ -4,14 +4,18 @@
     <dimen name="editTextWidth">400sp</dimen>
     <dimen name="countingEditTextWidth">55dp</dimen>
 
-    <dimen name="H0">28sp</dimen>
-    <dimen name="H1">24sp</dimen>
-    <dimen name="H2">22sp</dimen>
-    <dimen name="H3">20sp</dimen>
-    <dimen name="H4">18sp</dimen>
-    <dimen name="H5">16sp</dimen>
-    <dimen name="H6">14sp</dimen>
-    <dimen name="H7">12sp</dimen>
+    <dimen name="H0">26sp</dimen>
+    <dimen name="H1">22sp</dimen>
+    <dimen name="H2">20sp</dimen>
+    <dimen name="H3">18sp</dimen>
+    <dimen name="H4">16sp</dimen>
+    <dimen name="H5">14sp</dimen>
+    <dimen name="H6">12sp</dimen>
+    <dimen name="H7">10sp</dimen>
+
+    <dimen name="nav_cards_height">50dp</dimen>
+
+    <dimen name="button_height">45dp</dimen>
 
                 <!--Onboarding Screen Text Style-->
     <!--Onboarding Screen Heading Text Style-->
@@ -32,10 +36,13 @@
 
             <!-- OnBoarding Text Input Layout Theme-->
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidth">0.5dp</item>
         <item name="boxStrokeWidthFocused">1dp</item>
-        <item name="boxStrokeColor">@color/subtitle</item>
-        <item name="hintTextColor">@color/secondary</item>
+        <item name="boxStrokeColor">@color/secondary</item>
+        <item name="strokeWidth">0.5dp</item>
+        <item name="android:background">@color/white</item>
+        <item name="hintTextColor">@color/textHighlighted</item>
+        <item name="background">@color/white</item>
         <item name="boxCornerRadiusBottomStart">10dp</item>
         <item name="boxCornerRadiusBottomEnd">10dp</item>
         <item name="boxCornerRadiusTopEnd">10dp</item>
@@ -44,11 +51,11 @@
 
     <style name="ClickableTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <!--Box Stroke-->
-        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidth">0.5dp</item>
         <item name="boxStrokeWidthFocused">1dp</item>
         <item name="boxStrokeColor">@color/subtitle</item>
-        <item name="android:textColorHint">@color/secondary</item>
-        <item name="hintTextColor">@color/secondary</item>
+<!--        <item name="android:textColorHint">@color/secondary</item>-->
+        <item name="hintTextColor">@color/textHighlighted</item>
         <!--End Icon-->
         <item name="endIconMode">custom</item>
         <item name="endIconDrawable">@drawable/svg_arrow_down</item>
@@ -64,6 +71,23 @@
     <style name="CardViewTheme" parent="CardView">
         <item name="android:outlineAmbientShadowColor">@color/shadowColor</item>
         <item name="android:shadowColor">@color/shadowColor</item>
+        <item name="android:outlineSpotShadowColor">@color/shadowColor</item>
+    </style>
+
+    <!--Card View Theme-->
+    <style name="OnBoardingCardViewTheme" parent="CardView">
+        <item name="android:outlineAmbientShadowColor">@color/shadowColor</item>
+        <item name="android:shadowColor">@color/shadowColor</item>
+        <item name="cardElevation">8dp</item>
+        <item name="android:outlineSpotShadowColor">@color/shadowColor</item>
+    </style>
+
+    <!--Button Card View Theme-->
+    <style name="ButtonCardView" parent="CardView">
+        <item name="android:outlineAmbientShadowColor">@color/shadowColor</item>
+        <item name="android:shadowColor">@color/shadowColor</item>
+        <item name="cardElevation">10dp</item>
+        <item name="cardCornerRadius">10dp</item>
         <item name="android:outlineSpotShadowColor">@color/shadowColor</item>
     </style>
 

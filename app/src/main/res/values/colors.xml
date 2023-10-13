@@ -10,9 +10,12 @@
     <color name="textColor">#171717</color>
     <color name="subtitle">#828282</color>
     <color name="primaryBackground">#FFFFFF</color>
-    <color name="secondaryBackground">#F2F2F2</color>
+    <color name="secondaryBackground">#F7F7FC</color>
     <color name="unselectedBackground">#E6ECF5</color>
     <color name="textInputStrokeColor">#E6ECF5</color>
+
+
+    <color name="textHighlighted">#272A3D</color>
 
     <!--  GREY SHADES  -->
     <color name="grey10">#DCDCDC</color>

@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".onboarding.authentication.SignUpFragment">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/continueWithR"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_marginTop="25dp"
+        app:cardCornerRadius="10dp"
+        app:strokeWidth="2dp"
+        app:cardBackgroundColor="@color/white"
+        app:strokeColor="@color/secondary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/continue_with_r_own"
+            android:layout_gravity="center"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="17dp"
+            android:layout_marginHorizontal="40dp"
+            android:textColor="@color/secondary" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintTop_toTopOf="@id/or"
+        app:layout_constraintBottom_toBottomOf="@id/or"
+        app:layout_constraintStart_toStartOf="@id/continueWithR"
+        app:layout_constraintEnd_toStartOf="@id/or"/>
+
+    <TextView
+        android:id="@+id/or"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/continueWithR"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:text="or"
+        android:textSize="15dp" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintTop_toTopOf="@id/or"
+        app:layout_constraintBottom_toBottomOf="@id/or"
+        app:layout_constraintStart_toEndOf="@id/or"
+        app:layout_constraintEnd_toEndOf="@id/continueWithR"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/AccontLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/or"
+        android:visibility="visible">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/firstNameLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/TextInputLayoutStyle"
+            android:hint="First Name"
+            android:layout_marginStart="50dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/black"
+            app:layout_constraintEnd_toStartOf="@id/lastNameLayout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/firstNameText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/roboto"
+                android:inputType="text"
+                android:textColorHint="@color/secondary"
+                android:textColor="@color/secondary" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/lastNameLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/TextInputLayoutStyle"
+            android:hint="Last Name"
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="10dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/black"
+            app:layout_constraintStart_toEndOf="@id/firstNameLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/lastNameText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/roboto"
+                android:inputType="text"
+                android:textColorHint="@color/secondary"
+                android:textColor="@color/secondary" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/designationLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/ClickableTextInputLayoutStyle"
+            android:hint="Designation"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="@id/firstNameLayout"
+            app:layout_constraintEnd_toEndOf="@id/lastNameLayout"
+            app:layout_constraintTop_toBottomOf="@id/firstNameLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/designationText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/roboto"
+                android:inputType="text"
+                android:textColorHint="@color/secondary"
+                android:textColor="@color/secondary"
+                android:clickable="true"
+                android:editable="false"
+                android:focusable="true"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/phoneLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/TextInputLayoutStyle"
+            android:hint="Phone Number"
+            app:placeholderText="+91 0000000000"
+            android:layout_marginTop="10dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/black"
+            app:layout_constraintEnd_toEndOf="@id/lastNameLayout"
+            app:layout_constraintTop_toBottomOf="@id/designationLayout"
+            app:layout_constraintStart_toStartOf="@id/firstNameLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/phoneText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/roboto"
+                android:inputType="number"
+                android:textColorHint="@color/secondary"
+                android:textColor="@color/secondary" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emailLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/TextInputLayoutStyle"
+            android:hint="Email"
+            app:placeholderText="abc@xyz.com"
+            android:layout_marginTop="10dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/black"
+            app:layout_constraintStart_toStartOf="@id/firstNameLayout"
+            app:layout_constraintEnd_toEndOf="@id/lastNameLayout"
+            app:layout_constraintTop_toBottomOf="@id/phoneLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/roboto"
+                android:inputType="text"
+                android:textColorHint="@color/secondary"
+                android:textColor="@color/secondary" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/passwordLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/TextInputLayoutStyle"
+            android:hint="Password"
+            android:layout_marginTop="10dp"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/black"
+            app:layout_constraintEnd_toEndOf="@id/lastNameLayout"
+            app:layout_constraintStart_toStartOf="@id/firstNameLayout"
+            app:layout_constraintTop_toBottomOf="@id/emailLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/roboto"
+                android:inputType="textPassword"
+                android:textColorHint="@color/secondary"
+                android:textColor="@color/secondary" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/subHeadingTerm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/terms_of_services"
+            android:textSize="@dimen/H5"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="@id/passwordLayout"
+            app:layout_constraintTop_toBottomOf="@id/passwordLayout"
+            app:layout_constraintStart_toStartOf="@id/passwordLayout"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_createAccount"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:transitionName="Btn"
+            app:layout_constraintTop_toBottomOf="@+id/subHeadingTerm"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="25dp"
+            android:backgroundTint="@color/secondary"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sign_up"
+                android:textColor="@color/white"
+                android:fontFamily="@font/roboto_bold"
+                android:layout_gravity="center"
+                android:textSize="@dimen/H4" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
