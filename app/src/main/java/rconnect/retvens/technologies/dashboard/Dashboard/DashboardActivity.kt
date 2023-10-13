@@ -140,11 +140,11 @@ class DashboardActivity : AppCompatActivity() {
             isCardSelected(binding.settingCard, binding.settingTxt)
         }
 
-        binding.ratesCard.setOnClickListener {
-            replaceFragment(RatesAndInventoryFragment())
-            binding.welcomeLayout.isVisible = false
-            binding.dashboardFragmentContainer.isVisible = true
-        }
+//        binding.ratesCard.setOnClickListener {
+//            replaceFragment(RatesAndInventoryFragment())
+//            binding.welcomeLayout.isVisible = false
+//            binding.dashboardFragmentContainer.isVisible = true
+//        }
 
     }
 
