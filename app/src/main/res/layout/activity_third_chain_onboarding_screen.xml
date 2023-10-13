@@ -443,7 +443,7 @@
                         android:layout_height="@dimen/button_height"
                         style="@style/ButtonCardView"
                         android:layout_marginBottom="40dp"
-                        android:transitionName="backBtn"
+                        android:transitionName="Btn"
                         app:cardBackgroundColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@id/ll5">
