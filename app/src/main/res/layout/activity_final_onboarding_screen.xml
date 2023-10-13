@@ -142,7 +142,6 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
                             android:layout_marginEnd="30dp"
                             android:fontFamily="@font/roboto"
                             android:text="Congratulations!\nYou have successfully registered your Hotel Chain [chain_Name] with us.\n We just need to check a few things first, we will let you know when your one stop hotel solution is ready to go."
@@ -155,13 +154,13 @@
                         android:id="@+id/dashLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone">
+                        android:layout_marginStart="60dp"
+                        android:visibility="gone"
+                        android:orientation="vertical">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="50dp"
                             android:fontFamily="@font/roboto_bold"
                             android:text="Good News!!!"
                             android:textColor="@color/black"
@@ -171,18 +170,15 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="50dp"
                             android:fontFamily="@font/roboto"
                             android:text="Your account has been verified and activated.\n\nNow you can manage all your properties, guest and a whole lot of other things in just one place."
                             android:textColor="@color/black"
                             android:textSize="@dimen/H4" />
 
-
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/goToDash"
                             android:layout_width="200dp"
                             android:layout_height="50dp"
-                            android:layout_marginStart="50dp"
                             android:layout_marginTop="20dp"
                             android:backgroundTint="@color/secondary"
                             android:paddingBottom="15dp">
@@ -198,7 +194,6 @@
                                 android:textSize="@dimen/H5" />
 
                         </com.google.android.material.card.MaterialCardView>
-
 
                     </LinearLayout>
 
