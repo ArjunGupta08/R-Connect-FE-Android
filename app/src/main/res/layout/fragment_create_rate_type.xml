@@ -128,12 +128,11 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/room_type_layout"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="@dimen/textInputLayoutHeight"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/short_code_layout"
                 app:layout_constraintTop_toTopOf="parent"
                 android:hint="Rate Type Name"
-                app:placeholderText="Luxury Suit"
                 android:layout_marginTop="10dp"
                 style="@style/TextInputLayoutStyle"
                 app:endIconMode="clear_text"
@@ -144,21 +143,21 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/roboto"
                     android:textSize="@dimen/H5"
+                    android:hint="Luxury Suit"
                     android:inputType="text"
-                    android:textColorHint="@color/secondary"
+                    android:textColorHint="@drawable/hint_selector"
                     android:textColor="@color/secondary" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/short_code_layout"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="@dimen/textInputLayoutHeight"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/room_type_layout"
                 app:layout_constraintEnd_toStartOf="@id/guide1"
                 android:hint="Rate Type Name"
                 android:layout_marginStart="10dp"
-                app:placeholderText="Luxury Suit"
                 android:layout_marginTop="10dp"
                 style="@style/TextInputLayoutStyle"
                 app:endIconMode="clear_text"
@@ -168,9 +167,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/roboto"
+                    android:hint="Luxury Suit"
                     android:textSize="@dimen/H5"
                     android:inputType="text"
-                    android:textColorHint="@color/secondary"
+                    android:textColorHint="@drawable/hint_selector"
                     android:textColor="@color/secondary" />
             </com.google.android.material.textfield.TextInputLayout>
 

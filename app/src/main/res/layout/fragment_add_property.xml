@@ -317,6 +317,7 @@
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
                             android:inputType="text"
+                            android:textSize="@dimen/H5"
                             android:textColor="@color/secondary"
                             android:textColorHint="@color/secondary" />
 
@@ -326,13 +327,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/ClickableTextInputLayoutStyle"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:hint="Property type">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:clickable="true"
+                            android:textSize="@dimen/H5"
                             android:editable="false"
                             android:focusable="false"
                             android:fontFamily="@font/roboto"
@@ -346,12 +348,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/ClickableTextInputLayoutStyle"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:hint="Property Ratting">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:textSize="@dimen/H5"
                             android:clickable="true"
                             android:editable="false"
                             android:focusable="false"
@@ -375,9 +378,9 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/textInputLayoutHeight"
                         style="@style/TextInputLayoutStyle"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:hint="Website"
                         app:endIconMode="clear_text"
                         app:endIconTint="@color/black">
@@ -386,6 +389,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
+                            android:textSize="@dimen/H5"
                             android:inputType="text"
                             android:textColor="@color/secondary"
                             android:textColorHint="@color/secondary" />
@@ -476,6 +480,7 @@
                             android:layout_height="wrap_content"
                             android:background="@null"
                             android:gravity="start"
+                            android:textSize="@dimen/H5"
                             android:hint="Describe the room"
                             android:maxHeight="180dp"
                             android:minHeight="120dp"

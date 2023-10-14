@@ -13,8 +13,9 @@
     <dimen name="H6">12sp</dimen>
     <dimen name="H7">10sp</dimen>
 
-    <dimen name="nav_cards_height">50dp</dimen>
 
+    <dimen name="nav_cards_height">50dp</dimen>
+    <dimen name="textInputLayoutHeight">50dp</dimen>
     <dimen name="button_height">45dp</dimen>
 
                 <!--Onboarding Screen Text Style-->
