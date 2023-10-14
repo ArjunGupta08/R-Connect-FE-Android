@@ -67,6 +67,7 @@
                 android:layout_width="@dimen/editTextWidth"
                 android:layout_height="40dp"
                 android:hint="Search"
+                android:textSize="@dimen/H4"
                 android:layout_marginStart="10dp"
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/svg_search"
@@ -80,7 +81,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            app:layout_constraintHorizontal_bias="0.05"
+            app:layout_constraintHorizontal_bias="0.03"
             app:layout_constraintTop_toTopOf="@id/searchCard"
             app:layout_constraintEnd_toStartOf="@id/llView"
             app:layout_constraintBottom_toBottomOf="@id/searchCard"
@@ -96,15 +97,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Filter"
-                    android:textSize="@dimen/H3"
+                    android:textSize="@dimen/H4"
                     android:layout_marginHorizontal="5dp"
                     android:textColor="@color/secondary"
-                    android:fontFamily="@font/roboto_medium"/>
+                    android:fontFamily="@font/roboto"/>
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginHorizontal="5dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginHorizontal="2dp"
                     android:src="@drawable/svg_filter"/>
 
             </LinearLayout>
@@ -120,16 +121,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Sort"
-                    android:textSize="@dimen/H3"
+                    android:textSize="@dimen/H4"
                     android:layout_marginHorizontal="5dp"
                     android:textColor="@color/secondary"
-                    android:fontFamily="@font/roboto_medium"/>
+                    android:fontFamily="@font/roboto"/>
 
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:scaleType="fitXY"
-                    android:layout_marginHorizontal="5dp"
+                    android:layout_marginHorizontal="2dp"
                     android:src="@drawable/svg_sort"/>
 
             </LinearLayout>
@@ -151,17 +152,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="View"
-                android:textSize="@dimen/H3"
+                android:textSize="@dimen/H4"
                 android:layout_marginHorizontal="5dp"
                 android:textColor="@color/secondary"
                 android:fontFamily="@font/roboto"/>
 
             <ImageView
                 android:id="@+id/viewTypeIcon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:scaleType="fitXY"
-                android:layout_marginHorizontal="5dp"
+                android:layout_marginHorizontal="2dp"
                 android:src="@drawable/svg_view_type"/>
 
         </LinearLayout>

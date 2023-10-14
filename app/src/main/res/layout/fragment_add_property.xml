@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -575,7 +575,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/TextInputLayoutStyle"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/textInputLayoutHeight"
                         android:layout_marginTop="10dp"
                         android:hint="Address line 1"
                         app:endIconMode="clear_text"
@@ -585,6 +585,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
+                            android:textSize="@dimen/H5"
                             android:inputType="text"
                             android:textColor="@color/secondary"
                             android:textColorHint="@color/secondary" />
@@ -594,7 +595,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/TextInputLayoutStyle"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/textInputLayoutHeight"
                         android:layout_marginTop="10dp"
                         android:hint="Address line 2"
                         app:endIconMode="clear_text"
@@ -604,6 +605,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
+                            android:textSize="@dimen/H5"
                             android:inputType="text"
                             android:textColor="@color/secondary"
                             android:textColorHint="@color/secondary" />
@@ -616,7 +618,7 @@
                     android:id="@+id/pincode_layout"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/textInputLayoutHeight"
                     android:layout_marginTop="10dp"
                     android:hint="Zip Code"
                     app:layout_constraintEnd_toStartOf="@id/city_layout"
@@ -628,6 +630,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/roboto"
+                        android:textSize="@dimen/H5"
                         android:inputType="number"
                         android:textColor="@color/secondary"
                         android:textColorHint="@color/secondary" />
@@ -638,7 +641,7 @@
                     android:id="@+id/city_layout"
                     style="@style/ClickableTextInputLayoutStyle"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/textInputLayoutHeight"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:hint="City"
@@ -650,7 +653,11 @@
                         android:id="@+id/city_text"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:clickable="true"
                         android:fontFamily="@font/roboto"
+                        android:textSize="@dimen/H5"
                         android:inputType="text"
                         android:textColor="@color/secondary"
                         android:textColorHint="@color/secondary" />
@@ -661,7 +668,7 @@
                     android:id="@+id/state_layout"
                     style="@style/ClickableTextInputLayoutStyle"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/textInputLayoutHeight"
                     android:layout_marginTop="10dp"
                     android:hint="State"
                     app:layout_constraintEnd_toStartOf="@id/country_layout"
@@ -672,6 +679,10 @@
                         android:id="@+id/state_text"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:textSize="@dimen/H5"
                         android:fontFamily="@font/roboto"
                         android:inputType="text"
                         android:textColor="@color/secondary"
@@ -683,7 +694,7 @@
                     android:id="@+id/country_layout"
                     style="@style/ClickableTextInputLayoutStyle"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/textInputLayoutHeight"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:hint="Country"
@@ -696,7 +707,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/roboto"
+                        android:textSize="@dimen/H5"
                         android:inputType="text"
+                        android:editable="false"
+                        android:clickable="true"
+                        android:focusable="false"
                         android:textColor="@color/secondary"
                         android:textColorHint="@color/secondary" />
 
@@ -718,7 +733,7 @@
                     android:id="@+id/phoneLayout"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/textInputLayoutHeight"
                     android:layout_marginTop="10dp"
                     android:hint="Phone"
                     app:endIconMode="clear_text"
@@ -733,6 +748,7 @@
                         android:layout_height="match_parent"
                         android:fontFamily="@font/roboto"
                         android:inputType="number"
+                        android:textSize="@dimen/H5"
                         android:maxLength="10"
                         android:textColor="@color/secondary"
                         android:textColorHint="@color/secondary" />
@@ -743,7 +759,7 @@
                     android:id="@+id/reservationPhoneLayout"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/textInputLayoutHeight"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:hint="Reservation Phone"
@@ -757,6 +773,7 @@
                         android:id="@+id/reservationPhoneText"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:textSize="@dimen/H5"
                         android:fontFamily="@font/roboto"
                         android:inputType="number"
                         android:textColor="@color/secondary"
@@ -768,7 +785,7 @@
                     android:id="@+id/emailLayout"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/textInputLayoutHeight"
                     android:layout_marginTop="10dp"
                     android:hint="Email"
                     app:endIconMode="clear_text"
@@ -781,6 +798,7 @@
                         android:id="@+id/emailText"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:textSize="@dimen/H5"
                         android:fontFamily="@font/roboto"
                         android:inputType="text"
                         android:textColor="@color/secondary"
@@ -792,7 +810,7 @@
                     android:id="@+id/websiteLayout"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/textInputLayoutHeight"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:hint="Website"
@@ -807,6 +825,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/roboto"
+                        android:textSize="@dimen/H5"
                         android:inputType="text"
                         android:textColor="@color/secondary"
                         android:textColorHint="@color/secondary" />
@@ -839,4 +858,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.core.widget.NestedScrollView>
+</ScrollView>
