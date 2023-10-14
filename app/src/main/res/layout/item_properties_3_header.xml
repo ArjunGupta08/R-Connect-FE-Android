@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/items_linear"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="10dp"
-        android:weightSum="11">
+        android:layout_marginTop="10dp">
 
         <TextView
+            android:id="@+id/hCode"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -19,87 +20,132 @@
             android:fontFamily="@font/roboto"
             android:text="H-Code"
             android:textColor="@color/subtitle"
-            android:textSize="@dimen/H6" />
+            android:textSize="@dimen/H6"
+            app:layout_constraintEnd_toStartOf="@id/propertyName"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
+            android:id="@+id/propertyName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="Property Name"
             android:fontFamily="@font/roboto"
             android:textColor="@color/subtitle"
-            android:textSize="@dimen/H6" />
+            android:textSize="@dimen/H6"
+            android:singleLine="true"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/propertyType"
+            app:layout_constraintStart_toEndOf="@id/hCode"
+            app:layout_constraintBottom_toBottomOf="@id/hCode"
+            app:layout_constraintTop_toTopOf="@id/hCode"/>
 
         <TextView
+            android:id="@+id/propertyType"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:layout_weight="1"
             android:fontFamily="@font/roboto"
             android:text="Property Type"
             android:textColor="@color/subtitle"
-            android:textSize="@dimen/H6" />
+            android:textSize="@dimen/H6"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/location"
+            app:layout_constraintStart_toEndOf="@id/propertyName"
+            app:layout_constraintBottom_toBottomOf="@id/hCode"
+            app:layout_constraintTop_toTopOf="@id/hCode"/>
 
         <TextView
+            android:id="@+id/location"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:layout_weight="1"
             android:text="Location"
             android:fontFamily="@font/roboto"
             android:textColor="@color/subtitle"
-            android:textSize="@dimen/H6" />
+            android:textSize="@dimen/H6"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/occupancy"
+            app:layout_constraintStart_toEndOf="@id/propertyType"
+            app:layout_constraintBottom_toBottomOf="@id/hCode"
+            app:layout_constraintTop_toTopOf="@id/hCode"/>
 
         <TextView
+            android:id="@+id/occupancy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:layout_weight="1"
             android:fontFamily="@font/roboto"
             android:text="Occupancy"
             android:textColor="@color/subtitle"
-            android:textSize="@dimen/H6" />
+            android:textSize="@dimen/H6"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/totalRooms"
+            app:layout_constraintStart_toEndOf="@id/location"
+            app:layout_constraintBottom_toBottomOf="@id/hCode"
+            app:layout_constraintTop_toTopOf="@id/hCode"/>
 
         <TextView
+            android:id="@+id/totalRooms"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:layout_weight="1"
             android:fontFamily="@font/roboto"
             android:text="Total Rooms"
             android:textColor="@color/subtitle"
-            android:textSize="@dimen/H6" />
+            android:textSize="@dimen/H6"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/amenities"
+            app:layout_constraintStart_toEndOf="@id/occupancy"
+            app:layout_constraintBottom_toBottomOf="@id/hCode"
+            app:layout_constraintTop_toTopOf="@id/hCode"/>
 
         <TextView
+            android:id="@+id/amenities"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:layout_weight="1"
             android:fontFamily="@font/roboto"
             android:text="Amenities"
             android:textColor="@color/subtitle"
-            android:textSize="@dimen/H6" />
+            android:textSize="@dimen/H6"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/status"
+            app:layout_constraintStart_toEndOf="@id/totalRooms"
+            app:layout_constraintBottom_toBottomOf="@id/hCode"
+            app:layout_constraintTop_toTopOf="@id/hCode"/>
 
         <TextView
+            android:id="@+id/status"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:layout_weight="1"
             android:fontFamily="@font/roboto"
             android:text="Status"
             android:textColor="@color/subtitle"
-            android:textSize="@dimen/H6"  />
+            android:textSize="@dimen/H6"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/actions"
+            app:layout_constraintStart_toEndOf="@id/amenities"
+            app:layout_constraintBottom_toBottomOf="@id/hCode"
+            app:layout_constraintTop_toTopOf="@id/hCode"/>
 
         <TextView
+            android:id="@+id/actions"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_weight="1"
             android:fontFamily="@font/roboto"
             android:text="Actions"
             android:textColor="@color/subtitle"
-            android:textSize="@dimen/H6" />
+            android:textSize="@dimen/H6"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/status"
+            app:layout_constraintBottom_toBottomOf="@id/hCode"
+            app:layout_constraintTop_toTopOf="@id/hCode"/>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

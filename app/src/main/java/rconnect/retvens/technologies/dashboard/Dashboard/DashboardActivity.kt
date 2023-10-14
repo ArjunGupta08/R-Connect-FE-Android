@@ -17,6 +17,7 @@ import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.RatesAndInventory.RatesAndInventoryFragment
 import rconnect.retvens.technologies.dashboard.addPropertyFrags.AddPropertyFragment
 import rconnect.retvens.technologies.dashboard.addRoomType.AddRoomTypeFragment
+import rconnect.retvens.technologies.dashboard.createRate.CreateRateTypeFragment
 import rconnect.retvens.technologies.dashboard.promotions.PromotionsFragment
 import rconnect.retvens.technologies.databinding.ActivityDashboardBinding
 import rconnect.retvens.technologies.utils.bottomSlideInAnimation
@@ -99,6 +100,10 @@ class DashboardActivity : AppCompatActivity() {
                 draw?.colorFilter = PorterDuffColorFilter(Color.WHITE,PorterDuff.Mode.SRC_ATOP)
                 binding.rateDropDown.setImageDrawable(draw)
                 isRateOpen = true
+                binding.ll2.setOnClickListener {
+                    replaceFragment(CreateRateTypeFragment())
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                }
             }
             else{
                 binding.rateLayout.isVisible = false
@@ -140,7 +145,8 @@ class DashboardActivity : AppCompatActivity() {
             isCardSelected(binding.settingCard, binding.settingTxt)
         }
 
-        binding.ratesCard.setOnClickListener {
+        binding.ratesAndInvCard.setOnClickListener {
+            isCardSelected(binding.ratesAndInvCard,binding.ratesAndInvTxt)
             replaceFragment(RatesAndInventoryFragment())
             binding.welcomeLayout.isVisible = false
             binding.dashboardFragmentContainer.isVisible = true
@@ -162,6 +168,9 @@ class DashboardActivity : AppCompatActivity() {
                 R.color.textColor
             )
         )
+
+        binding.ratesAndInvCard.setCardBackgroundColor(ContextCompat.getColor(applicationContext,R.color.white))
+        binding.ratesAndInvTxt.setTextColor(ContextCompat.getColor(applicationContext,R.color.textColor))
 
         binding.reportsCard.setCardBackgroundColor(ContextCompat.getColor(applicationContext,R.color.white))
         binding.reportsTxt.setTextColor(ContextCompat.getColor(applicationContext,R.color.textColor))

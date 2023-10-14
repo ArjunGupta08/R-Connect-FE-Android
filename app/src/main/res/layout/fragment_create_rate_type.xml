@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    android:background="@color/secondaryBackground"
+    tools:context=".dashboard.createRate.CreateRateTypeFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/secondary"
+        android:text="Create Rate Type"
+        android:textSize="@dimen/H2"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/roboto_bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:layout_gravity="center"
+        android:fontFamily="@font/roboto_bold"
+        android:textSize="@dimen/H5"
+        android:padding="15dp"
+        android:layout_marginEnd="20dp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@id/continueBtn"
+        app:layout_constraintBottom_toBottomOf="@id/continueBtn"
+        app:layout_constraintTop_toTopOf="@id/continueBtn"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/continueBtn"
+        android:layout_width="110dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="20dp"
+        android:clickable="true"
+        style="@style/CardViewTheme"
+        app:cardElevation="4dp"
+        android:backgroundTint="@color/black"
+        app:cardCornerRadius="10dp"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="@id/heading"
+        app:layout_constraintTop_toTopOf="@id/heading"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:layout_gravity="center"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="@dimen/H5"
+            android:textColor="@color/white"/>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/CardViewTheme"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="@id/continueBtn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0"
+        android:layout_marginBottom="9dp"
+        app:layout_constraintStart_toStartOf="@id/heading"
+        app:layout_constraintTop_toBottomOf="@id/continueBtn">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingVertical="10dp">
+
+
+        <LinearLayout
+            android:id="@+id/ll7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rate Type Details"
+            android:fontFamily="@font/roboto_medium"
+            android:paddingVertical="5dp"
+            android:textAlignment="center"
+            android:textColor="@color/secondary"
+            android:textSize="@dimen/H4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guide1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.5"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/room_type_layout"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/short_code_layout"
+                app:layout_constraintTop_toTopOf="parent"
+                android:hint="Rate Type Name"
+                app:placeholderText="Luxury Suit"
+                android:layout_marginTop="10dp"
+                style="@style/TextInputLayoutStyle"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/black">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/room_type_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/roboto"
+                    android:textSize="@dimen/H5"
+                    android:inputType="text"
+                    android:textColorHint="@color/secondary"
+                    android:textColor="@color/secondary" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/short_code_layout"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/room_type_layout"
+                app:layout_constraintEnd_toStartOf="@id/guide1"
+                android:hint="Rate Type Name"
+                android:layout_marginStart="10dp"
+                app:placeholderText="Luxury Suit"
+                android:layout_marginTop="10dp"
+                style="@style/TextInputLayoutStyle"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/black">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/short_code_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/roboto"
+                    android:textSize="@dimen/H5"
+                    android:inputType="text"
+                    android:textColorHint="@color/secondary"
+                    android:textColor="@color/secondary" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/charges_head"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_medium"
+                    android:paddingVertical="11dp"
+                    android:text="Inclusions and Charges"
+                    android:textAlignment="center"
+                    android:textColor="@color/secondary"
+                    android:textSize="@dimen/H4"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/add_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="30dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:paddingVertical="11dp"
+                    android:text="+Add Plan Inclusions"
+                    android:textAlignment="center"
+                    android:textColor="@color/secondary"
+                    android:textSize="@dimen/H4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/add_name"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    style="@style/CardViewTheme"
+                    android:layout_marginBottom="9dp"
+                    app:layout_constraintStart_toStartOf="@id/charges_head"
+                    app:layout_constraintEnd_toEndOf="@id/add_name"
+                    app:cardCornerRadius="9dp"
+                    android:layout_marginHorizontal="2dp"
+                    app:cardElevation="2dp"
+                    app:cardBackgroundColor="@color/secondaryBackground">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:padding="9dp"
+                        android:background="@color/unselectedBackground">
+                        <TextView
+                            android:id="@+id/inclusion"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:fontFamily="@font/roboto_medium"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:text="Inclusion"
+                            android:textSize="@dimen/H5"/>
+                        <TextView
+                            android:id="@+id/posting"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toEndOf="@id/inclusion"
+                            app:layout_constraintEnd_toStartOf="@id/charge"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="Posting Rule"
+                            android:textSize="@dimen/H5"/>
+                        <TextView
+                            android:id="@+id/charge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toEndOf="@id/posting"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/rate"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="Charge Rule"
+                            android:textSize="@dimen/H5"/>
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guide"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.88"/>
+                        <TextView
+                            android:id="@+id/rate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_medium"
+                            app:layout_constraintStart_toStartOf="@id/guide"
+                            app:layout_constraintEnd_toStartOf="@id/tax"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:text="Rate"
+                            android:textSize="@dimen/H5"/>
+                        <TextView
+                            android:id="@+id/tax"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_medium"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:text="Tax Inc."
+                            android:textSize="@dimen/H5"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--                    card work here..-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBaseline_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/cl1">
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_inclusion"
+                            android:layout_width="match_parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            tools:listitem="@layout/item_inclusion_and_charges"
+                            tools:itemCount="9"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            android:orientation="vertical"
+                            android:layout_height="match_parent"
+                            app:layout_constraintBottom_toTopOf="@id/cl3"/>
+                        <!--                    bottom header-->
+                        <LinearLayout
+                            android:id="@+id/cl3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:weightSum="3"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:padding="6dp"
+                            android:background="@color/unselectedBackground">
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/txt_adult"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:layout_marginEnd="9dp"
+                                android:textSize="@dimen/H5"
+                                android:fontFamily="@font/roboto_medium"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:text="Per Adult"/>
+                            <TextView
+                                android:id="@+id/txt_price1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/H5"
+                                android:fontFamily="@font/roboto_medium"
+                                app:layout_constraintStart_toEndOf="@id/txt_adult"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:text="₹1200.00"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:layout_weight="1">
+                            <TextView
+                                android:id="@+id/txt_child"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintStart_toEndOf="@id/txt_price1"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_marginEnd="9dp"
+                                android:textSize="@dimen/H5"
+                                android:fontFamily="@font/roboto_medium"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:text="Per Child"/>
+                            <TextView
+                                android:id="@+id/txt_price2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/H5"
+                                android:fontFamily="@font/roboto_medium"
+                                app:layout_constraintStart_toEndOf="@id/txt_child"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:text="₹ 200.00"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/txt_total"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintStart_toEndOf="@id/txt_price2"
+                                android:layout_marginEnd="9dp"
+                                android:textSize="@dimen/H5"
+                                android:fontFamily="@font/roboto_medium"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintEnd_toEndOf="@id/txt_total_price"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:text="Total"/>
+                            <TextView
+                                android:id="@+id/txt_total_price"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/H5"
+                                android:fontFamily="@font/roboto_medium"
+                                app:layout_constraintStart_toEndOf="@id/txt_total"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:text="₹ 1200.00"/>
+                        </LinearLayout>
+
+
+
+
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+                </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
