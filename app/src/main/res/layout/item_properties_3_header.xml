@@ -13,7 +13,7 @@
 
         <TextView
             android:id="@+id/hCode"
-            android:layout_width="0dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_weight="1"
@@ -37,10 +37,17 @@
             android:textSize="@dimen/H6"
             android:singleLine="true"
             android:layout_marginStart="5dp"
-            app:layout_constraintEnd_toStartOf="@id/propertyType"
+            app:layout_constraintEnd_toStartOf="@id/guide1"
             app:layout_constraintStart_toEndOf="@id/hCode"
             app:layout_constraintBottom_toBottomOf="@id/hCode"
             app:layout_constraintTop_toTopOf="@id/hCode"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.25"/>
 
         <TextView
             android:id="@+id/propertyType"
@@ -53,7 +60,7 @@
             android:textSize="@dimen/H6"
             android:layout_marginStart="5dp"
             app:layout_constraintEnd_toStartOf="@id/location"
-            app:layout_constraintStart_toEndOf="@id/propertyName"
+            app:layout_constraintStart_toEndOf="@id/guide1"
             app:layout_constraintBottom_toBottomOf="@id/hCode"
             app:layout_constraintTop_toTopOf="@id/hCode"/>
 

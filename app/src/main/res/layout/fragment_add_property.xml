@@ -132,11 +132,13 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/propertyProfileLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="12dp"
+            android:layout_height="0dp"
             android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/corner_bottom_white_background"
+            android:paddingBottom="12dp"
             android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ll">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -167,14 +169,15 @@
                     android:id="@+id/propertyLogoCard"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    app:strokeWidth="1dp"
-                    app:strokeColor="@color/subtitle"
-                    app:cardCornerRadius="10dp"
                     android:layout_marginTop="5dp"
-                    app:layout_constraintDimensionRatio="1:1"
+                    app:cardCornerRadius="10dp"
                     app:layout_constraintBottom_toBottomOf="@id/ll6"
+                    app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintStart_toStartOf="@id/propertyDetailsText"
-                    app:layout_constraintTop_toTopOf="@id/ll6">
+                    app:layout_constraintTop_toTopOf="@id/ll6"
+                    app:strokeColor="@color/subtitle"
+                    app:strokeWidth="1dp">
+
                     <LinearLayout
                         android:id="@+id/propertyLogoLayout"
                         android:layout_width="match_parent"
@@ -186,27 +189,28 @@
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="120dp"
                             android:layout_height="120dp"
-                            android:src="@drawable/svg_gallery"
                             android:scaleType="centerCrop"
-                            app:shapeAppearance="@style/RoundedCornerImage_10"
+                            android:src="@drawable/svg_gallery"
                             app:layout_constraintBottom_toBottomOf="@id/ll6"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/ll6" />
+                            app:layout_constraintTop_toTopOf="@id/ll6"
+                            app:shapeAppearance="@style/RoundedCornerImage_10" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/roboto"
-                            android:text="Property Logo"/>
+                            android:text="Property Logo" />
 
                     </LinearLayout>
+
                     <ImageView
                         android:id="@+id/propertyLogoImage"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
                         android:src="@color/grey10"
-                        android:visibility="gone"
-                        android:scaleType="centerCrop"/>
+                        android:visibility="gone" />
                 </com.google.android.material.card.MaterialCardView>
 
                 <LinearLayout
@@ -305,9 +309,9 @@
                     app:layout_constraintTop_toBottomOf="@id/propertyDetailsText">
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/TextInputLayoutStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        style="@style/TextInputLayoutStyle"
                         android:hint="Property Name"
                         app:endIconMode="clear_text"
                         app:endIconTint="@color/black">
@@ -317,16 +321,16 @@
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
                             android:inputType="text"
-                            android:textSize="@dimen/H5"
                             android:textColor="@color/secondary"
-                            android:textColorHint="@color/secondary" />
+                            android:textColorHint="@color/secondary"
+                            android:textSize="@dimen/H5" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ClickableTextInputLayoutStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        style="@style/ClickableTextInputLayoutStyle"
                         android:layout_marginTop="5dp"
                         android:hint="Property type">
 
@@ -334,34 +338,34 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:clickable="true"
-                            android:textSize="@dimen/H5"
                             android:editable="false"
                             android:focusable="false"
                             android:fontFamily="@font/roboto"
                             android:inputType="text"
                             android:textColor="@color/secondary"
-                            android:textColorHint="@color/secondary" />
+                            android:textColorHint="@color/secondary"
+                            android:textSize="@dimen/H5" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ClickableTextInputLayoutStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        style="@style/ClickableTextInputLayoutStyle"
                         android:layout_marginTop="5dp"
                         android:hint="Property Ratting">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:textSize="@dimen/H5"
                             android:clickable="true"
                             android:editable="false"
                             android:focusable="false"
                             android:fontFamily="@font/roboto"
                             android:inputType="text"
                             android:textColor="@color/secondary"
-                            android:textColorHint="@color/secondary" />
+                            android:textColorHint="@color/secondary"
+                            android:textSize="@dimen/H5" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -377,9 +381,9 @@
                     app:layout_constraintTop_toBottomOf="@id/ll6">
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/TextInputLayoutStyle"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/textInputLayoutHeight"
-                        style="@style/TextInputLayoutStyle"
                         android:layout_marginTop="5dp"
                         android:hint="Website"
                         app:endIconMode="clear_text"
@@ -389,16 +393,17 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
-                            android:textSize="@dimen/H5"
                             android:inputType="text"
                             android:textColor="@color/secondary"
-                            android:textColorHint="@color/secondary" />
+                            android:textColorHint="@color/secondary"
+                            android:textSize="@dimen/H5" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -413,11 +418,11 @@
                     android:id="@+id/add"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginEnd="5dp"
                     android:fontFamily="@font/roboto_medium"
-                    android:paddingStart="@dimen/H5"
                     android:paddingVertical="5dp"
+                    android:paddingStart="@dimen/H5"
                     android:text="+ Add"
                     android:textColor="@color/secondary"
                     android:textSize="@dimen/H5"
@@ -428,12 +433,12 @@
                     android:id="@+id/amenitiesRecycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="2"
-                    android:layout_marginTop="10dp"
                     android:layout_marginStart="20dp"
-                    tools:listitem="@layout/item_amenities"
-                    app:layout_constraintTop_toBottomOf="@id/add"/>
+                    android:layout_marginTop="10dp"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@id/add"
+                    app:spanCount="2"
+                    tools:listitem="@layout/item_amenities" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -441,30 +446,30 @@
                 android:id="@+id/frame2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/frame1"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
                     android:id="@+id/ll3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="45dp"
-                        android:layout_marginTop="15dp"
                         android:layout_marginStart="20dp"
+                        android:layout_marginTop="15dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/roboto_medium"
                         android:paddingVertical="5dp"
                         android:text="Property’s Description"
                         android:textAlignment="center"
                         android:textColor="@color/secondary"
-                        android:textSize="@dimen/H4"/>
+                        android:textSize="@dimen/H4" />
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
@@ -480,11 +485,11 @@
                             android:layout_height="wrap_content"
                             android:background="@null"
                             android:gravity="start"
-                            android:textSize="@dimen/H5"
                             android:hint="Describe the room"
                             android:maxHeight="180dp"
                             android:minHeight="120dp"
-                            android:padding="8dp" />
+                            android:padding="8dp"
+                            android:textSize="@dimen/H5" />
 
                     </androidx.cardview.widget.CardView>
 
@@ -494,37 +499,37 @@
                     android:id="@+id/imagesT"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Images"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/roboto_medium"
-                    android:textSize="@dimen/H4"
+                    android:text="Images"
                     android:textColor="@color/secondary"
+                    android:textSize="@dimen/H4"
                     app:layout_constraintStart_toStartOf="@id/ll3"
-                    app:layout_constraintTop_toBottomOf="@id/ll3"/>
+                    app:layout_constraintTop_toBottomOf="@id/ll3" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Max 2 MB per image, Upto 10 images"
                     android:layout_marginStart="10dp"
                     android:fontFamily="@font/roboto"
-                    android:textSize="@dimen/H6"
+                    android:text="Max 2 MB per image, Upto 10 images"
                     android:textColor="@color/secondary"
+                    android:textSize="@dimen/H6"
                     app:layout_constraintBottom_toBottomOf="@id/imagesT"
-                    app:layout_constraintStart_toEndOf="@id/imagesT"/>
+                    app:layout_constraintStart_toEndOf="@id/imagesT" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/imagesRecycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="5"
-                    tools:listitem="@layout/item_image"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginStart="20dp"
-                    app:layout_constraintTop_toBottomOf="@id/imagesT"/>
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@id/imagesT"
+                    app:spanCount="5"
+                    tools:listitem="@layout/item_image" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -533,11 +538,13 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/addressLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:visibility="gone"
             android:paddingBottom="12dp"
+            android:layout_marginBottom="20dp"
             android:layout_marginHorizontal="20dp"
             android:background="@drawable/corner_bottom_white_background"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ll">
 
             <androidx.constraintlayout.widget.ConstraintLayout

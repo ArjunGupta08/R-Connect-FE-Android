@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            app:layout_constraintHorizontal_bias="0.03"
+            app:layout_constraintHorizontal_bias="0.02"
             app:layout_constraintTop_toTopOf="@id/searchCard"
             app:layout_constraintEnd_toStartOf="@id/llView"
             app:layout_constraintBottom_toBottomOf="@id/searchCard"
