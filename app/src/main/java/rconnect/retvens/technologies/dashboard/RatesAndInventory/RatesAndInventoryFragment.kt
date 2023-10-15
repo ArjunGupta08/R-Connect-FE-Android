@@ -2,6 +2,7 @@ package rconnect.retvens.technologies.dashboard.RatesAndInventory
 
 import android.app.Dialog
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
@@ -10,9 +11,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.FragmentRatesAndInventoryBinding
@@ -27,6 +32,8 @@ class RatesAndInventoryFragment : Fragment() {
     private val cal = Calendar.getInstance(Locale.ENGLISH)
     private  var mList: ArrayList<String> = ArrayList();
     lateinit var dialog: Dialog
+    private lateinit var robotoMedium : Typeface
+    private lateinit var roboto:Typeface
 
 
     override fun onCreateView(
@@ -41,6 +48,9 @@ class RatesAndInventoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        robotoMedium = ResourcesCompat.getFont(requireContext(),R.font.roboto_medium)!!
+        roboto = ResourcesCompat.getFont(requireContext(),R.font.roboto)!!
 
         bindingTab.calenderRecycler.layoutManager = LinearLayoutManager(requireContext(),
             LinearLayoutManager.HORIZONTAL,false)
@@ -73,14 +83,7 @@ class RatesAndInventoryFragment : Fragment() {
             val cancel = dialog.findViewById<TextView>(R.id.cancel)
             cancel.setOnClickListener { dialog.cancel() }
             val sat = dialog.findViewById<TextView>(R.id.saturday)
-            sat.setOnClickListener {
-                if (!satu){
-                    sat.setBackgroundResource(R.drawable.rounded_black_border)
-                }
-                else{
-                    sat.setBackgroundResource(R.drawable.rounded_white_border)
-                }
-            }
+
             val fri = dialog.findViewById<TextView>(R.id.fri)
             val sun = dialog.findViewById<TextView>(R.id.sunday)
             val mon = dialog.findViewById<TextView>(R.id.monday)
@@ -167,45 +170,106 @@ class RatesAndInventoryFragment : Fragment() {
             var isWeekDay = false
             var isCustom = false
 
+            fun notClickable(){
+                sun.isClickable = false
+                mon.isClickable = false
+                tues.isClickable = false
+                wed.isClickable = false
+                thur.isClickable = false
+                fri.isClickable = false
+                sat.isClickable = false
+            }
+            fun allClickable(){
+                sun.isClickable = true
+                mon.isClickable = true
+                tues.isClickable = true
+                wed.isClickable = true
+                thur.isClickable = true
+                fri.isClickable = true
+                sat.isClickable = true
+            }
+            fun selectHead(head:TextView){
+                unSelectCard(txt_all_days)
+                unSelectCard(txt_week_days)
+                unSelectCard(txt_weekends)
+                unSelectCard(txt_custom)
+
+                head.typeface = robotoMedium
+                selectCard(head)
+            }
+            fun unSelectAllDays(){
+                unSelectCard(sun)
+                unSelectCard(mon)
+                unSelectCard(tues)
+                unSelectCard(wed)
+                unSelectCard(thur)
+                unSelectCard(fri)
+                unSelectCard(sat)
+            }
+
             txt_all_days.setOnClickListener {
-                if (!isAllDay){
-                    selectCard(txt_all_days)
+
+                    selectHead(txt_all_days)
+                    selectCard(sun)
+                    selectCard(mon)
+                    selectCard(tues)
+                    selectCard(wed)
+                    selectCard(thur)
+                    selectCard(fri)
+                    selectCard(sat)
+                    notClickable()
                     isAllDay = true
-                }
-                else{
-                    unSelectCard(txt_all_days)
-                    isAllDay = false
-                }
+
             }
             txt_weekends.setOnClickListener {
-                if (!isweekend){
-                    selectCard(txt_weekends)
+
+                    selectHead(txt_weekends)
+                    unSelectAllDays()
+                    selectCard(sat)
+                    selectCard(sun)
                     isweekend = true
-                }
-                else{
-                    unSelectCard(txt_weekends)
-                    isweekend = false
-                }
+                    notClickable()
+
             }
             txt_week_days.setOnClickListener {
-                if (!isWeekDay){
-                    selectCard(txt_week_days)
+
+                    selectHead(txt_week_days)
+                    unSelectAllDays()
+
+                    selectCard(mon)
+                    selectCard(tues)
+                    selectCard(wed)
+                    selectCard(thur)
+                    selectCard(fri)
                     isWeekDay = true
-                }
-                else{
-                    unSelectCard(txt_week_days)
-                    isWeekDay = false
-                }
+
             }
             txt_custom.setOnClickListener {
-                if (!isCustom){
-                    selectCard(txt_custom)
+
+                    selectHead(txt_custom)
+                    unSelectAllDays()
+                    allClickable()
                     isCustom = true
+            }
+
+            val add_inventory = dialog.findViewById<ImageView>(R.id.add_inventory)
+            val blockRoomCard = dialog.findViewById<MaterialCardView>(R.id.block_room)
+            val addRoomCard = dialog.findViewById<MaterialCardView>(R.id.add_room_card)
+            var isInventoryOpen = false
+            add_inventory.setOnClickListener {
+                if (!isInventoryOpen){
+                    add_inventory.setImageResource(R.drawable.svg_arrow_down)
+                    blockRoomCard.isVisible = true
+                    addRoomCard.isVisible = true
+                    isInventoryOpen = true
                 }
                 else{
-                    unSelectCard(txt_custom)
-                    isCustom = false
+                    add_inventory.setImageResource(R.drawable.svg_add_icon)
+                    blockRoomCard.isVisible = false
+                    addRoomCard.isVisible = false
+                    isInventoryOpen = false
                 }
+
             }
 
 
@@ -214,8 +278,6 @@ class RatesAndInventoryFragment : Fragment() {
             dialog.findViewById<TextInputLayout>(R.id.from_Layout).setOnClickListener {
 
             }
-
-
         }
 
 
@@ -243,6 +305,7 @@ class RatesAndInventoryFragment : Fragment() {
     private fun unSelectCard(day: TextView?) {
             day?.setBackgroundResource(R.drawable.rounded_white_border)
             day?.setTextColor(ContextCompat.getColor(requireContext(),R.color.lightBlack))
+        day?.typeface = roboto
     }
 
     private fun setInventory() {

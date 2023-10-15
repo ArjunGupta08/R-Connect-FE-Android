@@ -54,12 +54,12 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_inventory"
             android:layout_width="0dp"
-            android:layout_height="@dimen/textInputLayoutHeight"
+            android:layout_height="wrap_content"
             app:strokeWidth="1dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintStart_toEndOf="@id/sourceLayout"
-            app:layout_constraintTop_toTopOf="@id/sourceLayout"
+            app:layout_constraintTop_toBottomOf="@id/head_bulk"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/sourceLayout"
             app:cardBackgroundColor="@color/white"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
@@ -69,19 +69,20 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_marginVertical="5dp">
-                
+                android:layout_marginVertical="12dp">
+
                 <TextView
+                    android:id="@+id/txt_inv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:textSize="@dimen/H5"
                     android:text="Inventory"
                     android:layout_marginStart="10dp"
                     android:textColor="@color/secondary"
                     android:fontFamily="@font/roboto_bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -90,18 +91,159 @@
                     android:textColor="@color/secondary"
                     android:fontFamily="@font/roboto_bold"
                     android:layout_marginEnd="16dp"
-                    app:layout_constraintEnd_toStartOf="@id/add"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintEnd_toStartOf="@id/add_inventory"
+                    app:layout_constraintTop_toTopOf="@id/txt_inv"
+                    app:layout_constraintBottom_toBottomOf="@id/txt_inv"/>
                 <ImageView
-                    android:id="@+id/add"
+                    android:id="@+id/add_inventory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/svg_add_icon"
                     android:layout_marginEnd="15dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/txt_inv"
+                    app:layout_constraintBottom_toBottomOf="@id/txt_inv"
                     app:layout_constraintEnd_toEndOf="parent"/>
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/block_room"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="15dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="0dp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@id/add_inventory"
+                    app:layout_constraintStart_toStartOf="@id/txt_inv"
+                    app:layout_constraintTop_toBottomOf="@id/txt_inv"
+                    app:strokeColor="@color/subtitle"
+                    app:strokeWidth="1dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/txt_block_room"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:fontFamily="@font/roboto"
+                            android:text="Block Room Type Inventory"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:orientation="horizontal"
+                            app:layout_constraintBottom_toBottomOf="@id/txt_block_room"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/txt_block_room">
+
+                            <ImageView
+                                android:id="@+id/remove_block"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/svg_remove" />
+
+                            <EditText
+                                android:id="@+id/CountBlockRoom"
+                                style="@style/TextAppearance.AppCompat.Body1"
+                                android:layout_width="@dimen/countingEditTextWidth"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:fontFamily="@font/roboto_bold"
+                                android:inputType="number"
+                                android:text="1"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/H5" />
+
+                            <ImageView
+                                android:id="@+id/add_block_room"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/svg_add" />
+
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/add_room_card"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="10dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="0dp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@id/add_inventory"
+                    app:layout_constraintStart_toStartOf="@id/txt_inv"
+                    app:layout_constraintTop_toBottomOf="@id/block_room"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:strokeColor="@color/subtitle"
+                    app:strokeWidth="1dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/rate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:fontFamily="@font/roboto"
+                            android:text="Add Room Type Inventory"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:orientation="horizontal"
+                            app:layout_constraintBottom_toBottomOf="@id/rate"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/rate">
+
+                            <ImageView
+                                android:id="@+id/remove"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/svg_remove" />
+
+                            <EditText
+                                android:id="@+id/propertyCountEditText"
+                                style="@style/TextAppearance.AppCompat.Body1"
+                                android:layout_width="@dimen/countingEditTextWidth"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:fontFamily="@font/roboto_bold"
+                                android:inputType="number"
+                                android:text="1"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/H5" />
+
+                            <ImageView
+                                android:id="@+id/add_room_type"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/svg_add" />
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -133,12 +275,12 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_rates"
             android:layout_width="0dp"
-            android:layout_height="@dimen/textInputLayoutHeight"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             app:strokeWidth="1dp"
             app:layout_constraintStart_toEndOf="@id/room_typeLayout"
-            app:layout_constraintTop_toTopOf="@id/room_typeLayout"
+            app:layout_constraintTop_toBottomOf="@id/card_inventory"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/room_typeLayout"
             app:cardBackgroundColor="@color/white"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
@@ -156,6 +298,7 @@
                     android:textSize="@dimen/H5"
                     android:text="Rates"
                     android:layout_marginStart="10dp"
+                    android:layout_marginVertical="11dp"
                     android:textColor="@color/secondary"
                     android:fontFamily="@font/roboto_bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -212,12 +355,12 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_restrictions"
             android:layout_width="0dp"
-            android:layout_height="@dimen/textInputLayoutHeight"
+            android:layout_height="wrap_content"
             app:strokeWidth="1dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintStart_toEndOf="@id/rate_planLayout"
-            app:layout_constraintTop_toTopOf="@id/rate_planLayout"
+            app:layout_constraintTop_toBottomOf="@id/card_rates"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/rate_planLayout"
             app:cardBackgroundColor="@color/white"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
@@ -234,6 +377,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/H5"
                     android:text="Restrictions"
+                    android:layout_marginVertical="10dp"
                     android:layout_marginStart="10dp"
                     android:textColor="@color/secondary"
                     android:fontFamily="@font/roboto_bold"
@@ -357,7 +501,6 @@
             android:layout_height="30dp"
             android:textAlignment="center"
             android:gravity="center"
-            android:background="@drawable/rounded_black_border"
             app:layout_constraintStart_toEndOf="@id/txt_weekends"
             app:layout_constraintBottom_toBottomOf="@id/txt_all_days"
             app:layout_constraintEnd_toEndOf="@id/txt_custom"
@@ -371,15 +514,13 @@
             android:layout_height="30dp"
             android:textAlignment="center"
             android:gravity="center"
-            android:background="@drawable/rounded_black_border"
             app:layout_constraintStart_toEndOf="@id/txt_week_days"
             app:layout_constraintBottom_toBottomOf="@id/txt_all_days"
             app:layout_constraintEnd_toEndOf="@id/to_Layout"
             app:layout_constraintHorizontal_bias="1"
             android:layout_marginTop="16dp"
             android:textSize="@dimen/H5"
-            android:textStyle="bold"
-            android:textColor="@color/black"
+            android:textColor="@color/lightBlack"
             android:text="Custom"/>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_day"
@@ -401,8 +542,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginTop="16dp"
                 android:textSize="@dimen/H5"
-                android:textColor="@color/black"
-                android:background="@drawable/rounded_black_border"
+                android:textColor="@color/lightBlack"
                 android:text="Sat"/>
             <TextView
                 android:id="@+id/sunday"
@@ -429,8 +569,7 @@
                 app:layout_constraintEnd_toStartOf="@id/tuesday"
                 android:layout_marginTop="16dp"
                 android:textSize="@dimen/H5"
-                android:background="@drawable/rounded_black_border"
-                android:textColor="@color/black"
+                android:textColor="@color/lightBlack"
                 android:text="Mon"/>
             <TextView
                 android:id="@+id/tuesday"
@@ -456,8 +595,7 @@
                 app:layout_constraintEnd_toStartOf="@id/thursday"
                 android:layout_marginTop="16dp"
                 android:textSize="@dimen/H5"
-                android:background="@drawable/rounded_black_border"
-                android:textColor="@color/black"
+                android:textColor="@color/lightBlack"
                 android:text="Wed"/>
             <TextView
                 android:id="@+id/thursday"
