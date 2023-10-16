@@ -5,25 +5,39 @@
     android:layout_height="wrap_content"
     android:id="@+id/addImageView">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/img"
+    <androidx.cardview.widget.CardView
         android:layout_width="70dp"
         android:layout_height="70dp"
+        app:cardCornerRadius="10dp"
         android:layout_margin="3dp"
-        android:background="@color/unselectedBackground"
+        style="@style/CardViewTheme"
+        app:cardElevation="1dp"
+        app:cardBackgroundColor="@color/unselectedBackground"
+        android:background="@drawable/svg_add_plus"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearance="@style/RoundedCornerImage_10" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:src="@drawable/svg_add_plus"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/img"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/img" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:src="@drawable/svg_add_plus"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/img"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/img" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
