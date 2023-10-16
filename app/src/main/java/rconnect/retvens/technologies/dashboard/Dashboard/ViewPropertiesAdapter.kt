@@ -29,8 +29,8 @@ class ViewPropertiesAdapter(val context: Context, private val itemList: List<Vie
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = itemList[position]
 
-        holder.roomType.text = (item.roomType)
-        holder.cityName.text = (item.cityName)
+        holder.propertyName.text = (item.roomType)
+        holder.location.text = (item.cityName)
 
     }
 
@@ -40,8 +40,8 @@ class ViewPropertiesAdapter(val context: Context, private val itemList: List<Vie
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val roomType = itemView.findViewById<TextView>(R.id.roomType)
-        val cityName = itemView.findViewById<TextView>(R.id.cityName)
+        val propertyName = itemView.findViewById<TextView>(R.id.propertyName)
+        val location = itemView.findViewById<TextView>(R.id.location)
 
     }
 }
