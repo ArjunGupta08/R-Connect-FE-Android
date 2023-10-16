@@ -605,7 +605,7 @@
                 android:textColor="@color/secondary"
                 android:textSize="@dimen/H4"
                 app:layout_constraintStart_toStartOf="@id/ll7"
-                app:layout_constraintBottom_toBottomOf="@id/add"
+                app:layout_constraintBottom_toBottomOf="@id/add_inventory"
                 app:layout_constraintTop_toTopOf="@id/add"/>
 
             <TextView

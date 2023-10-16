@@ -108,6 +108,22 @@
         <item name="boxCornerRadiusTopEnd">10dp</item>
         <item name="boxCornerRadiusTopStart">10dp</item>
     </style>
+    <style name="ClickableDateStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <!--Box Stroke-->
+        <item name="boxStrokeWidth">0.5dp</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
+        <item name="boxStrokeColor">@color/subtitle</item>
+<!--        <item name="android:textColorHint">@color/secondary</item>-->
+        <item name="hintTextColor">@color/textHighlighted</item>
+        <!--End Icon-->
+
+
+        <!--Radius-->
+        <item name="boxCornerRadiusBottomStart">10dp</item>
+        <item name="boxCornerRadiusBottomEnd">10dp</item>
+        <item name="boxCornerRadiusTopEnd">10dp</item>
+        <item name="boxCornerRadiusTopStart">10dp</item>
+    </style>
 
     <!--Card View Theme-->
     <style name="CardViewTheme" parent="CardView">
