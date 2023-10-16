@@ -170,7 +170,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/allProp"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             style="@style/CardViewTheme"
             android:layout_marginVertical="20dp"
             android:visibility="gone"
@@ -187,102 +187,165 @@
                 android:layout_margin="20dp"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/items_linear"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="11">
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="10dp">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:id="@+id/hCode"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/roboto"
                         android:text="H-Code"
                         android:textColor="@color/subtitle"
-                        android:textSize="@dimen/H6" />
+                        android:textSize="@dimen/H6"
+                        android:singleLine="true"
+                        app:layout_constraintEnd_toStartOf="@id/propertyName"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
 
                     <TextView
+                        android:id="@+id/propertyName"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
-                        android:fontFamily="@font/roboto"
                         android:text="Property Name"
+                        android:fontFamily="@font/roboto"
                         android:textColor="@color/subtitle"
-                        android:textSize="@dimen/H6" />
+                        android:textSize="@dimen/H6"
+                        android:singleLine="true"
+                        android:layout_marginStart="5dp"
+                        app:layout_constraintEnd_toStartOf="@id/guide1"
+                        app:layout_constraintStart_toEndOf="@id/hCode"
+                        app:layout_constraintBottom_toBottomOf="@id/hCode"
+                        app:layout_constraintTop_toTopOf="@id/hCode"/>
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guide1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.28"/>
 
                     <TextView
+                        android:id="@+id/propertyType"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/roboto"
                         android:text="Property Type"
                         android:textColor="@color/subtitle"
-                        android:textSize="@dimen/H6" />
+                        android:textSize="@dimen/H6"
+                        android:singleLine="true"
+                        android:layout_marginStart="5dp"
+                        app:layout_constraintEnd_toStartOf="@id/location"
+                        app:layout_constraintStart_toEndOf="@id/guide1"
+                        app:layout_constraintBottom_toBottomOf="@id/hCode"
+                        app:layout_constraintTop_toTopOf="@id/hCode"/>
 
                     <TextView
+                        android:id="@+id/location"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
                         android:layout_weight="1"
-                        android:fontFamily="@font/roboto"
                         android:text="Location"
+                        android:fontFamily="@font/roboto"
                         android:textColor="@color/subtitle"
-                        android:textSize="@dimen/H6" />
+                        android:textSize="@dimen/H6"
+                        android:singleLine="true"
+                        android:layout_marginStart="5dp"
+                        app:layout_constraintEnd_toStartOf="@id/occupancy"
+                        app:layout_constraintStart_toEndOf="@id/propertyType"
+                        app:layout_constraintBottom_toBottomOf="@id/hCode"
+                        app:layout_constraintTop_toTopOf="@id/hCode"/>
 
                     <TextView
+                        android:id="@+id/occupancy"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/roboto"
                         android:text="Occupancy"
                         android:textColor="@color/subtitle"
-                        android:textSize="@dimen/H6" />
+                        android:textSize="@dimen/H6"
+                        android:singleLine="true"
+                        android:layout_marginStart="5dp"
+                        app:layout_constraintEnd_toStartOf="@id/totalRooms"
+                        app:layout_constraintStart_toEndOf="@id/location"
+                        app:layout_constraintBottom_toBottomOf="@id/hCode"
+                        app:layout_constraintTop_toTopOf="@id/hCode"/>
 
                     <TextView
+                        android:id="@+id/totalRooms"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/roboto"
                         android:text="Total Rooms"
                         android:textColor="@color/subtitle"
-                        android:textSize="@dimen/H6" />
+                        android:textSize="@dimen/H6"
+                        android:singleLine="true"
+                        android:layout_marginStart="5dp"
+                        app:layout_constraintEnd_toStartOf="@id/amenities"
+                        app:layout_constraintStart_toEndOf="@id/occupancy"
+                        app:layout_constraintBottom_toBottomOf="@id/hCode"
+                        app:layout_constraintTop_toTopOf="@id/hCode"/>
 
                     <TextView
+                        android:id="@+id/amenities"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/roboto"
                         android:text="Amenities"
                         android:textColor="@color/subtitle"
-                        android:textSize="@dimen/H6" />
+                        android:textSize="@dimen/H6"
+                        android:singleLine="true"
+                        android:layout_marginStart="5dp"
+                        app:layout_constraintEnd_toStartOf="@id/status"
+                        app:layout_constraintStart_toEndOf="@id/totalRooms"
+                        app:layout_constraintBottom_toBottomOf="@id/hCode"
+                        app:layout_constraintTop_toTopOf="@id/hCode"/>
 
                     <TextView
+                        android:id="@+id/status"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/roboto"
                         android:text="Status"
                         android:textColor="@color/subtitle"
-                        android:textSize="@dimen/H6" />
+                        android:textSize="@dimen/H6"
+                        android:singleLine="true"
+                        android:layout_marginStart="5dp"
+                        app:layout_constraintEnd_toStartOf="@id/actions"
+                        app:layout_constraintStart_toEndOf="@id/amenities"
+                        app:layout_constraintBottom_toBottomOf="@id/hCode"
+                        app:layout_constraintTop_toTopOf="@id/hCode"/>
 
                     <TextView
+                        android:id="@+id/actions"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_weight="1"
                         android:fontFamily="@font/roboto"
                         android:text="Actions"
                         android:textColor="@color/subtitle"
-                        android:textSize="@dimen/H6" />
+                        android:textSize="@dimen/H6"
+                        android:textAlignment="center"
+                        android:singleLine="true"
+                        android:layout_marginStart="5dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/status"
+                        app:layout_constraintBottom_toBottomOf="@id/hCode"
+                        app:layout_constraintTop_toTopOf="@id/hCode"/>
 
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/allRecycler"
