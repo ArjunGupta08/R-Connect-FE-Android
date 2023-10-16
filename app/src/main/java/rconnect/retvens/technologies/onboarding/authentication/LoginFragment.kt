@@ -12,6 +12,7 @@ import android.widget.Toast
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.Dashboard.DashboardActivity
 import rconnect.retvens.technologies.databinding.FragmentLoginBinding
+import rconnect.retvens.technologies.utils.shakeAnimation
 
 class LoginFragment : Fragment() {
 
@@ -41,17 +42,29 @@ class LoginFragment : Fragment() {
 
         binding.signInCard.setOnClickListener {
 
-            if (binding.authCode.text!!.isEmpty()) {
-                showSnackBarMessage("Please enter Hotel R code")
-            } else if (binding.username.text!!.isEmpty()) {
-                showSnackBarMessage("Please enter Hotel R username")
+            if (binding.username.text!!.isEmpty()) {
+                shakeAnimation(binding.usernameLayout,requireContext())
+                binding.usernameLayout.error = "Please enter username"
+
+            } else if (binding.authCode.text!!.isEmpty()) {
+                binding.authCodeLayout.error = "Please enter Hotel R code"
+                shakeAnimation(binding.authCodeLayout,requireContext())
+                binding.usernameLayout.isErrorEnabled = false
+
             } else if (binding.password.text!!.isEmpty()) {
-                showSnackBarMessage("Please enter password")
+                binding.passwordLayout.error = "Please enter password"
+                shakeAnimation(binding.passwordLayout,requireContext())
+                binding.authCodeLayout.isErrorEnabled = false
+
             } else {
                 val intent = Intent(requireContext(), DashboardActivity::class.java)
                 startActivity(intent)
+                binding.usernameLayout.isErrorEnabled = false
+                binding.authCodeLayout.isErrorEnabled = false
+                binding.passwordLayout.isErrorEnabled = false
             }
         }
+
 
     }
 
