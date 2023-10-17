@@ -7,6 +7,7 @@ import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
@@ -87,6 +88,7 @@ class DashboardActivity : AppCompatActivity() {
             val dialog = Dialog(this) // Use 'this' as the context, assuming this code is within an Activity
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.setCancelable(true)
+            dialog.setCanceledOnTouchOutside(true)
             dialog.setContentView(R.layout.dialog_notification)
             dialog.window?.apply {
                 setBackgroundDrawableResource(android.R.color.transparent) // Makes the background transparent
@@ -102,6 +104,9 @@ class DashboardActivity : AppCompatActivity() {
             notificationAdapter.notifyDataSetChanged()
 
             dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+            dialog.window?.setGravity(Gravity.END)
+
             dialog.show()
 
             dialog.findViewById<ImageView>(R.id.iv_back).setOnClickListener { dialog.dismiss() }

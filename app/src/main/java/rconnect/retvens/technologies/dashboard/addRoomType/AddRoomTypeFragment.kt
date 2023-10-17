@@ -24,17 +24,34 @@ import rconnect.retvens.technologies.dashboard.addPropertyFrags.AddAmenitiesAdap
 import rconnect.retvens.technologies.dashboard.addPropertyFrags.AddAmenitiesDataClass
 import rconnect.retvens.technologies.dashboard.addPropertyFrags.AmenitiesIconAdapter
 import rconnect.retvens.technologies.dashboard.addPropertyFrags.AmenitiesIconDataClass
+import rconnect.retvens.technologies.dashboard.addRoomType.imageAdapter.SelectBathroomImagesAdapter
+import rconnect.retvens.technologies.dashboard.addRoomType.imageAdapter.SelectBedImagesAdapter
+import rconnect.retvens.technologies.dashboard.addRoomType.imageAdapter.SelectImagesDataClass
+import rconnect.retvens.technologies.dashboard.addRoomType.imageAdapter.SelectRoomImagesAdapter
+import rconnect.retvens.technologies.dashboard.addRoomType.imageAdapter.SelectViewImagesAdapter
 import rconnect.retvens.technologies.databinding.FragmentAddRoomTypeBinding
 
-class AddRoomTypeFragment : Fragment(), SelectImagesAdapter.OnItemClickListener {
+class AddRoomTypeFragment : Fragment(),
+    SelectRoomImagesAdapter.OnItemClickListener,
+    SelectViewImagesAdapter.OnItemClickListener,
+    SelectBathroomImagesAdapter.OnItemClickListener,
+    SelectBedImagesAdapter.OnItemClickListener {
 
     private lateinit var binding:FragmentAddRoomTypeBinding
 
     private lateinit var imageUri: Uri
     private var PICK_IMAGE_REQUEST_CODE : Int = 0
 
-    lateinit var selectImagesAdapter: SelectImagesAdapter
-    private var selectedImagesList = ArrayList<SelectImagesDataClass>()
+    private var recyclerType = 1
+    private lateinit var selectRoomImagesAdapter: SelectRoomImagesAdapter
+    private lateinit var selectViewImagesAdapter: SelectViewImagesAdapter
+    private lateinit var selectBathroomImagesAdapter: SelectBathroomImagesAdapter
+    private lateinit var selectBedImagesAdapter: SelectBedImagesAdapter
+
+    private var selectedRoomImagesList = ArrayList<SelectImagesDataClass>()
+    private var selectedViewImagesList = ArrayList<SelectImagesDataClass>()
+    private var selectedBathroomImagesList = ArrayList<SelectImagesDataClass>()
+    private var selectedBedImagesList = ArrayList<SelectImagesDataClass>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,17 +75,32 @@ class AddRoomTypeFragment : Fragment(), SelectImagesAdapter.OnItemClickListener 
 
         }
 
-        binding.imagesRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
-        binding.imagesRecycler.setHasFixedSize(true)
+        binding.roomsRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
 
-        selectImagesAdapter = SelectImagesAdapter(requireContext(), selectedImagesList)
-        selectImagesAdapter.setOnItemClickListener(this)
-        binding.imagesRecycler.adapter = selectImagesAdapter
+        binding.viewRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
+
+        binding.bathroomRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
+
+        binding.bedRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
+
+        selectRoomImagesAdapter = SelectRoomImagesAdapter(requireContext(), selectedRoomImagesList)
+        selectRoomImagesAdapter.setOnItemClickListener(this)
+        binding.roomsRecycler.adapter = selectRoomImagesAdapter
+
+        selectViewImagesAdapter = SelectViewImagesAdapter(requireContext(), selectedViewImagesList)
+        selectViewImagesAdapter.setOnItemClickListener(this)
+        binding.viewRecycler.adapter = selectViewImagesAdapter
+
+        selectBathroomImagesAdapter = SelectBathroomImagesAdapter(requireContext(), selectedBathroomImagesList)
+        selectBathroomImagesAdapter.setOnItemClickListener(this)
+        binding.bathroomRecycler.adapter = selectBathroomImagesAdapter
+
+        selectBedImagesAdapter = SelectBedImagesAdapter(requireContext(), selectedBedImagesList)
+        selectBedImagesAdapter.setOnItemClickListener(this)
+        binding.bedRecycler.adapter = selectBedImagesAdapter
 
 
         binding.add.setOnClickListener { openAddAmenitiesDialog() }
-
-//        binding.selectImage.setOnClickListener { openGallery() }
 
     }
 
@@ -173,11 +205,32 @@ class AddRoomTypeFragment : Fragment(), SelectImagesAdapter.OnItemClickListener 
 
                 try {
 
-                    selectedImagesList.add(SelectImagesDataClass(imageUri))
-                    selectImagesAdapter = SelectImagesAdapter(requireContext(), selectedImagesList)
-                    selectImagesAdapter.setOnItemClickListener(this)
-                    binding.imagesRecycler.adapter = selectImagesAdapter
-
+                    when (recyclerType) {
+                        1 -> {
+                            selectedRoomImagesList.add(SelectImagesDataClass(imageUri))
+                            selectRoomImagesAdapter = SelectRoomImagesAdapter(requireContext(), selectedRoomImagesList)
+                            selectRoomImagesAdapter.setOnItemClickListener(this)
+                            binding.roomsRecycler.adapter = selectRoomImagesAdapter
+                        }
+                        2 -> {
+                            selectedViewImagesList.add(SelectImagesDataClass(imageUri))
+                            selectViewImagesAdapter = SelectViewImagesAdapter(requireContext(), selectedViewImagesList)
+                            selectViewImagesAdapter.setOnItemClickListener(this)
+                            binding.viewRecycler.adapter = selectViewImagesAdapter
+                        }
+                        3 -> {
+                            selectedBathroomImagesList.add(SelectImagesDataClass(imageUri))
+                            selectBathroomImagesAdapter = SelectBathroomImagesAdapter(requireContext(), selectedBathroomImagesList)
+                            selectBathroomImagesAdapter.setOnItemClickListener(this)
+                            binding.bathroomRecycler.adapter = selectBathroomImagesAdapter
+                        }
+                        4 -> {
+                            selectedBedImagesList.add(SelectImagesDataClass(imageUri))
+                            selectBedImagesAdapter = SelectBedImagesAdapter(requireContext(), selectedBedImagesList)
+                            selectBedImagesAdapter.setOnItemClickListener(this)
+                            binding.bedRecycler.adapter = selectBedImagesAdapter
+                        }
+                    }
                 }catch(e:RuntimeException){
                     Log.d("cropperOnPersonal", e.toString())
                 }catch(e:ClassCastException){
@@ -188,7 +241,23 @@ class AddRoomTypeFragment : Fragment(), SelectImagesAdapter.OnItemClickListener 
         }
     }
 
-    override fun onAddButtonClick() {
+    override fun onAddRoomImage() {
+        recyclerType = 1
+        openGallery()
+    }
+
+    override fun onAddViewImage() {
+        recyclerType = 2
+        openGallery()
+    }
+
+    override fun onAddBathroomImage() {
+        recyclerType = 3
+        openGallery()
+    }
+
+    override fun onAddBedImage() {
+        recyclerType = 4
         openGallery()
     }
 

@@ -49,7 +49,7 @@ fun rightInAnimation(view: View, context: Context) {
     // load the animation
     val animSlideIn: Animation = AnimationUtils.loadAnimation(
         context,
-        R.anim.r_to_l_in_animation
+        R.anim.right_in_animation
     )
     // start the animation
     view.startAnimation(animSlideIn)

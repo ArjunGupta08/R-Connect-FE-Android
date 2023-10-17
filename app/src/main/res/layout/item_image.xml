@@ -8,25 +8,22 @@
         android:id="@+id/img"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_marginEnd="3dp"
-        android:layout_marginBottom="9dp"
+        android:layout_marginTop="10dp"
         android:scaleType="centerCrop"
         android:background="@color/unselectedBackground"
         app:shapeAppearance="@style/RoundedCornerImage_10"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <ImageView
         android:id="@+id/deleteImage"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:padding="5dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@drawable/svg_delete_lite"
         app:tint="@color/black"
-        app:layout_constraintBottom_toTopOf="@id/img"
-        app:layout_constraintStart_toEndOf="@id/img"
+        android:layout_marginTop="-13dp"
+        android:layout_marginEnd="-13dp"
         app:layout_constraintEnd_toEndOf="@id/img"
         app:layout_constraintTop_toTopOf="@id/img"/>
 

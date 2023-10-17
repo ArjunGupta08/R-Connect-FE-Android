@@ -1,4 +1,4 @@
-package rconnect.retvens.technologies.dashboard.addRoomType
+package rconnect.retvens.technologies.dashboard.addRoomType.imageAdapter
 
 import android.net.Uri
 

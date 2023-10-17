@@ -33,14 +33,14 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.Dashboard.ViewPropertiesFragment
-import rconnect.retvens.technologies.dashboard.addRoomType.SelectImagesAdapter
-import rconnect.retvens.technologies.dashboard.addRoomType.SelectImagesDataClass
+import rconnect.retvens.technologies.dashboard.addRoomType.imageAdapter.SelectRoomImagesAdapter
+import rconnect.retvens.technologies.dashboard.addRoomType.imageAdapter.SelectImagesDataClass
 import rconnect.retvens.technologies.databinding.FragmentAddPropertyBinding
 import rconnect.retvens.technologies.utils.Const
 import rconnect.retvens.technologies.utils.fadeOutAnimation
 import rconnect.retvens.technologies.utils.fadeInAnimation
 
-class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectImagesAdapter.OnItemClickListener {
+class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdapter.OnItemClickListener {
 
     private lateinit var binding : FragmentAddPropertyBinding
 
@@ -52,7 +52,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectImagesAdapter.
 
     private var page = 1
 
-    lateinit var selectImagesAdapter: SelectImagesAdapter
+    lateinit var selectImagesAdapter: SelectRoomImagesAdapter
     private var selectedImagesList = ArrayList<SelectImagesDataClass>()
 
     private var isPropertyLogo = true
@@ -85,7 +85,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectImagesAdapter.
         binding.imagesRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
         binding.imagesRecycler.setHasFixedSize(true)
 
-        selectImagesAdapter = SelectImagesAdapter(requireContext(), selectedImagesList)
+        selectImagesAdapter = SelectRoomImagesAdapter(requireContext(), selectedImagesList)
         selectImagesAdapter.setOnItemClickListener(this)
         binding.imagesRecycler.adapter = selectImagesAdapter
 
@@ -219,7 +219,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectImagesAdapter.
         // load the animation
         val animSlideIn: Animation = AnimationUtils.loadAnimation(
             context,
-            R.anim.r_to_l_in_animation
+            R.anim.right_in_animation
         )
         // start the animation
         view.startAnimation(animSlideIn)
@@ -262,7 +262,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectImagesAdapter.
                     } else {
                         selectedImagesList.add(SelectImagesDataClass(imageUri))
                         selectImagesAdapter =
-                            SelectImagesAdapter(requireContext(), selectedImagesList)
+                            SelectRoomImagesAdapter(requireContext(), selectedImagesList)
                         selectImagesAdapter.setOnItemClickListener(this)
                         binding.imagesRecycler.adapter = selectImagesAdapter
                     }
@@ -363,7 +363,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectImagesAdapter.
         dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
     }
 
-    override fun onAddButtonClick() {
+    override fun onAddRoomImage() {
         isPropertyLogo = false
         openGallery()
     }

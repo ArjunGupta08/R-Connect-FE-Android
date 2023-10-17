@@ -98,7 +98,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.84"/>
+            app:layout_constraintGuide_percent="0.865"/>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl4"
             android:layout_width="0dp"
@@ -115,18 +115,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:fontFamily="@font/roboto_medium"
-            android:layout_marginStart="6dp"
             android:text="₹"/>
 
         <TextView
             android:id="@+id/rate"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             android:fontFamily="@font/roboto_medium"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:text="Rate"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="200.00"
             android:textSize="@dimen/H5"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -137,13 +137,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-            <CheckBox
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/img_del"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
             <ImageView
                 android:id="@+id/img_del"
                 android:layout_width="21dp"

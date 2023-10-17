@@ -272,18 +272,9 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/roboto_medium"
                             app:layout_constraintStart_toStartOf="@id/guide"
-                            app:layout_constraintEnd_toStartOf="@id/tax"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:text="Rate"
-                            android:textSize="@dimen/H5"/>
-                        <TextView
-                            android:id="@+id/tax"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/roboto_medium"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            android:text="Tax Inc."
+                            android:text="Rate"
                             android:textSize="@dimen/H5"/>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 <!--                    card work here..-->

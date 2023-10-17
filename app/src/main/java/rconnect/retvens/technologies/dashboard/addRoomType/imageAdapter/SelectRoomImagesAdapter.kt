@@ -1,17 +1,15 @@
-package rconnect.retvens.technologies.dashboard.addRoomType
+package rconnect.retvens.technologies.dashboard.addRoomType.imageAdapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import rconnect.retvens.technologies.R
 
-class SelectImagesAdapter(val context: Context, private val itemList: ArrayList<SelectImagesDataClass>) : RecyclerView.Adapter<SelectImagesAdapter.ViewHolder>() {
+class SelectRoomImagesAdapter(val context: Context, private val itemList: ArrayList<SelectImagesDataClass>) : RecyclerView.Adapter<SelectRoomImagesAdapter.ViewHolder>() {
 
     val VIEW_TYPE_DYNAMIC_ITEM = 1
     val VIEW_TYPE_STATIC_ITEM = 2
@@ -21,7 +19,7 @@ class SelectImagesAdapter(val context: Context, private val itemList: ArrayList<
         onItemClickListener = listener
     }
     interface OnItemClickListener {
-        fun onAddButtonClick()
+        fun onAddRoomImage()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -51,7 +49,7 @@ class SelectImagesAdapter(val context: Context, private val itemList: ArrayList<
         } else if (position == itemList.size) {
             // Handle the static item
             holder.addImage.setOnClickListener {
-                onItemClickListener?.onAddButtonClick()
+                onItemClickListener?.onAddRoomImage()
             }
         }
 
