@@ -27,6 +27,7 @@ import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.RatesAndInventory.RatesAndInventoryFragment
 import rconnect.retvens.technologies.dashboard.addPropertyFrags.AddPropertyFragment
 import rconnect.retvens.technologies.dashboard.addRoomType.AddRoomTypeFragment
+import rconnect.retvens.technologies.dashboard.createRate.CreateRatePlanFragment
 import rconnect.retvens.technologies.dashboard.createRate.CreateRateTypeFragment
 import rconnect.retvens.technologies.dashboard.promotions.PromotionsFragment
 import rconnect.retvens.technologies.databinding.ActivityDashboardBinding
@@ -160,6 +161,10 @@ class DashboardActivity : AppCompatActivity() {
                 isRateOpen = true
                 binding.ll2.setOnClickListener {
                     replaceFragment(CreateRateTypeFragment())
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                }
+                binding.ll3.setOnClickListener {
+                    replaceFragment(CreateRatePlanFragment())
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
                 }
             }
