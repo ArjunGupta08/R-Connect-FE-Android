@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import rconnect.retvens.technologies.R
@@ -48,15 +50,19 @@ class CreateRatePlanFragment : Fragment() {
         binding.recyclerInclusion.adapter = createRatePlanAdapter
         createRatePlanAdapter.notifyDataSetChanged()
 
+        val fragmentManager = childFragmentManager
+        val fragmenTransaction = fragmentManager.beginTransaction()
+        fragmenTransaction.replace(R.id.ratePlanFragContainer, RatePoliciesFragment())
+        fragmenTransaction.commit()
+
         binding.policies.setOnClickListener {
-            val fragmentManager = childFragmentManager
-            val fragmenTransaction = fragmentManager.beginTransaction()
-            fragmenTransaction.replace(R.id.ratePlanDetailsLayout, RatePoliciesFragment())
-            fragmenTransaction.commit()
             binding.policies.background = ContextCompat.getDrawable(requireContext(),R.drawable.corner_top_white_background)
             binding.policies.setTextColor(ContextCompat.getColor(requireContext(),R.color.black))
             binding.policies.typeface = robotoMedium
             binding.policies.textSize = 18F
+
+            view.findViewById<ConstraintLayout>(R.id.policiesLayout).isVisible = true
+            view.findViewById<ConstraintLayout>(R.id.ratePlanDetailsLayout).isVisible = false
 
             binding.ratePlanDetails.background = ContextCompat.getDrawable(requireContext(),R.drawable.corner_top_grey_background)
             binding.ratePlanDetails.typeface = roboto
@@ -65,10 +71,10 @@ class CreateRatePlanFragment : Fragment() {
 
         }
         binding.ratePlanDetails.setOnClickListener {
-            val fragmentManager = childFragmentManager
-            val fragmenTransaction = fragmentManager.beginTransaction()
-            fragmenTransaction.replace(R.id.ratePlanDetailsLayout, CreateRatePlanFragment())
-            fragmenTransaction.commit()
+
+            view.findViewById<ConstraintLayout>(R.id.policiesLayout).isVisible = false
+            view.findViewById<ConstraintLayout>(R.id.ratePlanDetailsLayout).isVisible = true
+
             binding.ratePlanDetails.background = ContextCompat.getDrawable(requireContext(),R.drawable.corner_top_white_background)
             binding.ratePlanDetails.setTextColor(ContextCompat.getColor(requireContext(),R.color.black))
             binding.ratePlanDetails.typeface = robotoMedium
