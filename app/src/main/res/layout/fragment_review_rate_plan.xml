@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".dashboard.createRate.ReviewRatePlanFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/secondaryBackground">
+
+        <TextView
+            android:id="@+id/heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondary"
+            android:text="Create Rate Plan"
+            android:textSize="@dimen/H2"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="30dp"
+            android:fontFamily="@font/roboto_bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:layout_gravity="center"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="@dimen/H5"
+            android:padding="15dp"
+            android:layout_marginEnd="20dp"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/saveBtn"
+            app:layout_constraintTop_toTopOf="@id/saveBtn"
+            app:layout_constraintEnd_toStartOf="@id/saveBtn"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/saveBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_marginEnd="20dp"
+            android:clickable="true"
+            android:backgroundTint="@color/black"
+            app:cardCornerRadius="10dp"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="@id/heading"
+            app:layout_constraintTop_toTopOf="@id/heading"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                android:textAlignment="center"
+                android:layout_gravity="center"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="@dimen/H5"
+                android:layout_marginHorizontal="30dp"
+                android:textColor="@color/white"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:fillViewport="true"
+            android:layout_marginTop="5dp"
+            app:layout_constraintEnd_toEndOf="@id/saveBtn"
+            app:layout_constraintTop_toBottomOf="@id/saveBtn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/heading">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary"
+                    android:text="Rate Plan Details"
+                    android:textSize="@dimen/H3"
+                    android:layout_marginTop="20dp"
+                    android:paddingHorizontal="10dp"
+                    android:fontFamily="@font/roboto_bold"/>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/CardViewTheme"
+                    app:cardElevation="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginHorizontal="10dp"
+                    app:cardCornerRadius="10dp">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp">
+
+                        <LinearLayout
+                            android:id="@+id/ll1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toStartOf="@id/ll2"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/subtitleHeading"
+                                android:text="Rate Plan Name"
+                                android:textSize="@dimen/H4"
+                                android:fontFamily="@font/roboto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:text="Deluxe Room with breakfast"
+                                android:textSize="@dimen/H4"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/roboto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/subtitleHeading"
+                                android:text="Short code"
+                                android:textSize="@dimen/H4"
+                                android:layout_marginTop="10dp"
+                                android:fontFamily="@font/roboto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:text="XYZ-123"
+                                android:textSize="@dimen/H4"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/roboto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/subtitleHeading"
+                                android:text="Room type"
+                                android:textSize="@dimen/H4"
+                                android:layout_marginTop="10dp"
+                                android:fontFamily="@font/roboto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:text="Deluxe Room"
+                                android:textSize="@dimen/H4"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/roboto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/subtitleHeading"
+                                android:text="Inclusion Plan"
+                                android:textSize="@dimen/H4"
+                                android:layout_marginTop="10dp"
+                                android:fontFamily="@font/roboto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:text="CP"
+                                android:textSize="@dimen/H4"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/roboto"/>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginHorizontal="10dp"
+                            app:layout_constraintEnd_toStartOf="@id/ll3"
+                            app:layout_constraintTop_toTopOf="@id/ll1"
+                            app:layout_constraintStart_toEndOf="@id/ll1">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/subtitleHeading"
+                                android:text="Web Description"
+                                android:textSize="@dimen/H4"
+                                android:fontFamily="@font/roboto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:text="At Beleza By The Beach, you can spend time at the beach relaxing in a sun lounger, plus you'll be 0.9 mi (1.4 km) from Colva Beach. The outdoor pool provides a splash of fun, while guests in the mood for pampering can visit the spa to indulge in massages, body wraps."
+                                android:textSize="@dimen/H4"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/roboto"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll3"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/ll1"
+                            app:layout_constraintStart_toEndOf="@id/ll2">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/subtitleHeading"
+                                android:text="Room images"
+                                android:textSize="@dimen/H4"
+                                android:fontFamily="@font/roboto"/>
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                />
+
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary"
+                    android:text="Plan Inclusions &amp; Charges"
+                    android:textSize="@dimen/H3"
+                    android:layout_marginTop="20dp"
+                    android:paddingHorizontal="10dp"
+                    android:fontFamily="@font/roboto_bold"/>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/CardViewTheme"
+                    app:cardElevation="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginHorizontal="10dp"
+                    app:cardCornerRadius="10dp">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp">
+
+                        <LinearLayout
+                            android:id="@+id/ll4"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toStartOf="@id/ll5"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/subtitleHeading"
+                                android:text="Max Adults"
+                                android:textSize="@dimen/H4"
+                                android:layout_marginTop="10dp"
+                                android:fontFamily="@font/roboto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:text="2"
+                                android:textSize="@dimen/H4"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/roboto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/subtitleHeading"
+                                android:text="Max Child"
+                                android:textSize="@dimen/H4"
+                                android:layout_marginTop="10dp"
+                                android:fontFamily="@font/roboto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:text="2"
+                                android:textSize="@dimen/H4"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/roboto"/>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll5"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginHorizontal="10dp"
+                            app:layout_constraintEnd_toStartOf="@id/ll6"
+                            app:layout_constraintTop_toTopOf="@id/ll4"
+                            app:layout_constraintStart_toEndOf="@id/ll4">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/subtitleHeading"
+                                android:text="Extra adult rate"
+                                android:textSize="@dimen/H4"
+                                android:fontFamily="@font/roboto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:text="₹ 1,200"
+                                android:textSize="@dimen/H4"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/roboto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/subtitleHeading"
+                                android:text="Extra Child rate"
+                                android:textSize="@dimen/H4"
+                                android:fontFamily="@font/roboto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:text="₹ 1,200"
+                                android:textSize="@dimen/H4"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/roboto"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll6"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/ll4"
+                            app:layout_constraintStart_toEndOf="@id/ll5">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/subtitleHeading"
+                                android:text="3 Plan Inclusions"
+                                android:textSize="@dimen/H4"
+                                android:fontFamily="@font/roboto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:text="Breakfast - Free once per Night"
+                                android:textSize="@dimen/H4"
+                                android:fontFamily="@font/roboto"/>
+
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary"
+                    android:text="Policies &amp; Restrictions"
+                    android:textSize="@dimen/H3"
+                    android:layout_marginTop="20dp"
+                    android:paddingHorizontal="10dp"
+                    android:fontFamily="@font/roboto_bold"/>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/CardViewTheme"
+                    app:cardElevation="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginHorizontal="10dp"
+                    app:cardCornerRadius="10dp">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp">
+
+                        <LinearLayout
+                            android:id="@+id/ll7"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toStartOf="@id/ll8"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/subtitleHeading"
+                                android:text="Prepaid"
+                                android:textSize="@dimen/H4"
+                                android:layout_marginTop="10dp"
+                                android:fontFamily="@font/roboto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:text="Yes, Minimum 50% Deposit required."
+                                android:textSize="@dimen/H4"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/roboto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/subtitleHeading"
+                                android:text="Min LOS"
+                                android:textSize="@dimen/H4"
+                                android:layout_marginTop="10dp"
+                                android:fontFamily="@font/roboto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:text="2"
+                                android:textSize="@dimen/H4"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/roboto"/>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll8"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginHorizontal="10dp"
+                            app:layout_constraintEnd_toStartOf="@id/ll9"
+                            app:layout_constraintTop_toTopOf="@id/ll7"
+                            app:layout_constraintStart_toEndOf="@id/ll7">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/subtitleHeading"
+                                android:text="Extra adult rate"
+                                android:textSize="@dimen/H4"
+                                android:fontFamily="@font/roboto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:text="₹ 1,200"
+                                android:textSize="@dimen/H4"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/roboto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/subtitleHeading"
+                                android:text="Extra Child rate"
+                                android:textSize="@dimen/H4"
+                                android:fontFamily="@font/roboto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:text="₹ 1,200"
+                                android:textSize="@dimen/H4"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/roboto"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll9"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/ll7"
+                            app:layout_constraintStart_toEndOf="@id/ll8">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/subtitleHeading"
+                                android:text="3 Plan Inclusions"
+                                android:textSize="@dimen/H4"
+                                android:fontFamily="@font/roboto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:text="Breakfast - Free once per Night"
+                                android:textSize="@dimen/H4"
+                                android:fontFamily="@font/roboto"/>
+
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary"
+                    android:text="Special Conditions or Policies"
+                    android:textSize="@dimen/H3"
+                    android:layout_marginTop="20dp"
+                    android:paddingHorizontal="10dp"
+                    android:fontFamily="@font/roboto_bold"/>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/CardViewTheme"
+                    app:cardElevation="4dp"
+                    android:layout_marginVertical="8dp"
+                    android:layout_marginHorizontal="10dp"
+                    app:cardCornerRadius="10dp">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/subtitleHeading"
+                                android:text="Cancelation Policy"
+                                android:textSize="@dimen/H4"
+                                android:layout_marginTop="10dp"
+                                android:fontFamily="@font/roboto"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:text="Yes, Minimum 50% Deposit required."
+                                android:textSize="@dimen/H4"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/roboto"/>
+
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

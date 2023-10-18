@@ -1,20 +1,16 @@
 package rconnect.retvens.technologies.onboarding.authentication
 
-import android.app.ActivityOptions
-import android.content.Intent
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Pair
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import rconnect.retvens.technologies.R
-import rconnect.retvens.technologies.dashboard.Dashboard.DashboardActivity
 import rconnect.retvens.technologies.databinding.ActivityLoginScreenBinding
 import rconnect.retvens.technologies.utils.bottomSlideInAnimation
 import rconnect.retvens.technologies.utils.leftInAnimation
