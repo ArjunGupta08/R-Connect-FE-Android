@@ -5,15 +5,17 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
@@ -21,8 +23,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
-import rconnect.retvens.technologies.NotificationAdapter
-import rconnect.retvens.technologies.NotificationData
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.RatesAndInventory.RatesAndInventoryFragment
 import rconnect.retvens.technologies.dashboard.addPropertyFrags.AddPropertyFragment
@@ -44,6 +44,17 @@ class DashboardActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            val decorView = window.decorView
+            val uiOptions = (
+                    View.SYSTEM_UI_FLAG_FULLSCREEN or
+                            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+                            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    )
+            decorView.systemUiVisibility = uiOptions
+        }
+
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -110,6 +121,12 @@ class DashboardActivity : AppCompatActivity() {
             dialog.show()
 
             dialog.findViewById<ImageView>(R.id.iv_back).setOnClickListener { dialog.dismiss() }
+
+        }
+
+        binding.quickReservation.setOnClickListener {
+
+            openQuickReservationDialog()
 
         }
 
@@ -210,6 +227,46 @@ class DashboardActivity : AppCompatActivity() {
             binding.dashboardFragmentContainer.isVisible = true
         }
 
+    }
+
+    private fun openQuickReservationDialog() {
+        val dialog = Dialog(this) // Use 'this' as the context, assuming this code is within an Activity
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.setContentView(R.layout.dialog_layout_quickreservation)
+        dialog.window?.apply {
+            setBackgroundDrawableResource(android.R.color.transparent) // Makes the background transparent
+            setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        }
+
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        dialog.window?.setGravity(Gravity.END)
+
+        dialog.show()
+
+        val roomDetailRecycler = dialog.findViewById<RecyclerView>(R.id.room_detail_recycler)
+        roomDetailRecycler.layoutManager = LinearLayoutManager(this)
+
+        val number:ArrayList<String> = ArrayList()
+
+        number.add("1")
+
+
+        val adapter = QuickReservationAdapter(number,this)
+        roomDetailRecycler.adapter = adapter
+        adapter.notifyDataSetChanged()
+
+        val addRoom = dialog.findViewById<CardView>(R.id.addRoomType);
+        addRoom.setOnClickListener {
+            number.add("1")
+            adapter.notifyDataSetChanged()
+        }
     }
 
     private fun isCardSelected(card: MaterialCardView, text: TextView) {

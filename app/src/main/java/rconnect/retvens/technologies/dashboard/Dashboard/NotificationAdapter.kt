@@ -1,4 +1,4 @@
-package rconnect.retvens.technologies
+package rconnect.retvens.technologies.dashboard.Dashboard
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,8 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import rconnect.retvens.technologies.R
 
-class NotificationAdapter(val notificationList:ArrayList<NotificationData>,val applicationContext: Context):RecyclerView.Adapter<NotificationAdapter.NotificationHolder>() {
+class NotificationAdapter(val notificationList:ArrayList<NotificationData>, val applicationContext: Context):RecyclerView.Adapter<NotificationAdapter.NotificationHolder>() {
     class NotificationHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
         val notification_title:TextView = itemView.findViewById(R.id.notification_title)
         val notification_desc:TextView = itemView.findViewById(R.id.notification_desc)

@@ -100,12 +100,30 @@
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                         </com.google.android.material.card.MaterialCardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/quick_reservation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="7dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toStartOf="@id/img_notify"
+                    app:layout_constraintTop_toTopOf="@id/img_notify"
+                    app:layout_constraintBottom_toBottomOf="@id/img_notify">
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/quick_calender"
+                    android:padding="9dp"
+                    android:background="#E6ECF5"/>
+                </androidx.cardview.widget.CardView>
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/img_notify"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="7dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="20dp"
                     app:layout_constraintEnd_toStartOf="@id/end_card"
                     app:layout_constraintTop_toTopOf="@id/end_card"
                     app:layout_constraintBottom_toBottomOf="@id/end_card">
@@ -114,7 +132,7 @@
                     android:layout_height="40dp"
                     android:src="@drawable/svg_notify"
                     android:padding="9dp"
-                    android:background="#2D9CDB26"/>
+                    android:background="#262D9CDB"/>
                 </androidx.cardview.widget.CardView>
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"

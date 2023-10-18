@@ -6,16 +6,18 @@ import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.view.Window
+import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.TextInputLayout
@@ -23,6 +25,7 @@ import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.FragmentRatesAndInventoryBinding
 import java.util.Calendar
 import java.util.Locale
+
 
 class RatesAndInventoryFragment : Fragment() {
 
@@ -55,7 +58,7 @@ class RatesAndInventoryFragment : Fragment() {
         bindingTab.calenderRecycler.layoutManager = LinearLayoutManager(requireContext(),
             LinearLayoutManager.HORIZONTAL,false)
 
-        bindingTab.calenderRecycler.isNestedScrollingEnabled = false
+//        bindingTab.inventoryRecycler.setOnTouchListener(OnTouchListener { v, event -> true });
 
         bindingTab.bulkUpdateCard.setOnClickListener {
             dialog = Dialog(requireContext())
@@ -293,6 +296,7 @@ class RatesAndInventoryFragment : Fragment() {
         bindingTab.inventoryRecycler.layoutManager = LinearLayoutManager(requireContext())
         inventoryAdapter = RoomsInventoryAdapter(requireContext(),mList)
 
+
         setInventory()
         bindingTab.inventoryRecycler.adapter = inventoryAdapter
         inventoryAdapter.notifyDataSetChanged()
@@ -320,7 +324,17 @@ class RatesAndInventoryFragment : Fragment() {
         mList.add("6")
         mList.add("6")
         mList.add("6")
-
+        mList.add("7")
+        mList.add("7")
+        mList.add("7")
+        mList.add("6")
+        mList.add("6")
+        mList.add("6")
+        mList.add("6")
+        mList.add("6")
+        mList.add("6")
+        mList.add("6")
+        mList.add("6")
 
     }
 

@@ -32,7 +32,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/black"
+        android:backgroundTint="@color/cardbackcolor"
         >
 
         <TextView
@@ -167,7 +167,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/black"
+        android:backgroundTint="@color/cardbackcolor"
         >
 
         <TextView
@@ -266,14 +266,23 @@
 
         </androidx.recyclerview.widget.RecyclerView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/inventory_recycler"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/calender_recycler"
-            android:orientation="horizontal"
-            tools:listitem="@layout/item_remaining_inventory"
-            />
+            android:layout_below="@id/calender_recycler">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/inventory_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                tools:listitem="@layout/item_remaining_inventory"
+                />
+
+        </androidx.core.widget.NestedScrollView>
+
+
 
     </RelativeLayout>
 

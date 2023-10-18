@@ -9,6 +9,7 @@
     <color name="lightBlack">#717A8F</color>
     <color name="shadowColor">#7B7F80</color>
     <color name="textColor">#171717</color>
+    <color name="cardbackcolor">#10141A</color>
     <color name="subtitle">#828282</color>
     <color name="primaryBackground">#FFFFFF</color>
     <color name="secondaryBackground">#F7F7FC</color>
