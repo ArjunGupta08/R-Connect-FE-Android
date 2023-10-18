@@ -11,6 +11,7 @@
     <color name="textColor">#171717</color>
     <color name="cardbackcolor">#10141A</color>
     <color name="subtitle">#828282</color>
+    <color name="subtitleHeading">#5E5E5E</color>
     <color name="primaryBackground">#FFFFFF</color>
     <color name="secondaryBackground">#F7F7FC</color>
     <color name="unselectedBackground">#E6ECF5</color>

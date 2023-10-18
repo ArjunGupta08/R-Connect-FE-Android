@@ -29,6 +29,7 @@ import rconnect.retvens.technologies.dashboard.addPropertyFrags.AddPropertyFragm
 import rconnect.retvens.technologies.dashboard.addRoomType.AddRoomTypeFragment
 import rconnect.retvens.technologies.dashboard.createRate.CreateRatePlanFragment
 import rconnect.retvens.technologies.dashboard.createRate.CreateRateTypeFragment
+import rconnect.retvens.technologies.dashboard.createRate.ReviewRatePlanFragment
 import rconnect.retvens.technologies.dashboard.promotions.PromotionsFragment
 import rconnect.retvens.technologies.databinding.ActivityDashboardBinding
 import rconnect.retvens.technologies.utils.bottomSlideInAnimation
@@ -213,6 +214,7 @@ class DashboardActivity : AppCompatActivity() {
             isCardSelected(binding.channelCard, binding.channelTxt)
         }
         binding.othersCard.setOnClickListener {
+            replaceFragment(ReviewRatePlanFragment())
             isCardSelected(binding.othersCard, binding.othersTxt)
         }
         binding.pmsCard.setOnClickListener {
