@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
     android:background="@color/secondaryBackground"
-    tools:context=".dashboard.addRoomType.AddRoomTypeFragment">
+    tools:context=".dashboard.configuration.addRoomType.AddRoomTypeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -200,6 +200,7 @@
                     android:layout_marginTop="10dp">
 
                     <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/baseAdultCard"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/textInputLayoutHeight"
                         app:strokeWidth="1dp"
@@ -269,6 +270,7 @@
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/baseChildCard"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/textInputLayoutHeight"
                         app:strokeWidth="1dp"

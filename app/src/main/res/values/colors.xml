@@ -21,6 +21,7 @@
     <color name="textHighlighted">#272A3D</color>
 
     <!--  GREY SHADES  -->
+    <color name="grey5">#F7F7FC</color>
     <color name="grey10">#DCDCDC</color>
     <color name="grey20">#D3D3D3</color>
     <color name="grey30">#C0C0C0</color>

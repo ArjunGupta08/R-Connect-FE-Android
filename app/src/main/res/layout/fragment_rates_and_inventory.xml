@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#F7F7FC"
-    tools:context=".dashboard.RatesAndInventory.RatesAndInventoryFragment">
+    tools:context=".dashboard.channelManager.RatesAndInventory.RatesAndInventoryFragment">
 
     <TextView
         android:id="@+id/Heading"

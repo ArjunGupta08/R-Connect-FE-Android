@@ -9,8 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import rconnect.retvens.technologies.R
-import rconnect.retvens.technologies.dashboard.Dashboard.DashboardActivity
+import rconnect.retvens.technologies.dashboard.DashboardActivity
 import rconnect.retvens.technologies.databinding.FragmentLoginBinding
 import rconnect.retvens.technologies.utils.shakeAnimation
 

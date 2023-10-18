@@ -7,7 +7,7 @@ import android.os.Handler
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import rconnect.retvens.technologies.R
-import rconnect.retvens.technologies.dashboard.Dashboard.DashboardActivity
+import rconnect.retvens.technologies.dashboard.DashboardActivity
 import rconnect.retvens.technologies.databinding.ActivityFinalOnboardingScreenBinding
 
 class FinalOnboardingScreen : AppCompatActivity() {

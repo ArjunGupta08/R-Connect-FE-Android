@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawerLayout"
-    tools:context=".dashboard.Dashboard.DashboardActivity">
+    tools:context=".dashboard.DashboardActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:background="#FFFFFF"
-            android:elevation="4dp"
+            android:elevation="5dp"
             android:gravity="start"
             android:subtitleTextColor="@android:color/white"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
@@ -33,7 +33,7 @@
                 android:layout_height="match_parent">
 
                  <com.google.android.material.card.MaterialCardView
-                            android:layout_width="wrap_content"
+                            android:layout_width="220dp"
                             android:layout_height="50dp"
                             android:layout_gravity="center"
                             android:backgroundTint="@color/primaryBackground"
@@ -44,7 +44,7 @@
                             app:strokeColor="@color/primaryBackground">
 
                             <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="match_parent">
 
                                 <com.google.android.material.imageview.ShapeableImageView
@@ -59,40 +59,43 @@
 
                                 <LinearLayout
                                     android:id="@+id/llH"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginEnd="5dp"
                                     android:orientation="vertical"
+                                    app:layout_constraintEnd_toStartOf="@id/d1"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:layout_constraintStart_toEndOf="@+id/hotel_img"
                                     app:layout_constraintBottom_toBottomOf="@id/hotel_img">
 
                                     <TextView
                                         android:id="@+id/hotelName"
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:text="Taj Hotel"
+                                        android:singleLine="true"
                                         android:textColor="@color/secondary"
                                         android:textSize="@dimen/H5"
-                                        android:fontFamily="@font/roboto_bold"
-                                        android:layout_marginStart="10dp"/>
+                                        android:fontFamily="@font/roboto_bold"/>
                                     <TextView
                                         android:id="@+id/hotelLocation"
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:text="Kanpur, UP"
+                                        android:singleLine="true"
                                         android:textColor="@color/secondary"
                                         android:textSize="@dimen/H6"
-                                        android:fontFamily="@font/roboto"
-                                        android:layout_marginStart="10dp" />
+                                        android:fontFamily="@font/roboto" />
 
                                 </LinearLayout>
 
                                 <ImageView
+                                    android:id="@+id/d1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:src="@drawable/svg_arrow_down"
                                     android:padding="10dp"
-                                    app:layout_constraintStart_toEndOf="@id/llH"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:layout_constraintBottom_toBottomOf="parent" />
@@ -123,7 +126,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="7dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginEnd="25dp"
                     app:layout_constraintEnd_toStartOf="@id/end_card"
                     app:layout_constraintTop_toTopOf="@id/end_card"
                     app:layout_constraintBottom_toBottomOf="@id/end_card">
@@ -152,20 +155,21 @@
                         android:layout_marginVertical="3dp"
                         android:text="20"/>
                 </androidx.cardview.widget.CardView>
+
                  <com.google.android.material.card.MaterialCardView
                             android:id="@+id/end_card"
-                            android:layout_width="wrap_content"
+                            android:layout_width="220dp"
                             android:layout_height="50dp"
                             android:layout_gravity="center"
                             android:backgroundTint="@color/primaryBackground"
-                            android:layout_marginEnd="15dp"
+                            android:layout_marginEnd="10dp"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:strokeColor="@color/primaryBackground">
 
                             <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="match_parent">
 
                                 <com.google.android.material.imageview.ShapeableImageView
@@ -180,39 +184,40 @@
 
                                 <LinearLayout
                                     android:id="@+id/llP"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical"
+                                    android:layout_marginEnd="5dp"
+                                    android:layout_marginStart="10dp"
+                                    app:layout_constraintEnd_toStartOf="@id/d2"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:layout_constraintStart_toEndOf="@+id/profile"
                                     app:layout_constraintBottom_toBottomOf="@id/profile">
 
                                     <TextView
                                         android:id="@+id/name"
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:text="Arjun"
                                         android:textSize="@dimen/H5"
                                         android:textColor="@color/secondary"
-                                        android:fontFamily="@font/roboto_bold"
-                                        android:layout_marginStart="10dp"/>
+                                        android:fontFamily="@font/roboto_bold"/>
                                     <TextView
                                         android:id="@+id/role"
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:text="Android"
                                         android:textColor="@color/secondary"
                                         android:textSize="@dimen/H6"
-                                        android:fontFamily="@font/roboto"
-                                        android:layout_marginStart="10dp" />
+                                        android:fontFamily="@font/roboto" />
 
                                 </LinearLayout>
                                 <ImageView
+                                    android:id="@+id/d2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:src="@drawable/svg_arrow_down"
                                     android:padding="10dp"
-                                    app:layout_constraintStart_toEndOf="@id/llP"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:layout_constraintBottom_toBottomOf="parent" />
@@ -224,6 +229,179 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.appcompat.widget.Toolbar>
+
+        <LinearLayout
+            android:id="@+id/dropDownLayout"
+            android:layout_width="225dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="15dp"
+            android:visibility="gone"
+            android:elevation="4dp"
+            android:background="@drawable/corner_bottom_white_background"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintEnd_toEndOf="@id/toolbar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/svg_setting_"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Role Management"
+                    android:textSize="@dimen/H5"
+                    android:layout_marginHorizontal="5dp"
+                    android:fontFamily="@font/roboto_medium"/>
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="13dp"
+                android:background="@color/grey5"/>
+
+            <LinearLayout
+                android:id="@+id/configurationPanel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/svg_setting_"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Configurations Penal"
+                    android:textSize="@dimen/H5"
+                    android:layout_marginHorizontal="5dp"
+                    android:fontFamily="@font/roboto_medium"/>
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="13dp"
+                android:background="@color/grey5"/>
+
+            <LinearLayout
+                android:id="@+id/channelManager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/svg_setting_"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Channel Manager"
+                    android:textSize="@dimen/H5"
+                    android:layout_marginHorizontal="5dp"
+                    android:fontFamily="@font/roboto_medium"/>
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="13dp"
+                android:background="@color/grey5"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/svg_setting_"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Front Desk"
+                    android:textSize="@dimen/H5"
+                    android:layout_marginHorizontal="5dp"
+                    android:fontFamily="@font/roboto_medium"/>
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="13dp"
+                android:background="@color/grey5"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/svg_setting_"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Settings"
+                    android:textSize="@dimen/H5"
+                    android:layout_marginHorizontal="5dp"
+                    android:fontFamily="@font/roboto_medium"/>
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="13dp"
+                android:background="@color/grey5"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/svg_setting_"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Log Out"
+                    android:textSize="@dimen/H5"
+                    android:layout_marginHorizontal="5dp"
+                    android:fontFamily="@font/roboto_medium"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/welcomeLayout"
@@ -359,9 +537,11 @@
                 </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/channelManagerNavLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
+                        android:visibility="visible"
                         android:orientation="vertical">
 
                         <com.google.android.material.card.MaterialCardView
@@ -373,8 +553,8 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:cardCornerRadius="12dp"
-                            app:strokeColor="@color/primaryBackground"
-                            app:cardBackgroundColor="@color/white">
+                            app:strokeColor="@color/white"
+                            app:cardBackgroundColor="@color/black">
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -392,6 +572,142 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="Dashboard"
+                                    android:fontFamily="@font/roboto_medium"
+                                    android:textColor="@color/white"
+                                    android:layout_marginStart="10dp"
+                                    android:textSize="@dimen/H4" />
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/rates_and_inv_card"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/nav_cards_height"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginEnd="50dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:cardCornerRadius="10dp"
+                            app:strokeColor="@color/primaryBackground"
+                            app:cardBackgroundColor="@color/primaryBackground">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+                                <ImageView
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:src="@drawable/svg_rates"
+                                    android:layout_marginVertical="15dp"
+                                    android:layout_marginStart="9dp"
+                                    app:tint="@color/lightBlack"/>
+                                <TextView
+                                    android:id="@+id/rates_and_inv_txt"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rates and Inventory"
+                                    android:fontFamily="@font/roboto_medium"
+                                    android:textColor="@color/textColor"
+                                    android:layout_marginStart="10dp"
+                                    android:textSize="@dimen/H4" />
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/create_reservation_card"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/nav_cards_height"
+                            android:layout_marginEnd="50dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:cardCornerRadius="10dp"
+                            app:strokeColor="@color/primaryBackground"
+                            app:cardBackgroundColor="@color/primaryBackground">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+                                <ImageView
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:layout_marginStart="10dp"
+                                    android:src="@drawable/svg_create_reservation"
+                                    android:layout_marginVertical="15dp"
+                                    app:tint="@color/lightBlack"/>
+                                <TextView
+                                    android:id="@+id/create_reservation_txt"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Create Reservation"
+                                    android:fontFamily="@font/roboto_medium"
+                                    android:textColor="@color/textColor"
+                                    android:layout_marginStart="10dp"
+                                    android:textSize="@dimen/H4" />
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/channel_card"
+                            android:layout_width="match_parent"
+                            android:layout_marginEnd="50dp"
+                            android:layout_height="@dimen/nav_cards_height"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:cardCornerRadius="10dp"
+                            app:strokeColor="@color/primaryBackground"
+                            app:cardBackgroundColor="@color/primaryBackground">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+                                <ImageView
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:src="@drawable/svg_channel_"
+                                    android:layout_marginStart="9dp"
+                                    android:layout_marginVertical="15dp"
+                                    app:tint="@color/lightBlack"/>
+                                <TextView
+                                    android:id="@+id/channel_txt"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Channels"
+                                    android:fontFamily="@font/roboto_medium"
+                                    android:textColor="@color/textColor"
+                                    android:layout_marginStart="10dp"
+                                    android:textSize="@dimen/H4" />
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/promotions_card"
+                            android:layout_width="match_parent"
+                            android:layout_marginEnd="50dp"
+                            android:layout_height="@dimen/nav_cards_height"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:cardCornerRadius="10dp"
+                            app:strokeColor="@color/primaryBackground"
+                            app:cardBackgroundColor="@color/primaryBackground">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+                                <ImageView
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:src="@drawable/svg_promotion_"
+                                    android:layout_marginStart="9dp"
+                                    app:tint="@color/lightBlack"/>
+                                <TextView
+                                    android:id="@+id/promotions_txt"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Promotions"
                                     android:fontFamily="@font/roboto_medium"
                                     android:textColor="@color/textColor"
                                     android:layout_marginStart="10dp"
@@ -434,11 +750,11 @@
 
                         </com.google.android.material.card.MaterialCardView>
                         <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/rates_and_inv_card"
+                            android:id="@+id/reports_card"
                             android:layout_width="match_parent"
+                            android:layout_marginEnd="50dp"
                             android:layout_height="@dimen/nav_cards_height"
                             app:layout_constraintTop_toTopOf="parent"
-                            android:layout_marginEnd="50dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:cardCornerRadius="10dp"
                             app:strokeColor="@color/primaryBackground"
@@ -451,15 +767,15 @@
                                 <ImageView
                                     android:layout_width="35dp"
                                     android:layout_height="35dp"
-                                    android:src="@drawable/svg_rates"
+                                    android:layout_marginStart="10dp"
+                                    android:src="@drawable/svg_reports_"
                                     android:layout_marginVertical="15dp"
-                                    android:layout_marginStart="9dp"
                                     app:tint="@color/lightBlack"/>
                                 <TextView
-                                    android:id="@+id/rates_and_inv_txt"
+                                    android:id="@+id/reports_txt"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="Rates and Inventory"
+                                    android:text="Reports &amp; Logs"
                                     android:fontFamily="@font/roboto_medium"
                                     android:textColor="@color/textColor"
                                     android:layout_marginStart="10dp"
@@ -467,6 +783,119 @@
                             </LinearLayout>
 
                         </com.google.android.material.card.MaterialCardView>
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/help_card"
+                        android:layout_width="match_parent"
+                        android:layout_marginEnd="50dp"
+                        android:layout_height="@dimen/nav_cards_height"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:cardCornerRadius="10dp"
+                        app:strokeColor="@color/primaryBackground"
+                        app:cardBackgroundColor="@color/primaryBackground">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_marginStart="10dp"
+                                android:src="@drawable/dashboard_icon_new"
+                                android:layout_marginVertical="15dp"
+                                app:tint="@color/lightBlack"/>
+                            <TextView
+                                android:id="@+id/help_txt"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Help &amp; Support"
+                                android:fontFamily="@font/roboto_medium"
+                                android:textColor="@color/textColor"
+                                android:layout_marginStart="10dp"
+                                android:textSize="@dimen/H4" />
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/setting_card"
+                        android:layout_width="match_parent"
+                        android:layout_marginEnd="50dp"
+                        android:layout_height="@dimen/nav_cards_height"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:cardCornerRadius="10dp"
+                        app:strokeColor="@color/primaryBackground"
+                        app:cardBackgroundColor="@color/primaryBackground">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_marginStart="10dp"
+                                android:src="@drawable/svg_setting_"
+                                android:layout_marginVertical="15dp"
+                                app:tint="@color/lightBlack"/>
+                            <TextView
+                                android:id="@+id/setting_txt"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Settings"
+                                android:fontFamily="@font/roboto_medium"
+                                android:textColor="@color/textColor"
+                                android:layout_marginStart="10dp"
+                                android:textSize="@dimen/H4" />
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/configurationNavLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/propertiesCard"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/nav_cards_height"
+                            android:layout_marginEnd="50dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:cardCornerRadius="10dp"
+                            app:strokeColor="@color/primaryBackground"
+                            app:cardBackgroundColor="@color/black">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+                                <ImageView
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:layout_marginStart="10dp"
+                                    android:src="@drawable/dashboard_icon_new"
+                                    android:layout_marginVertical="15dp"
+                                    app:tint="@color/lightBlack"/>
+                                <TextView
+                                    android:id="@+id/propertiesText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Properties"
+                                    android:fontFamily="@font/roboto_medium"
+                                    android:textColor="@color/white"
+                                    android:layout_marginStart="10dp"
+                                    android:textSize="@dimen/H4" />
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/rates_card"
                             android:layout_width="match_parent"
@@ -518,10 +947,11 @@
                                     app:layout_constraintTop_toTopOf="@id/rates_txt"
                                     app:layout_constraintBottom_toBottomOf="@id/rates_txt"
                                     app:tint="@color/black"/>
-                                <androidx.constraintlayout.widget.ConstraintLayout
+                                <LinearLayout
                                     android:id="@+id/rate_layout"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:orientation="vertical"
                                     android:visibility="gone"
                                     app:layout_constraintTop_toBottomOf="@id/img_rate">
                                 <LinearLayout
@@ -643,118 +1073,40 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:text="Inclusion Plans"
+                                        android:fontFamily="@font/roboto_medium"
+                                        android:textColor="@color/white"
+                                        android:layout_marginStart="10dp"
+                                        android:textSize="@dimen/H4" />
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/black"
+                                    android:layout_marginStart="20dp"
+                                    android:layout_marginTop="12dp"
+                                    app:layout_constraintTop_toBottomOf="@id/ll5"
+                                    android:paddingStart="20dp"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical">
+                                    <ImageView
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
+                                        android:src="@drawable/svg_chart"
+                                        app:tint="@color/white"/>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
                                         android:text="Amenities"
                                         android:fontFamily="@font/roboto_medium"
                                         android:textColor="@color/white"
                                         android:layout_marginStart="10dp"
                                         android:textSize="@dimen/H4" />
                                 </LinearLayout>
-                                </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+                                </LinearLayout>
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        </com.google.android.material.card.MaterialCardView>
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/promotions_card"
-                            android:layout_width="match_parent"
-                            android:layout_marginEnd="50dp"
-                            android:layout_height="@dimen/nav_cards_height"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:cardCornerRadius="10dp"
-                            app:strokeColor="@color/primaryBackground"
-                            app:cardBackgroundColor="@color/primaryBackground">
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal">
-                                <ImageView
-                                    android:layout_width="35dp"
-                                    android:layout_height="35dp"
-                                    android:src="@drawable/svg_promotion_"
-                                    android:layout_marginStart="9dp"
-                                    app:tint="@color/lightBlack"/>
-                                <TextView
-                                    android:id="@+id/promotions_txt"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="Promotions"
-                                    android:fontFamily="@font/roboto_medium"
-                                    android:textColor="@color/textColor"
-                                    android:layout_marginStart="10dp"
-                                    android:textSize="@dimen/H4" />
-                            </LinearLayout>
-
-                        </com.google.android.material.card.MaterialCardView>
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/channel_card"
-                            android:layout_width="match_parent"
-                            android:layout_marginEnd="50dp"
-                            android:layout_height="@dimen/nav_cards_height"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:cardCornerRadius="10dp"
-                            app:strokeColor="@color/primaryBackground"
-                            app:cardBackgroundColor="@color/primaryBackground">
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal">
-                                <ImageView
-                                    android:layout_width="35dp"
-                                    android:layout_height="35dp"
-                                    android:src="@drawable/svg_channel_"
-                                    android:layout_marginStart="9dp"
-                                    android:layout_marginVertical="15dp"
-                                    app:tint="@color/lightBlack"/>
-                                <TextView
-                                    android:id="@+id/channel_txt"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="Channels"
-                                    android:fontFamily="@font/roboto_medium"
-                                    android:textColor="@color/textColor"
-                                    android:layout_marginStart="10dp"
-                                    android:textSize="@dimen/H4" />
-                            </LinearLayout>
-
-                        </com.google.android.material.card.MaterialCardView>
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/reports_card"
-                            android:layout_width="match_parent"
-                            android:layout_marginEnd="50dp"
-                            android:layout_height="@dimen/nav_cards_height"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:cardCornerRadius="10dp"
-                            app:strokeColor="@color/primaryBackground"
-                            app:cardBackgroundColor="@color/primaryBackground">
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal">
-                                <ImageView
-                                    android:layout_width="35dp"
-                                    android:layout_height="35dp"
-                                    android:layout_marginStart="10dp"
-                                    android:src="@drawable/svg_reports_"
-                                    android:layout_marginVertical="15dp"
-                                    app:tint="@color/lightBlack"/>
-                                <TextView
-                                    android:id="@+id/reports_txt"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="Reports &amp; Logs"
-                                    android:fontFamily="@font/roboto_medium"
-                                    android:textColor="@color/textColor"
-                                    android:layout_marginStart="10dp"
-                                    android:textSize="@dimen/H4" />
-                            </LinearLayout>
 
                         </com.google.android.material.card.MaterialCardView>
                         <com.google.android.material.card.MaterialCardView
@@ -808,8 +1160,8 @@
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                         </com.google.android.material.card.MaterialCardView>
+
                     <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/pms_card"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/nav_cards_height"
                         android:layout_marginEnd="50dp"
@@ -831,7 +1183,6 @@
                                 android:layout_marginVertical="15dp"
                                 app:tint="@color/lightBlack"/>
                             <TextView
-                                android:id="@+id/pms_txt"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="PMS"
@@ -842,74 +1193,7 @@
                         </LinearLayout>
 
                     </com.google.android.material.card.MaterialCardView>
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/help_card"
-                        android:layout_width="match_parent"
-                        android:layout_marginEnd="50dp"
-                        android:layout_height="@dimen/nav_cards_height"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:cardCornerRadius="10dp"
-                        app:strokeColor="@color/primaryBackground"
-                        app:cardBackgroundColor="@color/primaryBackground">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-                            <ImageView
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:layout_marginStart="10dp"
-                                android:src="@drawable/dashboard_icon_new"
-                                android:layout_marginVertical="15dp"
-                                app:tint="@color/lightBlack"/>
-                            <TextView
-                                android:id="@+id/help_txt"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Help &amp; Support"
-                                android:fontFamily="@font/roboto_medium"
-                                android:textColor="@color/textColor"
-                                android:layout_marginStart="10dp"
-                                android:textSize="@dimen/H4" />
-                        </LinearLayout>
 
-                    </com.google.android.material.card.MaterialCardView>
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/setting_card"
-                        android:layout_width="match_parent"
-                        android:layout_marginEnd="50dp"
-                        android:layout_height="@dimen/nav_cards_height"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:cardCornerRadius="10dp"
-                        app:strokeColor="@color/primaryBackground"
-                        app:cardBackgroundColor="@color/primaryBackground">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-                            <ImageView
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:layout_marginStart="10dp"
-                                android:src="@drawable/svg_setting_"
-                                android:layout_marginVertical="15dp"
-                                app:tint="@color/lightBlack"/>
-                            <TextView
-                                android:id="@+id/setting_txt"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Settings"
-                                android:fontFamily="@font/roboto_medium"
-                                android:textColor="@color/textColor"
-                                android:layout_marginStart="10dp"
-                                android:textSize="@dimen/H4" />
-                        </LinearLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
 
                 </LinearLayout>
