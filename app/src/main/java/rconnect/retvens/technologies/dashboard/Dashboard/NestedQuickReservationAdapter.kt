@@ -9,16 +9,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import rconnect.retvens.technologies.R
 
-class QuickReservationAdapter(val list:ArrayList<String>, val applicationContext: Context):RecyclerView.Adapter<QuickReservationAdapter.NotificationHolder>() {
+class NestedQuickReservationAdapter(val list:ArrayList<String>, val applicationContext: Context):RecyclerView.Adapter<NestedQuickReservationAdapter.NotificationHolder>() {
     class NotificationHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
 
-        val recyclerView = itemView.findViewById<RecyclerView>(R.id.nestedroomDetails_recycler);
+
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationHolder {
         val inflater = LayoutInflater.from(applicationContext)
-        val view = inflater.inflate(R.layout.item_rooms_details,parent,false)
+        val view = inflater.inflate(R.layout.item_nested_rooms_details,parent,false)
         return NotificationHolder(view)
     }
 
@@ -28,10 +28,6 @@ class QuickReservationAdapter(val list:ArrayList<String>, val applicationContext
 
     override fun onBindViewHolder(holder: NotificationHolder, position: Int) {
 
-        holder.recyclerView.layoutManager = LinearLayoutManager(applicationContext)
 
-        val adapter = NestedQuickReservationAdapter(list,applicationContext)
-        holder.recyclerView.adapter = adapter
-        adapter.notifyDataSetChanged()
     }
 }
