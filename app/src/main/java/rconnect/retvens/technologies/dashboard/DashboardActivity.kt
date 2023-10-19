@@ -33,6 +33,7 @@ import rconnect.retvens.technologies.dashboard.configuration.createRate.CreateRa
 import rconnect.retvens.technologies.dashboard.configuration.createRate.ReviewRatePlanFragment
 import rconnect.retvens.technologies.dashboard.configuration.properties.ViewPropertiesFragment
 import rconnect.retvens.technologies.dashboard.channelManager.promotions.PromotionsFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.ActivityDashboardBinding
 import rconnect.retvens.technologies.utils.bottomSlideInAnimation
 import rconnect.retvens.technologies.utils.topInAnimation
@@ -200,6 +201,7 @@ class DashboardActivity : AppCompatActivity() {
 
     private fun chanelManagerNavLayout() {
         binding.dashboardCard.setOnClickListener {
+            replaceFragment(DashBoardFragment())
             isCardSelected(binding.dashboardCard, binding.dashboardTxt)
         }
         binding.bookingCard.setOnClickListener {
@@ -266,6 +268,12 @@ class DashboardActivity : AppCompatActivity() {
                 draw?.colorFilter = PorterDuffColorFilter(Color.WHITE,PorterDuff.Mode.SRC_ATOP)
                 binding.rateDropDown.setImageDrawable(draw)
                 isRateOpen = true
+
+                binding.roomTypeCard.setOnClickListener {
+                    replaceFragment(RoomTypeFragment())
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                }
+
                 binding.ll2.setOnClickListener {
                     replaceFragment(CreateRateTypeFragment())
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
