@@ -33,7 +33,7 @@ import rconnect.retvens.technologies.dashboard.configuration.createRate.CreateRa
 import rconnect.retvens.technologies.dashboard.configuration.createRate.ReviewRatePlanFragment
 import rconnect.retvens.technologies.dashboard.configuration.properties.ViewPropertiesFragment
 import rconnect.retvens.technologies.dashboard.channelManager.promotions.PromotionsFragment
-import rconnect.retvens.technologies.dashboard.configuration.ReservationTypeFragment
+import rconnect.retvens.technologies.dashboard.configuration.reservation.ReservationTypeFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.ActivityDashboardBinding
 import rconnect.retvens.technologies.utils.bottomSlideInAnimation

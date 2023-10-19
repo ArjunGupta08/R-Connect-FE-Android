@@ -1,4 +1,4 @@
-package rconnect.retvens.technologies.dashboard.configuration
+package rconnect.retvens.technologies.dashboard.configuration.reservation
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -18,7 +18,7 @@ class ReservationTypeFragment : Fragment() {
 
     private lateinit var binding : FragmentReservationTypeBinding
 
-    private lateinit var roomTypeAdapter: RoomTypeAdapter
+    private lateinit var reservationTypeAdapter: ReservationTypeAdapter
     private var reservationTypeList = ArrayList<String>()
 
 
@@ -51,7 +51,7 @@ class ReservationTypeFragment : Fragment() {
 
 
     private fun reservationTypeRecycler() {
-        binding.roomTypeRecycler.layoutManager = LinearLayoutManager(requireContext())
+        binding.reservationTypeRecycler.layoutManager = LinearLayoutManager(requireContext())
 
         reservationTypeList.add("4")
         reservationTypeList.add("4")
@@ -68,9 +68,9 @@ class ReservationTypeFragment : Fragment() {
         reservationTypeList.add("4")
         reservationTypeList.add("4")
 
-        roomTypeAdapter = RoomTypeAdapter(reservationTypeList, requireContext())
-        binding.roomTypeRecycler.adapter = roomTypeAdapter
-        roomTypeAdapter.notifyDataSetChanged()
+        reservationTypeAdapter = ReservationTypeAdapter(reservationTypeList, requireContext())
+        binding.reservationTypeRecycler.adapter = reservationTypeAdapter
+        reservationTypeAdapter.notifyDataSetChanged()
     }
 
 

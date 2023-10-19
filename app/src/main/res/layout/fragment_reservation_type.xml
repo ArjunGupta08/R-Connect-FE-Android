@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".dashboard.configuration.ReservationTypeFragment">
+    tools:context=".dashboard.configuration.reservation.ReservationTypeFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -164,45 +164,46 @@
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="10dp">
+                    <CheckBox
+                        android:id="@+id/switch_all"
+                        android:layout_width="19dp"
+                        android:layout_height="19dp"
+                        app:layout_constraintEnd_toStartOf="@id/shortCode"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
 
                     <TextView
                         android:id="@+id/shortCode"
-                        android:layout_width="100dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_weight="1"
                         android:fontFamily="@font/roboto"
-                        android:text="Short Code"
+                        android:text="Reservation type name"
                         android:textColor="@color/item_light_heading"
                         android:textSize="@dimen/H6"
                         android:singleLine="true"
                         app:layout_constraintEnd_toStartOf="@id/propertyName"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"/>
+                        app:layout_constraintStart_toEndOf="@id/switch_all"/>
 
                     <TextView
                         android:id="@+id/propertyName"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:text="Room Type"
+                        android:text="Status"
                         android:fontFamily="@font/roboto"
                         android:textColor="@color/item_light_heading"
                         android:textSize="@dimen/H6"
                         android:singleLine="true"
                         android:layout_marginStart="5dp"
-                        app:layout_constraintEnd_toStartOf="@id/guide1"
+                        app:layout_constraintEnd_toStartOf="@id/bedType"
                         app:layout_constraintStart_toEndOf="@id/shortCode"
                         app:layout_constraintBottom_toBottomOf="@id/shortCode"
                         app:layout_constraintTop_toTopOf="@id/shortCode"/>
 
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guide1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.28"/>
 
                     <TextView
                         android:id="@+id/bedType"
@@ -210,13 +211,13 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/roboto"
-                        android:text="Bed Type"
+                        android:text="Created By"
                         android:textColor="@color/item_light_heading"
                         android:textSize="@dimen/H6"
                         android:singleLine="true"
                         android:layout_marginStart="5dp"
                         app:layout_constraintEnd_toStartOf="@id/adultChild"
-                        app:layout_constraintStart_toEndOf="@id/guide1"
+                        app:layout_constraintStart_toEndOf="@id/propertyName"
                         app:layout_constraintBottom_toBottomOf="@id/shortCode"
                         app:layout_constraintTop_toTopOf="@id/shortCode"/>
 
@@ -225,64 +226,17 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Adult &amp; Child"
+                        android:text="Last Modified"
                         android:fontFamily="@font/roboto"
-                        android:textColor="@color/item_light_heading"
-                        android:textSize="@dimen/H6"
-                        android:singleLine="true"
-                        android:layout_marginStart="5dp"
-                        app:layout_constraintEnd_toStartOf="@id/maxOccupancy"
-                        app:layout_constraintStart_toEndOf="@id/bedType"
-                        app:layout_constraintBottom_toBottomOf="@id/shortCode"
-                        app:layout_constraintTop_toTopOf="@id/shortCode"/>
-
-                    <TextView
-                        android:id="@+id/maxOccupancy"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/roboto"
-                        android:text="Max Occupancy"
-                        android:textColor="@color/item_light_heading"
-                        android:textSize="@dimen/H6"
-                        android:singleLine="true"
-                        android:layout_marginStart="5dp"
-                        app:layout_constraintEnd_toStartOf="@id/baseRate"
-                        app:layout_constraintStart_toEndOf="@id/adultChild"
-                        app:layout_constraintBottom_toBottomOf="@id/shortCode"
-                        app:layout_constraintTop_toTopOf="@id/shortCode"/>
-
-                    <TextView
-                        android:id="@+id/baseRate"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/roboto"
-                        android:text="Base Rate"
-                        android:textColor="@color/item_light_heading"
-                        android:textSize="@dimen/H6"
-                        android:singleLine="true"
-                        android:layout_marginStart="5dp"
-                        app:layout_constraintEnd_toStartOf="@id/amenities"
-                        app:layout_constraintStart_toEndOf="@id/maxOccupancy"
-                        app:layout_constraintBottom_toBottomOf="@id/shortCode"
-                        app:layout_constraintTop_toTopOf="@id/shortCode"/>
-
-                    <TextView
-                        android:id="@+id/amenities"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/roboto"
-                        android:text="Amenities"
                         android:textColor="@color/item_light_heading"
                         android:textSize="@dimen/H6"
                         android:singleLine="true"
                         android:layout_marginStart="5dp"
                         app:layout_constraintEnd_toStartOf="@id/actions"
-                        app:layout_constraintStart_toEndOf="@id/baseRate"
+                        app:layout_constraintStart_toEndOf="@id/bedType"
                         app:layout_constraintBottom_toBottomOf="@id/shortCode"
                         app:layout_constraintTop_toTopOf="@id/shortCode"/>
+
 
                     <TextView
                         android:id="@+id/actions"
@@ -296,17 +250,17 @@
                         android:singleLine="true"
                         android:layout_marginStart="5dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/amenities"
+                        app:layout_constraintStart_toEndOf="@id/adultChild"
                         app:layout_constraintBottom_toBottomOf="@id/shortCode"
                         app:layout_constraintTop_toTopOf="@id/shortCode"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/roomTypeRecycler"
+                    android:id="@+id/reservationTypeRecycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:listitem="@layout/item_room_types"/>
+                    tools:listitem="@layout/item_reservation_types"/>
 
             </LinearLayout>
 
