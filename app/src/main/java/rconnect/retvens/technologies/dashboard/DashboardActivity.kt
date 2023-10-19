@@ -33,6 +33,7 @@ import rconnect.retvens.technologies.dashboard.configuration.createRate.CreateRa
 import rconnect.retvens.technologies.dashboard.configuration.createRate.ReviewRatePlanFragment
 import rconnect.retvens.technologies.dashboard.configuration.properties.ViewPropertiesFragment
 import rconnect.retvens.technologies.dashboard.channelManager.promotions.PromotionsFragment
+import rconnect.retvens.technologies.dashboard.configuration.ReservationTypeFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.ActivityDashboardBinding
 import rconnect.retvens.technologies.utils.bottomSlideInAnimation
@@ -41,7 +42,9 @@ import rconnect.retvens.technologies.utils.topInAnimation
 class DashboardActivity : AppCompatActivity() {
 
     var isRateOpen = false
-    var isDropDownOpen = false
+    var isRateDropDownOpen = false
+    var isGuestOpen = false
+    var isGuestDropDownOpen = false
 
     private lateinit var binding: ActivityDashboardBinding
 
@@ -167,14 +170,14 @@ class DashboardActivity : AppCompatActivity() {
         }
 
         binding.endCard.setOnClickListener {
-            if (isDropDownOpen) {
+            if (isRateDropDownOpen) {
                 binding.d2.rotation = 0f
                 binding.dropDownLayout.isVisible = false
-                isDropDownOpen = false
+                isRateDropDownOpen = false
             } else {
                 binding.dropDownLayout.isVisible = true
                 binding.d2.rotation = 180f
-                isDropDownOpen = true
+                isRateDropDownOpen = true
                 topInAnimation(binding.dropDownLayout, applicationContext)
             }
         }
@@ -182,7 +185,7 @@ class DashboardActivity : AppCompatActivity() {
         binding.configurationPanel.setOnClickListener {
             configurationNavLayout()
             binding.d2.rotation = 0f
-            isDropDownOpen = false
+            isRateDropDownOpen = false
             binding.dropDownLayout.isVisible = false
             binding.configurationNavLayout.isVisible = true
             binding.channelManagerNavLayout.isVisible = false
@@ -192,7 +195,7 @@ class DashboardActivity : AppCompatActivity() {
             chanelManagerNavLayout()
             isCardSelected(binding.dashboardCard, binding.dashboardTxt)
             binding.d2.rotation = 0f
-            isDropDownOpen = false
+            isRateDropDownOpen = false
             binding.dropDownLayout.isVisible = false
             binding.configurationNavLayout.isVisible = false
             binding.channelManagerNavLayout.isVisible = true
@@ -291,6 +294,36 @@ class DashboardActivity : AppCompatActivity() {
                 binding.ratesCard.setCardBackgroundColor(ContextCompat.getColor(applicationContext,R.color.white))
                 binding.ratesTxt.setTextColor(ContextCompat.getColor(applicationContext,R.color.black))
                 isRateOpen = false
+            }
+
+//            binding.rateDropDown
+        }
+
+        binding.guestsCard.setOnClickListener {
+            isCardSelected(binding.guestsCard, binding.guestsTxt)
+//            binding.rateDropDown.setImageResource(R.drawable.svg_up)
+            if (!isGuestOpen){
+                binding.guestsLayout.isVisible = true
+//                binding.ratesCard.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.black))
+//                binding.ratesTxt.setTextColor(ContextCompat.getColor(applicationContext, R.color.white))
+                val draw = ContextCompat.getDrawable(this, R.drawable.svg_up)
+                draw?.colorFilter = PorterDuffColorFilter(Color.WHITE,PorterDuff.Mode.SRC_ATOP)
+                binding.guestsDropDown.setImageDrawable(draw)
+                isGuestOpen = true
+
+                binding.guestReservationLl.setOnClickListener {
+                    replaceFragment(ReservationTypeFragment())
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                }
+            }
+            else{
+                binding.guestsLayout.isVisible = false
+                val draw = ContextCompat.getDrawable(this, R.drawable.svg_arrow_down)
+                draw?.colorFilter = PorterDuffColorFilter(Color.BLACK,PorterDuff.Mode.SRC_ATOP)
+                binding.guestsDropDown.setImageDrawable(draw)
+                binding.guestsCard.setCardBackgroundColor(ContextCompat.getColor(applicationContext,R.color.white))
+                binding.guestsTxt.setTextColor(ContextCompat.getColor(applicationContext,R.color.black))
+                isGuestOpen = false
             }
 
 //            binding.rateDropDown
