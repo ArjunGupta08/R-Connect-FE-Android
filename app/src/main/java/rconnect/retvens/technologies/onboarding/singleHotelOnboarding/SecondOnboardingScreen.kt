@@ -13,8 +13,10 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.core.view.isVisible
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.DashboardActivity
 import rconnect.retvens.technologies.databinding.ActivitySecondOnboardingScreenBinding
 import rconnect.retvens.technologies.onboarding.FinalOnboardingScreen
+import rconnect.retvens.technologies.utils.shakeAnimation
 
 class SecondOnboardingScreen : AppCompatActivity() {
 
@@ -31,17 +33,17 @@ class SecondOnboardingScreen : AppCompatActivity() {
         binding = ActivitySecondOnboardingScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.cardSingleNext.setOnClickListener {
-            val intent = Intent(this,FinalOnboardingScreen::class.java)
-            intent.putExtra("isSingle", true)
-
-            val options = ActivityOptions.makeSceneTransitionAnimation(this,
-                android.util.Pair(binding.logo,"logo_img"),
-                android.util.Pair(binding.onBoardingImg,"onBoardingImg"),
-                android.util.Pair(binding.demoBackbtn,"backBtn")).toBundle()
-
-            startActivity(intent, options)
-        }
+//        binding.cardSingleNext.setOnClickListener {
+//            val intent = Intent(this,FinalOnboardingScreen::class.java)
+//            intent.putExtra("isSingle", true)
+//
+//            val options = ActivityOptions.makeSceneTransitionAnimation(this,
+//                android.util.Pair(binding.logo,"logo_img"),
+//                android.util.Pair(binding.onBoardingImg,"onBoardingImg"),
+//                android.util.Pair(binding.demoBackbtn,"backBtn")).toBundle()
+//
+//            startActivity(intent, options)
+//        }
 
         binding.demoBackbtn.setOnClickListener {
             onBackPressed()
@@ -77,6 +79,58 @@ class SecondOnboardingScreen : AppCompatActivity() {
                 } else {
                     rightToLeftEditImageAnimation(binding.imageEditLayout)
                 }
+            }
+        }
+
+
+        binding.cardSingleNext.setOnClickListener {
+
+            if (binding.propertyText.text!!.isEmpty()) {
+                shakeAnimation(binding.propertyLayout,applicationContext)
+                binding.propertyLayout.error = "Please enter property name"
+
+            }
+//            else if (binding.propertyTypeText.text!!.isEmpty()) {
+//                binding.propertyTypeLayout.error = "Please enter property type"
+//                shakeAnimation(binding.propertyTypeLayout,applicationContext)
+//                binding.propertyTypeLayout.isErrorEnabled = false
+//
+//            }
+            else if (binding.addressText.text!!.isEmpty()) {
+                binding.addressLayout.error = "Please enter property address"
+                shakeAnimation(binding.addressLayout,applicationContext)
+                binding.propertyLayout.isErrorEnabled = false
+            }
+            else if (binding.pincodeText.text!!.isEmpty()) {
+                binding.pincodeLayout.error = "Please enter pin code"
+                shakeAnimation(binding.pincodeLayout,applicationContext)
+                binding.addressLayout.isErrorEnabled = false
+            }
+//            else if (binding.cityText.text!!.isEmpty()) {
+//                binding.cityLayout.error = "Please enter city"
+//                shakeAnimation(binding.cityLayout,applicationContext)
+////                binding.cityLayout.isErrorEnabled = false
+//            }
+//            else if (binding.stateText.text!!.isEmpty()) {
+//                binding.stateLayout.error = "Please enter state"
+//                shakeAnimation(binding.stateLayout,applicationContext)
+////                binding.stateLayout.isErrorEnabled = false
+//            }
+//            else if (binding.currencyText.text!!.isEmpty()) {
+//                binding.currencyLayout.error = "Please enter currency"
+//                shakeAnimation(binding.currencyLayout,applicationContext)
+////                binding.currencyLayout.isErrorEnabled = false
+//            }
+            else {
+                val intent = Intent(this,FinalOnboardingScreen::class.java)
+                intent.putExtra("isSingle", true)
+
+                val options = ActivityOptions.makeSceneTransitionAnimation(this,
+                    android.util.Pair(binding.logo,"logo_img"),
+                    android.util.Pair(binding.onBoardingImg,"onBoardingImg"),
+                    android.util.Pair(binding.demoBackbtn,"backBtn")).toBundle()
+
+                startActivity(intent, options)
             }
         }
 

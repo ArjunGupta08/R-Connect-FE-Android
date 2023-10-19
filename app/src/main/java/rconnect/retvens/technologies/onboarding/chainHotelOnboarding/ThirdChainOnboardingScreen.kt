@@ -8,6 +8,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import rconnect.retvens.technologies.databinding.ActivityThirdChainOnboardingScreenBinding
 import rconnect.retvens.technologies.onboarding.FinalOnboardingScreen
+import rconnect.retvens.technologies.utils.shakeAnimation
 
 class ThirdChainOnboardingScreen : AppCompatActivity() {
 
@@ -75,14 +76,36 @@ class ThirdChainOnboardingScreen : AppCompatActivity() {
         }
 
         binding.cardSingleNext.setOnClickListener {
-            val intent = (Intent(this, FinalOnboardingScreen::class.java))
+            if (binding.propertyText.text!!.isEmpty()) {
+                shakeAnimation(binding.propertyLayout,applicationContext)
+                binding.propertyLayout.error = "Please enter property name"
 
-            val options = ActivityOptions.makeSceneTransitionAnimation(this,
-                android.util.Pair(binding.logo,"logo_img"),
-                android.util.Pair(binding.onBoardingImg,"onBoardingImg"),
-                android.util.Pair(binding.demoBackbtn,"backBtn")).toBundle()
+            }
+            else if (binding.TaxNameText.text!!.isEmpty()) {
+                shakeAnimation(binding.TaxNameLayout,applicationContext)
+                binding.TaxNameLayout.error = "Please enter tax name"
+                binding.propertyLayout.isErrorEnabled = false
+            }
+            else if (binding.registrationNumberText.text!!.isEmpty()) {
+                shakeAnimation(binding.registrationNumberLayout,applicationContext)
+                binding.registrationNumberLayout.error = "Please enter registration number"
+                binding.TaxNameLayout.isErrorEnabled = false
+            }
+            else{
+                val intent = (Intent(this, FinalOnboardingScreen::class.java))
 
-            startActivity(intent, options)
+                val options = ActivityOptions.makeSceneTransitionAnimation(this,
+                    android.util.Pair(binding.logo,"logo_img"),
+                    android.util.Pair(binding.onBoardingImg,"onBoardingImg"),
+                    android.util.Pair(binding.demoBackbtn,"backBtn")).toBundle()
+
+                startActivity(intent, options)
+            }
+
+
+
+
+
         }
 
     }
