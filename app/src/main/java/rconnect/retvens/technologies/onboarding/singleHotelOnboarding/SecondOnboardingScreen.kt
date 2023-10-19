@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.DashboardActivity
@@ -43,6 +44,8 @@ class SecondOnboardingScreen : AppCompatActivity() {
         imageSelection()
 
         fetchCountryName()
+
+        autoFillLocationSuggetion()
 
         binding.cardSingleNext.setOnClickListener {
 
@@ -97,6 +100,34 @@ class SecondOnboardingScreen : AppCompatActivity() {
 
     }
 
+    private fun autoFillLocationSuggetion() {
+
+        // Sample list of country names
+        val countries = arrayOf(
+            "United States", "United Kingdom", "Canada", "Australia", "Germany", "France", "Japan", "India"
+            // Add more country names as needed
+        )
+        // Sample list of state names
+        val states = arrayOf(
+            "Madhya Pradesh", "Maharastra", "Utter Pradesh", "Kannada", "Tamil Nadu"
+            // Add more states names as needed
+        )
+        // Sample list of city names
+        val cities = arrayOf(
+            "Indore", "outdoor", "Kanpur Nagar", "Kanpur Dehat", "Lucknow", "Banglore"
+            // Add more states names as needed
+        )
+
+        // Create an ArrayAdapter with the country names and set it to the AutoCompleteTextView
+        val adapterCountries = ArrayAdapter(this, R.layout.simple_dropdown_item_1line, countries)
+        val adapterStates = ArrayAdapter(this, R.layout.simple_dropdown_item_1line, states)
+        val adapterCities = ArrayAdapter(this, R.layout.simple_dropdown_item_1line, cities)
+        binding.countryText.setAdapter(adapterCountries)
+        binding.stateText.setAdapter(adapterStates)
+        binding.cityText.setAdapter(adapterCities)
+
+    }
+
     private fun imageSelection() {
 
         binding.replaceImage.setOnClickListener {
@@ -145,7 +176,9 @@ class SecondOnboardingScreen : AppCompatActivity() {
         val country = getCountryForTimeZone(timeZoneId)
 
         // Display the country name
-        binding.countryText.setText(country)
+        if (country != "Unknown") {
+            binding.countryText.setText(country)
+        }
         Log.d("TimeZone", "Time Zone ID: $timeZoneId")
         Log.d("TimeZone", "Country: $country")
     }

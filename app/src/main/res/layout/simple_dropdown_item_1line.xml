@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    style="?android:attr/dropDownItemStyle"
+    android:textColor="@color/secondary"
+    android:textSize="@dimen/H4"
+    android:fontFamily="@font/roboto_medium"
+    android:background="@drawable/bottom_line"
+    android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
+    android:singleLine="true"
+    android:ellipsize="marquee" />
