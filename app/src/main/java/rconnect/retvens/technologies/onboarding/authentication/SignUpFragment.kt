@@ -11,6 +11,7 @@ import android.widget.Toast
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.FragmentSignUpBinding
 import rconnect.retvens.technologies.onboarding.FirstOnBoardingScreen
+import rconnect.retvens.technologies.utils.shakeAnimation
 
 class SignUpFragment : Fragment() {
 
@@ -29,28 +30,28 @@ class SignUpFragment : Fragment() {
 
         binding.cardCreateAccount.setOnClickListener {
 
-//            if (bindingTab.firstNameText.text!!.isEmpty()){
-//                showSnackBarMessage( "Please enter your First Name" )
-//            } else if (bindingTab.lastNameText.text!!.isEmpty()){
-//                showSnackBarMessage("Please enter your Last Name")
-//            } else if (bindingTab.phoneText.text!!.isEmpty()){
-//                showSnackBarMessage( "Please enter your Phone number" )
-//            } else if (bindingTab.emailText.text!!.isEmpty()){
-//                showSnackBarMessage("Please enter your email")
-//            } else if (bindingTab.passwordText.text!!.isEmpty()){
-//                showSnackBarMessage("Please enter your password")
-//            } else{
+            if (binding.firstNameText.text!!.isEmpty()){
+                shakeAnimation(binding.firstNameLayout,requireContext())
+                binding.firstNameLayout.error = ( "Please enter your First Name" )
+            } else if (binding.lastNameText.text!!.isEmpty()){
+                shakeAnimation(binding.lastNameLayout, requireContext())
+                binding.lastNameLayout.error = ("Please enter your Last Name")
+            } else if (binding.phoneText.text!!.isEmpty()){
+                shakeAnimation(binding.phoneLayout, requireContext())
+                binding.phoneLayout.error  = ( "Please enter your Phone number" )
+            } else if (binding.emailText.text!!.isEmpty()){
+                shakeAnimation(binding.emailLayout, requireContext())
+                binding.emailLayout.error = ("Please enter your email")
+            } else if (binding .passwordText.text!!.isEmpty()){
+                shakeAnimation(binding.passwordLayout, requireContext())
+                binding.passwordLayout.error = ("Please enter your password")
+            } else{
             val intent = Intent(requireContext(), FirstOnBoardingScreen::class.java)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(requireActivity(),
                 android.util.Pair(binding.cardCreateAccount,"Btn")).toBundle())
-//            }
+            }
         }
 
-    }
-
-    private fun showSnackBarMessage(message:String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-//        Snackbar.make(applicationContext,parentLayout,message,Snackbar.LENGTH_SHORT).show()
     }
 
 }

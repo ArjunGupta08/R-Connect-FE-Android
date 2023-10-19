@@ -15,6 +15,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.ActivitySecondChainOnboardingBinding
+import rconnect.retvens.technologies.utils.shakeAnimation
 
 
 class SecondChainOnboardingActivity : AppCompatActivity() {
@@ -37,15 +38,25 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
         binding.demoBackbtn.setOnClickListener { onBackPressed() }
 
         binding.cardSingleNext.setOnClickListener {
-            val intent = Intent(this, ThirdChainOnboardingScreen::class.java)
 
-            val options = ActivityOptions.makeSceneTransitionAnimation(this,
-                android.util.Pair(binding.logo,"logo_img"),
-                android.util.Pair(binding.onBoardingImg,"onBoardingImg"),
-                android.util.Pair(binding.cardSingleNext,"Btn"),
-                android.util.Pair(binding.demoBackbtn,"backBtn")).toBundle()
+            if (binding.propertyChainText.text!!.isEmpty()){
+                shakeAnimation(binding.propertyChainLayout, applicationContext)
+                binding.propertyChainLayout.error = ("Please enter your Chain Name")
+            } else if (binding .properytyTypeText.text!!.isEmpty()){
+                shakeAnimation(binding.propertyTypeLayout, applicationContext)
+                binding.propertyTypeLayout.error = ("Please enter your password")
+            } else {
+                val intent = Intent(this, ThirdChainOnboardingScreen::class.java)
+                val options = ActivityOptions.makeSceneTransitionAnimation(
+                    this,
+                    android.util.Pair(binding.logo, "logo_img"),
+                    android.util.Pair(binding.onBoardingImg, "onBoardingImg"),
+                    android.util.Pair(binding.cardSingleNext, "Btn"),
+                    android.util.Pair(binding.demoBackbtn, "backBtn")
+                ).toBundle()
 
-            startActivity(intent, options)
+                startActivity(intent, options)
+            }
         }
 
         binding.replaceImage.setOnClickListener {

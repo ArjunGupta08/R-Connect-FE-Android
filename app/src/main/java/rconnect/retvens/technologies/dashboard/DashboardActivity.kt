@@ -249,6 +249,12 @@ class DashboardActivity : AppCompatActivity() {
     private fun configurationNavLayout() {
         isCardSelected(binding.propertiesCard, binding.propertiesText)
         replaceFragment(ViewPropertiesFragment())
+
+        binding.propertiesCard.setOnClickListener {
+            isCardSelected(binding.propertiesCard, binding.propertiesText)
+            replaceFragment(ViewPropertiesFragment())
+        }
+
         binding.ratesCard.setOnClickListener {
             isCardSelected(binding.ratesCard, binding.ratesTxt)
 //            binding.rateDropDown.setImageResource(R.drawable.svg_up)
@@ -280,9 +286,6 @@ class DashboardActivity : AppCompatActivity() {
             }
 
 //            binding.rateDropDown
-        }
-        binding.propertiesCard.setOnClickListener {
-            isCardSelected(binding.propertiesCard, binding.propertiesText)
         }
 
     }
