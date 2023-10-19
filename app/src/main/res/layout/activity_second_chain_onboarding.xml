@@ -220,7 +220,7 @@
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/nop"
                         android:layout_width="0dp"
-                        android:layout_height="45dp"
+                        android:layout_height="47dp"
                         android:layout_marginTop="15dp"
                         app:cardBackgroundColor="@color/white"
                         app:cardCornerRadius="10dp"
@@ -228,8 +228,8 @@
                         app:layout_constraintEnd_toEndOf="@id/propertyChainLayout"
                         app:layout_constraintStart_toStartOf="@id/propertyChainLayout"
                         app:layout_constraintTop_toBottomOf="@id/propertyChainLayout"
-                        app:strokeColor="@color/subtitle"
-                        app:strokeWidth="1dp">
+                        app:strokeColor="@color/secondary"
+                        app:strokeWidth="0.4dp">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
@@ -240,9 +240,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
-                                android:fontFamily="@font/roboto"
                                 android:text="Number of Properties"
-                                android:textColor="@color/black"
+                                android:textColor="@color/lightBlack"
                                 android:textSize="16sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -269,12 +268,12 @@
                                     android:layout_width="@dimen/countingEditTextWidth"
                                     android:layout_height="wrap_content"
                                     android:background="@null"
-                                    android:fontFamily="@font/roboto_bold"
                                     android:inputType="number"
                                     android:text="1"
                                     android:textAlignment="center"
+                                    android:maxLength="3"
                                     android:textColor="@color/black"
-                                    android:textSize="@dimen/H5" />
+                                    android:textSize="@dimen/H4" />
 
                                 <ImageView
                                     android:id="@+id/add"
