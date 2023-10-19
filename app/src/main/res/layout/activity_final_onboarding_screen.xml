@@ -76,6 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="60dp"
                     android:layout_marginTop="40dp"
+                    android:visibility="invisible"
                     android:src="@drawable/vector_back_btn"
                     android:transitionName="backBtn"
                     app:layout_constraintStart_toStartOf="parent"

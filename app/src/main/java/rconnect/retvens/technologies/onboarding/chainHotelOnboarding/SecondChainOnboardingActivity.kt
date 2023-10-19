@@ -42,10 +42,12 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
             if (binding.propertyChainText.text!!.isEmpty()){
                 shakeAnimation(binding.propertyChainLayout, applicationContext)
                 binding.propertyChainLayout.error = ("Please enter your Chain Name")
-            } else if (binding .properytyTypeText.text!!.isEmpty()){
-                shakeAnimation(binding.propertyTypeLayout, applicationContext)
-                binding.propertyTypeLayout.error = ("Please enter your password")
-            } else {
+            }
+//            else if (binding .properytyTypeText.text!!.isEmpty()){
+//                shakeAnimation(binding.propertyTypeLayout, applicationContext)
+//                binding.propertyTypeLayout.error = ("Please enter your password")
+//            }
+            else {
                 val intent = Intent(this, ThirdChainOnboardingScreen::class.java)
                 val options = ActivityOptions.makeSceneTransitionAnimation(
                     this,

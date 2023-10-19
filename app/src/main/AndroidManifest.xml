@@ -27,11 +27,6 @@
             android:name=".dashboard.DashboardActivity"
             android:exported="true"
             android:screenOrientation="landscape">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
@@ -40,11 +35,14 @@
         <activity
             android:name=".onboarding.authentication.LoginScreen"
             android:exported="true"
-            android:screenOrientation="landscape"></activity>
-        <activity
-            android:name=".onboarding.authentication.SignUpScreen"
-            android:exported="true"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".onboarding.authentication.ForgetPasswordScreen"
             android:exported="true"
