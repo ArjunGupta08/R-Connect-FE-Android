@@ -19,7 +19,7 @@
             android:textColor="@color/secondary"
             android:text="Create Room Type"
             android:textSize="@dimen/H2"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/roboto_bold"
             app:layout_constraintTop_toTopOf="parent"
@@ -134,6 +134,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:weightSum="2"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -141,7 +142,6 @@
                         android:layout_height="@dimen/textInputLayoutHeight"
                         android:hint="Short Code"
                         android:layout_weight="1"
-                        android:layout_marginTop="10dp"
                         style="@style/TextInputLayoutStyle"
                         app:endIconMode="clear_text"
                         app:endIconTint="@color/black">
@@ -160,9 +160,8 @@
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/ClickableTextInputLayoutStyle"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="@dimen/textInputLayoutHeight"
                         android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
                         android:layout_weight="1"
                         android:hint="Bed Type">
 

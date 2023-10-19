@@ -29,7 +29,10 @@ import rconnect.retvens.technologies.dashboard.configuration.addRoomType.imageAd
 import rconnect.retvens.technologies.dashboard.configuration.addRoomType.imageAdapter.SelectImagesDataClass
 import rconnect.retvens.technologies.dashboard.configuration.addRoomType.imageAdapter.SelectRoomImagesAdapter
 import rconnect.retvens.technologies.dashboard.configuration.addRoomType.imageAdapter.SelectViewImagesAdapter
+import rconnect.retvens.technologies.dashboard.configuration.properties.ViewPropertiesFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.FragmentAddRoomTypeBinding
+import rconnect.retvens.technologies.utils.Const
 
 class AddRoomTypeFragment : Fragment(),
     SelectRoomImagesAdapter.OnItemClickListener,
@@ -67,12 +70,25 @@ class AddRoomTypeFragment : Fragment(),
 
         binding.cancel.setOnClickListener {
 
-            val welcomeLayout = requireActivity().findViewById<LinearLayout>(R.id.welcomeLayout)
-            welcomeLayout.visibility = View.VISIBLE
+            if (Const.isAddingNewRoom){
 
-            val dashboardFragmentContainer = requireActivity().findViewById<FrameLayout>(R.id.dashboardFragmentContainer)
-            dashboardFragmentContainer.visibility = View.GONE
+                Const.isAddingNewRoom = false
+                val childFragment: Fragment = RoomTypeFragment()
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.dashboardFragmentContainer,childFragment)
+                transaction.commit()
 
+            } else {
+
+                Const.isAddingNewRoom = true
+
+                val welcomeLayout = requireActivity().findViewById<LinearLayout>(R.id.welcomeLayout)
+                welcomeLayout.visibility = View.VISIBLE
+
+                val dashboardFragmentContainer =
+                    requireActivity().findViewById<FrameLayout>(R.id.dashboardFragmentContainer)
+                dashboardFragmentContainer.visibility = View.GONE
+            }
         }
 
         binding.roomsRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
