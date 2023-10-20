@@ -17,19 +17,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.215"/>
+            app:layout_constraintGuide_percent="0.21"/>
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.413"/>
+            app:layout_constraintGuide_percent="0.38"/>
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.608"/>
+            app:layout_constraintGuide_percent="0.62"/>
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide4"
             android:layout_width="wrap_content"
@@ -53,10 +53,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:fontFamily="@font/roboto"
             android:text="Cell Data"
-            android:textColor="@color/black"
-            android:textSize="@dimen/H6"
+            style="@style/reservationText"
             android:singleLine="true"
             app:layout_constraintEnd_toStartOf="@id/propertyName"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -68,11 +66,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Confirmed"
-            android:fontFamily="@font/roboto"
-            android:textColor="@color/black"
-            android:textSize="@dimen/H6"
+            style="@style/reservationText"
             android:singleLine="true"
-            android:layout_marginStart="5dp"
             app:layout_constraintStart_toStartOf="@id/guide1"
             app:layout_constraintBottom_toBottomOf="@id/shortCode"
             app:layout_constraintTop_toTopOf="@id/shortCode"/>
@@ -83,11 +78,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:fontFamily="@font/roboto"
-            android:text="By Aman on 11:12, 12/12/2023"
-            android:textColor="@color/black"
-            android:textSize="@dimen/H6"
+            style="@style/reservationText"
             android:singleLine="true"
+            android:text="By Karan on 11:12, 12/12/2023"
             android:layout_marginStart="5dp"
             app:layout_constraintStart_toStartOf="@id/guide2"
             app:layout_constraintBottom_toBottomOf="@id/shortCode"
@@ -98,10 +91,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="By Aman on 11:12, 12/12/2023"
-            android:fontFamily="@font/roboto"
-            android:textColor="@color/black"
-            android:textSize="@dimen/H6"
+            android:text="By Karan on 11:12, 12/12/2023"
+            style="@style/reservationText"
             android:singleLine="true"
             android:layout_marginStart="5dp"
             app:layout_constraintStart_toStartOf="@id/guide3"
@@ -117,7 +108,7 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:weightSum="3"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="4dp"
             app:layout_constraintStart_toStartOf="@id/guide4"
             app:layout_constraintBottom_toBottomOf="@id/shortCode"
             app:layout_constraintTop_toTopOf="@id/shortCode">
@@ -141,6 +132,13 @@
                 android:src="@drawable/svg_info" />
 
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey5"
+            app:layout_constraintTop_toBottomOf="@id/propertyName"
+            android:layout_marginTop="9dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

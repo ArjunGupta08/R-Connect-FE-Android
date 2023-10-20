@@ -164,6 +164,30 @@
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="10dp">
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guide1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.21"/>
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guide2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.38"/>
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guide3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.62"/>
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guide4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.87"/>
                     <CheckBox
                         android:id="@+id/switch_all"
                         android:layout_width="19dp"
@@ -182,7 +206,7 @@
                         android:fontFamily="@font/roboto"
                         android:text="Reservation type name"
                         android:textColor="@color/item_light_heading"
-                        android:textSize="@dimen/H6"
+                        android:textSize="@dimen/H5"
                         android:singleLine="true"
                         app:layout_constraintEnd_toStartOf="@id/propertyName"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -196,11 +220,9 @@
                         android:text="Status"
                         android:fontFamily="@font/roboto"
                         android:textColor="@color/item_light_heading"
-                        android:textSize="@dimen/H6"
+                        android:textSize="@dimen/H5"
                         android:singleLine="true"
-                        android:layout_marginStart="5dp"
-                        app:layout_constraintEnd_toStartOf="@id/bedType"
-                        app:layout_constraintStart_toEndOf="@id/shortCode"
+                        app:layout_constraintStart_toStartOf="@id/guide1"
                         app:layout_constraintBottom_toBottomOf="@id/shortCode"
                         app:layout_constraintTop_toTopOf="@id/shortCode"/>
 
@@ -213,11 +235,10 @@
                         android:fontFamily="@font/roboto"
                         android:text="Created By"
                         android:textColor="@color/item_light_heading"
-                        android:textSize="@dimen/H6"
-                        android:singleLine="true"
                         android:layout_marginStart="5dp"
-                        app:layout_constraintEnd_toStartOf="@id/adultChild"
-                        app:layout_constraintStart_toEndOf="@id/propertyName"
+                        android:textSize="@dimen/H5"
+                        android:singleLine="true"
+                        app:layout_constraintStart_toStartOf="@id/guide2"
                         app:layout_constraintBottom_toBottomOf="@id/shortCode"
                         app:layout_constraintTop_toTopOf="@id/shortCode"/>
 
@@ -229,11 +250,10 @@
                         android:text="Last Modified"
                         android:fontFamily="@font/roboto"
                         android:textColor="@color/item_light_heading"
-                        android:textSize="@dimen/H6"
+                        android:textSize="@dimen/H5"
                         android:singleLine="true"
                         android:layout_marginStart="5dp"
-                        app:layout_constraintEnd_toStartOf="@id/actions"
-                        app:layout_constraintStart_toEndOf="@id/bedType"
+                        app:layout_constraintStart_toStartOf="@id/guide3"
                         app:layout_constraintBottom_toBottomOf="@id/shortCode"
                         app:layout_constraintTop_toTopOf="@id/shortCode"/>
 
@@ -245,12 +265,11 @@
                         android:fontFamily="@font/roboto"
                         android:text="Actions"
                         android:textColor="@color/item_light_heading"
-                        android:textSize="@dimen/H6"
+                        android:textSize="@dimen/H5"
                         android:textAlignment="center"
                         android:singleLine="true"
-                        android:layout_marginStart="5dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/adultChild"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintStart_toStartOf="@id/guide4"
                         app:layout_constraintBottom_toBottomOf="@id/shortCode"
                         app:layout_constraintTop_toTopOf="@id/shortCode"/>
 

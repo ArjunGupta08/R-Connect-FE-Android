@@ -58,6 +58,14 @@
         <item name="boxCornerRadiusTopStart">10dp</item>
     </style>
 
+    //textStyle
+
+    <style name="reservationText" parent="@android:style/TextAppearance">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="fontFamily">@font/roboto</item>
+    </style>
+
     //SubHeadingTextBold
     <style name="subHeadingTextBold" parent="android:Widget.TextView">
         <item name="android:textColor">@color/black</item>
