@@ -430,8 +430,10 @@
                 android:text="12 MAR 2023"
                 android:clickable="true"
                 android:editable="false"
-                android:focusable="true"/>
+                android:focusable="false"/>
         </com.google.android.material.textfield.TextInputLayout>
+
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/to_Layout"
             android:layout_width="0dp"
@@ -456,7 +458,7 @@
                 android:text="12 MAR 2023"
                 android:clickable="true"
                 android:editable="false"
-                android:focusable="true"/>
+                android:focusable="false"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView

@@ -1,6 +1,8 @@
 package rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory
 
+import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
@@ -8,10 +10,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.view.Window
-import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -20,6 +20,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.FragmentRatesAndInventoryBinding
@@ -83,6 +84,15 @@ class RatesAndInventoryFragment : Fragment() {
             dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dialog.show()
 
+
+            val from = dialog.findViewById<TextInputEditText>(R.id.from_Text)
+            val fromLayout = dialog.findViewById<TextInputLayout>(R.id.from_Layout)
+            val to = dialog.findViewById<TextInputEditText>(R.id.to_Text)
+            val toLayout = dialog.findViewById<TextInputLayout>(R.id.to_Layout)
+
+            setDate(from)
+            setDate(to)
+
             val cancel = dialog.findViewById<TextView>(R.id.cancel)
             cancel.setOnClickListener { dialog.cancel() }
             val sat = dialog.findViewById<TextView>(R.id.saturday)
@@ -93,6 +103,18 @@ class RatesAndInventoryFragment : Fragment() {
             val tues = dialog.findViewById<TextView>(R.id.tuesday)
             val wed = dialog.findViewById<TextView>(R.id.wed)
             val thur = dialog.findViewById<TextView>(R.id.thursday)
+
+
+            fromLayout.setStartIconOnClickListener {
+                showCalendarDialog(requireContext(), from)
+                dialog.show()
+            }
+
+            toLayout.setStartIconOnClickListener {
+                showCalendarDialog(requireContext(), to)
+                dialog.show()
+            }
+
             fri.setOnClickListener {
                 if (!frid){
                     selectCard(fri)
@@ -356,5 +378,39 @@ class RatesAndInventoryFragment : Fragment() {
 
         calenderAdapter.notifyDataSetChanged() // Notify the adapter after all changes
     }
+
+    fun showCalendarDialog(context : Context, editTextDate: TextInputEditText) {
+        val calendar = Calendar.getInstance()
+        val currentYear = calendar.get(Calendar.YEAR)
+        val currentMonth = calendar.get(Calendar.MONTH)
+        val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            context,
+            { _, year, month, dayOfMonth ->
+                // Set the selected date on the EditText
+                val selectedDate = "$year-${month + 1}-$dayOfMonth"
+                editTextDate.setText(selectedDate)
+            },
+            currentYear,
+            currentMonth,
+            currentDay
+        )
+        datePickerDialog.setCancelable(false)
+
+        datePickerDialog.show()
+    }
+
+    fun setDate(edt:TextInputEditText){
+        val calendar = Calendar.getInstance()
+        val currentYear = calendar.get(Calendar.YEAR)
+        val currentMonth = calendar.get(Calendar.MONTH)
+        val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
+        val selectedDate = "$currentYear-${currentMonth + 1}-$currentMonth"
+        edt.setText(selectedDate)
+
+    }
+
+
 
 }
