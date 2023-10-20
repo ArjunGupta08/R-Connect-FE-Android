@@ -21,13 +21,12 @@ import java.util.Locale
 class RoomsTimelineFragment : Fragment() {
     private lateinit var binding : FragmentRoomsTimelineBinding
 
-    private lateinit var calenderAdapter: CalenderAdapter
-    private lateinit var inventoryAdapter: RoomsInventoryAdapter
+    private lateinit var calenderAdapter: RoomsTimkelineCalenderAdapter
+
+    private lateinit var stayViewAdapter: StayViewAdapter
+
     private val cal = Calendar.getInstance(Locale.ENGLISH)
     private  var mList: ArrayList<String> = ArrayList();
-    lateinit var dialog: Dialog
-    private lateinit var robotoMedium : Typeface
-    private lateinit var roboto: Typeface
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +43,20 @@ class RoomsTimelineFragment : Fragment() {
         binding.calenderRecycler.layoutManager = LinearLayoutManager(requireContext(),
             LinearLayoutManager.HORIZONTAL,false)
 
-        calenderAdapter = CalenderAdapter()
+        binding.stayViewRecycler.layoutManager = LinearLayoutManager(requireContext())
+
+        mList.add("5")
+        mList.add("5")
+        mList.add("5")
+        mList.add("5")
+        mList.add("5")
+        mList.add("5")
+
+        stayViewAdapter = StayViewAdapter(mList, requireContext())
+        binding.stayViewRecycler.adapter = stayViewAdapter
+        stayViewAdapter.notifyDataSetChanged()
+
+        calenderAdapter = RoomsTimkelineCalenderAdapter()
         setUpCalendar()
 
         binding.calenderRecycler.adapter = calenderAdapter

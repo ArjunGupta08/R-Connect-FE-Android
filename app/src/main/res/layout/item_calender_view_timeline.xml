@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="55dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_calendar_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/H5"
+                android:text="WED"
+                android:visibility="invisible"
+                android:textColor="@color/subtitle"
+                />
+
+            <TextView
+                android:id="@+id/tv_calendar_day"
+                style="@style/subHeadingTextBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="23 AUG"
+                />
+
+
+
+        </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

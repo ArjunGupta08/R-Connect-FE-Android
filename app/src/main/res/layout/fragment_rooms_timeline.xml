@@ -197,6 +197,7 @@
                         android:layout_width="200dp"
                         android:layout_height="50dp"
                         android:orientation="horizontal"
+                        android:elevation="10dp"
                         android:gravity="center"
                         android:padding="10dp"
                         android:layout_marginTop="5dp"
@@ -204,12 +205,22 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"/>
 
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="0dp"
+                        android:elevation="8dp"
+                        android:background="@color/grey20"
+                        app:layout_constraintTop_toTopOf="@id/static_calender_layout"
+                        app:layout_constraintBottom_toBottomOf="@id/static_calender_layout"
+                        app:layout_constraintStart_toEndOf="@id/static_calender_layout"/>
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/calender_recycler"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         android:orientation="horizontal"
+                        android:layout_marginStart="25dp"
                         tools:listitem="@layout/item_calender_view"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/static_calender_layout"
@@ -218,10 +229,12 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/stayViewRecycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        tools:listitem="@layout/item_stay_view"/>
 
             </LinearLayout>
 

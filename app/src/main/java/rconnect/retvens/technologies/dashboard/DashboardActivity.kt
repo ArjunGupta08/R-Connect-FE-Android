@@ -33,6 +33,7 @@ import rconnect.retvens.technologies.dashboard.configuration.createRate.CreateRa
 import rconnect.retvens.technologies.dashboard.configuration.createRate.ReviewRatePlanFragment
 import rconnect.retvens.technologies.dashboard.configuration.properties.ViewPropertiesFragment
 import rconnect.retvens.technologies.dashboard.channelManager.promotions.PromotionsFragment
+import rconnect.retvens.technologies.dashboard.configuration.RoomsTimelineFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.ActivityDashboardBinding
 import rconnect.retvens.technologies.utils.bottomSlideInAnimation
@@ -296,6 +297,9 @@ class DashboardActivity : AppCompatActivity() {
 //            binding.rateDropDown
         }
 
+        binding.othersCard.setOnClickListener {
+            replaceFragment(RoomsTimelineFragment())
+        }
     }
 
     private fun openQuickReservationDialog() {
