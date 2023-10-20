@@ -33,6 +33,11 @@ import rconnect.retvens.technologies.dashboard.configuration.createRate.CreateRa
 import rconnect.retvens.technologies.dashboard.configuration.createRate.ReviewRatePlanFragment
 import rconnect.retvens.technologies.dashboard.configuration.properties.ViewPropertiesFragment
 import rconnect.retvens.technologies.dashboard.channelManager.promotions.PromotionsFragment
+import rconnect.retvens.technologies.dashboard.configuration.billings.PaymentTypesFragment
+import rconnect.retvens.technologies.dashboard.configuration.others.HolidaysAdapter
+import rconnect.retvens.technologies.dashboard.configuration.others.HolidaysFragment
+import rconnect.retvens.technologies.dashboard.configuration.others.seasons.SeasonsFragment
+import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.TransportationTypesFragment
 import rconnect.retvens.technologies.dashboard.configuration.reservation.ReservationTypeFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.ActivityDashboardBinding
@@ -41,9 +46,11 @@ import rconnect.retvens.technologies.utils.topInAnimation
 
 class DashboardActivity : AppCompatActivity() {
 
-    var isRateOpen = false
-    var isRateDropDownOpen = false
-    var isGuestOpen = false
+    private var isRateOpen = false
+    private var isRateDropDownOpen = false
+    private var isBillingOpen = false
+    private var isGuestOpen = false
+    private var isOtherOpen = false
     var isGuestDropDownOpen = false
 
     private lateinit var binding: ActivityDashboardBinding
@@ -296,16 +303,45 @@ class DashboardActivity : AppCompatActivity() {
                 isRateOpen = false
             }
 
-//            binding.rateDropDown
+        }
+
+        binding.billingsCard.setOnClickListener {
+            isCardSelected(binding.billingsCard, binding.billingTxt)
+
+            if (!isBillingOpen){
+                binding.billingLayout.isVisible = true
+                val draw = ContextCompat.getDrawable(this, R.drawable.svg_arrow_down)
+                draw?.colorFilter = PorterDuffColorFilter(Color.WHITE,PorterDuff.Mode.SRC_ATOP)
+                binding.billingDropDown.setImageDrawable(draw)
+
+                binding.billingDropDown.rotation = 180f
+                isBillingOpen = true
+
+                binding.paymentTypesLl.setOnClickListener {
+                    replaceFragment(PaymentTypesFragment())
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                }
+            }
+            else{
+                binding.billingLayout.isVisible = false
+                val draw = ContextCompat.getDrawable(this, R.drawable.svg_arrow_down)
+                draw?.colorFilter = PorterDuffColorFilter(Color.WHITE,PorterDuff.Mode.SRC_ATOP)
+                binding.billingDropDown.setImageDrawable(draw)
+
+                binding.billingDropDown.rotation = 0f
+                binding.billingsCard.setCardBackgroundColor(ContextCompat.getColor(applicationContext,R.color.white))
+                binding.billingTxt.setTextColor(ContextCompat.getColor(applicationContext,R.color.black))
+                isBillingOpen = false
+            }
+
         }
 
         binding.guestsCard.setOnClickListener {
             isCardSelected(binding.guestsCard, binding.guestsTxt)
-//            binding.rateDropDown.setImageResource(R.drawable.svg_up)
+
             if (!isGuestOpen){
                 binding.guestsLayout.isVisible = true
-//                binding.ratesCard.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.black))
-//                binding.ratesTxt.setTextColor(ContextCompat.getColor(applicationContext, R.color.white))
+
                 val draw = ContextCompat.getDrawable(this, R.drawable.svg_up)
                 draw?.colorFilter = PorterDuffColorFilter(Color.WHITE,PorterDuff.Mode.SRC_ATOP)
                 binding.guestsDropDown.setImageDrawable(draw)
@@ -325,8 +361,41 @@ class DashboardActivity : AppCompatActivity() {
                 binding.guestsTxt.setTextColor(ContextCompat.getColor(applicationContext,R.color.black))
                 isGuestOpen = false
             }
+        }
 
-//            binding.rateDropDown
+        binding.othersCard.setOnClickListener {
+            isCardSelected(binding.othersCard, binding.othersTxt)
+
+            if (!isOtherOpen){
+                binding.othersLayout.isVisible = true
+
+                val draw = ContextCompat.getDrawable(this, R.drawable.svg_up)
+                draw?.colorFilter = PorterDuffColorFilter(Color.WHITE,PorterDuff.Mode.SRC_ATOP)
+                binding.otherDropDown.setImageDrawable(draw)
+                isOtherOpen = true
+
+                binding.seasonsLl.setOnClickListener {
+                    replaceFragment(SeasonsFragment())
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                }
+                binding.holidaysLl.setOnClickListener {
+                    replaceFragment(HolidaysFragment())
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                }
+                binding.transportationTypesLayout.setOnClickListener {
+                    replaceFragment(TransportationTypesFragment())
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                }
+            }
+            else{
+                binding.othersLayout.isVisible = false
+                val draw = ContextCompat.getDrawable(this, R.drawable.svg_arrow_down)
+                draw?.colorFilter = PorterDuffColorFilter(Color.BLACK,PorterDuff.Mode.SRC_ATOP)
+                binding.otherDropDown.setImageDrawable(draw)
+                binding.othersCard.setCardBackgroundColor(ContextCompat.getColor(applicationContext,R.color.white))
+                binding.othersTxt.setTextColor(ContextCompat.getColor(applicationContext,R.color.black))
+                isOtherOpen = false
+            }
         }
 
     }

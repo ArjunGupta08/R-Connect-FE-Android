@@ -60,9 +60,17 @@
 
     //textStyle
 
-    <style name="reservationText" parent="@android:style/TextAppearance">
-        <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/black</item>
+    <style name="listTextHeading" parent="@android:style/TextAppearance">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/item_light_heading</item>
+        <item name="singleLine">true</item>
+        <item name="fontFamily">@font/roboto</item>
+    </style>
+
+    <style name="listText" parent="@android:style/TextAppearance">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/item_text</item>
+        <item name="singleLine">true</item>
         <item name="fontFamily">@font/roboto</item>
     </style>
 

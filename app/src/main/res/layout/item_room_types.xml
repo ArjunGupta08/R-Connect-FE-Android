@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,13 +16,9 @@
             android:id="@+id/shortCode"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/roboto"
+            style="@style/listText"
             android:text="DLX"
-            android:textColor="@color/item_text"
-            android:textSize="@dimen/H6"
-            android:singleLine="true"
+            android:layout_marginStart="10dp"
             app:layout_constraintEnd_toStartOf="@id/propertyName"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -32,12 +28,8 @@
             android:id="@+id/propertyName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            style="@style/listText"
             android:text="Room Type Name"
-            android:fontFamily="@font/roboto"
-            android:textColor="@color/item_text"
-            android:textSize="@dimen/H6"
-            android:singleLine="true"
             android:layout_marginStart="5dp"
             app:layout_constraintEnd_toStartOf="@id/guide1"
             app:layout_constraintStart_toEndOf="@id/shortCode"
@@ -55,12 +47,8 @@
             android:id="@+id/bedType"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/roboto"
+            style="@style/listText"
             android:text="King Size"
-            android:textColor="@color/item_text"
-            android:textSize="@dimen/H6"
-            android:singleLine="true"
             android:layout_marginStart="5dp"
             app:layout_constraintEnd_toStartOf="@id/adultChild"
             app:layout_constraintStart_toEndOf="@id/guide1"
@@ -117,12 +105,8 @@
             android:id="@+id/maxOccupancy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/roboto"
+            style="@style/listText"
             android:text="5"
-            android:textColor="@color/item_text"
-            android:textSize="@dimen/H6"
-            android:singleLine="true"
             android:layout_marginStart="5dp"
             app:layout_constraintEnd_toStartOf="@id/baseRate"
             app:layout_constraintStart_toEndOf="@id/adultChild"
@@ -133,12 +117,8 @@
             android:id="@+id/baseRate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/roboto"
+            style="@style/listText"
             android:text="2,799.00"
-            android:textColor="@color/item_text"
-            android:textSize="@dimen/H6"
-            android:singleLine="true"
             android:layout_marginStart="5dp"
             app:layout_constraintEnd_toStartOf="@id/amenities"
             app:layout_constraintStart_toEndOf="@id/maxOccupancy"
@@ -149,7 +129,6 @@
             android:id="@+id/amenities"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="horizontal"
             android:layout_marginStart="5dp"
             app:layout_constraintEnd_toStartOf="@id/actions"
@@ -160,19 +139,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto"
-                android:text="30"
-                android:textColor="@color/item_text"
-                android:textSize="@dimen/H6" />
+                style="@style/listText"
+                android:text="30"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:fontFamily="@font/roboto"
-                android:text="View"
-                android:textColor="@color/item_text"
-                android:textSize="@dimen/H6" />
+                style="@style/listText"
+                android:text="View"/>
 
         </LinearLayout>
 
@@ -180,7 +155,6 @@
             android:id="@+id/actions"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="center"
             android:orientation="horizontal"
             android:weightSum="3"
@@ -211,5 +185,12 @@
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey5"
+        app:layout_constraintTop_toBottomOf="@id/propertyName"
+        android:layout_marginTop="9dp"/>
 
 </LinearLayout>
