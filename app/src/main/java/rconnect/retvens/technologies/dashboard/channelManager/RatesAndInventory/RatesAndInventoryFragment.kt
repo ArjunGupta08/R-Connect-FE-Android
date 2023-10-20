@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -293,6 +294,23 @@ class RatesAndInventoryFragment : Fragment() {
                     blockRoomCard.isVisible = false
                     addRoomCard.isVisible = false
                     isInventoryOpen = false
+                }
+
+            }
+            val add_rates = dialog.findViewById<ImageView>(R.id.add_rate)
+            val ll_rates = dialog.findViewById<LinearLayout>(R.id.ll_rate)
+            ll_rates.isVerticalScrollBarEnabled = true
+            var isRateOpen = false
+            add_rates.setOnClickListener {
+                if (!isRateOpen){
+                    add_rates.setImageResource(R.drawable.svg_arrow_down)
+                    ll_rates.isVisible = true
+                    isRateOpen = true
+                }
+                else{
+                    add_rates.setImageResource(R.drawable.svg_add_icon)
+                    ll_rates.isVisible = false
+                    isRateOpen = false
                 }
 
             }
