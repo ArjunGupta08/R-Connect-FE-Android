@@ -26,12 +26,12 @@ import com.google.android.material.card.MaterialCardView
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.channelManager.QuickReservation.QuickReservationAdapter
 import rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory.RatesAndInventoryFragment
-import rconnect.retvens.technologies.dashboard.configuration.addPropertyFrags.AddPropertyFragment
-import rconnect.retvens.technologies.dashboard.configuration.addRoomType.AddRoomTypeFragment
-import rconnect.retvens.technologies.dashboard.configuration.createRate.CreateRatePlanFragment
-import rconnect.retvens.technologies.dashboard.configuration.createRate.CreateRateTypeFragment
-import rconnect.retvens.technologies.dashboard.configuration.createRate.ReviewRatePlanFragment
-import rconnect.retvens.technologies.dashboard.configuration.properties.ViewPropertiesFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AddPropertyFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddRoomTypeFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRatePlanFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateTypeFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ReviewRatePlanFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.properties.ViewPropertiesFragment
 import rconnect.retvens.technologies.dashboard.channelManager.promotions.PromotionsFragment
 import rconnect.retvens.technologies.dashboard.configuration.billings.PaymentTypesFragment
 import rconnect.retvens.technologies.dashboard.configuration.others.HolidaysAdapter
@@ -39,7 +39,8 @@ import rconnect.retvens.technologies.dashboard.configuration.others.HolidaysFrag
 import rconnect.retvens.technologies.dashboard.configuration.others.seasons.SeasonsFragment
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.TransportationTypesFragment
 import rconnect.retvens.technologies.dashboard.configuration.reservation.ReservationTypeFragment
-import rconnect.retvens.technologies.dashboard.configuration.roomType.RoomTypeFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.AmenitiesFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.ActivityDashboardBinding
 import rconnect.retvens.technologies.utils.bottomSlideInAnimation
 import rconnect.retvens.technologies.utils.topInAnimation
@@ -292,6 +293,10 @@ class DashboardActivity : AppCompatActivity() {
                     replaceFragment(CreateRatePlanFragment())
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
                 }
+                binding.amenitiesLL.setOnClickListener {
+                    replaceFragment(AmenitiesFragment())
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                }
             }
             else{
                 binding.rateLayout.isVisible = false
@@ -503,18 +508,18 @@ class DashboardActivity : AppCompatActivity() {
             )
         )
 
-        binding.othersCard.setCardBackgroundColor(
-            ContextCompat.getColor(
-                applicationContext,
-                R.color.white
-            )
-        )
-        binding.othersTxt.setTextColor(
-            ContextCompat.getColor(
-                applicationContext,
-                R.color.textColor
-            )
-        )
+//        binding.othersCard.setCardBackgroundColor(
+//            ContextCompat.getColor(
+//                applicationContext,
+//                R.color.white
+//            )
+//        )
+//        binding.othersTxt.setTextColor(
+//            ContextCompat.getColor(
+//                applicationContext,
+//                R.color.textColor
+//            )
+//        )
 
         binding.createReservationCard.setCardBackgroundColor(
             ContextCompat.getColor(

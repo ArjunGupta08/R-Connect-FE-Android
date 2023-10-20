@@ -1079,6 +1079,7 @@
                                         android:textSize="@dimen/H4" />
                                 </LinearLayout>
                                 <LinearLayout
+                                    android:id="@+id/amenitiesLL"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@color/black"

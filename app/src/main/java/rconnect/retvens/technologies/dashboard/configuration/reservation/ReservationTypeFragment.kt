@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import rconnect.retvens.technologies.R
-import rconnect.retvens.technologies.dashboard.configuration.addRoomType.AddRoomTypeFragment
-import rconnect.retvens.technologies.dashboard.configuration.roomType.RoomTypeAdapter
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddRoomTypeFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.roomType.RoomTypeAdapter
 import rconnect.retvens.technologies.databinding.FragmentReservationTypeBinding
 import rconnect.retvens.technologies.databinding.FragmentRoomTypeBinding
 import rconnect.retvens.technologies.utils.Const
