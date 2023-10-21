@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--BackGround Color-->
+    <color name="primaryBackground">#21212F</color>
+    <color name="secondaryBackground">#181822</color>
+    <color name="unselectedBackground">#E6ECF5</color>
+    <color name="textInputStrokeColor">#E6ECF5</color>
+
+    <!--Text Colors-->
+    <color name="secondary">#FFFFFFFF</color>
+    <color name="textColorWhite">#272A3D</color>
+    <color name="subtitleHeading">#5E5E5E</color>
+    <color name="item_light_heading">#4B5970</color>
+    <color name="item_text">#303844</color>
+
+</resources>

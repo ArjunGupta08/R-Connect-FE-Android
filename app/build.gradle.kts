@@ -50,7 +50,8 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    implementation("com.google.android.gms:play-services:12.0.1")
+    implementation("com.google.android.gms:play-services-maps:16.1.0")
+    implementation("com.google.android.gms:play-services-location:10.+")
 
     //ImageCropper
 //    implementation "com.theartofdev.edmodo:android-image-cropper:2.8.0"

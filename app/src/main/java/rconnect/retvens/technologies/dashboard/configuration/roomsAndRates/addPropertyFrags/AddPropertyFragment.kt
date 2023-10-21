@@ -26,11 +26,13 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.properties.ViewPropertiesFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectRoomImagesAdapter
@@ -237,10 +239,12 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
 
     // This method is called when the map is ready to be used.
     override fun onMapReady(googleMap: GoogleMap) {
-        // Add a marker in Sydney, Australia,
-        // and move the map's camera to the same location.
-        val myPos = LatLng(28.679079 , 77.069710)
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(myPos))
+
+        // Add a marker at the specified location and move the camera to that location.
+        val target = LatLng(28.679079, 77.069710)
+        googleMap.addMarker(MarkerOptions().position(target).title("Marker at Your Location"))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(target, 15f))
+
     }
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)

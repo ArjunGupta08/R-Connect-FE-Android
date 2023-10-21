@@ -1,4 +1,4 @@
-package rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes
+package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates
 
 import android.app.Dialog
 import android.graphics.Color
@@ -13,23 +13,23 @@ import android.view.Window
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import rconnect.retvens.technologies.R
-import rconnect.retvens.technologies.databinding.FragmentTransportationTypesBinding
+import rconnect.retvens.technologies.databinding.FragmentInclusionPlansBinding
 
-class TransportationTypesFragment : Fragment() {
-    private lateinit var binding : FragmentTransportationTypesBinding
+
+class InclusionPlansFragment : Fragment() {
+    private lateinit var binding : FragmentInclusionPlansBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentTransportationTypesBinding.inflate(inflater, container, false)
+        binding = FragmentInclusionPlansBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         binding.createNewBtn.setOnClickListener {
             openCreateNewDialog()
@@ -42,7 +42,7 @@ class TransportationTypesFragment : Fragment() {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
         dialog.setCanceledOnTouchOutside(true)
-        dialog.setContentView(R.layout.dialog_create_transportation_type)
+        dialog.setContentView(R.layout.dialog_create_inclusion)
         dialog.window?.apply {
             setBackgroundDrawableResource(android.R.color.transparent) // Makes the background transparent
             setLayout(
@@ -68,4 +68,5 @@ class TransportationTypesFragment : Fragment() {
         dialog.show()
 
     }
+
 }

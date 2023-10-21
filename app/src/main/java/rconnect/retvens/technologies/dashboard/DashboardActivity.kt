@@ -38,8 +38,10 @@ import rconnect.retvens.technologies.dashboard.configuration.others.HolidaysAdap
 import rconnect.retvens.technologies.dashboard.configuration.others.HolidaysFragment
 import rconnect.retvens.technologies.dashboard.configuration.others.seasons.SeasonsFragment
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.TransportationTypesFragment
+import rconnect.retvens.technologies.dashboard.configuration.reservation.IdentityDocumentsFragment
 import rconnect.retvens.technologies.dashboard.configuration.reservation.ReservationTypeFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.AmenitiesFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.InclusionPlansFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.ActivityDashboardBinding
 import rconnect.retvens.technologies.utils.bottomSlideInAnimation
@@ -293,6 +295,10 @@ class DashboardActivity : AppCompatActivity() {
                     replaceFragment(CreateRatePlanFragment())
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
                 }
+                binding.inclusionPlansLL.setOnClickListener {
+                    replaceFragment(InclusionPlansFragment())
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                }
                 binding.amenitiesLL.setOnClickListener {
                     replaceFragment(AmenitiesFragment())
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -307,7 +313,6 @@ class DashboardActivity : AppCompatActivity() {
                 binding.ratesTxt.setTextColor(ContextCompat.getColor(applicationContext,R.color.black))
                 isRateOpen = false
             }
-
         }
 
         binding.billingsCard.setOnClickListener {
@@ -354,6 +359,10 @@ class DashboardActivity : AppCompatActivity() {
 
                 binding.guestReservationLl.setOnClickListener {
                     replaceFragment(ReservationTypeFragment())
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                }
+                binding.identityDocumentsLL.setOnClickListener {
+                    replaceFragment(IdentityDocumentsFragment())
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
                 }
             }

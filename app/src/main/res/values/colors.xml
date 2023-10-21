@@ -6,18 +6,21 @@
 
     <color name="primary">#ACD037</color>
     <color name="yellow">#FFEB3B</color>
-    <color name="secondary">#272A3D</color>
     <color name="lightBlack">#717A8F</color>
     <color name="shadowColor">#7B7F80</color>
     <color name="textColor">#171717</color>
     <color name="cardbackcolor">#10141A</color>
     <color name="subtitle">#828282</color>
+
+    <!--BackGround Color-->
     <color name="primaryBackground">#FFFFFF</color>
     <color name="secondaryBackground">#F7F7FC</color>
     <color name="unselectedBackground">#E6ECF5</color>
     <color name="textInputStrokeColor">#E6ECF5</color>
 
     <!--Text Colors-->
+    <color name="secondary">#272A3D</color>
+    <color name="textColorWhite">#FFFFFFFF</color>
     <color name="subtitleHeading">#5E5E5E</color>
     <color name="item_light_heading">#4B5970</color>
     <color name="item_text">#303844</color>
