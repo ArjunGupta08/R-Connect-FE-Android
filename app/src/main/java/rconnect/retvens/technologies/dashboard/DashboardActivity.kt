@@ -508,19 +508,6 @@ class DashboardActivity : AppCompatActivity() {
             )
         )
 
-//        binding.othersCard.setCardBackgroundColor(
-//            ContextCompat.getColor(
-//                applicationContext,
-//                R.color.white
-//            )
-//        )
-//        binding.othersTxt.setTextColor(
-//            ContextCompat.getColor(
-//                applicationContext,
-//                R.color.textColor
-//            )
-//        )
-
         binding.createReservationCard.setCardBackgroundColor(
             ContextCompat.getColor(
                 applicationContext,
