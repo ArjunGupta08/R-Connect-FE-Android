@@ -314,6 +314,23 @@ class RatesAndInventoryFragment : Fragment() {
                 }
 
             }
+            val add_restriction = dialog.findViewById<ImageView>(R.id.add_restriction)
+            val ll_restriction = dialog.findViewById<LinearLayout>(R.id.ll_restriction)
+            ll_rates.isVerticalScrollBarEnabled = true
+            var isRestrictionOpen = false
+            add_restriction.setOnClickListener {
+                if (!isRestrictionOpen){
+                    add_restriction.setImageResource(R.drawable.svg_arrow_down)
+                    ll_restriction.isVisible = true
+                    isRestrictionOpen = true
+                }
+                else{
+                    add_restriction.setImageResource(R.drawable.svg_add_icon)
+                    ll_restriction.isVisible = false
+                    isRestrictionOpen = false
+                }
+
+            }
 
 
 
@@ -424,7 +441,7 @@ class RatesAndInventoryFragment : Fragment() {
         val currentYear = calendar.get(Calendar.YEAR)
         val currentMonth = calendar.get(Calendar.MONTH)
         val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
-        val selectedDate = "$currentYear-${currentMonth + 1}-$currentMonth"
+        val selectedDate = "$currentYear-${currentMonth + 1}-$currentDay"
         edt.setText(selectedDate)
 
     }
