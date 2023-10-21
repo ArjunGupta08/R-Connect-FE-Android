@@ -335,7 +335,7 @@ class DashboardActivity : AppCompatActivity() {
             else{
                 binding.billingLayout.isVisible = false
                 val draw = ContextCompat.getDrawable(this, R.drawable.svg_arrow_down)
-                draw?.colorFilter = PorterDuffColorFilter(Color.WHITE,PorterDuff.Mode.SRC_ATOP)
+                draw?.colorFilter = PorterDuffColorFilter(Color.BLACK,PorterDuff.Mode.SRC_ATOP)
                 binding.billingDropDown.setImageDrawable(draw)
 
                 binding.billingDropDown.rotation = 0f
