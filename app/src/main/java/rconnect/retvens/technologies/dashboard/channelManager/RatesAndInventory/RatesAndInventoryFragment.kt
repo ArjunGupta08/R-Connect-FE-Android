@@ -441,7 +441,7 @@ class RatesAndInventoryFragment : Fragment() {
         val currentYear = calendar.get(Calendar.YEAR)
         val currentMonth = calendar.get(Calendar.MONTH)
         val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
-        val selectedDate = "$currentYear-${currentMonth + 1}-$currentMonth"
+        val selectedDate = "$currentYear-${currentMonth + 1}-$currentDay"
         edt.setText(selectedDate)
 
     }
