@@ -364,7 +364,7 @@ class RatesAndInventoryFragment : Fragment() {
             day?.setTextColor(ContextCompat.getColor(requireContext(),R.color.black))
     }
     private fun unSelectCard(day: TextView?) {
-            day?.setBackgroundResource(R.drawable.rounded_border_white)
+            day?.setBackgroundResource(R.drawable.rounded_border_light_black)
             day?.setTextColor(ContextCompat.getColor(requireContext(),R.color.lightBlack))
         day?.typeface = roboto
     }
