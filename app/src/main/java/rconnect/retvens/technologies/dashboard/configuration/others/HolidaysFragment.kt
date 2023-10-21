@@ -1,6 +1,8 @@
 package rconnect.retvens.technologies.dashboard.configuration.others
 
+import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -17,6 +19,7 @@ import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.billings.PaymentTypeAdapter
 import rconnect.retvens.technologies.databinding.FragmentHolidaysBinding
 import rconnect.retvens.technologies.databinding.FragmentPaymentTypesBinding
+import java.util.Calendar
 
 class HolidaysFragment : Fragment() {
 
@@ -62,6 +65,17 @@ class HolidaysFragment : Fragment() {
 
         val cancel = dialog.findViewById<TextView>(R.id.cancel)
         val save = dialog.findViewById<CardView>(R.id.saveBtn)
+        val from_date = dialog.findViewById<TextView>(R.id.from_date)
+        val to_date = dialog.findViewById<TextView>(R.id.to_date)
+
+        from_date.setOnClickListener {
+            showCalendarDialog(requireContext(),from_date)
+            dialog.show()
+        }
+        to_date.setOnClickListener {
+            showCalendarDialog(requireContext(),to_date)
+            dialog.show()
+        }
 
         cancel.setOnClickListener {
             dialog.dismiss()
@@ -94,5 +108,28 @@ class HolidaysFragment : Fragment() {
         binding.paymentTypeRecycler.adapter = adapter
         adapter.notifyDataSetChanged()
     }
+
+    fun showCalendarDialog(context : Context, textDate: TextView) {
+        val calendar = Calendar.getInstance()
+        val currentYear = calendar.get(Calendar.YEAR)
+        val currentMonth = calendar.get(Calendar.MONTH)
+        val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            context,
+            { _, year, month, dayOfMonth ->
+                // Set the selected date on the EditText
+                val selectedDate = "$dayOfMonth/${month+1}/$year"
+                textDate.text = selectedDate
+            },
+            currentYear,
+            currentMonth,
+            currentDay
+        )
+        datePickerDialog.setCancelable(false)
+
+        datePickerDialog.show()
+    }
+
 
 }
