@@ -31,19 +31,93 @@
             android:paddingStart="8dp"
             android:text="Booking.com" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="80dp"
+            android:layout_marginStart="65dp"
             android:layout_marginEnd="10dp"
             android:gravity="center">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/g1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0."/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/g2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".1225"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/g3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".2225"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/g4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".3225"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/g5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".42"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/g6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".519"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/g7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".617"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/g8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".713"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/g9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".815"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/g10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".912"/>
+
 
             <TextView
 
                 style="@style/otaRates"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/g1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_gravity="center"
                 android:layout_marginStart="15dp"
                 android:layout_weight="0.2"
@@ -55,8 +129,10 @@
                 style="@style/otaRates"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/g2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_gravity="center"
-                android:layout_marginStart="57dp"
                 android:layout_weight="0.2"
                 android:background="@drawable/inventory_edit_background"
                 android:text="2000" />
@@ -67,7 +143,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="57dp"
+                app:layout_constraintStart_toStartOf="@id/g3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_weight="0.2"
                 android:background="@drawable/inventory_edit_background"
                 android:text="2000" />
@@ -78,7 +156,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="57dp"
+                app:layout_constraintStart_toStartOf="@id/g4"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_weight="0.2"
                 android:background="@drawable/inventory_edit_background"
                 android:text="2000" />
@@ -89,7 +169,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="57dp"
+                app:layout_constraintStart_toStartOf="@id/g5"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_weight="0.2"
                 android:background="@drawable/inventory_edit_background"
                 android:text="2000" />
@@ -100,7 +182,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="57dp"
+                app:layout_constraintStart_toStartOf="@id/g6"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_weight="0.2"
                 android:background="@drawable/inventory_edit_background"
                 android:text="2000" />
@@ -111,7 +195,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="57dp"
+                app:layout_constraintStart_toStartOf="@id/g7"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_weight="0.2"
                 android:background="@drawable/inventory_edit_background"
                 android:text="2000" />
@@ -122,7 +208,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="57dp"
+                app:layout_constraintStart_toStartOf="@id/g8"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_weight="0.2"
                 android:background="@drawable/inventory_edit_background"
                 android:text="2000" />
@@ -133,7 +221,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="57dp"
+                app:layout_constraintStart_toStartOf="@id/g9"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_weight="0.2"
                 android:background="@drawable/inventory_edit_background"
                 android:text="2000" />
@@ -144,13 +234,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="57dp"
+                app:layout_constraintStart_toStartOf="@id/g10"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_weight="0.2"
                 android:background="@drawable/inventory_edit_background"
                 android:text="2000" />
 
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </LinearLayout>
