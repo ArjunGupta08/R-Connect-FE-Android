@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_height="@dimen/createDialogHeight"
+        android:layout_width="@dimen/createDialogWidth"
+        style="@style/CardViewTheme"
+        app:cardElevation="5dp"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/ll1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingVertical="20dp"
+                android:layout_marginStart="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:id="@+id/aA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Create New Season"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textColor="@color/secondary"
+                    android:textSize="@dimen/H2"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/propertyChainLayout"
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:hint="Season"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black"
+                    app:layout_constraintEnd_toStartOf="@id/cardImg"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/propertyChainText"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:hint="Awaiting Payment"
+                        android:inputType="text"
+                        android:textColor="@color/secondary"
+                        android:textColorHint="@drawable/hint_selector" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/nop"
+                    android:layout_width="match_parent"
+                    android:layout_height="47dp"
+                    app:cardBackgroundColor="@color/white"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="20dp"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintEnd_toEndOf="@id/propertyChainLayout"
+                    app:layout_constraintStart_toStartOf="@id/propertyChainLayout"
+                    app:layout_constraintTop_toBottomOf="@id/propertyChainLayout"
+                    app:strokeColor="@color/lightBlack"
+                    app:strokeWidth="0.4dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/rate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="Date Range"
+                            android:textColor="@color/secondary"
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:orientation="horizontal"
+                            app:layout_constraintBottom_toBottomOf="@id/rate"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/rate">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="From"
+                                android:fontFamily="@font/roboto"
+                                android:textSize="@dimen/H4"
+                                android:textColor="@color/secondary"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="--/--/----"
+                                android:layout_marginStart="10dp"
+                                android:fontFamily="@font/roboto"
+                                android:textSize="@dimen/H4"
+                                android:textColor="@color/secondary"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="To"
+                                android:layout_marginStart="15dp"
+                                android:fontFamily="@font/roboto"
+                                android:textSize="@dimen/H4"
+                                android:textColor="@color/secondary"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="--/--/----"
+                                android:layout_marginStart="10dp"
+                                android:fontFamily="@font/roboto"
+                                android:textSize="@dimen/H4"
+                                android:textColor="@color/secondary"/>
+
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Apply days"
+                    android:textSize="@dimen/H4"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/roboto"
+                    android:textColor="@color/lightBlack" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/allDays"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="All days"
+                        android:background="@drawable/rounded_selected_light"
+                        android:textSize="@dimen/H4"
+                        android:layout_marginTop="15dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:textColor="@color/secondary" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:weightSum="7"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Mon"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_border_light_black"
+                            android:textSize="@dimen/H4"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginHorizontal="5dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:textColor="@color/secondary" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Tue"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_border_light_black"
+                            android:textSize="@dimen/H4"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginHorizontal="5dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:textColor="@color/secondary" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Wed"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_border_light_black"
+                            android:textSize="@dimen/H4"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginHorizontal="5dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:textColor="@color/secondary" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Thu"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_border_light_black"
+                            android:textSize="@dimen/H4"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginHorizontal="5dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:textColor="@color/secondary" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Fri"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_border_light_black"
+                            android:textSize="@dimen/H4"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginHorizontal="5dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:textColor="@color/secondary" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Sat"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_border_light_black"
+                            android:textSize="@dimen/H4"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginHorizontal="5dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:textColor="@color/secondary" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Sun"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_border_light_black"
+                            android:textSize="@dimen/H4"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginStart="5dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:textColor="@color/secondary" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:layout_gravity="center"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="@dimen/H5"
+                android:padding="15dp"
+                android:layout_marginEnd="20dp"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toStartOf="@id/saveBtn"
+                app:layout_constraintBottom_toBottomOf="@id/saveBtn"
+                app:layout_constraintTop_toTopOf="@id/saveBtn"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/saveBtn"
+                android:layout_width="110dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="26dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:clickable="true"
+                android:backgroundTint="@color/black"
+                app:cardCornerRadius="10dp"
+                android:focusable="true"
+                app:layout_constraintVertical_bias="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ll1"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Save"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textSize="@dimen/H5"
+                    android:textColor="@color/white"/>
+
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

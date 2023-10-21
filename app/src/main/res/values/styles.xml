@@ -205,4 +205,8 @@
         <item name="android:windowExitAnimation">@anim/right_out_animation</item>
     </style>
 
+    <!-- Dialog Create Style -->
+    <dimen name="createDialogWidth"> 500dp </dimen>
+    <dimen name="createDialogHeight"> 380dp </dimen>
+
 </resources>
