@@ -27,13 +27,83 @@
             android:paddingStart="8dp"
             android:text="Deluxe" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="198dp"
+            android:layout_marginStart="178dp"
             android:layout_marginEnd="10dp"
             android:gravity="center">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/g1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/g2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".11"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/g3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".21"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/g4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".31"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/g5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".41"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/g6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".51"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/g7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".61"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/g8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".71"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/g9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".81"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/g10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".91"/>
 
             <TextView
                 android:id="@+id/inventory_1"
@@ -41,12 +111,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:padding="5dp"
                 android:cursorVisible="true"
                 android:inputType="number"
                 android:focusable="true"
+                android:maxLength="3"
                 android:focusableInTouchMode="true"
-                android:layout_marginStart="15dp"
+                app:layout_constraintStart_toStartOf="@id/g1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_weight="1"
                 android:background="@drawable/inventory_edit_background"
                 android:text="6" />
@@ -56,8 +128,11 @@
                 style="@style/inventoryText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/g2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_gravity="center"
-                android:layout_marginStart="57dp"
+                android:maxLength="3"
                 android:layout_weight="1"
                 android:background="@drawable/inventory_edit_background"
                 android:text="6" />
@@ -68,8 +143,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="57dp"
+                app:layout_constraintStart_toStartOf="@id/g3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_weight="1"
+                android:maxLength="3"
                 android:background="@drawable/inventory_edit_background"
                 android:text="6" />
 
@@ -79,7 +157,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="57dp"
+                android:maxLength="3"
+                app:layout_constraintStart_toStartOf="@id/g4"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_weight="1"
                 android:background="@drawable/inventory_edit_background"
                 android:text="6" />
@@ -89,8 +170,11 @@
                 style="@style/inventoryText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxLength="3"
                 android:layout_gravity="center"
-                android:layout_marginStart="57dp"
+                app:layout_constraintStart_toStartOf="@id/g5"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_weight="1"
                 android:background="@drawable/inventory_edit_background"
                 android:text="6" />
@@ -101,7 +185,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="57dp"
+                android:maxLength="3"
+                app:layout_constraintStart_toStartOf="@id/g6"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_weight="1"
                 android:background="@drawable/inventory_edit_background"
                 android:text="6" />
@@ -111,8 +198,11 @@
                 style="@style/inventoryText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxLength="3"
                 android:layout_gravity="center"
-                android:layout_marginStart="57dp"
+                app:layout_constraintStart_toStartOf="@id/g7"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_weight="1"
                 android:background="@drawable/inventory_edit_background"
                 android:text="6" />
@@ -123,7 +213,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="57dp"
+                android:maxLength="3"
+                app:layout_constraintStart_toStartOf="@id/g8"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_weight="1"
                 android:background="@drawable/inventory_edit_background"
                 android:text="6" />
@@ -134,7 +227,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="57dp"
+                android:maxLength="3"
+                app:layout_constraintStart_toStartOf="@id/g9"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_weight="1"
                 android:background="@drawable/inventory_edit_background"
                 android:text="6" />
@@ -145,13 +241,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="57dp"
+                android:maxLength="3"
+                app:layout_constraintStart_toStartOf="@id/g10"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_weight="1"
                 android:background="@drawable/inventory_edit_background"
                 android:text="6" />
 
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </LinearLayout>
@@ -164,8 +263,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
