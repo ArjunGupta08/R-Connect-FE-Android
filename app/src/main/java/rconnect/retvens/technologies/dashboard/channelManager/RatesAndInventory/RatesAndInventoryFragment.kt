@@ -42,6 +42,18 @@ class RatesAndInventoryFragment : Fragment() {
     private lateinit var robotoMedium : Typeface
     private lateinit var roboto:Typeface
     var isDismissAllowed = true
+    lateinit var fri:TextView
+    lateinit var sat:TextView
+    lateinit var sun:TextView
+    lateinit var mon:TextView
+    lateinit var tues:TextView
+    lateinit var wed:TextView
+    lateinit var thur:TextView
+    lateinit var txt_all_days:TextView
+    lateinit var txt_week_days:TextView
+    lateinit var txt_weekends:TextView
+    lateinit var txt_custom:TextView
+
 
 
     override fun onCreateView(
@@ -83,6 +95,24 @@ class RatesAndInventoryFragment : Fragment() {
                     isDismissAllowed = true
                 }, 1000)
             }
+             fri = dialog.findViewById<TextView>(R.id.fri)
+             sun = dialog.findViewById<TextView>(R.id.sunday)
+             mon = dialog.findViewById<TextView>(R.id.monday)
+             tues = dialog.findViewById<TextView>(R.id.tuesday)
+             wed = dialog.findViewById<TextView>(R.id.wed)
+             thur = dialog.findViewById<TextView>(R.id.thursday)
+             txt_all_days = dialog.findViewById<TextView>(R.id.txt_all_days)
+             txt_weekends = dialog.findViewById<TextView>(R.id.txt_weekends)
+             txt_week_days = dialog.findViewById<TextView>(R.id.txt_week_days)
+             txt_custom = dialog.findViewById<TextView>(R.id.txt_custom)
+             sat = dialog.findViewById<TextView>(R.id.saturday)
+            unSelectAllDays()
+            txt_all_days.setBackgroundResource(R.drawable.rounded_border_light_black)
+            txt_weekends.setBackgroundResource(R.drawable.rounded_border_light_black)
+            txt_week_days.setBackgroundResource(R.drawable.rounded_border_light_black)
+            selectCard(txt_custom)
+            txt_custom.setBackgroundResource(R.drawable.rounded_border_black)
+
             var isMon = false
             var isTues = false
             var isWed = false
@@ -105,14 +135,6 @@ class RatesAndInventoryFragment : Fragment() {
 
             val cancel = dialog.findViewById<TextView>(R.id.cancel)
             cancel.setOnClickListener { dialog.cancel() }
-            val sat = dialog.findViewById<TextView>(R.id.saturday)
-
-                val fri = dialog.findViewById<TextView>(R.id.fri)
-                val sun = dialog.findViewById<TextView>(R.id.sunday)
-                val mon = dialog.findViewById<TextView>(R.id.monday)
-                val tues = dialog.findViewById<TextView>(R.id.tuesday)
-                val wed = dialog.findViewById<TextView>(R.id.wed)
-                val thur = dialog.findViewById<TextView>(R.id.thursday)
 
 
                 fromLayout.setStartIconOnClickListener {
@@ -188,25 +210,12 @@ class RatesAndInventoryFragment : Fragment() {
                         isThur = false
                     }
                 }
-                val txt_all_days = dialog.findViewById<TextView>(R.id.txt_all_days)
-                val txt_weekends = dialog.findViewById<TextView>(R.id.txt_weekends)
-                val txt_week_days = dialog.findViewById<TextView>(R.id.txt_week_days)
-                val txt_custom = dialog.findViewById<TextView>(R.id.txt_custom)
 
                 var isAllDay = false
                 var isweekend = false
                 var isWeekDay = false
-                var isCustom = false
+                var isCustom = true
 
-                fun notClickable() {
-                    sun.isClickable = false
-                    mon.isClickable = false
-                    tues.isClickable = false
-                    wed.isClickable = false
-                    thur.isClickable = false
-                    fri.isClickable = false
-                    sat.isClickable = false
-                }
 
                 fun allClickable() {
                     sun.isClickable = true
@@ -228,15 +237,6 @@ class RatesAndInventoryFragment : Fragment() {
                     selectCard(head)
                 }
 
-                fun unSelectAllDays() {
-                    unSelectCard(sun)
-                    unSelectCard(mon)
-                    unSelectCard(tues)
-                    unSelectCard(wed)
-                    unSelectCard(thur)
-                    unSelectCard(fri)
-                    unSelectCard(sat)
-                }
 
                 txt_all_days.setOnClickListener {
 
@@ -303,7 +303,6 @@ class RatesAndInventoryFragment : Fragment() {
                 }
                 val add_rates = dialog.findViewById<ImageView>(R.id.add_rate)
                 val ll_rates = dialog.findViewById<LinearLayout>(R.id.ll_rate)
-                ll_rates.isVerticalScrollBarEnabled = true
                 var isRateOpen = false
                 add_rates.setOnClickListener {
                     if (!isRateOpen) {
@@ -319,7 +318,6 @@ class RatesAndInventoryFragment : Fragment() {
                 }
                 val add_restriction = dialog.findViewById<ImageView>(R.id.add_restriction)
                 val ll_restriction = dialog.findViewById<LinearLayout>(R.id.ll_restriction)
-                ll_rates.isVerticalScrollBarEnabled = true
                 var isRestrictionOpen = false
                 add_restriction.setOnClickListener {
                     if (!isRestrictionOpen) {
@@ -335,10 +333,6 @@ class RatesAndInventoryFragment : Fragment() {
                 }
 
 
-                val calender = Calendar.getInstance()
-                dialog.findViewById<TextInputLayout>(R.id.from_Layout).setOnClickListener {
-
-            }
         }
 
 
@@ -364,10 +358,28 @@ class RatesAndInventoryFragment : Fragment() {
             day?.setBackgroundResource(R.drawable.rounded_border_black)
             day?.setTextColor(ContextCompat.getColor(requireContext(),R.color.black))
     }
-    private fun unSelectCard(day: TextView?) {
+     private fun unSelectCard(day: TextView?) {
             day?.setBackgroundResource(R.drawable.rounded_border_light_black)
             day?.setTextColor(ContextCompat.getColor(requireContext(),R.color.lightBlack))
         day?.typeface = roboto
+    }
+    private fun unSelectAllDays() {
+        unSelectCard(sun)
+        unSelectCard(mon)
+        unSelectCard(tues)
+        unSelectCard(wed)
+        unSelectCard(thur)
+        unSelectCard(fri)
+        unSelectCard(sat)
+    }
+    private fun notClickable() {
+        sun.isClickable = false
+        mon.isClickable = false
+        tues.isClickable = false
+        wed.isClickable = false
+        thur.isClickable = false
+        fri.isClickable = false
+        sat.isClickable = false
     }
 
     private fun setInventory() {
