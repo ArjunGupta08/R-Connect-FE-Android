@@ -572,10 +572,10 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="Dashboard"
-                                    android:fontFamily="@font/roboto_medium"
+                                    android:fontFamily="@font/roboto"
                                     android:textColor="@color/white"
                                     android:layout_marginStart="10dp"
-                                    android:textSize="@dimen/H4" />
+                                    android:textSize="@dimen/H5" />
                             </LinearLayout>
 
                         </com.google.android.material.card.MaterialCardView>
@@ -606,10 +606,10 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="Rates and Inventory"
-                                    android:fontFamily="@font/roboto_medium"
+                                    android:fontFamily="@font/roboto"
                                     android:textColor="@color/textColor"
                                     android:layout_marginStart="10dp"
-                                    android:textSize="@dimen/H4" />
+                                    android:textSize="@dimen/H5" />
                             </LinearLayout>
 
                         </com.google.android.material.card.MaterialCardView>
@@ -640,10 +640,10 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="Create Reservation"
-                                    android:fontFamily="@font/roboto_medium"
+                                    android:fontFamily="@font/roboto"
                                     android:textColor="@color/textColor"
                                     android:layout_marginStart="10dp"
-                                    android:textSize="@dimen/H4" />
+                                    android:textSize="@dimen/H5" />
                             </LinearLayout>
 
                         </com.google.android.material.card.MaterialCardView>
@@ -675,10 +675,10 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="Channels"
-                                    android:fontFamily="@font/roboto_medium"
+                                    android:fontFamily="@font/roboto"
                                     android:textColor="@color/textColor"
                                     android:layout_marginStart="10dp"
-                                    android:textSize="@dimen/H4" />
+                                    android:textSize="@dimen/H5" />
                             </LinearLayout>
 
                         </com.google.android.material.card.MaterialCardView>
@@ -708,10 +708,10 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="Promotions"
-                                    android:fontFamily="@font/roboto_medium"
+                                    android:fontFamily="@font/roboto"
                                     android:textColor="@color/textColor"
                                     android:layout_marginStart="10dp"
-                                    android:textSize="@dimen/H4" />
+                                    android:textSize="@dimen/H5" />
                             </LinearLayout>
 
                         </com.google.android.material.card.MaterialCardView>
@@ -742,10 +742,10 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="Bookings"
-                                    android:fontFamily="@font/roboto_medium"
+                                    android:fontFamily="@font/roboto"
                                     android:textColor="@color/textColor"
                                     android:layout_marginStart="10dp"
-                                    android:textSize="@dimen/H4" />
+                                    android:textSize="@dimen/H5" />
                             </LinearLayout>
 
                         </com.google.android.material.card.MaterialCardView>
@@ -776,10 +776,10 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="Reports &amp; Logs"
-                                    android:fontFamily="@font/roboto_medium"
+                                    android:fontFamily="@font/roboto"
                                     android:textColor="@color/textColor"
                                     android:layout_marginStart="10dp"
-                                    android:textSize="@dimen/H4" />
+                                    android:textSize="@dimen/H5" />
                             </LinearLayout>
 
                         </com.google.android.material.card.MaterialCardView>
@@ -810,10 +810,10 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Help &amp; Support"
-                                android:fontFamily="@font/roboto_medium"
+                                android:fontFamily="@font/roboto"
                                 android:textColor="@color/textColor"
                                 android:layout_marginStart="10dp"
-                                android:textSize="@dimen/H4" />
+                                android:textSize="@dimen/H5" />
                         </LinearLayout>
 
                     </com.google.android.material.card.MaterialCardView>
@@ -844,10 +844,10 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Settings"
-                                android:fontFamily="@font/roboto_medium"
+                                android:fontFamily="@font/roboto"
                                 android:textColor="@color/textColor"
                                 android:layout_marginStart="10dp"
-                                android:textSize="@dimen/H4" />
+                                android:textSize="@dimen/H5" />
                         </LinearLayout>
 
                     </com.google.android.material.card.MaterialCardView>
@@ -888,10 +888,10 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="Properties"
-                                    android:fontFamily="@font/roboto_medium"
+                                    android:fontFamily="@font/roboto"
                                     android:textColor="@color/white"
                                     android:layout_marginStart="10dp"
-                                    android:textSize="@dimen/H4" />
+                                    android:textSize="@dimen/H5" />
                             </LinearLayout>
 
                         </com.google.android.material.card.MaterialCardView>
@@ -932,14 +932,14 @@
                                     app:layout_constraintStart_toEndOf="@id/img_rate"
                                     app:layout_constraintTop_toTopOf="@id/img_rate"
                                     app:layout_constraintBottom_toBottomOf="@id/img_rate"
-                                    android:fontFamily="@font/roboto_medium"
+                                    android:fontFamily="@font/roboto"
                                     android:textColor="@color/black"
                                     android:layout_marginStart="10dp"
-                                    android:textSize="@dimen/H4" />
+                                    android:textSize="@dimen/H5" />
                                 <ImageView
                                     android:id="@+id/rate_drop_down"
-                                    android:layout_width="25dp"
-                                    android:layout_height="30dp"
+                                    android:layout_width="22dp"
+                                    android:layout_height="24dp"
                                     android:src="@drawable/svg_arrow_down"
                                     app:layout_constraintVertical_bias="0"
                                     app:layout_constraintEnd_toEndOf="parent"
@@ -975,10 +975,10 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Room Types"
-                                        android:fontFamily="@font/roboto_medium"
+                                        android:fontFamily="@font/roboto"
                                         android:textColor="@color/white"
                                         android:layout_marginStart="10dp"
-                                        android:textSize="@dimen/H4" />
+                                        android:textSize="@dimen/H5" />
                                 </LinearLayout>
                                 <LinearLayout
                                     android:id="@+id/ll2"
@@ -999,10 +999,10 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Rate Types"
-                                        android:fontFamily="@font/roboto_medium"
+                                        android:fontFamily="@font/roboto"
                                         android:textColor="@color/white"
                                         android:layout_marginStart="10dp"
-                                        android:textSize="@dimen/H4" />
+                                        android:textSize="@dimen/H5" />
                                 </LinearLayout>
                                 <LinearLayout
                                     android:id="@+id/ll3"
@@ -1027,7 +1027,7 @@
                                         android:fontFamily="@font/roboto_medium"
                                         android:textColor="@color/white"
                                         android:layout_marginStart="10dp"
-                                        android:textSize="@dimen/H4" />
+                                        android:textSize="@dimen/H5" />
                                 </LinearLayout>
                                 <LinearLayout
                                     android:id="@+id/ll4"
@@ -1049,10 +1049,10 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Extras &amp; Inclusions"
-                                        android:fontFamily="@font/roboto_medium"
+                                        android:fontFamily="@font/roboto"
                                         android:textColor="@color/white"
                                         android:layout_marginStart="10dp"
-                                        android:textSize="@dimen/H4" />
+                                        android:textSize="@dimen/H5" />
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -1075,10 +1075,10 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Inclusion Plans"
-                                        android:fontFamily="@font/roboto_medium"
+                                        android:fontFamily="@font/roboto"
                                         android:textColor="@color/white"
                                         android:layout_marginStart="10dp"
-                                        android:textSize="@dimen/H4" />
+                                        android:textSize="@dimen/H5" />
                                 </LinearLayout>
                                 <LinearLayout
                                     android:id="@+id/amenitiesLL"
@@ -1100,10 +1100,10 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Amenities"
-                                        android:fontFamily="@font/roboto_medium"
+                                        android:fontFamily="@font/roboto"
                                         android:textColor="@color/white"
                                         android:layout_marginStart="10dp"
-                                        android:textSize="@dimen/H4" />
+                                        android:textSize="@dimen/H5" />
                                 </LinearLayout>
 
                                 </LinearLayout>
@@ -1147,14 +1147,14 @@
                                     app:layout_constraintStart_toEndOf="@id/billing_img"
                                     app:layout_constraintTop_toTopOf="@id/billing_img"
                                     app:layout_constraintBottom_toBottomOf="@id/billing_img"
-                                    android:fontFamily="@font/roboto_medium"
+                                    android:fontFamily="@font/roboto"
                                     android:textColor="@color/black"
                                     android:layout_marginStart="10dp"
-                                    android:textSize="@dimen/H4" />
+                                    android:textSize="@dimen/H5" />
                                 <ImageView
                                     android:id="@+id/billing_drop_down"
-                                    android:layout_width="25dp"
-                                    android:layout_height="30dp"
+                                    android:layout_width="22dp"
+                                    android:layout_height="24dp"
                                     android:src="@drawable/svg_arrow_down"
                                     app:layout_constraintVertical_bias="0"
                                     app:layout_constraintEnd_toEndOf="parent"
@@ -1190,10 +1190,10 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Taxes"
-                                        android:fontFamily="@font/roboto_medium"
+                                        android:fontFamily="@font/roboto"
                                         android:textColor="@color/white"
                                         android:layout_marginStart="10dp"
-                                        android:textSize="@dimen/H4" />
+                                        android:textSize="@dimen/H5" />
                                 </LinearLayout>
                                 <LinearLayout
                                     android:id="@+id/paymentTypes_ll"
@@ -1214,10 +1214,10 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Payment Types"
-                                        android:fontFamily="@font/roboto_medium"
+                                        android:fontFamily="@font/roboto"
                                         android:textColor="@color/white"
                                         android:layout_marginStart="10dp"
-                                        android:textSize="@dimen/H4" />
+                                        android:textSize="@dimen/H5" />
                                 </LinearLayout>
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -1238,10 +1238,10 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Invoice Templates"
-                                        android:fontFamily="@font/roboto_medium"
+                                        android:fontFamily="@font/roboto"
                                         android:textColor="@color/white"
                                         android:layout_marginStart="10dp"
-                                        android:textSize="@dimen/H4" />
+                                        android:textSize="@dimen/H5" />
                                 </LinearLayout>
 
                                 </LinearLayout>
@@ -1286,14 +1286,14 @@
                                     app:layout_constraintStart_toEndOf="@id/img_guests"
                                     app:layout_constraintTop_toTopOf="@id/img_guests"
                                     app:layout_constraintBottom_toBottomOf="@id/img_guests"
-                                    android:fontFamily="@font/roboto_medium"
+                                    android:fontFamily="@font/roboto"
                                     android:textColor="@color/black"
                                     android:layout_marginStart="10dp"
-                                    android:textSize="@dimen/H4" />
+                                    android:textSize="@dimen/H5" />
                                 <ImageView
                                     android:id="@+id/guests_drop_down"
-                                    android:layout_width="25dp"
-                                    android:layout_height="30dp"
+                                    android:layout_width="22dp"
+                                    android:layout_height="24dp"
                                     android:src="@drawable/svg_arrow_down"
                                     app:layout_constraintVertical_bias="0"
                                     app:layout_constraintEnd_toEndOf="parent"
@@ -1329,10 +1329,10 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Guest Database"
-                                        android:fontFamily="@font/roboto_medium"
+                                        android:fontFamily="@font/roboto"
                                         android:textColor="@color/white"
                                         android:layout_marginStart="10dp"
-                                        android:textSize="@dimen/H4" />
+                                        android:textSize="@dimen/H5" />
                                 </LinearLayout>
                                 <LinearLayout
                                     android:id="@+id/guestReservation_ll"
@@ -1353,10 +1353,10 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Reservation Type"
-                                        android:fontFamily="@font/roboto_medium"
+                                        android:fontFamily="@font/roboto"
                                         android:textColor="@color/white"
                                         android:layout_marginStart="10dp"
-                                        android:textSize="@dimen/H4" />
+                                        android:textSize="@dimen/H5" />
                                 </LinearLayout>
                                 <LinearLayout
                                     android:id="@+id/identityDocumentsLL"
@@ -1378,10 +1378,10 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Identity Documents"
-                                        android:fontFamily="@font/roboto_medium"
+                                        android:fontFamily="@font/roboto"
                                         android:textColor="@color/white"
                                         android:layout_marginStart="10dp"
-                                        android:textSize="@dimen/H4" />
+                                        android:textSize="@dimen/H5" />
                                 </LinearLayout>
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -1402,10 +1402,10 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Guest Types"
-                                        android:fontFamily="@font/roboto_medium"
+                                        android:fontFamily="@font/roboto"
                                         android:textColor="@color/white"
                                         android:layout_marginStart="10dp"
-                                        android:textSize="@dimen/H4" />
+                                        android:textSize="@dimen/H5" />
                                 </LinearLayout>
 
 
@@ -1452,14 +1452,14 @@
                                     app:layout_constraintBottom_toBottomOf="@id/img_other"
                                     app:layout_constraintStart_toEndOf="@id/img_other"
                                     android:text="Others"
-                                    android:fontFamily="@font/roboto_medium"
+                                    android:fontFamily="@font/roboto"
                                     android:textColor="@color/textColor"
                                     android:layout_marginStart="10dp"
-                                    android:textSize="@dimen/H4" />
+                                    android:textSize="@dimen/H5" />
                                 <ImageView
                                     android:id="@+id/otherDropDown"
-                                    android:layout_width="25dp"
-                                    android:layout_height="30dp"
+                                    android:layout_width="22dp"
+                                    android:layout_height="24dp"
                                     android:layout_marginEnd="19dp"
                                     app:layout_constraintTop_toTopOf="@id/img_other"
                                     app:layout_constraintBottom_toBottomOf="@id/img_other"
@@ -1497,10 +1497,10 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:text="Transportation Types"
-                                            android:fontFamily="@font/roboto_medium"
+                                            android:fontFamily="@font/roboto"
                                             android:textColor="@color/white"
                                             android:layout_marginStart="10dp"
-                                            android:textSize="@dimen/H4" />
+                                            android:textSize="@dimen/H5" />
                                     </LinearLayout>
                                     <LinearLayout
                                         android:id="@+id/seasons_ll"
@@ -1521,10 +1521,10 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:text="Seasons"
-                                            android:fontFamily="@font/roboto_medium"
+                                            android:fontFamily="@font/roboto"
                                             android:textColor="@color/white"
                                             android:layout_marginStart="10dp"
-                                            android:textSize="@dimen/H4" />
+                                            android:textSize="@dimen/H5" />
                                     </LinearLayout>
                                     <LinearLayout
                                         android:id="@+id/holidays_ll"
@@ -1546,10 +1546,10 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:text="Holidays"
-                                            android:fontFamily="@font/roboto_medium"
+                                            android:fontFamily="@font/roboto"
                                             android:textColor="@color/white"
                                             android:layout_marginStart="10dp"
-                                            android:textSize="@dimen/H4" />
+                                            android:textSize="@dimen/H5" />
                                     </LinearLayout>
                                     <LinearLayout
                                         android:layout_width="match_parent"
@@ -1570,10 +1570,10 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:text="Policies"
-                                            android:fontFamily="@font/roboto_medium"
+                                            android:fontFamily="@font/roboto"
                                             android:textColor="@color/white"
                                             android:layout_marginStart="10dp"
-                                            android:textSize="@dimen/H4" />
+                                            android:textSize="@dimen/H5" />
                                     </LinearLayout>
 
                                 </LinearLayout>
@@ -1607,10 +1607,10 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="PMS"
-                                android:fontFamily="@font/roboto_medium"
+                                android:fontFamily="@font/roboto"
                                 android:textColor="@color/textColor"
                                 android:layout_marginStart="10dp"
-                                android:textSize="@dimen/H4" />
+                                android:textSize="@dimen/H5" />
                         </LinearLayout>
 
                     </com.google.android.material.card.MaterialCardView>
