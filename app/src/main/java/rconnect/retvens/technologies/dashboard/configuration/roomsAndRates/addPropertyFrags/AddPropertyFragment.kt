@@ -41,6 +41,8 @@ import rconnect.retvens.technologies.databinding.FragmentAddPropertyBinding
 import rconnect.retvens.technologies.utils.Const
 import rconnect.retvens.technologies.utils.fadeOutAnimation
 import rconnect.retvens.technologies.utils.fadeInAnimation
+import rconnect.retvens.technologies.utils.leftInAnimation
+import rconnect.retvens.technologies.utils.rightInAnimation
 
 class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdapter.OnItemClickListener {
 
@@ -77,7 +79,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
         roboto = ResourcesCompat.getFont(requireContext(), R.font.roboto)!!
         robotoMedium = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)!!
 
-        lToRInAnimation(binding.propertyProfileLayout, requireContext())
+        leftInAnimation(binding.propertyProfileLayout, requireContext())
 
         // Get the SupportMapFragment and request notification
         // when the map is ready to be used.
@@ -109,7 +111,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
 
                 binding.propertyProfileLayout.visibility = View.GONE
                 binding.addressLayout.visibility = View.VISIBLE
-                rToL_InAnimation(binding.addressLayout, requireContext())
+                rightInAnimation(binding.addressLayout, requireContext())
 
             } else {
 
@@ -152,7 +154,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
             binding.addressAndContacts.typeface = roboto
 
             binding.propertyProfileLayout.visibility = View.VISIBLE
-            lToRInAnimation(binding.propertyProfileLayout, requireContext())
+            leftInAnimation(binding.propertyProfileLayout, requireContext())
             binding.addressLayout.visibility = View.GONE
 
             binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
@@ -171,7 +173,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
 
             binding.propertyProfileLayout.visibility = View.GONE
             binding.addressLayout.visibility = View.VISIBLE
-            rToL_InAnimation(binding.addressLayout, requireContext())
+            rightInAnimation(binding.addressLayout, requireContext())
 
             binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
             binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
@@ -215,26 +217,6 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
             }
         }
 
-    }
-
-    private fun rToL_InAnimation(view: View, context: Context) {
-        // load the animation
-        val animSlideIn: Animation = AnimationUtils.loadAnimation(
-            context,
-            R.anim.right_in_animation
-        )
-        // start the animation
-        view.startAnimation(animSlideIn)
-    }
-
-    private fun lToRInAnimation(view: View, context: Context) {
-        // load the animation
-        val animSlideOut: Animation = AnimationUtils.loadAnimation(
-            context,
-            R.anim.l_to_r_in_animation
-        )
-        // start the animation
-        view.startAnimation(animSlideOut)
     }
 
     // This method is called when the map is ready to be used.
