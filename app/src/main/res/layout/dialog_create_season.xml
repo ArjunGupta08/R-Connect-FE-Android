@@ -149,133 +149,199 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Apply days"
-                    android:textSize="@dimen/H4"
-                    android:layout_marginTop="20dp"
-                    android:fontFamily="@font/roboto"
-                    android:textColor="@color/lightBlack" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
                     android:orientation="horizontal">
 
+
                     <TextView
-                        android:id="@+id/allDays"
+                        android:id="@+id/txt_apply"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="All days"
-                        android:background="@drawable/rounded_border_light_black"
-                        android:textSize="@dimen/H4"
+                        app:layout_constraintTop_toBottomOf="@id/ll7"
+                        app:layout_constraintStart_toStartOf="@id/ll7"
                         android:layout_marginTop="15dp"
-                        android:fontFamily="@font/roboto"
-                        android:textColor="@color/lightBlack" />
+                        android:text="Available for"
+                        android:textSize="@dimen/H5"
+                        android:textColor="@color/lightBlack"/>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:weightSum="7"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/monday"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="Mon"
-                            android:layout_weight="1"
-                            android:background="@drawable/rounded_border_light_black"
-                            android:textSize="@dimen/H4"
-                            android:layout_marginTop="15dp"
-                            android:layout_marginHorizontal="5dp"
-                            android:fontFamily="@font/roboto"
-                            android:textColor="@color/lightBlack" />
-
-                        <TextView
-                            android:id="@+id/tuesday"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="Tue"
-                            android:layout_weight="1"
-                            android:background="@drawable/rounded_border_light_black"
-                            android:textSize="@dimen/H4"
-                            android:layout_marginTop="15dp"
-                            android:layout_marginHorizontal="5dp"
-                            android:fontFamily="@font/roboto"
-                            android:textColor="@color/lightBlack" />
-
-                        <TextView
-                            android:id="@+id/wednesday"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="Wed"
-                            android:layout_weight="1"
-                            android:background="@drawable/rounded_border_light_black"
-                            android:textSize="@dimen/H4"
-                            android:layout_marginTop="15dp"
-                            android:layout_marginHorizontal="5dp"
-                            android:fontFamily="@font/roboto"
-                            android:textColor="@color/lightBlack" />
-
-                        <TextView
-                            android:id="@+id/thursday"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="Thu"
-                            android:layout_weight="1"
-                            android:background="@drawable/rounded_border_light_black"
-                            android:textSize="@dimen/H4"
-                            android:layout_marginTop="15dp"
-                            android:layout_marginHorizontal="5dp"
-                            android:fontFamily="@font/roboto"
-                            android:textColor="@color/lightBlack" />
-
-                        <TextView
-                            android:id="@+id/friday"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="Fri"
-                            android:layout_weight="1"
-                            android:background="@drawable/rounded_border_light_black"
-                            android:textSize="@dimen/H4"
-                            android:layout_marginTop="15dp"
-                            android:layout_marginHorizontal="5dp"
-                            android:fontFamily="@font/roboto"
-                            android:textColor="@color/lightBlack" />
-
-                        <TextView
-                            android:id="@+id/saturday"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="Sat"
-                            android:layout_weight="1"
-                            android:background="@drawable/rounded_border_light_black"
-                            android:textSize="@dimen/H4"
-                            android:layout_marginTop="15dp"
-                            android:layout_marginHorizontal="5dp"
-                            android:fontFamily="@font/roboto"
-                            android:textColor="@color/lightBlack" />
-
-                        <TextView
-                            android:id="@+id/sunday"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="Sun"
-                            android:layout_weight="1"
-                            android:background="@drawable/rounded_border_light_black"
-                            android:textSize="@dimen/H4"
-                            android:layout_marginTop="15dp"
-                            android:layout_marginStart="5dp"
-                            android:fontFamily="@font/roboto"
-                            android:textColor="@color/lightBlack" />
-
-                    </LinearLayout>
+                <TextView
+                    android:id="@+id/txt_all_days"
+                    android:layout_width="86dp"
+                    android:layout_height="30dp"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/rounded_border_light_black"
+                    android:textSize="@dimen/H5"
+                    android:textColor="@color/lightBlack"
+                    android:text="All Days"/>
+                <TextView
+                    android:id="@+id/txt_weekends"
+                    android:layout_width="86dp"
+                    android:layout_height="30dp"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    app:layout_constraintStart_toEndOf="@id/txt_all_days"
+                    app:layout_constraintBottom_toBottomOf="@id/txt_all_days"
+                    app:layout_constraintEnd_toStartOf="@id/txt_week_days"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="9dp"
+                    android:background="@drawable/rounded_border_light_black"
+                    android:textSize="@dimen/H5"
+                    android:textColor="@color/lightBlack"
+                    android:text="Weekends"/>
+                <TextView
+                    android:id="@+id/txt_week_days"
+                    android:layout_width="86dp"
+                    android:layout_height="30dp"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:layout_marginStart="9dp"
+                    android:background="@drawable/rounded_border_light_black"
+                    app:layout_constraintStart_toEndOf="@id/txt_weekends"
+                    app:layout_constraintBottom_toBottomOf="@id/txt_all_days"
+                    app:layout_constraintEnd_toEndOf="@id/txt_custom"
+                    android:layout_marginTop="16dp"
+                    android:textSize="@dimen/H5"
+                    android:textColor="@color/lightBlack"
+                    android:text="Weekdays"/>
+                <TextView
+                    android:id="@+id/txt_custom"
+                    android:layout_width="86dp"
+                    android:layout_height="30dp"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    app:layout_constraintStart_toEndOf="@id/txt_week_days"
+                    app:layout_constraintBottom_toBottomOf="@id/txt_all_days"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1"
+                    android:layout_marginStart="9dp"
+                    android:background="@drawable/rounded_border_light_black"
+                    android:layout_marginTop="16dp"
+                    android:textSize="@dimen/H5"
+                    android:textColor="@color/lightBlack"
+                    android:text="Custom"/>
 
                 </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_day"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/txt_apply"
+                    app:layout_constraintTop_toBottomOf="@id/txt_custom">
+
+                    <TextView
+                        android:id="@+id/saturday"
+                        android:layout_width="54dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/rounded_border_light_black"
+                        android:gravity="center"
+                        android:text="Sat"
+                        android:textAlignment="center"
+                        android:textColor="@color/lightBlack"
+                        android:textSize="@dimen/H5"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/sunday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/sunday"
+                        android:layout_width="54dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/rounded_border_light_black"
+                        android:gravity="center"
+                        android:text="Sun"
+                        android:textAlignment="center"
+                        android:textColor="@color/lightBlack"
+                        android:textSize="@dimen/H5"
+                        app:layout_constraintEnd_toStartOf="@id/monday"
+                        app:layout_constraintStart_toEndOf="@id/saturday"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/monday"
+                        android:layout_width="54dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/rounded_border_light_black"
+                        android:gravity="center"
+                        android:text="Mon"
+                        android:textAlignment="center"
+                        android:textColor="@color/lightBlack"
+                        android:textSize="@dimen/H5"
+                        app:layout_constraintEnd_toStartOf="@id/tuesday"
+                        app:layout_constraintStart_toEndOf="@id/sunday"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tuesday"
+                        android:layout_width="54dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/rounded_border_light_black"
+                        android:gravity="center"
+                        android:text="Tue"
+                        android:textAlignment="center"
+                        android:textColor="@color/lightBlack"
+                        android:textSize="@dimen/H5"
+                        app:layout_constraintEnd_toStartOf="@id/wed"
+                        app:layout_constraintStart_toEndOf="@id/monday"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/wed"
+                        android:layout_width="54dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/rounded_border_light_black"
+                        android:gravity="center"
+                        android:text="Wed"
+                        android:textAlignment="center"
+                        android:textColor="@color/lightBlack"
+                        android:textSize="@dimen/H5"
+                        app:layout_constraintEnd_toStartOf="@id/thursday"
+                        app:layout_constraintStart_toEndOf="@id/tuesday"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/thursday"
+                        android:layout_width="54dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/rounded_border_light_black"
+                        android:gravity="center"
+                        android:text="Thu"
+                        android:textAlignment="center"
+                        android:textColor="@color/lightBlack"
+                        android:textSize="@dimen/H5"
+                        app:layout_constraintEnd_toStartOf="@id/fri"
+                        app:layout_constraintStart_toEndOf="@id/wed"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/fri"
+                        android:layout_width="54dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/rounded_border_light_black"
+                        android:gravity="center"
+                        android:text="Fri"
+                        android:textAlignment="center"
+                        android:textColor="@color/lightBlack"
+                        android:textSize="@dimen/H5"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/thursday"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             </LinearLayout>

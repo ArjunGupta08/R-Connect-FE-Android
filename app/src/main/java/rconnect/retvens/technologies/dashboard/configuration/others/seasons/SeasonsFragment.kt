@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -30,15 +31,32 @@ class SeasonsFragment : Fragment() {
 
     private lateinit var adapter: HolidaysAdapter
     private var list = ArrayList<String>()
-    lateinit var roboto: Typeface
-    var isSun = false
-    var isMon = false
-    var isTue = false
-    var isWed = false
-    var isThu = false
-    var isFri = false
-    var isSat = false
+    private lateinit var robotoMedium : Typeface
+    private lateinit var roboto:Typeface
+    var isDismissAllowed = true
+    lateinit var fri:TextView
+    lateinit var sat:TextView
+    lateinit var sun:TextView
+    lateinit var mon:TextView
+    lateinit var tues:TextView
+    lateinit var wed:TextView
+    lateinit var thur:TextView
+    lateinit var txt_all_days:TextView
+    lateinit var txt_week_days:TextView
+    lateinit var txt_weekends:TextView
+    lateinit var txt_custom:TextView
     var isAllDay = false
+    var isweekend = false
+    var isWeekDay = false
+    var isCustom = true
+
+    var isMon = false
+    var isTues = false
+    var isWed = false
+    var isThur = false
+    var frid = false
+    var satu = true
+    var isSun = false
 
 
     override fun onCreateView(
@@ -54,6 +72,7 @@ class SeasonsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         roboto = ResourcesCompat.getFont(requireContext(), R.font.roboto)!!
+        robotoMedium = ResourcesCompat.getFont(requireContext(),R.font.roboto_medium)!!
 
         setUpRecycler()
 
@@ -64,34 +83,47 @@ class SeasonsFragment : Fragment() {
     }
 
     private fun openCreateNewDialog() {
-        val dialog =
-            Dialog(requireContext()) // Use 'this' as the context, assuming this code is within an Activity
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(true)
-        dialog.setCanceledOnTouchOutside(true)
-        dialog.setContentView(R.layout.dialog_create_season)
-        dialog.window?.apply {
-            setBackgroundDrawableResource(android.R.color.transparent) // Makes the background transparent
-            setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-        }
+
+            val dialog =
+                Dialog(requireContext()) // Use 'this' as the context, assuming this code is within an Activity
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCancelable(true)
+            dialog.setCanceledOnTouchOutside(true)
+            dialog.setContentView(R.layout.dialog_create_season)
+            dialog.window?.apply {
+                setBackgroundDrawableResource(android.R.color.transparent) // Makes the background transparent
+                setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+            }
+
 
         val cancel = dialog.findViewById<TextView>(R.id.cancel)
         val save = dialog.findViewById<CardView>(R.id.saveBtn)
-        val allDays = dialog.findViewById<TextView>(R.id.allDays)
-        val sunday = dialog.findViewById<TextView>(R.id.sunday)
-        val monday = dialog.findViewById<TextView>(R.id.monday)
-        val tuesday = dialog.findViewById<TextView>(R.id.tuesday)
-        val wednesday = dialog.findViewById<TextView>(R.id.wednesday)
-        val thursday = dialog.findViewById<TextView>(R.id.thursday)
-        val friday = dialog.findViewById<TextView>(R.id.friday)
-        val saturday = dialog.findViewById<TextView>(R.id.saturday)
+         txt_all_days = dialog.findViewById<TextView>(R.id.txt_all_days)
+         txt_week_days = dialog.findViewById<TextView>(R.id.txt_week_days)
+         txt_weekends = dialog.findViewById<TextView>(R.id.txt_weekends)
+         txt_custom = dialog.findViewById<TextView>(R.id.txt_custom)
+         sun = dialog.findViewById<TextView>(R.id.sunday)
+         mon = dialog.findViewById<TextView>(R.id.monday)
+         tues = dialog.findViewById<TextView>(R.id.tuesday)
+         wed = dialog.findViewById<TextView>(R.id.wed)
+         thur = dialog.findViewById<TextView>(R.id.thursday)
+         fri = dialog.findViewById<TextView>(R.id.fri)
+         sat = dialog.findViewById<TextView>(R.id.saturday)
         val to_date = dialog.findViewById<TextView>(R.id.to_date)
         val from_date = dialog.findViewById<TextView>(R.id.from_date)
 
-        to_date.setOnClickListener {
+            txt_all_days.setBackgroundResource(R.drawable.rounded_border_light_black)
+            txt_weekends.setBackgroundResource(R.drawable.rounded_border_light_black)
+            txt_week_days.setBackgroundResource(R.drawable.rounded_border_light_black)
+            selectCard(txt_custom)
+            txt_custom.setBackgroundResource(R.drawable.rounded_border_black)
+
+
+
+            to_date.setOnClickListener {
             showCalendarDialog(requireContext(),to_date)
             dialog.show()
         }
@@ -101,139 +133,117 @@ class SeasonsFragment : Fragment() {
             dialog.show()
         }
 
-        allDays.setOnClickListener {
-            if (!isAllDay){
-                selectCard(sunday)
-                selectCard(monday)
-                selectCard(tuesday)
-                selectCard(wednesday)
-                selectCard(thursday)
-                selectCard(friday)
-                selectCard(saturday)
-                selectCard(allDays)
-                makeDays(true)
-                isAllDay = true
+            fri.setOnClickListener {
+                if (!frid) {
+                    selectCard(fri)
+                    frid = true
+                } else {
+                    unSelectCard(fri)
+                    frid = false
+                }
             }
-            else{
-                unSelectCard(sunday)
-                unSelectCard(monday)
-                unSelectCard(tuesday)
-                unSelectCard(wednesday)
-                unSelectCard(thursday)
-                unSelectCard(friday)
-                unSelectCard(saturday)
-                unSelectCard(allDays)
-                isAllDay = false
-                makeDays(false)
+            sat.setOnClickListener {
+                if (!satu) {
+                    selectCard(sat)
+                    satu = true
+                } else {
+                    unSelectCard(sat)
+                    satu = false
+                }
+            }
+            sun.setOnClickListener {
+                if (!isSun) {
+                    selectCard(sun)
+                    isSun = true
+                } else {
+                    unSelectCard(sun)
+                    isSun = false
+                }
+            }
+            mon.setOnClickListener {
+                if (!isMon) {
+                    selectCard(mon)
+                    isMon = true
+                } else {
+                    unSelectCard(mon)
+                    isMon = false
+                }
+            }
+            tues.setOnClickListener {
+                if (!isTues) {
+                    selectCard(tues)
+                    isTues = true
+                } else {
+                    unSelectCard(tues)
+                    isTues = false
+                }
+            }
+            wed.setOnClickListener {
+                if (!isWed) {
+                    selectCard(wed)
+                    isWed = true
+                } else {
+                    unSelectCard(wed)
+                    isWed = false
+                }
+            }
+            thur.setOnClickListener {
+                if (!isThur) {
+                    selectCard(thur)
+                    isThur = true
+                } else {
+                    unSelectCard(thur)
+                    isThur = false
+                }
+            }
 
-            }
+
+        txt_all_days.setOnClickListener {
+
+            selectHead(txt_all_days)
+            selectCard(sun)
+            selectCard(mon)
+            selectCard(tues)
+            selectCard(wed)
+            selectCard(thur)
+            selectCard(fri)
+            selectCard(sat)
+            notClickable()
+            isAllDay = true
 
         }
-        monday.setOnClickListener {
-            if (!isMon) {
-                isMon = true
-                selectCard(monday)
-                if (allSelected()) {
-                    selectCard(allDays)
-                    isAllDay = true
-                }
-            } else {
-                isMon = false
-                unSelectCard(monday)
-                unSelectCard(allDays)
-                isAllDay = false
-            }
+        txt_weekends.setOnClickListener {
+
+            selectHead(txt_weekends)
+            unSelectAllDays()
+            selectCard(sat)
+            selectCard(sun)
+            isweekend = true
+            notClickable()
+
         }
-        tuesday.setOnClickListener {
-            if (!isTue) {
-                isTue = true
-                selectCard(tuesday)
-                if (allSelected()) {
-                    selectCard(allDays)
-                    isAllDay = true
-                }
-            } else {
-                isTue = false
-                unSelectCard(tuesday)
-                unSelectCard(allDays)
-                isAllDay = false
-            }
+        txt_week_days.setOnClickListener {
+
+            selectHead(txt_week_days)
+            unSelectAllDays()
+
+            selectCard(mon)
+            selectCard(tues)
+            selectCard(wed)
+            selectCard(thur)
+            selectCard(fri)
+            isWeekDay = true
+
         }
-        wednesday.setOnClickListener {
-            if (!isWed) {
-                isWed = true
-                selectCard(wednesday)
-                if (allSelected()) {
-                    selectCard(allDays)
-                    isAllDay = true
-                }
-            } else {
-                isWed = false
-                unSelectCard(wednesday)
-                unSelectCard(allDays)
-                isAllDay = false
-            }
+        txt_custom.setOnClickListener {
+
+            selectHead(txt_custom)
+            unSelectAllDays()
+            allClickable()
+            isCustom = true
         }
-        thursday.setOnClickListener {
-            if (!isThu) {
-                isThu = true
-                selectCard(thursday)
-                if (allSelected()) {
-                    selectCard(allDays)
-                    isAllDay = true
-                }
-            } else {
-                isThu = false
-                unSelectCard(thursday)
-                unSelectCard(allDays)
-                isAllDay = false
-            }
-        }
-        friday.setOnClickListener {
-            if (!isFri) {
-                isFri = true
-                selectCard(friday)
-                if (allSelected()) {
-                    selectCard(allDays)
-                    isAllDay = true
-                }
-            } else {
-                isFri = false
-                unSelectCard(friday)
-                unSelectCard(allDays)
-                isAllDay = false
-            }
-        }
-        saturday.setOnClickListener {
-            if (!isSat) {
-                isSat = true
-                selectCard(saturday)
-                if (allSelected()) {
-                    selectCard(allDays)
-                    isAllDay = true
-                }
-            } else {
-                isSat = false
-                unSelectCard(saturday)
-                unSelectCard(allDays)
-                isAllDay = false
-            }
-        }
-        sunday.setOnClickListener {
-            if (!isSun) {
-                isSun = true
-                selectCard(sunday)
-                if (allSelected()) {
-                    selectCard(allDays)
-                    isAllDay = true
-                }
-            } else {
-                isSun = false
-                unSelectCard(sunday)
-                    unSelectCard(allDays)
-                    isAllDay = false
-            }
-        }
+
+
 
         cancel.setOnClickListener {
             dialog.dismiss()
@@ -247,7 +257,46 @@ class SeasonsFragment : Fragment() {
         dialog.window?.setGravity(Gravity.END)
 
         dialog.show()
+    }
 
+    private fun allClickable() {
+        sun.isClickable = true
+        mon.isClickable = true
+        tues.isClickable = true
+        wed.isClickable = true
+        thur.isClickable = true
+        fri.isClickable = true
+        sat.isClickable = true
+    }
+
+    private fun unSelectAllDays() {
+        unSelectCard(sun)
+        unSelectCard(mon)
+        unSelectCard(tues)
+        unSelectCard(wed)
+        unSelectCard(thur)
+        unSelectCard(fri)
+        unSelectCard(sat)
+    }
+
+    private fun notClickable() {
+        sun.isClickable = false
+        mon.isClickable = false
+        tues.isClickable = false
+        wed.isClickable = false
+        thur.isClickable = false
+        fri.isClickable = false
+        sat.isClickable = false
+    }
+
+    private fun selectHead(head: TextView?) {
+            unSelectCard(txt_all_days)
+            unSelectCard(txt_week_days)
+            unSelectCard(txt_weekends)
+            unSelectCard(txt_custom)
+
+            head?.typeface = robotoMedium
+            selectCard(head)
     }
 
     private fun setUpRecycler() {
@@ -278,9 +327,9 @@ class SeasonsFragment : Fragment() {
         day?.typeface = roboto
     }
 
-    private fun allSelected(): Boolean {
-        return isSun && isMon && isTue && isWed && isThu && isFri && isSat
-    }
+//    private fun allSelected(): Boolean {
+//        return isSun && isMon && isTue && isWed && isThu && isFri && isSat
+//    }
 
 
     fun showCalendarDialog(context : Context, textDate: TextView) {
@@ -305,15 +354,15 @@ class SeasonsFragment : Fragment() {
         datePickerDialog.show()
     }
 
-    private fun makeDays(x:Boolean){
-        isSun = x
-        isMon = x
-        isTue = x
-        isWed = x
-        isThu = x
-        isFri = x
-        isSat = x
-    }
+//    private fun makeDays(x:Boolean){
+//        isSun = x
+//        isMon = x
+//        isTue = x
+//        isWed = x
+//        isThu = x
+//        isFri = x
+//        isSat = x
+//    }
 
 
 }

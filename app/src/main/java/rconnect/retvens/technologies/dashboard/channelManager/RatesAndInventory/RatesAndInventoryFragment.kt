@@ -113,6 +113,8 @@ class RatesAndInventoryFragment : Fragment() {
             selectCard(txt_custom)
             txt_custom.setBackgroundResource(R.drawable.rounded_border_black)
 
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.show()
             var isMon = false
             var isTues = false
             var isWed = false
@@ -121,8 +123,6 @@ class RatesAndInventoryFragment : Fragment() {
             var satu = true
             var isSun = false
 
-                dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                dialog.show()
 
 
                 val from = dialog.findViewById<TextInputEditText>(R.id.from_Text)

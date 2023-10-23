@@ -1,14 +1,793 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".dashboard.configuration.CorporateRates.ViewCompany.ViewCompanyDetailsChildFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/addCompanyLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/corner_bottom_white_background"
+        android:paddingBottom="12dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/frame1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@id/frame2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/propertyDetailsText"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/roboto_medium"
+                android:paddingVertical="5dp"
+                android:text="Company Info"
+                android:textAlignment="center"
+                android:textColor="@color/secondary"
+                android:textSize="@dimen/H4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/propertyLogoCard"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="5dp"
+                app:cardCornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="@id/ll6"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintStart_toStartOf="@id/propertyDetailsText"
+                app:layout_constraintTop_toTopOf="@id/ll6"
+                app:strokeColor="@color/subtitle"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:id="@+id/propertyLogoLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/svg_gallery"
+                        app:layout_constraintBottom_toBottomOf="@id/ll6"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/ll6"
+                        app:shapeAppearance="@style/RoundedCornerImage_10" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto"
+                        android:text="Property Logo" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/propertyLogoImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@color/grey10"
+                    android:visibility="gone" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:id="@+id/imageEditLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/propertyLogoCard"
+                app:layout_constraintEnd_toEndOf="@id/propertyLogoCard"
+                app:layout_constraintStart_toStartOf="@id/propertyLogoCard"
+                app:layout_constraintTop_toBottomOf="@id/propertyLogoCard">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="20dp"
+                    android:src="@drawable/svg_upper_triangle"
+                    app:tint="@color/lightBlack" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:elevation="6dp"
+                    app:cardBackgroundColor="@color/lightBlack"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="6dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/replaceImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/svg_gallery_edit" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_medium"
+
+                                android:text="Replace"
+                                android:textColor="@color/white" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/removeImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/svg_gallery_remove" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_medium"
+                                android:text="Remove"
+
+                                android:textColor="@color/white" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/propertyLogoCard"
+                app:layout_constraintTop_toBottomOf="@id/propertyDetailsText">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Company Name"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:hint="Alphabet Tech"
+                        android:inputType="text"
+                        android:textColor="@color/secondary"
+                        android:textColorHint="@drawable/hint_selector"
+                        android:textSize="@dimen/H5" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/ClickableTextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:hint="Company type">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="text"
+                        android:textColor="@color/secondary"
+                        android:textColorHint="@color/secondary"
+                        android:textSize="@dimen/H5" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Short Code"
+                    android:layout_marginTop="5dp"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:hint="Enter short code"
+                        android:inputType="text"
+                        android:textColor="@color/secondary"
+                        android:textColorHint="@drawable/hint_selector"
+                        android:textSize="@dimen/H5" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                app:layout_constraintEnd_toEndOf="@id/ll6"
+                app:layout_constraintStart_toStartOf="@id/propertyDetailsText"
+                app:layout_constraintTop_toBottomOf="@id/ll6">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/textInputLayoutHeight"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:hint="Registration No"
+                    app:placeholderText=""
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="text"
+                        android:hint="Enter Registration No"
+                        android:textColor="@color/secondary"
+                        android:textColorHint="@drawable/hint_selector"
+                        android:textSize="@dimen/H5" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/textInputLayoutHeight"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:hint="Tax ID"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="text"
+                        android:hint="Enter Tax ID"
+                        android:textColor="@color/secondary"
+                        android:textColorHint="@drawable/hint_selector"
+                        android:textSize="@dimen/H5" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll2_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                app:layout_constraintEnd_toEndOf="@id/ll6"
+                app:layout_constraintStart_toStartOf="@id/propertyDetailsText"
+                app:layout_constraintTop_toBottomOf="@id/ll2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/textInputLayoutHeight"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:hint="Company Website"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="text"
+                        android:hint="Enter Registration No"
+                        android:textColor="@color/secondary"
+                        android:textColorHint="@drawable/hint_selector"
+                        android:textSize="@dimen/H5" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/textInputLayoutHeight"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:hint="Company Email"
+                    app:placeholderText="Enter Tax ID"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="text"
+                        android:textColor="@color/secondary"
+                        android:textColorHint="@color/secondary"
+                        android:textSize="@dimen/H5" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/txtAccInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/roboto_medium"
+                android:paddingVertical="5dp"
+                android:text="Account Info"
+                android:textAlignment="center"
+                android:textColor="@color/secondary"
+                android:textSize="@dimen/H4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ll2_2" />
+            <LinearLayout
+                android:id="@+id/ll2_3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                app:layout_constraintEnd_toEndOf="@id/ll6"
+                app:layout_constraintStart_toStartOf="@id/propertyDetailsText"
+                app:layout_constraintTop_toBottomOf="@id/txtAccInfo">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/textInputLayoutHeight"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:hint="Opening Balance"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="text"
+                        android:hint="enter rate plan name"
+                        android:textColor="@color/secondary"
+                        android:textColorHint="@drawable/hint_selector"
+                        android:textSize="@dimen/H5" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/textInputLayoutHeight"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:hint="Credit Limit"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="text"
+                        android:textColor="@color/secondary"
+                        android:textColorHint="@drawable/hint_selector"
+                        android:hint="Enter short code"
+                        android:textSize="@dimen/H5" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/txt_billing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/H5"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@id/ll2_3"
+                app:layout_constraintStart_toStartOf="@id/ll2_3"
+                android:text="Billing Cycle"
+                android:layout_marginTop="24dp"/>
+
+            <TextView
+                android:id="@+id/count_days"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/txt_billing"
+                app:layout_constraintEnd_toEndOf="@id/ll2_3"
+                app:layout_constraintBottom_toBottomOf="@id/txt_billing"
+                android:text="1"
+                android:textSize="@dimen/H5"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_border_light_black"
+                android:paddingHorizontal="25dp"/>
+            <TextView
+                android:id="@+id/txt_days"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/txt_billing"
+                app:layout_constraintBottom_toBottomOf="@id/txt_billing"
+                app:layout_constraintEnd_toStartOf="@id/count_days"
+                android:text="Days"
+                android:textSize="@dimen/H5"
+                android:textColor="@color/black"
+                android:layout_marginEnd="9dp"/>
+            <TextView
+                android:id="@+id/count_months"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/txt_billing"
+                app:layout_constraintEnd_toStartOf="@id/txt_days"
+                app:layout_constraintBottom_toBottomOf="@id/txt_billing"
+                android:layout_marginEnd="9dp"
+                android:text="6"
+                android:textSize="@dimen/H5"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_border_light_black"
+                android:paddingHorizontal="25dp"/>
+            <TextView
+                android:id="@+id/txt_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/txt_billing"
+                app:layout_constraintBottom_toBottomOf="@id/txt_billing"
+                app:layout_constraintEnd_toStartOf="@id/count_months"
+                android:text="Month"
+                android:textSize="@dimen/H5"
+                android:textColor="@color/black"
+                android:layout_marginEnd="9dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/frame2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/frame1"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:id="@+id/ll3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto_medium"
+                    android:paddingVertical="5dp"
+                    android:text="Contacts"
+                    android:textAlignment="center"
+                    android:textColor="@color/secondary"
+                    android:textSize="@dimen/H4" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/TextInputLayoutStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textInputLayoutHeight"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:hint="Contact Person"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/black">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:inputType="text"
+                            android:hint="Mr. Jimmy Carr"
+                            android:textColor="@color/secondary"
+                            android:textColorHint="@drawable/hint_selector"
+                            android:textSize="@dimen/H5" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/TextInputLayoutStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textInputLayoutHeight"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1"
+                        android:hint="Person's Designation"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/black">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:inputType="text"
+                            android:textColor="@color/secondary"
+                            android:textColorHint="@drawable/hint_selector"
+                            android:hint="Regional Mananger"
+                            android:textSize="@dimen/H5" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/TextInputLayoutStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textInputLayoutHeight"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:hint="Phone"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/black">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:inputType="text"
+                            android:hint="+91 9876543210"
+                            android:textColor="@color/secondary"
+                            android:textColorHint="@drawable/hint_selector"
+                            android:textSize="@dimen/H5" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/TextInputLayoutStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textInputLayoutHeight"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1"
+                        android:hint="Email"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/black">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:inputType="text"
+                            android:textColor="@color/secondary"
+                            android:textColorHint="@drawable/hint_selector"
+                            android:hint="jimmycarr@alphabet.com"
+                            android:textSize="@dimen/H5" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_company_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Company Address"
+                android:textColor="@color/secondary"
+                android:textSize="@dimen/H4"
+                app:layout_constraintStart_toStartOf="@id/ll3"
+                app:layout_constraintTop_toBottomOf="@id/ll3" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/et_address_line"
+                style="@style/TextInputLayoutStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/textInputLayoutHeight"
+                app:layout_constraintTop_toBottomOf="@id/txt_company_address"
+                app:layout_constraintStart_toStartOf="@id/txt_company_address"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:hint="Address line 1"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/black">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/roboto"
+                    android:inputType="text"
+                    android:textColor="@color/secondary"
+                    android:textColorHint="@drawable/hint_selector"
+                    android:hint="Earth, Solar System, Milky Way"
+                    android:textSize="@dimen/H5" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/et_address_line2"
+                style="@style/TextInputLayoutStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/textInputLayoutHeight"
+                app:layout_constraintTop_toBottomOf="@id/et_address_line"
+                app:layout_constraintStart_toStartOf="@id/txt_company_address"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:hint="Address line 2"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/black">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/roboto"
+                    android:inputType="text"
+                    android:textColor="@color/secondary"
+                    android:textColorHint="@drawable/hint_selector"
+                    android:hint="Local Group, Universe"
+                    android:textSize="@dimen/H5" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/ll2_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/et_address_line2"
+                android:layout_marginStart="20dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/textInputLayoutHeight"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:hint="Country"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="text"
+                        android:hint="United States"
+                        android:textColor="@color/secondary"
+                        android:textColorHint="@drawable/hint_selector"
+                        android:textSize="@dimen/H5" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/textInputLayoutHeight"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:hint="State"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="text"
+                        android:textColor="@color/secondary"
+                        android:textColorHint="@drawable/hint_selector"
+                        android:hint="Texas"
+                        android:textSize="@dimen/H5" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/ll2_4"
+                android:layout_marginStart="20dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/textInputLayoutHeight"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:hint="City"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="text"
+                        android:hint="Caltek"
+                        android:textColor="@color/secondary"
+                        android:textColorHint="@drawable/hint_selector"
+                        android:textSize="@dimen/H5" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/textInputLayoutHeight"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:hint="ZIP Code"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="text"
+                        android:textColor="@color/secondary"
+                        android:textColorHint="@drawable/hint_selector"
+                        android:hint="4563212"
+                        android:textSize="@dimen/H5" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
