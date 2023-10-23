@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/items_linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="10dp"
+        android:paddingVertical="10dp">
+
+        <TextView
+            android:id="@+id/shortCode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            style="@style/listTextHeading"
+            android:text="Guest Name"
+            app:layout_constraintEnd_toStartOf="@id/propertyName"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/propertyName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/listTextHeading"
+            android:text="AB-12345678"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/guide1"
+            app:layout_constraintStart_toEndOf="@id/shortCode"
+            app:layout_constraintBottom_toBottomOf="@id/shortCode"
+            app:layout_constraintTop_toTopOf="@id/shortCode"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.3"/>
+
+        <TextView
+            android:id="@+id/bedType"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            style="@style/listTextHeading"
+            android:text="7"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/adultChild"
+            app:layout_constraintStart_toEndOf="@id/guide1"
+            app:layout_constraintBottom_toBottomOf="@id/shortCode"
+            app:layout_constraintTop_toTopOf="@id/shortCode"/>
+
+        <TextView
+            android:id="@+id/adultChild"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/listTextHeading"
+            android:text="12-03-2023 - 16:22"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/maxOccupancy"
+            app:layout_constraintStart_toEndOf="@id/bedType"
+            app:layout_constraintBottom_toBottomOf="@id/shortCode"
+            app:layout_constraintTop_toTopOf="@id/shortCode"/>
+
+        <TextView
+            android:id="@+id/maxOccupancy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/listTextHeading"
+            android:text="12-03-2023 - 16:22"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/amenities"
+            app:layout_constraintStart_toEndOf="@id/adultChild"
+            app:layout_constraintBottom_toBottomOf="@id/shortCode"
+            app:layout_constraintTop_toTopOf="@id/shortCode"/>
+
+        <TextView
+            android:id="@+id/amenities"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/listTextHeading"
+            android:text="Deluxe Executive EP"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/text7"
+            app:layout_constraintStart_toEndOf="@id/maxOccupancy"
+            app:layout_constraintBottom_toBottomOf="@id/shortCode"
+            app:layout_constraintTop_toTopOf="@id/shortCode"/>
+
+        <TextView
+            android:id="@+id/text7"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            style="@style/listTextHeading"
+            android:text="1001"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/actions"
+            app:layout_constraintStart_toEndOf="@id/amenities"
+            app:layout_constraintBottom_toBottomOf="@id/shortCode"
+            app:layout_constraintTop_toTopOf="@id/shortCode"/>
+
+        <TextView
+            android:id="@+id/actions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/listTextHeading"
+            android:text="View Details"
+            android:textColor="#2666B1"
+            android:textAlignment="center"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/text7"
+            app:layout_constraintBottom_toBottomOf="@id/shortCode"
+            app:layout_constraintTop_toTopOf="@id/shortCode"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
