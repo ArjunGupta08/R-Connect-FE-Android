@@ -1583,6 +1583,7 @@
                         </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/pmsCard"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/nav_cards_height"
                         android:layout_marginEnd="50dp"
@@ -1602,6 +1603,7 @@
                                 android:layout_marginVertical="15dp"
                                 app:tint="@color/lightBlack"/>
                             <TextView
+                                android:id="@+id/txt_pms"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="PMS"

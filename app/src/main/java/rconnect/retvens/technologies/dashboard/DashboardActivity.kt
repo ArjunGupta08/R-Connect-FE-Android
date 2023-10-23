@@ -20,6 +20,7 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +35,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.creat
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ReviewRatePlanFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.properties.ViewPropertiesFragment
 import rconnect.retvens.technologies.dashboard.channelManager.promotions.PromotionsFragment
+import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.CorporatesPartnersFragment
 import rconnect.retvens.technologies.dashboard.configuration.billings.PaymentTypesFragment
 import rconnect.retvens.technologies.dashboard.configuration.others.HolidaysFragment
 import rconnect.retvens.technologies.dashboard.configuration.others.seasons.SeasonsFragment
@@ -419,6 +421,10 @@ class DashboardActivity : AppCompatActivity() {
                 binding.othersTxt.setTextColor(ContextCompat.getColor(applicationContext,R.color.black))
                 isOtherOpen = false
             }
+        }
+        binding.pmsCard.setOnClickListener {
+            replaceFragment(CorporatesPartnersFragment())
+            isCardSelected(binding.pmsCard, binding.txtPms)
         }
 
     }
