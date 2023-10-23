@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import rconnect.retvens.technologies.R
 
 
-class CompanyDetailsChildFragment : Fragment() {
+class ViewCompanyDetailsChildFragment : Fragment() {
 
 
     override fun onCreateView(

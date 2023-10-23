@@ -541,7 +541,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:orientation="vertical">
 
                         <com.google.android.material.card.MaterialCardView
@@ -858,7 +858,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         android:orientation="vertical">
 
                         <com.google.android.material.card.MaterialCardView

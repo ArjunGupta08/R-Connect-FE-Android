@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.ViewCompany.ViewCompanyFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.properties.ViewPropertiesFragment
 import rconnect.retvens.technologies.databinding.FragmentAddCompanyBinding
 import rconnect.retvens.technologies.utils.leftInAnimation
@@ -50,11 +51,11 @@ class AddCompanyFragment : Fragment() {
                 page = 2
                 binding.buttonTxt.text = "Save"
 
-                binding.contractDetailsFag.textSize = 20.0f
+                binding.contractDetailsFag.textSize = 18.0f
                 binding.contractDetailsFag.typeface = robotoMedium
                 binding.contractDetailsFag.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
 
-                binding.companyDetailsFrag.textSize = 16.0f
+                binding.companyDetailsFrag.textSize = 14.0f
                 binding.companyDetailsFrag.typeface = roboto
 
                 binding.companyDetailsFrag.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
@@ -65,10 +66,10 @@ class AddCompanyFragment : Fragment() {
 
             } else {
 
-//                val childFragment: Fragment = ViewPropertiesFragment()
-//                val transaction = requireActivity().supportFragmentManager.beginTransaction()
-//                transaction.replace(R.id.dashboardFragmentContainer,childFragment)
-//                transaction.commit()
+                val childFragment: Fragment = ViewCompanyFragment()
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.dashboardFragmentContainer,childFragment)
+                transaction.commit()
 
             }
         }
@@ -78,11 +79,11 @@ class AddCompanyFragment : Fragment() {
             page = 1
             binding.buttonTxt.text = "Save"
 
-            binding.companyDetailsFrag.textSize = 20.0f
+            binding.companyDetailsFrag.textSize = 18.0f
             binding.companyDetailsFrag.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
             binding.companyDetailsFrag.typeface = robotoMedium
 
-            binding.contractDetailsFag.textSize = 16.0f
+            binding.contractDetailsFag.textSize = 14.0f
             binding.contractDetailsFag.typeface = roboto
 
             leftInAnimation(binding.addCompanyFragContainer, requireContext())
@@ -95,11 +96,11 @@ class AddCompanyFragment : Fragment() {
         binding.contractDetailsFag.setOnClickListener {
             page = 2
 
-            binding.contractDetailsFag.textSize = 20.0f
+            binding.contractDetailsFag.textSize = 18.0f
             binding.contractDetailsFag.typeface = robotoMedium
             binding.contractDetailsFag.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
 
-            binding.companyDetailsFrag.textSize = 16.0f
+            binding.companyDetailsFrag.textSize = 14.0f
             binding.companyDetailsFrag.typeface = roboto
 
             changeChildFragment(ContractDetailsChildFragment())
