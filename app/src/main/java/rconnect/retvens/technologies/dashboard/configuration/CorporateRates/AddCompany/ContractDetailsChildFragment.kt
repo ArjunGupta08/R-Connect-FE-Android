@@ -6,11 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import rconnect.retvens.technologies.R
-import rconnect.retvens.technologies.databinding.FragmentCompanyDetailsChildBinding
+import rconnect.retvens.technologies.databinding.FragmentContractDetailsChildBinding
 
 
 class ContractDetailsChildFragment : Fragment() {
-    private lateinit var binding : FragmentCompanyDetailsChildBinding
+    private lateinit var binding : FragmentContractDetailsChildBinding
 
 
     override fun onCreateView(
@@ -18,7 +18,7 @@ class ContractDetailsChildFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentCompanyDetailsChildBinding.inflate(inflater, container, false)
+        binding = FragmentContractDetailsChildBinding.inflate(inflater, container, false)
         return binding.root
     }
 
