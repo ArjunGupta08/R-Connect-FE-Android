@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +35,6 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.creat
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.properties.ViewPropertiesFragment
 import rconnect.retvens.technologies.dashboard.channelManager.promotions.PromotionsFragment
 import rconnect.retvens.technologies.dashboard.configuration.billings.PaymentTypesFragment
-import rconnect.retvens.technologies.dashboard.configuration.others.HolidaysAdapter
 import rconnect.retvens.technologies.dashboard.configuration.others.HolidaysFragment
 import rconnect.retvens.technologies.dashboard.configuration.others.seasons.SeasonsFragment
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.TransportationTypesFragment
@@ -55,6 +55,7 @@ class DashboardActivity : AppCompatActivity() {
     private var isGuestOpen = false
     private var isOtherOpen = false
     var isGuestDropDownOpen = false
+    var isNotificationNotOpen = true
 
     private lateinit var binding: ActivityDashboardBinding
 
@@ -145,32 +146,11 @@ class DashboardActivity : AppCompatActivity() {
         }
 
         binding.imgNotify.setOnClickListener {
-            val dialog = Dialog(this) // Use 'this' as the context, assuming this code is within an Activity
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            dialog.setCancelable(true)
-            dialog.setCanceledOnTouchOutside(true)
-            dialog.setContentView(R.layout.dialog_notification)
-            dialog.window?.apply {
-                setBackgroundDrawableResource(android.R.color.transparent) // Makes the background transparent
-                setLayout(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
-                )
+            if (isNotificationNotOpen) {
+                isNotificationNotOpen = false
+                openNotificationDialog()
+                Handler().postDelayed(Runnable { isNotificationNotOpen = true },1000)
             }
-            val recyclerView = dialog.findViewById<RecyclerView>(R.id.recycler_notification)
-            recyclerView.layoutManager = LinearLayoutManager(this)
-            val notificationAdapter = NotificationAdapter(notificationList, this)
-            recyclerView.adapter = notificationAdapter
-            notificationAdapter.notifyDataSetChanged()
-
-            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-            dialog.window?.setGravity(Gravity.END)
-
-            dialog.show()
-
-            dialog.findViewById<ImageView>(R.id.iv_back).setOnClickListener { dialog.dismiss() }
-
         }
 
         binding.quickReservation.setOnClickListener {
@@ -210,6 +190,35 @@ class DashboardActivity : AppCompatActivity() {
             binding.configurationNavLayout.isVisible = false
             binding.channelManagerNavLayout.isVisible = true
         }
+    }
+
+    private fun openNotificationDialog() {
+            val dialog =
+                Dialog(this) // Use 'this' as the context, assuming this code is within an Activity
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCancelable(true)
+            dialog.setCanceledOnTouchOutside(true)
+            dialog.setContentView(R.layout.dialog_notification)
+            dialog.window?.apply {
+                setBackgroundDrawableResource(android.R.color.transparent) // Makes the background transparent
+                setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+            }
+            val recyclerView = dialog.findViewById<RecyclerView>(R.id.recycler_notification)
+            recyclerView.layoutManager = LinearLayoutManager(this)
+            val notificationAdapter = NotificationAdapter(notificationList, this)
+            recyclerView.adapter = notificationAdapter
+            notificationAdapter.notifyDataSetChanged()
+
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+            dialog.window?.setGravity(Gravity.END)
+
+            dialog.show()
+
+            dialog.findViewById<ImageView>(R.id.iv_back).setOnClickListener { dialog.dismiss() }
     }
 
     private fun chanelManagerNavLayout() {
