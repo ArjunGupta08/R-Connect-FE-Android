@@ -48,6 +48,7 @@ class AddCompanyFragment : Fragment() {
             if (page == 1){
 
                 page = 2
+                binding.buttonTxt.text = "Save"
 
                 binding.contractDetailsFag.textSize = 20.0f
                 binding.contractDetailsFag.typeface = robotoMedium
@@ -75,6 +76,7 @@ class AddCompanyFragment : Fragment() {
 
         binding.companyDetailsFrag.setOnClickListener {
             page = 1
+            binding.buttonTxt.text = "Save"
 
             binding.companyDetailsFrag.textSize = 20.0f
             binding.companyDetailsFrag.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
