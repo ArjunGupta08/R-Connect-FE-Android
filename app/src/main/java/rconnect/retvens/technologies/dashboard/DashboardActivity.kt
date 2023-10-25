@@ -116,7 +116,6 @@ class DashboardActivity : AppCompatActivity() {
 
         // Set the toolbar as the support action bar
         setSupportActionBar(binding.toolbar)
-
         // Enable the up button in the action bar
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
