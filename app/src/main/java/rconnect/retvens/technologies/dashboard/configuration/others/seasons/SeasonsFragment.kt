@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -24,6 +25,7 @@ import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.others.HolidaysAdapter
 import rconnect.retvens.technologies.databinding.FragmentSeasonsBinding
 import java.util.Calendar
+import java.util.Date
 
 
 class SeasonsFragment : Fragment() {
@@ -58,6 +60,12 @@ class SeasonsFragment : Fragment() {
     var satu = true
     var isSun = false
 
+    lateinit var startDatePickerDialog: DatePickerDialog
+    lateinit var endDatePickerDialog: DatePickerDialog
+    private var startDate:Date? = null
+    private var endDate:Date? = null
+    var isRightEndDate = true
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -82,6 +90,10 @@ class SeasonsFragment : Fragment() {
 
     }
 
+    private fun showToast(s: String) {
+        Toast.makeText(requireContext(), "$s", Toast.LENGTH_SHORT).show()
+    }
+
     private fun openCreateNewDialog() {
 
             val dialog =
@@ -98,6 +110,46 @@ class SeasonsFragment : Fragment() {
                 )
             }
 
+        val to_date = dialog.findViewById<TextView>(R.id.to_date)
+        val from_date = dialog.findViewById<TextView>(R.id.from_date)
+
+//        startDatePickerDialog = createDatePickerDialog {date->
+//        }
+//        endDatePickerDialog = createDatePickerDialog { date->
+//        }
+        startDatePickerDialog = createDatePickerDialog(from_date) {date->
+            startDate = date
+        }
+        endDatePickerDialog = createDatePickerDialog(to_date){date->
+            if (startDate!=null&&date.before(startDate)){
+                isRightEndDate = false
+//                Toast.makeText(requireContext(), "cdjn jifnomk", Toast.LENGTH_SHORT).show()
+                showToast("End date cannot be before start date")
+                to_date.text = "--/--/----"
+                Handler().postDelayed(Runnable {
+                    isRightEndDate = true
+                },1000)
+            }
+            else{
+                isRightEndDate = true
+//                Toast.makeText(requireContext(), "Karan ji", Toast.LENGTH_SHORT).show()
+                endDate = date
+            }
+        }
+
+        to_date.setOnClickListener {
+//            showCalendarDialog(requireContext(),to_date)
+            endDatePickerDialog.show()
+            dialog.show()
+        }
+
+        from_date.setOnClickListener {
+//            showCalendarDialog(requireContext(),from_date)
+            startDatePickerDialog.show()
+            dialog.show()
+        }
+
+
 
         val cancel = dialog.findViewById<TextView>(R.id.cancel)
         val save = dialog.findViewById<CardView>(R.id.saveBtn)
@@ -112,8 +164,6 @@ class SeasonsFragment : Fragment() {
          thur = dialog.findViewById<TextView>(R.id.thursday)
          fri = dialog.findViewById<TextView>(R.id.fri)
          sat = dialog.findViewById<TextView>(R.id.saturday)
-        val to_date = dialog.findViewById<TextView>(R.id.to_date)
-        val from_date = dialog.findViewById<TextView>(R.id.from_date)
 
             txt_all_days.setBackgroundResource(R.drawable.rounded_border_light_black)
             txt_weekends.setBackgroundResource(R.drawable.rounded_border_light_black)
@@ -122,16 +172,6 @@ class SeasonsFragment : Fragment() {
             txt_custom.setBackgroundResource(R.drawable.rounded_border_black)
 
 
-
-            to_date.setOnClickListener {
-            showCalendarDialog(requireContext(),to_date)
-            dialog.show()
-        }
-
-        from_date.setOnClickListener {
-            showCalendarDialog(requireContext(),from_date)
-            dialog.show()
-        }
 
             fri.setOnClickListener {
                 if (!frid) {
@@ -363,6 +403,27 @@ class SeasonsFragment : Fragment() {
 //        isFri = x
 //        isSat = x
 //    }
+private fun createDatePickerDialog(textDate:TextView,onDateSetListener: (Date) -> Unit): DatePickerDialog {
+    val calendar = Calendar.getInstance()
+    return DatePickerDialog(
+        requireContext(),
+        { _, year, month, dayOfMonth ->
+            // Create a Date object from the selected date
+            calendar.set(year, month, dayOfMonth)
+            val selectedDate = calendar.time
+            // Invoke the provided listener
+            onDateSetListener.invoke(selectedDate)
+            // Set the selected date on the EditText
+            if (isRightEndDate){
+            val selectedDate2 = "$dayOfMonth/${month+1}/$year"
+            textDate.text = selectedDate2
+        }
+        },
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
+    )
+}
 
 
 }
