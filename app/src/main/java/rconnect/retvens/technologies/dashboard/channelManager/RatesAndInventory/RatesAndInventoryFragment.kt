@@ -28,6 +28,7 @@ import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.FragmentRatesAndInventoryBinding
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 
@@ -53,6 +54,10 @@ class RatesAndInventoryFragment : Fragment() {
     lateinit var txt_week_days:TextView
     lateinit var txt_weekends:TextView
     lateinit var txt_custom:TextView
+    lateinit var startDatePickerDialog:DatePickerDialog
+    lateinit var endDatePickerDialog: DatePickerDialog
+    private var startDate:Date? = null
+    private var endDate:Date? = null
 
 
 
@@ -130,21 +135,68 @@ class RatesAndInventoryFragment : Fragment() {
                 val to = dialog.findViewById<TextInputEditText>(R.id.to_Text)
                 val toLayout = dialog.findViewById<TextInputLayout>(R.id.to_Layout)
 
-                setDate(from)
-                setDate(to)
+//                setDate(from)
+//                setDate(to)
 
             val cancel = dialog.findViewById<TextView>(R.id.cancel)
-            cancel.setOnClickListener { dialog.cancel() }
+            cancel.setOnClickListener {
+                startDate = null
+                endDate = null
+                dialog.cancel()
+            }
+
+            startDatePickerDialog = createDatePickerDialog(from) {date->
+                startDate = date
+            }
+
+            endDatePickerDialog = createDatePickerDialog(to){date->
+
+                endDatePickerDialog.datePicker.minDate = startDate!!.time
+
+                if (startDate!=null&&date.before(startDate)){
+//                    isRightEndDate = false
+
+                Toast.makeText(requireContext(), "End date cannot be before start date", Toast.LENGTH_SHORT).show()
+//                    showToast("End date cannot be before start date")
+//                    to_date.text = "--/--/----"
+//                    Handler().postDelayed(Runnable {
+//                        isRightEndDate = true
+//                    },1000)
+                }
+                else{
+//                    isRightEndDate = true
+//                Toast.makeText(requireContext(), "Karan ji", Toast.LENGTH_SHORT).show()
+                    endDate = date
+                }
+            }
+
+
+            endDatePickerDialog = createDatePickerDialog(to){date->
+                if (startDate!=null){
+                endDatePickerDialog.datePicker.minDate = startDate!!.time
+                endDate = date
+            }
+            }
+
 
 
                 fromLayout.setStartIconOnClickListener {
-                    showCalendarDialog(requireContext(), from)
+                    endDate = null
+
+                    // Set the minimum date for the start date picker to be the current date
+                    startDatePickerDialog.datePicker.minDate = System.currentTimeMillis()
+                    startDatePickerDialog.show()
+//            showCalendarDialog(requireContext(),from_date)
+//            startDatePickerDialog.show()
                     dialog.show()
                 }
 
             toLayout.setStartIconOnClickListener {
-                showCalendarDialog(requireContext(), to)
-                dialog.show()
+                if (startDate!=null){
+                    endDatePickerDialog.datePicker.minDate = startDate!!.time
+                    endDatePickerDialog.show()
+                    dialog.show()
+                }
             }
 
                 fri.setOnClickListener {
@@ -457,6 +509,32 @@ class RatesAndInventoryFragment : Fragment() {
         val selectedDate = "$currentYear-${currentMonth + 1}-$currentDay"
         edt.setText(selectedDate)
 
+    }
+    private fun createDatePickerDialog(textDate:TextView,onDateSetListener: (Date) -> Unit): DatePickerDialog {
+        val calendar = Calendar.getInstance()
+        return DatePickerDialog(
+            requireContext(),
+            { _, year, month, dayOfMonth ->
+                // Create a Date object from the selected date
+                calendar.set(year, month, dayOfMonth)
+                val selectedDate = calendar.time
+                // Invoke the provided listener
+                onDateSetListener.invoke(selectedDate)
+                // Set the selected date on the EditText
+                    val selectedDate2 = "$dayOfMonth/${month+1}/$year"
+                    textDate.text = selectedDate2
+
+//                if (textDate==from_date){
+//                    startDate = selectedDate
+//                }
+//                else{
+//                    endDate = selectedDate
+//                }
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
     }
 
 
