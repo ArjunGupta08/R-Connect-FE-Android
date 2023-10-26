@@ -74,3 +74,13 @@ fun topInAnimation(view: View, context: Context) {
     // start the animation
     view.startAnimation(animSlideIn)
 }
+
+fun topOutAnimation(view: View, context: Context) {
+    // load the animation
+    val animSlideIn: Animation = AnimationUtils.loadAnimation(
+        context,
+        R.anim.top_out_animation
+    )
+    // start the animation
+    view.startAnimation(animSlideIn)
+}

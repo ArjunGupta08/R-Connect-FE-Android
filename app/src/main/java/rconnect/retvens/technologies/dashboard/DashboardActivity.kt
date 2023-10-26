@@ -287,6 +287,7 @@ class DashboardActivity : AppCompatActivity() {
 //            binding.rateDropDown.setImageResource(R.drawable.svg_up)
             if (!isRateOpen){
                 binding.rateLayout.isVisible = true
+                topInAnimation(binding.rateLayout,applicationContext)
 //                binding.ratesCard.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.black))
 //                binding.ratesTxt.setTextColor(ContextCompat.getColor(applicationContext, R.color.white))
                 val draw = ContextCompat.getDrawable(this, R.drawable.svg_up)
@@ -317,12 +318,13 @@ class DashboardActivity : AppCompatActivity() {
                 }
             }
             else{
-                binding.rateLayout.isVisible = false
-                val draw = ContextCompat.getDrawable(this, R.drawable.svg_arrow_down)
-                draw?.colorFilter = PorterDuffColorFilter(Color.BLACK,PorterDuff.Mode.SRC_ATOP)
-                binding.rateDropDown.setImageDrawable(draw)
-                binding.ratesCard.setCardBackgroundColor(ContextCompat.getColor(applicationContext,R.color.white))
-                binding.ratesTxt.setTextColor(ContextCompat.getColor(applicationContext,R.color.black))
+
+                    binding.rateLayout.isVisible = false
+                    val draw = ContextCompat.getDrawable(this, R.drawable.svg_arrow_down)
+                    draw?.colorFilter = PorterDuffColorFilter(Color.BLACK,PorterDuff.Mode.SRC_ATOP)
+                    binding.rateDropDown.setImageDrawable(draw)
+                    binding.ratesCard.setCardBackgroundColor(ContextCompat.getColor(applicationContext,R.color.white))
+                    binding.ratesTxt.setTextColor(ContextCompat.getColor(applicationContext,R.color.black))
                 isRateOpen = false
             }
         }
@@ -332,6 +334,7 @@ class DashboardActivity : AppCompatActivity() {
 
             if (!isBillingOpen){
                 binding.billingLayout.isVisible = true
+                topInAnimation(binding.billingLayout,applicationContext)
                 val draw = ContextCompat.getDrawable(this, R.drawable.svg_arrow_down)
                 draw?.colorFilter = PorterDuffColorFilter(Color.WHITE,PorterDuff.Mode.SRC_ATOP)
                 binding.billingDropDown.setImageDrawable(draw)
@@ -363,6 +366,7 @@ class DashboardActivity : AppCompatActivity() {
 
             if (!isGuestOpen){
                 binding.guestsLayout.isVisible = true
+                topInAnimation(binding.guestsLayout,applicationContext)
 
                 val draw = ContextCompat.getDrawable(this, R.drawable.svg_up)
                 draw?.colorFilter = PorterDuffColorFilter(Color.WHITE,PorterDuff.Mode.SRC_ATOP)
@@ -394,6 +398,7 @@ class DashboardActivity : AppCompatActivity() {
 
             if (!isOtherOpen){
                 binding.othersLayout.isVisible = true
+                topInAnimation(binding.othersLayout,applicationContext)
 
                 val draw = ContextCompat.getDrawable(this, R.drawable.svg_up)
                 draw?.colorFilter = PorterDuffColorFilter(Color.WHITE,PorterDuff.Mode.SRC_ATOP)
