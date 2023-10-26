@@ -65,6 +65,8 @@ class SeasonsFragment : Fragment() {
     private var startDate:Date? = null
     private var endDate:Date? = null
     var isRightEndDate = true
+    lateinit var to_date:TextView
+    lateinit var from_date:TextView
 
 
     override fun onCreateView(
@@ -110,19 +112,25 @@ class SeasonsFragment : Fragment() {
                 )
             }
 
-        val to_date = dialog.findViewById<TextView>(R.id.to_date)
-        val from_date = dialog.findViewById<TextView>(R.id.from_date)
+         to_date = dialog.findViewById<TextView>(R.id.to_date)
+         from_date = dialog.findViewById<TextView>(R.id.from_date)
 
 //        startDatePickerDialog = createDatePickerDialog {date->
 //        }
 //        endDatePickerDialog = createDatePickerDialog { date->
 //        }
+
+
         startDatePickerDialog = createDatePickerDialog(from_date) {date->
             startDate = date
         }
         endDatePickerDialog = createDatePickerDialog(to_date){date->
+
+            endDatePickerDialog.datePicker.minDate = startDate!!.time
+
             if (startDate!=null&&date.before(startDate)){
                 isRightEndDate = false
+
 //                Toast.makeText(requireContext(), "cdjn jifnomk", Toast.LENGTH_SHORT).show()
                 showToast("End date cannot be before start date")
                 to_date.text = "--/--/----"
@@ -139,13 +147,22 @@ class SeasonsFragment : Fragment() {
 
         to_date.setOnClickListener {
 //            showCalendarDialog(requireContext(),to_date)
+
+            if (startDate!=null){
+                endDatePickerDialog.datePicker.minDate = startDate!!.time
             endDatePickerDialog.show()
             dialog.show()
         }
+        }
 
         from_date.setOnClickListener {
-//            showCalendarDialog(requireContext(),from_date)
+            endDate = null
+
+            // Set the minimum date for the start date picker to be the current date
+            startDatePickerDialog.datePicker.minDate = System.currentTimeMillis()
             startDatePickerDialog.show()
+//            showCalendarDialog(requireContext(),from_date)
+//            startDatePickerDialog.show()
             dialog.show()
         }
 
@@ -286,6 +303,8 @@ class SeasonsFragment : Fragment() {
 
 
         cancel.setOnClickListener {
+            startDate = null
+            endDate = null
             dialog.dismiss()
         }
         save.setOnClickListener {
@@ -418,12 +437,47 @@ private fun createDatePickerDialog(textDate:TextView,onDateSetListener: (Date) -
             val selectedDate2 = "$dayOfMonth/${month+1}/$year"
             textDate.text = selectedDate2
         }
+            if (textDate==from_date){
+                startDate = selectedDate
+            }
+            else{
+                endDate = selectedDate
+            }
         },
         calendar.get(Calendar.YEAR),
         calendar.get(Calendar.MONTH),
         calendar.get(Calendar.DAY_OF_MONTH)
     )
 }
+//    private fun showCustomDatePicker(textDate:TextView,onDateSetListener: (Date) -> Unit): DatePickerDialog{
+//        val calendar = Calendar.getInstance()
+//        val datePickerDialog = DatePickerDialog(
+//            requireContext(),
+//            R.style.CustomDatePickerDialog, // Apply a custom style
+//            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+//                val selectedDate = calendar.time
+//                // Invoke the provided listener
+//                onDateSetListener.invoke(selectedDate)
+//                // Handle the selected date
+//                // Your code here
+//                if (isRightEndDate){
+//                    val selectedDate2 = "$dayOfMonth/${month+1}/$year"
+//                    textDate.text = selectedDate2
+//                }
+//            },
+//            calendar.get(Calendar.YEAR),
+//            calendar.get(Calendar.MONTH),
+//            calendar.get(Calendar.DAY_OF_MONTH)
+//        )
+//
+//        // Increase the size of the DatePickerDialog
+//        datePickerDialog.datePicker.layoutParams?.height = resources.getDimensionPixelSize(R.dimen.createDialogWidth)
+//        datePickerDialog.datePicker.layoutParams?.width = resources.getDimensionPixelSize(R.dimen.createDialogHeight)
+//
+//        return datePickerDialog
+//        datePickerDialog.show()
+//    }
+
 
 
 }

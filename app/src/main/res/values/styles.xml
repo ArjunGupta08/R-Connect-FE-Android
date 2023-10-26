@@ -14,6 +14,12 @@
     <dimen name="H7">10sp</dimen>
 
 
+        <dimen name="dialog_width">500dp</dimen>
+        <dimen name="dialog_height">500dp</dimen>
+
+
+
+
     <dimen name="nav_cards_height">50dp</dimen>
     <dimen name="textInputLayoutHeight">50dp</dimen>
     <dimen name="button_height">45dp</dimen>
@@ -206,7 +212,16 @@
     </style>
 
     <!-- Dialog Create Style -->
-    <dimen name="createDialogWidth"> 500dp </dimen>
-    <dimen name="createDialogHeight"> 380dp </dimen>
+    <dimen name="createDialogWidth"> 800dp </dimen>
+    <dimen name="createDialogHeight"> 500dp </dimen>
+
+    <style name="CustomDatePickerDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:datePickerStyle">@style/CustomDatePickerStyle</item>
+    </style>
+
+    <style name="CustomDatePickerStyle" parent="android:Widget.Material.DatePicker">
+        <!-- Add any additional styling if needed -->
+    </style>
+
 
 </resources>
