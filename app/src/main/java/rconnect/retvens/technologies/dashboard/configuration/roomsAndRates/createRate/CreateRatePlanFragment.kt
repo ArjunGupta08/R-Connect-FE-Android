@@ -50,10 +50,10 @@ class CreateRatePlanFragment : Fragment() {
         binding.recyclerInclusion.adapter = createRatePlanAdapter
         createRatePlanAdapter.notifyDataSetChanged()
 
-        val fragmentManager = childFragmentManager
-        val fragmenTransaction = fragmentManager.beginTransaction()
-        fragmenTransaction.replace(R.id.ratePlanFragContainer, RatePoliciesFragment())
-        fragmenTransaction.commit()
+//        val fragmentManager = childFragmentManager
+//        val fragmenTransaction = fragmentManager.beginTransaction()
+//        fragmenTransaction.replace(R.id.ratePlanFragContainer, RatePoliciesFragment())
+//        fragmenTransaction.commit()
 
         binding.policies.setOnClickListener {
             binding.policies.background = ContextCompat.getDrawable(requireContext(),R.drawable.corner_top_white_background)

@@ -6,14 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textfield.TextInputEditText
 import rconnect.retvens.technologies.R
 
 class CreateRateTypeAdapter(val applicationContext:Context,val rateTypeList:ArrayList<CreateRateData>):RecyclerView.Adapter<CreateRateTypeAdapter.ViewHolder>() {
     class ViewHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
-        val inclusion:TextView = itemView.findViewById(R.id.inclusion)
-        val posting:TextView = itemView.findViewById(R.id.posting)
-        val charge:TextView = itemView.findViewById(R.id.charge)
-        val rate:TextView = itemView.findViewById(R.id.rate)
+        val inclusion:TextInputEditText = itemView.findViewById(R.id.inclusion)
+        val inclusionType:TextView = itemView.findViewById(R.id.inclusionType)
+        val posting:TextInputEditText = itemView.findViewById(R.id.posting)
+        val charge:TextInputEditText = itemView.findViewById(R.id.charge)
+        val rate:TextInputEditText = itemView.findViewById(R.id.rate)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,9 +30,9 @@ class CreateRateTypeAdapter(val applicationContext:Context,val rateTypeList:Arra
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentData = rateTypeList[position]
-        holder.rate.text = currentData.rate
-        holder.charge.text = currentData.charge
-        holder.inclusion.text = currentData.meal
-        holder.posting.text = currentData.day
+        holder.rate.setText(currentData.rate)
+        holder.charge.setText(currentData.charge)
+        holder.inclusion.setText(currentData.meal)
+        holder.posting.setText(currentData.day)
     }
 }

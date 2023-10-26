@@ -16,7 +16,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/cl1"
             android:layout_width="0dp"
-            android:layout_height="45dp"
+            android:layout_height="@dimen/textInputLayoutHeight"
             style="@style/TextInputLayoutStyle"
             android:hint="Inclusion Name"
             android:layout_marginHorizontal="10dp"
@@ -27,6 +27,7 @@
             app:layout_constraintTop_toTopOf="parent" >
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inclusion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/H5" />
@@ -48,10 +49,10 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/cl2"
             android:layout_width="0dp"
-            android:layout_height="45dp"
+            android:layout_height="@dimen/textInputLayoutHeight"
             style="@style/ClickableTextInputLayoutStyle"
             android:hint="Posting Rule"
-            android:layout_marginHorizontal="10dp"
+            android:layout_marginEnd="10dp"
             android:background="@color/secondaryBackground"
             app:layout_constraintEnd_toStartOf="@id/cl3"
             app:layout_constraintHorizontal_bias="0"
@@ -60,6 +61,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/posting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/H5" />
@@ -69,7 +71,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/cl3"
             android:layout_width="0dp"
-            android:layout_height="45dp"
+            android:layout_height="@dimen/textInputLayoutHeight"
             style="@style/ClickableTextInputLayoutStyle"
             android:hint="Charge Rule"
             android:background="@color/secondaryBackground"
@@ -80,6 +82,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/charge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/H5" />
@@ -106,7 +109,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/cl4"
                 android:layout_width="0dp"
-                android:layout_height="45dp"
+                android:layout_height="@dimen/textInputLayoutHeight"
                 style="@style/TextInputLayoutStyle"
                 android:hint="₹ 200.00"
                 android:background="@color/secondaryBackground"
@@ -116,6 +119,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/rate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/H5" />
@@ -135,12 +139,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-
-
 
 
 
