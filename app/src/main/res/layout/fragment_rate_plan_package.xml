@@ -131,6 +131,145 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_medium"
+                    android:paddingVertical="15dp"
+                    android:text="Package Rate Adjustment"
+                    android:textAlignment="center"
+                    android:textColor="@color/secondary"
+                    android:textSize="@dimen/H4"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <LinearLayout
+                        android:id="@+id/ll2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:weightSum="4"
+                        app:layout_constraintEnd_toEndOf="@id/guid1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:cardBackgroundColor="@color/white"
+                            app:strokeColor="@color/secondary"
+                            android:layout_marginTop="2dp"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto"
+                                android:textColor="@color/secondary"
+                                android:textAlignment="center"
+                                android:textSize="@dimen/H4"
+                                android:paddingVertical="11dp"
+                                android:text="% Percent"/>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:cardBackgroundColor="@color/white"
+                            android:layout_marginHorizontal="10dp"
+                            android:layout_marginTop="2dp"
+                            app:strokeColor="@color/textInputStrokeColor"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto"
+                                android:textColor="@color/subtitle"
+                                android:textAlignment="center"
+                                android:textSize="@dimen/H4"
+                                android:paddingVertical="11dp"
+                                android:text="₹ Amount"/>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="60dp"
+                            android:layout_height="@dimen/textInputLayoutHeight"
+                            android:hint="Adjustment"
+                            style="@style/TextInputLayoutStyle"
+                            android:layout_weight="2"
+                            app:endIconMode="clear_text"
+                            app:endIconTint="@color/black">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/roboto"
+                                android:textSize="@dimen/H5"
+                                android:hint="adjustment"
+                                android:inputType="text"
+                                android:textColorHint="@drawable/hint_selector"
+                                android:textColor="@color/secondary" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guid1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent=".55"/>
+
+                    <TextView
+                        android:id="@+id/newBR"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="New Bar Rate"
+                        android:layout_marginStart="22dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/secondary"
+                        android:textSize="@dimen/H4"
+                        android:fontFamily="@font/roboto_medium"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/guid1"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.cardview.widget.CardView
+                        style="@style/CardViewTheme"
+                        android:layout_width="110dp"
+                        android:layout_height="45dp"
+                        android:layout_marginStart="20dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardBackgroundColor="@color/grey20"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="4dp"
+                        app:layout_constraintStart_toEndOf="@id/newBR"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/roboto"
+                            android:text="₹ 121212.00"
+                            android:textColor="@color/textColor"
+                            android:textSize="@dimen/H5" />
+
+                    </androidx.cardview.widget.CardView>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -504,6 +643,5 @@
             app:layout_constraintStart_toStartOf="parent"/>
 
     </androidx.cardview.widget.CardView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

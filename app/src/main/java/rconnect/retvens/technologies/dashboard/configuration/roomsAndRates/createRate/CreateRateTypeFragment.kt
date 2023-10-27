@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.RatePlanCompanyFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanPackage.RatePlanPackageFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlaneDiscount.RatePlanDiscountFragment
 import rconnect.retvens.technologies.databinding.FragmentCreateRateTypeBinding
 import rconnect.retvens.technologies.databinding.FragmentViewPropertiesBinding
@@ -52,7 +53,7 @@ class CreateRateTypeFragment : Fragment() {
 
         binding.companyRateType.setOnClickListener {
             replaceChildFrag(RatePlanCompanyFragment())
-            binding.rateTypeET.setText("Commpany")
+            binding.rateTypeET.setText("Company")
             binding.companyNameLayout.isVisible = true
             binding.roomTypeLayout.isVisible = true
             binding.masterRatePlanLayout.isVisible = false
@@ -75,7 +76,7 @@ class CreateRateTypeFragment : Fragment() {
         }
 
         binding.packageRateType.setOnClickListener {
-            replaceChildFrag(RatePlanCompanyFragment())
+            replaceChildFrag(RatePlanPackageFragment())
             binding.rateTypeET.setText("Package")
             binding.roomTypeLayout.isVisible = true
             binding.companyNameLayout.isVisible = false
