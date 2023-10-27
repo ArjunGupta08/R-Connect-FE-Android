@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="65dp"
+            android:layout_marginStart="85dp"
             android:layout_marginEnd="10dp"
             android:gravity="center">
 
@@ -44,28 +44,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0."/>
+                app:layout_constraintGuide_percent="0"/>
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/g2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent=".1225"/>
+                app:layout_constraintGuide_percent=".119"/>
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/g3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent=".2225"/>
+                app:layout_constraintGuide_percent=".224"/>
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/g4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent=".3225"/>
+                app:layout_constraintGuide_percent=".321"/>
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/g5"
@@ -79,36 +79,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent=".519"/>
+                app:layout_constraintGuide_percent=".522"/>
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/g7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent=".617"/>
+                app:layout_constraintGuide_percent=".625"/>
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/g8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent=".713"/>
+                app:layout_constraintGuide_percent=".735"/>
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/g9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent=".815"/>
+                app:layout_constraintGuide_percent=".84"/>
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/g10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent=".912"/>
-
+                app:layout_constraintGuide_percent=".95"/>
 
             <TextView
 

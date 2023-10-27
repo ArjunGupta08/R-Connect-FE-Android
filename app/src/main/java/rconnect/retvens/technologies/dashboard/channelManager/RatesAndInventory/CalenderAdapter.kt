@@ -41,7 +41,7 @@ class CalenderAdapter :
     }
 
     override fun getItemCount(): Int {
-        return calendarList.size
+        return 10
     }
 
     fun setData(calendarList: List<Calendar>) {
