@@ -561,8 +561,8 @@
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
                                 <ImageView
-                                    android:layout_width="35dp"
-                                    android:layout_height="35dp"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
                                     android:layout_marginStart="9dp"
                                     android:src="@drawable/dashboard_icon_new"
                                     android:layout_marginVertical="15dp"
@@ -595,8 +595,8 @@
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
                                 <ImageView
-                                    android:layout_width="35dp"
-                                    android:layout_height="35dp"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
                                     android:src="@drawable/svg_rates"
                                     android:layout_marginVertical="15dp"
                                     android:layout_marginStart="9dp"
@@ -629,8 +629,8 @@
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
                                 <ImageView
-                                    android:layout_width="35dp"
-                                    android:layout_height="35dp"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
                                     android:layout_marginStart="10dp"
                                     android:src="@drawable/svg_create_reservation"
                                     android:layout_marginVertical="15dp"
@@ -664,8 +664,8 @@
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
                                 <ImageView
-                                    android:layout_width="35dp"
-                                    android:layout_height="35dp"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
                                     android:src="@drawable/svg_channel_"
                                     android:layout_marginStart="9dp"
                                     android:layout_marginVertical="15dp"
@@ -698,8 +698,8 @@
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
                                 <ImageView
-                                    android:layout_width="35dp"
-                                    android:layout_height="35dp"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
                                     android:src="@drawable/svg_promotion_"
                                     android:layout_marginStart="9dp"
                                     app:tint="@color/lightBlack"/>
@@ -731,8 +731,8 @@
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
                                 <ImageView
-                                    android:layout_width="35dp"
-                                    android:layout_height="35dp"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
                                     android:src="@drawable/svg_booking"
                                     android:layout_marginVertical="15dp"
                                     android:layout_marginStart="9dp"
@@ -765,8 +765,8 @@
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
                                 <ImageView
-                                    android:layout_width="35dp"
-                                    android:layout_height="35dp"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
                                     android:layout_marginStart="10dp"
                                     android:src="@drawable/svg_reports_"
                                     android:layout_marginVertical="15dp"
@@ -799,8 +799,8 @@
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
                             <ImageView
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
                                 android:layout_marginStart="10dp"
                                 android:src="@drawable/dashboard_icon_new"
                                 android:layout_marginVertical="15dp"
@@ -833,8 +833,8 @@
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
                             <ImageView
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
                                 android:layout_marginStart="10dp"
                                 android:src="@drawable/svg_setting_"
                                 android:layout_marginVertical="15dp"
@@ -877,8 +877,8 @@
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
                                 <ImageView
-                                    android:layout_width="35dp"
-                                    android:layout_height="35dp"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
                                     android:layout_marginStart="10dp"
                                     android:src="@drawable/dashboard_icon_new"
                                     android:layout_marginVertical="15dp"
@@ -913,8 +913,8 @@
                                 android:layout_marginTop="9dp">
                                 <ImageView
                                     android:id="@+id/img_rate"
-                                    android:layout_width="35dp"
-                                    android:layout_height="35dp"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
                                     app:layout_constraintVertical_bias="0"
                                     android:src="@drawable/svg_rates"
                                     android:layout_marginStart="9dp"
@@ -967,8 +967,8 @@
                                     android:orientation="horizontal"
                                     android:gravity="center_vertical">
                                     <ImageView
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
                                         android:src="@drawable/svg_chart"
                                         app:tint="@color/white"/>
                                     <TextView
@@ -991,8 +991,8 @@
                                     android:orientation="horizontal"
                                     android:gravity="center_vertical">
                                     <ImageView
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
                                         android:src="@drawable/svg_chart"
                                         app:tint="@color/white"/>
                                     <TextView
@@ -1016,8 +1016,8 @@
                                     android:orientation="horizontal"
                                     android:gravity="center_vertical">
                                     <ImageView
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
                                         android:src="@drawable/svg_chart"
                                         app:tint="@color/white"/>
                                     <TextView
@@ -1041,8 +1041,8 @@
                                     android:orientation="horizontal"
                                     android:gravity="center_vertical">
                                     <ImageView
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
                                         android:src="@drawable/svg_chart"
                                         app:tint="@color/white"/>
                                     <TextView
@@ -1067,8 +1067,8 @@
                                     android:orientation="horizontal"
                                     android:gravity="center_vertical">
                                     <ImageView
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
                                         android:src="@drawable/svg_chart"
                                         app:tint="@color/white"/>
                                     <TextView
@@ -1092,8 +1092,8 @@
                                     android:orientation="horizontal"
                                     android:gravity="center_vertical">
                                     <ImageView
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
                                         android:src="@drawable/svg_chart"
                                         app:tint="@color/white"/>
                                     <TextView
@@ -1128,8 +1128,8 @@
                                 android:layout_marginTop="9dp">
                                 <ImageView
                                     android:id="@+id/billing_img"
-                                    android:layout_width="35dp"
-                                    android:layout_height="35dp"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
                                     app:layout_constraintVertical_bias="0"
                                     android:src="@drawable/svg_others_"
                                     android:layout_marginStart="9dp"
@@ -1182,8 +1182,8 @@
                                     android:orientation="horizontal"
                                     android:gravity="center_vertical">
                                     <ImageView
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
                                         android:src="@drawable/svg_chart"
                                         app:tint="@color/white"/>
                                     <TextView
@@ -1206,8 +1206,8 @@
                                     android:orientation="horizontal"
                                     android:gravity="center_vertical">
                                     <ImageView
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
                                         android:src="@drawable/svg_chart"
                                         app:tint="@color/white"/>
                                     <TextView
@@ -1230,8 +1230,8 @@
                                     android:orientation="horizontal"
                                     android:gravity="center_vertical">
                                     <ImageView
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
                                         android:src="@drawable/svg_chart"
                                         app:tint="@color/white"/>
                                     <TextView
@@ -1267,8 +1267,8 @@
                                 android:layout_marginTop="9dp">
                                 <ImageView
                                     android:id="@+id/img_guests"
-                                    android:layout_width="35dp"
-                                    android:layout_height="35dp"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
                                     app:layout_constraintVertical_bias="0"
                                     android:src="@drawable/svg_others_"
                                     android:layout_marginStart="9dp"
@@ -1321,8 +1321,8 @@
                                     android:orientation="horizontal"
                                     android:gravity="center_vertical">
                                     <ImageView
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
                                         android:src="@drawable/svg_chart"
                                         app:tint="@color/white"/>
                                     <TextView
@@ -1345,8 +1345,8 @@
                                     android:orientation="horizontal"
                                     android:gravity="center_vertical">
                                     <ImageView
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
                                         android:src="@drawable/svg_chart"
                                         app:tint="@color/white"/>
                                     <TextView
@@ -1370,8 +1370,8 @@
                                     android:orientation="horizontal"
                                     android:gravity="center_vertical">
                                     <ImageView
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
                                         android:src="@drawable/svg_chart"
                                         app:tint="@color/white"/>
                                     <TextView
@@ -1394,8 +1394,8 @@
                                     android:orientation="horizontal"
                                     android:gravity="center_vertical">
                                     <ImageView
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
                                         android:src="@drawable/svg_chart"
                                         app:tint="@color/white"/>
                                     <TextView
@@ -1434,8 +1434,8 @@
                                 android:orientation="horizontal">
                                 <ImageView
                                     android:id="@+id/img_other"
-                                    android:layout_width="35dp"
-                                    android:layout_height="35dp"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
                                     app:layout_constraintVertical_bias="0.0"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     android:src="@drawable/svg_others_"
@@ -1489,8 +1489,8 @@
                                         android:orientation="horizontal"
                                         android:gravity="center_vertical">
                                         <ImageView
-                                            android:layout_width="30dp"
-                                            android:layout_height="30dp"
+                                            android:layout_width="28dp"
+                                            android:layout_height="28dp"
                                             android:src="@drawable/svg_chart"
                                             app:tint="@color/white"/>
                                         <TextView
@@ -1513,8 +1513,8 @@
                                         android:orientation="horizontal"
                                         android:gravity="center_vertical">
                                         <ImageView
-                                            android:layout_width="30dp"
-                                            android:layout_height="30dp"
+                                            android:layout_width="28dp"
+                                            android:layout_height="28dp"
                                             android:src="@drawable/svg_chart"
                                             app:tint="@color/white"/>
                                         <TextView
@@ -1538,8 +1538,8 @@
                                         android:orientation="horizontal"
                                         android:gravity="center_vertical">
                                         <ImageView
-                                            android:layout_width="30dp"
-                                            android:layout_height="30dp"
+                                            android:layout_width="28dp"
+                                            android:layout_height="28dp"
                                             android:src="@drawable/svg_chart"
                                             app:tint="@color/white"/>
                                         <TextView
@@ -1562,8 +1562,8 @@
                                         android:orientation="horizontal"
                                         android:gravity="center_vertical">
                                         <ImageView
-                                            android:layout_width="30dp"
-                                            android:layout_height="30dp"
+                                            android:layout_width="28dp"
+                                            android:layout_height="28dp"
                                             android:src="@drawable/svg_chart"
                                             app:tint="@color/white"/>
                                         <TextView
@@ -1596,8 +1596,8 @@
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
                             <ImageView
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
                                 android:layout_marginStart="10dp"
                                 android:src="@drawable/dashboard_icon_new"
                                 android:layout_marginVertical="15dp"

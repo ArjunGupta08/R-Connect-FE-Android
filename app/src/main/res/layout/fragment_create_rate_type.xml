@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
     <TextView
         android:id="@+id/heading"
         android:layout_width="wrap_content"
@@ -20,7 +19,7 @@
         android:textColor="@color/secondary"
         android:text="Create Rate Type"
         android:textSize="@dimen/H2"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
         android:fontFamily="@font/roboto_bold"
         app:layout_constraintTop_toTopOf="parent"
@@ -67,353 +66,241 @@
 
     </androidx.cardview.widget.CardView>
 
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        style="@style/CardViewTheme"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="4dp"
-        android:layout_marginTop="15dp"
-        app:layout_constraintEnd_toEndOf="@id/continueBtn"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0"
-        android:layout_marginBottom="9dp"
-        app:layout_constraintStart_toStartOf="@id/heading"
-        app:layout_constraintTop_toBottomOf="@id/continueBtn">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingVertical="10dp">
-
-
         <LinearLayout
-            android:id="@+id/ll7"
+            android:id="@+id/dropDownLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:orientation="vertical"
-            android:layout_marginStart="30dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rate Type Details"
-            android:fontFamily="@font/roboto_medium"
-            android:paddingVertical="5dp"
-            android:textAlignment="center"
-            android:textColor="@color/secondary"
-            android:textSize="@dimen/H4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:elevation="2dp"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/corner_bottom_white_background"
+            app:layout_constraintTop_toBottomOf="@id/rateTypeLayout"
+            app:layout_constraintStart_toStartOf="@id/rateTypeLayout"
+            app:layout_constraintEnd_toEndOf="@id/rateTypeLayout">
 
             <LinearLayout
+                android:id="@+id/companyRateType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guide1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.5"/>
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:gravity="center_vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/room_type_layout"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/textInputLayoutHeight"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/short_code_layout"
-                app:layout_constraintTop_toTopOf="parent"
-                android:hint="Rate Type Name"
-                android:layout_marginTop="10dp"
-                style="@style/TextInputLayoutStyle"
-                app:endIconMode="clear_text"
-                app:endIconTint="@color/black">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/room_type_text"
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/svg_setting_"/>
+
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/roboto"
+                    android:layout_height="wrap_content"
+                    android:text="Company"
                     android:textSize="@dimen/H5"
-                    android:hint="Luxury Suit"
-                    android:inputType="text"
-                    android:textColorHint="@drawable/hint_selector"
-                    android:textColor="@color/secondary" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginHorizontal="5dp"
+                    android:fontFamily="@font/roboto_medium"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/short_code_layout"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/textInputLayoutHeight"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@id/room_type_layout"
-                app:layout_constraintEnd_toStartOf="@id/guide1"
-                android:hint="Rate Type Name"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                style="@style/TextInputLayoutStyle"
-                app:endIconMode="clear_text"
-                app:endIconTint="@color/black">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/short_code_text"
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="13dp"
+                android:background="@color/grey5"/>
+
+            <LinearLayout
+                android:id="@+id/barRateType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/svg_setting_"/>
+
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/roboto"
-                    android:hint="Luxury Suit"
+                    android:layout_height="wrap_content"
+                    android:text="Bar"
                     android:textSize="@dimen/H5"
-                    android:inputType="text"
-                    android:textColorHint="@drawable/hint_selector"
-                    android:textColor="@color/secondary" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginHorizontal="5dp"
+                    android:fontFamily="@font/roboto_medium"/>
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="13dp"
+                android:background="@color/grey5"/>
+
+            <LinearLayout
+                android:id="@+id/discountRateType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/svg_setting_"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Discount"
+                    android:textSize="@dimen/H5"
+                    android:layout_marginHorizontal="5dp"
+                    android:fontFamily="@font/roboto_medium"/>
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="13dp"
+                android:background="@color/grey5"/>
+
+            <LinearLayout
+                android:id="@+id/packageRateType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/svg_setting_"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Package"
+                    android:textSize="@dimen/H5"
+                    android:layout_marginHorizontal="5dp"
+                    android:fontFamily="@font/roboto_medium"/>
+
             </LinearLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/charges_head"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_medium"
-                    android:paddingVertical="11dp"
-                    android:text="Inclusions and Charges"
-                    android:textAlignment="center"
-                    android:textColor="@color/secondary"
-                    android:textSize="@dimen/H4"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/add_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="30dp"
-                    android:fontFamily="@font/roboto_medium"
-                    android:paddingVertical="11dp"
-                    android:text="+Add Plan Inclusions"
-                    android:textAlignment="center"
-                    android:textColor="@color/secondary"
-                    android:textSize="@dimen/H4"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/add_name"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    style="@style/CardViewTheme"
-                    android:layout_marginBottom="9dp"
-                    app:layout_constraintStart_toStartOf="@id/charges_head"
-                    app:layout_constraintEnd_toEndOf="@id/add_name"
-                    app:cardCornerRadius="9dp"
-                    android:layout_marginHorizontal="2dp"
-                    app:cardElevation="2dp"
-                    app:cardBackgroundColor="@color/secondaryBackground">
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/cl1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:padding="9dp"
-                        android:background="@color/unselectedBackground">
-                        <TextView
-                            android:id="@+id/inclusion"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintStart_toStartOf="parent"
-                            android:fontFamily="@font/roboto_medium"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:text="Inclusion"
-                            android:textSize="@dimen/H5"/>
-                        <TextView
-                            android:id="@+id/posting"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintStart_toEndOf="@id/inclusion"
-                            app:layout_constraintEnd_toStartOf="@id/charge"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:fontFamily="@font/roboto_medium"
-                            android:text="Posting Rule"
-                            android:textSize="@dimen/H5"/>
-                        <TextView
-                            android:id="@+id/charge"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintStart_toEndOf="@id/posting"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintEnd_toStartOf="@id/rate"
-                            android:fontFamily="@font/roboto_medium"
-                            android:text="Charge Rule"
-                            android:textSize="@dimen/H5"/>
-                        <androidx.constraintlayout.widget.Guideline
-                            android:id="@+id/guide"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            app:layout_constraintGuide_percent="0.88"/>
-                        <TextView
-                            android:id="@+id/rate"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/roboto_medium"
-                            app:layout_constraintStart_toStartOf="@id/guide"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:text="Rate"
-                            android:textSize="@dimen/H5"/>
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-<!--                    card work here..-->
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/cl2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBaseline_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/cl1">
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recycler_inclusion"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/rateTypeLayout"
+                        android:layout_width="350dp"
+                        android:layout_height="@dimen/textInputLayoutHeight"
+                        android:layout_weight="1"
+                        android:hint="Rate Type"
+                        android:elevation="2dp"
+                        style="@style/ClickableTextInputLayoutStyle"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintEnd_toStartOf="@id/companyNameLayout"
+                        app:layout_constraintStart_toStartOf="@id/heading"
+                        app:layout_constraintTop_toBottomOf="@id/continueBtn">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/rateTypeET"
                             android:layout_width="match_parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            tools:listitem="@layout/item_inclusion_and_charges"
-                            tools:itemCount="9"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            android:orientation="vertical"
                             android:layout_height="match_parent"
-                            app:layout_constraintBottom_toTopOf="@id/cl3"/>
-                        <!--                    bottom header-->
-                        <LinearLayout
-                            android:id="@+id/cl3"
+                            android:fontFamily="@font/roboto"
+                            android:textSize="@dimen/H5"
+                            android:text="Company"
+                            android:inputType="text"
+                            android:textColorHint="@color/secondary"
+                            android:textColor="@color/secondary"
+                            android:clickable="true"
+                            android:editable="false"
+                            android:focusable="false" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/companyNameLayout"
+                        android:layout_width="3500dp"
+                        android:layout_height="@dimen/textInputLayoutHeight"
+                        android:visibility="gone"
+                        android:background="@color/secondaryBackground"
+                        android:hint="Company Name"
+                        android:layout_marginStart="10dp"
+                        style="@style/TextInputLayoutStyle"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/black"
+                        app:layout_constraintEnd_toStartOf="@id/roomTypeLayout"
+                        app:layout_constraintTop_toTopOf="@id/rateTypeLayout"
+                        app:layout_constraintBottom_toBottomOf="@id/rateTypeLayout"
+                        app:layout_constraintStart_toEndOf="@id/rateTypeLayout">
+                        <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center"
-                            android:weightSum="3"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            android:padding="6dp"
-                            android:background="@color/unselectedBackground">
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:orientation="horizontal"
-                                android:layout_weight="1">
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:textSize="@dimen/H5"
+                            android:hint="Select Company"
+                            android:inputType="text"
+                            android:textColorHint="@drawable/hint_selector"
+                            android:textColor="@color/secondary" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                            <TextView
-                                android:id="@+id/txt_adult"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintStart_toStartOf="parent"
-                                android:layout_marginEnd="9dp"
-                                android:textSize="@dimen/H5"
-                                android:fontFamily="@font/roboto_medium"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                android:text="Per Adult"/>
-                            <TextView
-                                android:id="@+id/txt_price1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="@dimen/H5"
-                                android:fontFamily="@font/roboto_medium"
-                                app:layout_constraintStart_toEndOf="@id/txt_adult"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                android:text="₹1200.00"/>
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center"
-                            android:layout_weight="1">
-                            <TextView
-                                android:id="@+id/txt_child"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintStart_toEndOf="@id/txt_price1"
-                                app:layout_constraintTop_toTopOf="parent"
-                                android:layout_marginEnd="9dp"
-                                android:textSize="@dimen/H5"
-                                android:fontFamily="@font/roboto_medium"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                android:text="Per Child"/>
-                            <TextView
-                                android:id="@+id/txt_price2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="@dimen/H5"
-                                android:fontFamily="@font/roboto_medium"
-                                app:layout_constraintStart_toEndOf="@id/txt_child"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                android:text="₹ 200.00"/>
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:layout_weight="1">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/roomTypeLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/textInputLayoutHeight"
+                        android:visibility="gone"
+                        android:background="@color/secondaryBackground"
+                        android:layout_marginStart="10dp"
+                        android:hint="Room Type"
+                        style="@style/TextInputLayoutStyle"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/black"
+                        app:layout_constraintEnd_toStartOf="@id/masterRatePlanLayout"
+                        app:layout_constraintTop_toTopOf="@id/companyNameLayout"
+                        app:layout_constraintBottom_toBottomOf="@id/companyNameLayout"
+                        app:layout_constraintStart_toEndOf="@id/companyNameLayout">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:textSize="@dimen/H5"
+                            android:hint="Room Type"
+                            android:inputType="text"
+                            android:textColorHint="@drawable/hint_selector"
+                            android:textColor="@color/secondary" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                            <TextView
-                                android:id="@+id/txt_total"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintStart_toEndOf="@id/txt_price2"
-                                android:layout_marginEnd="9dp"
-                                android:textSize="@dimen/H5"
-                                android:fontFamily="@font/roboto_medium"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintEnd_toEndOf="@id/txt_total_price"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                android:text="Total"/>
-                            <TextView
-                                android:id="@+id/txt_total_price"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="@dimen/H5"
-                                android:fontFamily="@font/roboto_medium"
-                                app:layout_constraintStart_toEndOf="@id/txt_total"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                android:text="₹ 1200.00"/>
-                        </LinearLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/masterRatePlanLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/textInputLayoutHeight"
+                        android:visibility="gone"
+                        android:background="@color/secondaryBackground"
+                        android:layout_marginStart="10dp"
+                        android:hint="Room Type"
+                        style="@style/TextInputLayoutStyle"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/black"
+                        app:layout_constraintEnd_toEndOf="@id/continueBtn"
+                        app:layout_constraintTop_toTopOf="@id/companyNameLayout"
+                        app:layout_constraintBottom_toBottomOf="@id/companyNameLayout"
+                        app:layout_constraintStart_toEndOf="@id/roomTypeLayout">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:textSize="@dimen/H5"
+                            android:hint="Room Type"
+                            android:inputType="text"
+                            android:textColorHint="@drawable/hint_selector"
+                            android:textColor="@color/secondary" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-
-
-
-                        </LinearLayout>
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-                </androidx.cardview.widget.CardView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
+        <FrameLayout
+            android:id="@+id/ratePlanFragContainer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/rateTypeLayout"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

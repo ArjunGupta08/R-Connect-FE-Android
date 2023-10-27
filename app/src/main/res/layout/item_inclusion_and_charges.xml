@@ -12,135 +12,126 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:padding="9dp"
         android:background="@color/secondaryBackground">
-        <androidx.constraintlayout.widget.ConstraintLayout
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/cl1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/textInputLayoutHeight"
+            style="@style/TextInputLayoutStyle"
+            android:hint="Inclusion Name"
+            android:layout_marginHorizontal="10dp"
+            android:background="@color/secondaryBackground"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/cl2"
+            app:layout_constraintEnd_toStartOf="@id/inclusionType"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-            <TextView
-                android:id="@+id/inclusion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:text="Inclusion"
-                android:textSize="@dimen/H5"/>
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                app:layout_constraintBottom_toBottomOf="@id/inclusion"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:src="@drawable/svg_arrow_down"
-                android:layout_marginEnd="16dp"/>
+            app:layout_constraintTop_toTopOf="parent" >
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inclusion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/H5" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/inclusionType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Inclusion Type"
+            android:textSize="@dimen/H5"
+            app:layout_constraintTop_toTopOf="@id/cl1"
+            app:layout_constraintBottom_toBottomOf="@id/cl1"
+            app:layout_constraintEnd_toStartOf="@id/cl2"
+            app:layout_constraintStart_toEndOf="@id/cl1"/>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/cl2"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/textInputLayoutHeight"
+            style="@style/ClickableTextInputLayoutStyle"
+            android:hint="Posting Rule"
+            android:layout_marginEnd="10dp"
+            android:background="@color/secondaryBackground"
             app:layout_constraintEnd_toStartOf="@id/cl3"
             app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@id/cl1"
+            app:layout_constraintStart_toEndOf="@id/inclusionType"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-        <TextView
-            android:id="@+id/posting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:fontFamily="@font/roboto_medium"
-            android:text="Posting Rule"
-            android:textSize="@dimen/H5"/>
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                app:layout_constraintBottom_toBottomOf="@id/posting"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:src="@drawable/svg_arrow_down"
-                android:layout_marginEnd="16dp"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/posting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/H5" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/cl3"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/textInputLayoutHeight"
+            style="@style/ClickableTextInputLayoutStyle"
+            android:hint="Charge Rule"
+            android:background="@color/secondaryBackground"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toEndOf="@id/cl2"
             app:layout_constraintEnd_toEndOf="@id/guide"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-        <TextView
-            android:id="@+id/charge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:fontFamily="@font/roboto_medium"
-            android:text="Charge Rule"
-            android:textSize="@dimen/H5"/>
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                app:layout_constraintBottom_toBottomOf="@id/charge"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:src="@drawable/svg_arrow_down"
-                android:layout_marginEnd="16dp"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/charge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/H5" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.865"/>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/guide"
-            app:layout_constraintEnd_toStartOf="@id/cl5"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-        <TextView
-            android:id="@+id/rs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:fontFamily="@font/roboto_medium"
-            android:text="₹"/>
+            app:layout_constraintGuide_percent="0.88"/>
 
-        <TextView
-            android:id="@+id/rate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:fontFamily="@font/roboto_medium"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:text="200.00"
-            android:textSize="@dimen/H5"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/cl4"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toEndOf="@id/guide"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/cl4"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/textInputLayoutHeight"
+                style="@style/TextInputLayoutStyle"
+                android:hint="₹ 200.00"
+                android:background="@color/secondaryBackground"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/img_del"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/rate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/H5" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
             <ImageView
                 android:id="@+id/img_del"
                 android:layout_width="21dp"
                 android:layout_height="21dp"
+                android:layout_marginStart="10dp"
+                app:layout_constraintStart_toEndOf="@id/cl4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -148,12 +139,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-
-
 
 
 

@@ -238,11 +238,12 @@
 
                     <TextView
                         android:id="@+id/saturday"
-                        android:layout_width="54dp"
+                        android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_marginTop="16dp"
                         android:background="@drawable/rounded_border_light_black"
                         android:gravity="center"
+                        android:layout_marginEnd="20dp"
                         android:text="Sat"
                         android:textAlignment="center"
                         android:textColor="@color/lightBlack"
@@ -254,12 +255,13 @@
 
                     <TextView
                         android:id="@+id/sunday"
-                        android:layout_width="54dp"
+                        android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_marginTop="16dp"
                         android:background="@drawable/rounded_border_light_black"
                         android:gravity="center"
                         android:text="Sun"
+                        android:layout_marginEnd="20dp"
                         android:textAlignment="center"
                         android:textColor="@color/lightBlack"
                         android:textSize="@dimen/H5"
@@ -269,9 +271,10 @@
 
                     <TextView
                         android:id="@+id/monday"
-                        android:layout_width="54dp"
+                        android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_marginTop="16dp"
+                        android:layout_marginEnd="20dp"
                         android:background="@drawable/rounded_border_light_black"
                         android:gravity="center"
                         android:text="Mon"
@@ -284,9 +287,10 @@
 
                     <TextView
                         android:id="@+id/tuesday"
-                        android:layout_width="54dp"
+                        android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_marginTop="16dp"
+                        android:layout_marginEnd="20dp"
                         android:background="@drawable/rounded_border_light_black"
                         android:gravity="center"
                         android:text="Tue"
@@ -299,9 +303,10 @@
 
                     <TextView
                         android:id="@+id/wed"
-                        android:layout_width="54dp"
+                        android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_marginTop="16dp"
+                        android:layout_marginEnd="20dp"
                         android:background="@drawable/rounded_border_light_black"
                         android:gravity="center"
                         android:text="Wed"
@@ -314,9 +319,10 @@
 
                     <TextView
                         android:id="@+id/thursday"
-                        android:layout_width="54dp"
+                        android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_marginTop="16dp"
+                        android:layout_marginEnd="20dp"
                         android:background="@drawable/rounded_border_light_black"
                         android:gravity="center"
                         android:text="Thu"
@@ -329,9 +335,10 @@
 
                     <TextView
                         android:id="@+id/fri"
-                        android:layout_width="54dp"
+                        android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_marginTop="16dp"
+                        android:layout_marginEnd="20dp"
                         android:background="@drawable/rounded_border_light_black"
                         android:gravity="center"
                         android:text="Fri"

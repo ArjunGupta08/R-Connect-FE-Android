@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".dashboard.configuration.roomsAndRates.roomType.RoomTypeFragment">
+    tools:context=".dashboard.configuration.roomsAndRates.RateType.RateTypeFragment">
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
             android:id="@+id/aA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Room Types"
+            android:text="Rate Types"
             android:fontFamily="@font/roboto_bold"
             android:textColor="@color/secondary"
             android:textSize="@dimen/H2"
@@ -287,4 +287,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
