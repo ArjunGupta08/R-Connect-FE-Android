@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import rconnect.retvens.technologies.dashboard.DashboardActivity
 import rconnect.retvens.technologies.databinding.FragmentLoginBinding
+import rconnect.retvens.technologies.databinding.FragmentLoginMobileBinding
 import rconnect.retvens.technologies.utils.shakeAnimation
 
 class LoginFragment : Fragment() {
@@ -22,6 +23,7 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
         binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
