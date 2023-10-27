@@ -6,7 +6,6 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -15,6 +14,7 @@ import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
@@ -26,17 +26,18 @@ import com.google.android.material.card.MaterialCardView
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.channelManager.QuickReservation.QuickReservationAdapter
 import rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory.RatesAndInventoryFragment
+import rconnect.retvens.technologies.dashboard.channelManager.promotions.PromotionsFragment
 import rconnect.retvens.technologies.dashboard.configuration.addPropertyFrags.AddPropertyFragment
 import rconnect.retvens.technologies.dashboard.configuration.addRoomType.AddRoomTypeFragment
 import rconnect.retvens.technologies.dashboard.configuration.createRate.CreateRatePlanFragment
 import rconnect.retvens.technologies.dashboard.configuration.createRate.CreateRateTypeFragment
 import rconnect.retvens.technologies.dashboard.configuration.createRate.ReviewRatePlanFragment
 import rconnect.retvens.technologies.dashboard.configuration.properties.ViewPropertiesFragment
-import rconnect.retvens.technologies.dashboard.channelManager.promotions.PromotionsFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.ActivityDashboardBinding
 import rconnect.retvens.technologies.utils.bottomSlideInAnimation
 import rconnect.retvens.technologies.utils.topInAnimation
+
 
 class DashboardActivity : AppCompatActivity() {
 
@@ -64,6 +65,8 @@ class DashboardActivity : AppCompatActivity() {
 
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        hideSystemUI()
 
         toolBar()
 
@@ -297,45 +300,63 @@ class DashboardActivity : AppCompatActivity() {
 
     }
 
+    private fun hideSystemUI() {
+        binding.root.systemUiVisibility = (
+                View.SYSTEM_UI_FLAG_IMMERSIVE
+                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_FULLSCREEN
+                )
+    }
     private fun openQuickReservationDialog() {
-        val dialog = Dialog(this) // Use 'this' as the context, assuming this code is within an Activity
+        val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
         dialog.setCanceledOnTouchOutside(true)
+
+        val width = (resources.displayMetrics.widthPixels * 0.75).toInt()
+        val height = ViewGroup.LayoutParams.MATCH_PARENT // Use MATCH_PARENT for height to take up the entire screen height
+
         dialog.setContentView(R.layout.dialog_layout_quickreservation)
         dialog.window?.apply {
             setBackgroundDrawableResource(android.R.color.transparent) // Makes the background transparent
+
+            // Hide the status bar and system navigation
+            decorView.systemUiVisibility = (
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            or View.SYSTEM_UI_FLAG_FULLSCREEN
+                            or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    )
+
             setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
+                width,
+                height
             )
+
+            setGravity(Gravity.END) // Set the dialog to attach to the right end of the screen
         }
-
-
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-        dialog.window?.setGravity(Gravity.END)
 
         dialog.show()
 
         val roomDetailRecycler = dialog.findViewById<RecyclerView>(R.id.room_detail_recycler)
         roomDetailRecycler.layoutManager = LinearLayoutManager(this)
 
-        val number:ArrayList<String> = ArrayList()
-
+        val number: ArrayList<String> = ArrayList()
         number.add("1")
 
-
-        val adapter = QuickReservationAdapter(number,this)
+        val adapter = QuickReservationAdapter(number, this)
         roomDetailRecycler.adapter = adapter
-        adapter.notifyDataSetChanged()
 
-        val addRoom = dialog.findViewById<CardView>(R.id.addRoomType);
+        val addRoom = dialog.findViewById<CardView>(R.id.addRoomType)
         addRoom.setOnClickListener {
             number.add("1")
             adapter.notifyDataSetChanged()
         }
     }
+
 
     private fun isCardSelected(card: MaterialCardView, text: TextView) {
 

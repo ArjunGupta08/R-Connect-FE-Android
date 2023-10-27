@@ -32,6 +32,7 @@ class FirstOnBoardingScreen : AppCompatActivity() {
 
             isSingleSelected = true
             isChainSelected = false
+            
 
             val colorResId = R.color.grey10 // Replace with your color resource ID
             val color = ContextCompat.getColor(applicationContext, colorResId)
