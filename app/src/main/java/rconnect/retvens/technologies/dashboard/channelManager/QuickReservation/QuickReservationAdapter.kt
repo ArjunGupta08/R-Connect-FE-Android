@@ -15,7 +15,6 @@ class QuickReservationAdapter(val list:ArrayList<String>, val applicationContext
 
     class NotificationHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
 
-        val recyclerView = itemView.findViewById<RecyclerView>(R.id.nestedroomDetails_recycler);
         val add = itemView.findViewById<ImageView>(R.id.addBaseAdult);
 
     }
@@ -32,17 +31,7 @@ class QuickReservationAdapter(val list:ArrayList<String>, val applicationContext
 
     override fun onBindViewHolder(holder: NotificationHolder, position: Int) {
 
-        list2.clear()
-        list2.add("1")
 
-        holder.recyclerView.layoutManager = LinearLayoutManager(applicationContext)
-        val adapter =  NestedQuickReservationAdapter(list2,applicationContext)
-        holder.recyclerView.adapter = adapter
-        adapter.notifyDataSetChanged()
 
-        holder.add.setOnClickListener {
-            list2.add("1")
-            adapter.notifyDataSetChanged()
-        }
     }
 }
