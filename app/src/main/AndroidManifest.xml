@@ -23,12 +23,15 @@
         android:theme="@style/Theme.RConnectFE"
         tools:targetApi="31">
         <activity
+            android:name=".LoginMobileScreenActivity"
+            android:exported="false" />
+        <activity
             android:name=".WelcomeMobileScreenActivity"
             android:exported="false" />
         <activity
             android:name=".dashboard.DashboardActivity"
             android:exported="true"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -36,7 +39,7 @@
         <activity
             android:name=".onboarding.authentication.LoginScreen"
             android:exported="true"
-            android:screenOrientation="landscape">
+           >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
