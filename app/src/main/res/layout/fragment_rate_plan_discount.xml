@@ -132,6 +132,7 @@
                             android:weightSum="4">
 
                             <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/percentCard"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 app:cardBackgroundColor="@color/white"
@@ -140,6 +141,7 @@
                                 android:layout_weight="1">
 
                                 <TextView
+                                    android:id="@+id/percentText"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/roboto"
@@ -152,6 +154,7 @@
                             </com.google.android.material.card.MaterialCardView>
 
                             <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/amountCard"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 app:cardBackgroundColor="@color/white"
@@ -161,6 +164,7 @@
                                 android:layout_weight="1">
 
                                 <TextView
+                                    android:id="@+id/amountText"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/roboto"
@@ -173,9 +177,10 @@
                             </com.google.android.material.card.MaterialCardView>
 
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/discountTextLayout"
                                 android:layout_width="0dp"
                                 android:layout_height="@dimen/textInputLayoutHeight"
-                                android:hint="Rate Plan Name"
+                                android:hint="Discount %"
                                 style="@style/TextInputLayoutStyle"
                                 android:layout_weight="2"
                                 app:endIconMode="clear_text"
@@ -185,7 +190,7 @@
                                     android:layout_height="match_parent"
                                     android:fontFamily="@font/roboto"
                                     android:textSize="@dimen/H5"
-                                    android:hint="enter rate plan name"
+                                    android:hint="Discount"
                                     android:inputType="text"
                                     android:textColorHint="@drawable/hint_selector"
                                     android:textColor="@color/secondary" />
@@ -224,6 +229,7 @@
                                     android:fontFamily="@font/roboto"
                                     android:textSize="@dimen/H5"
                                     android:text="--/--/----"
+                                    android:cursorVisible="false"
                                     android:editable="false"
                                     android:focusable="false"
                                     android:clickable="true"
@@ -248,6 +254,7 @@
                                     android:fontFamily="@font/roboto"
                                     android:textSize="@dimen/H5"
                                     android:text="--/--/----"
+                                    android:cursorVisible="false"
                                     android:editable="false"
                                     android:focusable="false"
                                     android:clickable="true"
