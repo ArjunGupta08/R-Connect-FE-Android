@@ -215,6 +215,7 @@
                             android:weightSum="2">
 
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/from_Layout"
                                 android:layout_width="0dp"
                                 android:layout_height="@dimen/textInputLayoutHeight"
                                 android:hint="From"
@@ -224,6 +225,7 @@
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/ll">
                                 <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/from"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:fontFamily="@font/roboto"
@@ -239,6 +241,7 @@
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/to_Layout"
                                 android:layout_width="0dp"
                                 android:layout_height="@dimen/textInputLayoutHeight"
                                 android:hint="To"
@@ -249,6 +252,7 @@
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/ll">
                                 <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/to"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:fontFamily="@font/roboto"

@@ -1,5 +1,6 @@
 package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlaneDiscount
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,12 +13,18 @@ import com.google.android.material.card.MaterialCardView
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateData
 import rconnect.retvens.technologies.databinding.FragmentRatePlanDiscountBinding
+import rconnect.retvens.technologies.utils.utilCreateDatePickerDialog
+import java.util.Date
 
 class RatePlanDiscountFragment : Fragment() {
     private lateinit var binding : FragmentRatePlanDiscountBinding
 
     private val planList = ArrayList<RatePlanDiscountData>()
     private val roomList = ArrayList<RatePlanRoomType>()
+    var startDate: Date?= null
+    var endDate: Date? = null
+    lateinit var startDatePickerDialog: DatePickerDialog
+    lateinit var endDatePickerDialog: DatePickerDialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +58,28 @@ class RatePlanDiscountFragment : Fragment() {
         binding.percentCard.setOnClickListener {
             binding.discountTextLayout.hint = "Discount %"
             cardSelected(binding.percentCard, binding.percentText)
+        }
+
+        startDatePickerDialog = utilCreateDatePickerDialog(requireContext(),binding.from) {date->
+            startDate = date
+        }
+        endDatePickerDialog = utilCreateDatePickerDialog(requireContext(),binding.to){date->
+            endDate = date
+        }
+
+
+        binding.fromLayout.setEndIconOnClickListener {
+            endDate = null
+
+            // Set the minimum date for the start date picker to be the current date
+            startDatePickerDialog.datePicker.minDate = System.currentTimeMillis()
+            startDatePickerDialog.show()
+        }
+        binding.toLayout.setEndIconOnClickListener {
+            if (startDate!=null){
+                endDatePickerDialog.datePicker.minDate = startDate!!.time
+                endDatePickerDialog.show()
+            }
         }
     }
     private fun cardSelected(card : MaterialCardView, text : TextView){
