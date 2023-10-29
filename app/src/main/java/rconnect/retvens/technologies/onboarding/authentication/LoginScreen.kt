@@ -5,15 +5,12 @@ import android.content.res.Configuration
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Pair
 import android.view.WindowManager
-import android.widget.Toast
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.viewbinding.ViewBinding
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.ActivityLoginMobileScreenBinding
 import rconnect.retvens.technologies.databinding.ActivityLoginScreenBinding
@@ -23,7 +20,7 @@ import rconnect.retvens.technologies.utils.rightInAnimation
 
 class LoginScreen : AppCompatActivity() {
 
-    private lateinit var binding: ActivityLoginScreenBinding
+    private  var binding: ActivityLoginScreenBinding? = null
     private lateinit var bindingMobile : ActivityLoginMobileScreenBinding
     private lateinit var parentLayout : ConstraintLayout
 
@@ -41,7 +38,7 @@ class LoginScreen : AppCompatActivity() {
 
                 requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
                 binding = ActivityLoginScreenBinding.inflate(layoutInflater)
-                setContentView(binding.root)
+                setContentView(binding!!.root)
             }
             else -> {
                 // Portrait orientation (default or any other orientation)
@@ -64,53 +61,65 @@ class LoginScreen : AppCompatActivity() {
             parentLayout = findViewById(R.id.parent_layout)
 
             replaceFragment(SignUpFragment())
-            bottomSlideInAnimation(binding.authFragContainer, applicationContext)
+            bottomSlideInAnimation(binding!!.authFragContainer, applicationContext)
 
-            binding.openSignUpScreen.setOnClickListener {
+            binding!!.openSignUpScreen.setOnClickListener {
 
                 replaceFragment(SignUpFragment())
 
-                rightInAnimation(binding.authFragContainer, applicationContext)
-                binding.onBoardingImg.setImageResource(R.drawable.vector_request_demo)
-                rightInAnimation(binding.onBoardingImg, applicationContext)
+                rightInAnimation(binding!!.authFragContainer, applicationContext)
+                binding!!.onBoardingImg.setImageResource(R.drawable.vector_request_demo)
+                rightInAnimation(binding!!.onBoardingImg, applicationContext)
 
-                binding.openSignUpScreen.text = getString(R.string.sign_up)
-                binding.openSignUpScreen.typeface = robotoBold
-                binding.openSignUpScreen.setTextSize(16f)
-                binding.openSignUpScreen.setTextColor(ContextCompat.getColor(applicationContext, R.color.white))
-                binding.openSignUpScreen.background = ContextCompat.getDrawable(applicationContext, R.drawable.corner_right_black_background)
+//                binding!!.openSignUpScreen.text = getString(R.string.sign_up)
+//                binding!!.openSignUpScreen.typeface = robotoBold
+//                binding!!.openSignUpScreen.setTextSize(16f)
+//                binding!!.openSignUpScreen.setTextColor(ContextCompat.getColor(applicationContext, R.color.white))
+//                binding!!.openSignUpScreen.background = ContextCompat.getDrawable(applicationContext, R.drawable.corner_right_black_background)
 
-                binding.openLoginScreen.text = getString(R.string.existing_user_log_in)
-                binding.openLoginScreen.typeface = roboto
-                binding.openLoginScreen.setTextSize(14f)
-                binding.openLoginScreen.setTextColor(ContextCompat.getColor(applicationContext, R.color.black))
-                binding.openLoginScreen.background = ContextCompat.getDrawable(applicationContext, R.drawable.corner_left_grey_background)
+                setText(binding!!.openSignUpScreen,"Sign up",16f,robotoBold,R.color.white,R.drawable.corner_right_black_background)
+
+//                binding!!.openLoginScreen.text = getString(R.string.existing_user_log_in)
+//                binding!!.openLoginScreen.typeface = roboto
+//                binding!!.openLoginScreen.setTextSize(14f)
+//                binding!!.openLoginScreen.setTextColor(ContextCompat.getColor(applicationContext, R.color.black))
+//                binding!!.openLoginScreen.background = ContextCompat.getDrawable(applicationContext, R.drawable.corner_left_grey_background)
+
+                setText(binding!!.openLoginScreen,"Existing User?\nLog in",14f,roboto,R.color.black,R.drawable.corner_left_grey_background)
+
 
             }
 
-            binding.openLoginScreen.setOnClickListener {
+            binding!!.openLoginScreen.setOnClickListener {
 
                 replaceFragment(LoginFragment())
 
-                leftInAnimation(binding.authFragContainer, applicationContext)
-                binding.onBoardingImg.setImageResource(R.drawable.vector_login)
-                leftInAnimation(binding.onBoardingImg, applicationContext)
+                leftInAnimation( binding!!.authFragContainer, applicationContext)
+                binding!!.onBoardingImg.setImageResource(R.drawable.vector_login)
+                leftInAnimation( binding!!.onBoardingImg, applicationContext)
 
-                binding.openSignUpScreen.text = getString(R.string.new_here_sign_up)
-                binding.openSignUpScreen.typeface = roboto
-                binding.openSignUpScreen.setTextSize(14f)
-                binding.openSignUpScreen.setTextColor(ContextCompat.getColor(applicationContext, R.color.black))
-                binding.openSignUpScreen.background = ContextCompat.getDrawable(applicationContext, R.drawable.corner_right_grey_background)
+//                binding!!.openSignUpScreen.text = getString(R.string.new_here_sign_up)
+//                binding!!.openSignUpScreen.typeface = roboto
+//                binding!!.openSignUpScreen.setTextSize(14f)
+//                binding!!.openSignUpScreen.setTextColor(ContextCompat.getColor(applicationContext, R.color.black))
+//                binding!!.openSignUpScreen.background = ContextCompat.getDrawable(applicationContext, R.drawable.corner_right_grey_background)
+                setText(binding!!.openSignUpScreen,"New here?\nSign up",14f,roboto,R.color.black,R.drawable.corner_right_grey_background)
 
-                binding.openLoginScreen.text = getString(R.string.log_in)
-                binding.openLoginScreen.typeface = robotoBold
-                binding.openLoginScreen.setTextSize(16f)
-                binding.openLoginScreen.setTextColor(ContextCompat.getColor(applicationContext, R.color.white))
-                binding.openLoginScreen.background = ContextCompat.getDrawable(applicationContext, R.drawable.corner_left_black_background)
+
+//                binding!!.openLoginScreen.text = getString(R.string.log_in)
+//                binding!!.openLoginScreen.typeface = robotoBold
+//                binding!!.openLoginScreen.setTextSize(16f)
+//                binding!!.openLoginScreen.setTextColor(ContextCompat.getColor(applicationContext, R.color.white))
+//                binding!!.openLoginScreen.background = ContextCompat.getDrawable(applicationContext, R.drawable.corner_left_black_background)
+                setText(binding!!.openLoginScreen,"Log in",16f,robotoBold,R.color.white,R.drawable.corner_left_black_background)
+
+
+
 
             }
         }else{
-            Toast.makeText(applicationContext,"Nothing to show",Toast.LENGTH_LONG).show()
+            replaceFragment(LoginFragment())
+
         }
 
 
@@ -123,6 +132,13 @@ class LoginScreen : AppCompatActivity() {
             transaction.replace(R.id.authFragContainer,fragment)
             transaction.commit()
         }
+    }
+    private fun setText(textView:TextView, text:String, size: Float, typFace: Typeface,color:Int,setBackground:Int ){
+        textView.text = text
+        textView.textSize = size
+        textView.typeface = typFace
+        textView.setTextColor(ContextCompat.getColor(applicationContext,color))
+        textView.background = ContextCompat.getDrawable(applicationContext,setBackground)
     }
 
 }

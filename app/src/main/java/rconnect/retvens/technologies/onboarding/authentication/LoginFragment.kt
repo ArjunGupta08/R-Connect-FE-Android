@@ -2,6 +2,8 @@ package rconnect.retvens.technologies.onboarding.authentication
 
 import android.app.ActivityOptions
 import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Pair
 import androidx.fragment.app.Fragment
@@ -10,13 +12,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import rconnect.retvens.technologies.dashboard.DashboardActivity
+import rconnect.retvens.technologies.databinding.ActivityLoginMobileScreenBinding
+import rconnect.retvens.technologies.databinding.ActivityLoginScreenBinding
 import rconnect.retvens.technologies.databinding.FragmentLoginBinding
 import rconnect.retvens.technologies.databinding.FragmentLoginMobileBinding
 import rconnect.retvens.technologies.utils.shakeAnimation
 
 class LoginFragment : Fragment() {
 
-    lateinit var binding : FragmentLoginBinding
+     var binding : FragmentLoginBinding? = null
+    private lateinit var bindingMobile : FragmentLoginMobileBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,45 +29,63 @@ class LoginFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 
+        val currentOrientation = resources.configuration.orientation
+
+        when (currentOrientation) {
+            Configuration.ORIENTATION_LANDSCAPE -> {
+                // Landscape orientation
+
+              requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                binding = FragmentLoginBinding.inflate(layoutInflater)
+                requireActivity().setContentView(binding!!.root)
+            }
+            else -> {
+                // Portrait orientation (default or any other orientation)
+                requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+                bindingMobile = FragmentLoginMobileBinding.inflate(layoutInflater)
+                requireActivity().setContentView(bindingMobile.root)
+            }
+        }
+
         binding = FragmentLoginBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.forgotPassText.setOnClickListener {
+        binding!!.forgotPassText.setOnClickListener {
             val intent = (Intent(requireContext(), ForgetPasswordScreen::class.java))
 
             val options = ActivityOptions.makeSceneTransitionAnimation(requireActivity(),
-                Pair(binding.signInCard,"Btn")
+                Pair(binding!!.signInCard,"Btn")
             ).toBundle()
 
             startActivity(intent, options)
         }
 
-        binding.signInCard.setOnClickListener {
+        binding!!.signInCard.setOnClickListener {
 
-            if (binding.username.text!!.isEmpty()) {
-                shakeAnimation(binding.usernameLayout,requireContext())
-                binding.usernameLayout.error = "Please enter username"
+            if (binding!!.username.text!!.isEmpty()) {
+                shakeAnimation(binding!!.usernameLayout,requireContext())
+                binding!!.usernameLayout.error = "Please enter username"
 
-            } else if (binding.authCode.text!!.isEmpty()) {
-                binding.authCodeLayout.error = "Please enter Hotel R code"
-                shakeAnimation(binding.authCodeLayout,requireContext())
-                binding.usernameLayout.isErrorEnabled = false
+            } else if (binding!!.authCode.text!!.isEmpty()) {
+                binding!!.authCodeLayout.error = "Please enter Hotel R code"
+                shakeAnimation(binding!!.authCodeLayout,requireContext())
+                binding!!.usernameLayout.isErrorEnabled = false
 
-            } else if (binding.password.text!!.isEmpty()) {
-                binding.passwordLayout.error = "Please enter password"
-                shakeAnimation(binding.passwordLayout,requireContext())
-                binding.authCodeLayout.isErrorEnabled = false
+            } else if (binding!!.password.text!!.isEmpty()) {
+                binding!!.passwordLayout.error = "Please enter password"
+                shakeAnimation(binding!!.passwordLayout,requireContext())
+                binding!!.authCodeLayout.isErrorEnabled = false
 
             } else {
                 val intent = Intent(requireContext(), DashboardActivity::class.java)
                 startActivity(intent)
-                binding.usernameLayout.isErrorEnabled = false
-                binding.authCodeLayout.isErrorEnabled = false
-                binding.passwordLayout.isErrorEnabled = false
+                binding!!.usernameLayout.isErrorEnabled = false
+                binding!!.authCodeLayout.isErrorEnabled = false
+                binding!!.passwordLayout.isErrorEnabled = false
             }
         }
 
