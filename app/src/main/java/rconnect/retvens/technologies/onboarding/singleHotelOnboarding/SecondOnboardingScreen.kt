@@ -6,21 +6,36 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.AutocompletePrediction
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
+import com.google.android.libraries.places.api.net.PlacesClient
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.ActivitySecondOnboardingScreenBinding
 import rconnect.retvens.technologies.onboarding.FinalOnboardingScreen
+import rconnect.retvens.technologies.onboarding.chainHotelOnboarding.ThirdChainOnboardingScreen
 import rconnect.retvens.technologies.utils.autoFillLocationSuggestion
 import rconnect.retvens.technologies.utils.fetchCountryName
 import rconnect.retvens.technologies.utils.shakeAnimation
+import java.lang.IndexOutOfBoundsException
 
 class SecondOnboardingScreen : AppCompatActivity() {
 
+    val countryList = ArrayList<String>()
+    val fullAddressList = ArrayList<String>()
     private lateinit var binding : ActivitySecondOnboardingScreenBinding
 
     private lateinit var imageUri: Uri
@@ -40,6 +55,8 @@ class SecondOnboardingScreen : AppCompatActivity() {
 
         imageSelection()
 
+        placesAPI()
+
         // ------------ Display the country name using timezone---------
         val countryName = fetchCountryName()
         if (countryName != "Unknown"){
@@ -47,7 +64,7 @@ class SecondOnboardingScreen : AppCompatActivity() {
         }
 
         // ------------ Display the Location Suggestions ---------
-        autoFillLocationSuggestion(this, binding.countryText, binding.stateText, binding.cityText)
+//        autoFillLocationSuggestion(this, fullAddressList, binding.addressText, binding.stateText, binding.cityText)
 
         binding.cardSingleNext.setOnClickListener {
 
@@ -88,7 +105,7 @@ class SecondOnboardingScreen : AppCompatActivity() {
 ////                binding.currencyLayout.isErrorEnabled = false
 //            }
             else {
-                val intent = Intent(this,FinalOnboardingScreen::class.java)
+                val intent = Intent(this,ThirdChainOnboardingScreen::class.java)
                 intent.putExtra("isSingle", true)
 
                 val options = ActivityOptions.makeSceneTransitionAnimation(this,
@@ -100,6 +117,81 @@ class SecondOnboardingScreen : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun placesAPI() {
+
+        // Initialize Places API
+        Places.initialize(applicationContext, "AIzaSyBRAnfSXzM-fQXpa751GkbMQDEuavUSDP0")
+
+        // Create a PlacesClient
+        val placesClient: PlacesClient = Places.createClient(this)
+
+        // Initialize the AutoCompleteTextView and adapter
+        val autoCompleteTextView = binding.addressText
+        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line)
+        autoCompleteTextView.setAdapter(adapter)
+
+        // Set up the Autocomplete request
+        autoCompleteTextView.threshold = 1  // Minimum characters to start autocomplete
+        autoCompleteTextView.setOnItemClickListener { _, _, position, _ ->
+            val selectedAddress = adapter.getItem(position).toString()
+
+            // Handle the selected address as needed
+            autoCompleteTextView.setText(selectedAddress)
+            val lastThreeWords = extractLastThreeWords(selectedAddress)
+            println("Last Three Words: $lastThreeWords")
+            try {
+                binding.cityText.setText(lastThreeWords.get(0))
+                binding.stateText.setText(lastThreeWords.get(1))
+                binding.countryText.setText(lastThreeWords.get(2))
+            } catch (e : IndexOutOfBoundsException){
+                println(e.toString())
+            }
+        }
+
+        autoCompleteTextView.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Create a FindAutocompletePredictionsRequest
+                val request = FindAutocompletePredictionsRequest.builder()
+                    .setSessionToken(AutocompleteSessionToken.newInstance())
+                    .setQuery(s.toString())
+                    .build()
+
+                // Perform the autocomplete request
+                placesClient.findAutocompletePredictions(request).addOnSuccessListener { response ->
+                    val predictions = response.autocompletePredictions
+                    val suggestionList = mutableListOf<String>()
+
+                    for (prediction in predictions) {
+                        suggestionList.add(prediction.getFullText(null).toString())
+                        Log.d("suggetion", suggestionList.toString())
+                    }
+
+                    // Update the adapter with the new suggestions
+                    adapter.clear()
+                    adapter.addAll(suggestionList)
+                    autoCompleteTextView.setAdapter(adapter)
+                    adapter.notifyDataSetChanged()
+                }.addOnFailureListener { exception ->
+                    println(exception.toString())
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+        })
+    }
+    private fun extractLastThreeWords(input: String): List<String> {
+        val words = input.split(",").map { it.trim() }
+        return if (words.size >= 3) {
+            words.subList(words.size - 3, words.size)
+        } else {
+            words
+        }
     }
 
     private fun imageSelection() {

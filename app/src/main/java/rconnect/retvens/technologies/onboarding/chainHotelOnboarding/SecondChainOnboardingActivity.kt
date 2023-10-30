@@ -15,6 +15,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.ActivitySecondChainOnboardingBinding
+import rconnect.retvens.technologies.onboarding.FinalOnboardingScreen
 import rconnect.retvens.technologies.utils.shakeAnimation
 
 
@@ -48,7 +49,7 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
 //                binding.propertyTypeLayout.error = ("Please enter your password")
 //            }
             else {
-                val intent = Intent(this, ThirdChainOnboardingScreen::class.java)
+                val intent = Intent(this, FinalOnboardingScreen::class.java)
                 val options = ActivityOptions.makeSceneTransitionAnimation(
                     this,
                     android.util.Pair(binding.logo, "logo_img"),
