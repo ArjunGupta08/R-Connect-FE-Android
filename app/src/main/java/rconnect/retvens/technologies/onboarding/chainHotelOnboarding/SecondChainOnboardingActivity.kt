@@ -122,7 +122,7 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
 
     private fun sendData() {
         val userId = UserSessionManager(this).getUserId().toString()
-        val propertyTypeSOC = "Single"
+        val propertyTypeSOC = "Multiple"
         val propertyName = binding.propertyChainText.text.toString()
         val propertyType = binding.properytyTypeText.text.toString()
         val websiteUrl = binding.websiteText.text.toString()

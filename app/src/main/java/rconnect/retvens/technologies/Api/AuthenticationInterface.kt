@@ -26,6 +26,9 @@ interface AuthenticationInterface {
         @Body signUpDataClass: SignUpDataClass
     ):Call<SignUpResponse>
 
+    @GET("getDesignation")
+    fun getDesignation():Call<DesignationDataClass>
+
     @Multipart
     @PATCH("userEdit")
     fun userEdit(
@@ -50,6 +53,7 @@ interface AuthenticationInterface {
         @Part("registrationNumber") registrationNumber: RequestBody,
     ):Call<ResponseData>
 
+                              /*-------------------------------------------------First Onboarding------------------------------------------*/
     @Multipart
     @PATCH("userEdit")
     fun firstOnboarding(
@@ -92,6 +96,7 @@ interface AuthenticationInterface {
         @Part("ratePercent") ratePercent: RequestBody,
     ):Call<ResponseData>
 
+                                    /*------------------------------------------Chain Onboarding--------------------------------------------------------*/
     @Multipart
     @PATCH("userEdit")
     fun firstChainOnboarding(
@@ -116,11 +121,6 @@ interface AuthenticationInterface {
         @Part("baseCurrency") baseCurrency: RequestBody,
         @Part("propertyName") propertyName: RequestBody,
     ):Call<ResponseData>
-
-
-    @GET("getDesignation")
-    fun getDesignation():Call<DesignationDataClass>
-
 
 }
 
