@@ -53,6 +53,11 @@ dependencies {
     implementation("com.google.android.gms:play-services-maps:16.1.0")
     implementation("com.google.android.gms:play-services-location:10.+")
 
+    //retrofit
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    //Gson
+    implementation ("com.squareup.retrofit2:converter-gson:2.1.0")
+
     //ImageCropper
 //    implementation "com.theartofdev.edmodo:android-image-cropper:2.8.0"
 //    implementation ("com.github.yalantis:ucrop:2.2.8")
