@@ -19,7 +19,7 @@
             android:textSize="@dimen/H2"
             android:textColor="@color/black"
             android:fontFamily="@font/roboto_bold"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="40dp"
             android:layout_marginStart="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

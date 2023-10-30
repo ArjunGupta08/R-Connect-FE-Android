@@ -19,6 +19,7 @@ import rconnect.retvens.technologies.dashboard.DashboardActivity
 import rconnect.retvens.technologies.databinding.ActivityLoginMobileScreenBinding
 import rconnect.retvens.technologies.databinding.ActivityLoginScreenBinding
 import rconnect.retvens.technologies.databinding.FragmentLoginBinding
+import rconnect.retvens.technologies.databinding.FragmentLoginMobileBinding
 import rconnect.retvens.technologies.utils.SharedPreference
 import rconnect.retvens.technologies.utils.shakeAnimation
 import retrofit2.Call
@@ -96,12 +97,12 @@ class LoginFragment : Fragment() {
                 binding!!.usernameLayout.isErrorEnabled = false
                 binding!!.authCodeLayout.isErrorEnabled = false
                 binding!!.passwordLayout.isErrorEnabled = false
-                userName = binding.username.text.toString()
-                authCode = binding.authCode.text.toString()
-                password = binding.password.text.toString()
-                binding.usernameLayout.isErrorEnabled = false
-                binding.authCodeLayout.isErrorEnabled = false
-                binding.passwordLayout.isErrorEnabled = false
+                userName = binding!!.username.text.toString()
+                authCode = binding!!.authCode.text.toString()
+                password = binding!!.password.text.toString()
+                binding!!.usernameLayout.isErrorEnabled = false
+                binding!!.authCodeLayout.isErrorEnabled = false
+                binding!!.passwordLayout.isErrorEnabled = false
                 try {
                     getLogin()
                 }

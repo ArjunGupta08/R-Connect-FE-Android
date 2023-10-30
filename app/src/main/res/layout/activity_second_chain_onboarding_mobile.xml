@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".onboarding.chainHotelOnboarding.SecondChainOnboardingActivity">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/primaryBackground"
+            android:fillViewport="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/heading"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="@string/let_s_create_your_property_chain_s_profile"
+                    android:textColor="@color/black"
+                    android:textFontWeight="500"
+                    android:textSize="@dimen/H2"
+                    android:layout_marginStart="21dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/single_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/heading"
+                    app:layout_constraintVertical_bias="0.0">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardImg"
+                        style="@style/CardViewTheme"
+                        android:layout_width="120dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="19dp"
+                        android:layout_marginEnd="60dp"
+                        app:cardBackgroundColor="@color/white"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="2dp"
+                        android:layout_marginStart="21dp"
+                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:strokeWidth="1dp">
+
+                        <ImageView
+                            android:id="@+id/selectImg"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="10dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/svg_gallery" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="@id/cardImg"
+                        app:layout_constraintBottom_toBottomOf="@id/cardImg"
+                        app:layout_constraintStart_toEndOf="@id/cardImg"
+                        android:layout_marginEnd="21dp"
+                        android:textSize="@dimen/H5"
+                        android:textColor="@color/lightBlack"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:text="Upload Property Chain Logo or Image"/>
+
+                    <LinearLayout
+                        android:id="@+id/imageEditLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="4dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="8dp"
+                        android:visibility="gone"
+                        android:weightSum="2"
+                        app:layout_constraintBottom_toBottomOf="@id/cardImg"
+                        app:layout_constraintStart_toEndOf="@id/cardImg"
+                        app:layout_constraintTop_toTopOf="@id/cardImg">
+
+                        <ImageView
+                            android:id="@+id/replaceImage"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/svg_gallery_edit"
+                            app:tint="@color/black" />
+
+                        <ImageView
+                            android:id="@+id/removeImage"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/svg_gallery_remove"
+                            app:tint="@color/black" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/propertyChainLayout"
+                        style="@style/TextInputLayoutStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:hint="Property Chain Name"
+                        app:endIconMode="clear_text"
+                        android:layout_marginHorizontal="21dp"
+                        app:endIconTint="@color/black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/cardImg">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/propertyChainText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:inputType="text"
+                            android:textColor="@color/secondary"
+                            android:textColorHint="@color/secondary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/nop"
+                        android:layout_width="0dp"
+                        android:layout_height="47dp"
+                        android:layout_marginTop="15dp"
+                        app:cardBackgroundColor="@color/white"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="0dp"
+                        app:layout_constraintEnd_toEndOf="@id/propertyChainLayout"
+                        app:layout_constraintStart_toStartOf="@id/propertyChainLayout"
+                        app:layout_constraintTop_toBottomOf="@id/propertyChainLayout"
+                        app:strokeColor="@color/secondary"
+                        app:strokeWidth="0.4dp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/rate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:text="Number of Properties"
+                                android:textColor="@color/lightBlack"
+                                android:textSize="16sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:orientation="horizontal"
+                                app:layout_constraintBottom_toBottomOf="@id/rate"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/rate">
+
+                                <ImageView
+                                    android:id="@+id/remove"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/svg_remove" />
+
+                                <EditText
+                                    android:id="@+id/propertyCountEditText"
+                                    style="@style/TextAppearance.AppCompat.Body1"
+                                    android:layout_width="@dimen/countingEditTextWidth"
+                                    android:layout_height="wrap_content"
+                                    android:background="@null"
+                                    android:inputType="number"
+                                    android:text="1"
+                                    android:textAlignment="center"
+                                    android:maxLength="3"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/H4" />
+
+                                <ImageView
+                                    android:id="@+id/add"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/svg_add" />
+
+                            </LinearLayout>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/TaxNameLayout"
+                        style="@style/TextInputLayoutStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:hint="Website link (optional)"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/black"
+                        app:layout_constraintEnd_toEndOf="@id/propertyTypeLayout"
+                        app:layout_constraintStart_toStartOf="@id/propertyTypeLayout"
+                        app:layout_constraintTop_toBottomOf="@id/propertyTypeLayout">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/TaxNameText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:inputType="text"
+                            android:textColor="@color/secondary"
+                            android:textColorHint="@color/secondary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/propertyTypeLayout"
+                        style="@style/ClickableTextInputLayoutStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:hint="Property type"
+                        app:layout_constraintEnd_toEndOf="@id/nop"
+                        app:layout_constraintStart_toStartOf="@id/nop"
+                        app:layout_constraintTop_toBottomOf="@id/nop">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/properytyTypeText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:clickable="true"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:fontFamily="@font/roboto"
+                            android:inputType="text"
+                            android:textColor="@color/secondary"
+                            android:textColorHint="@color/secondary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/baseCurrencyLayout"
+                        style="@style/ClickableTextInputLayoutStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:hint="Base Currency"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="@id/TaxNameLayout"
+                        app:layout_constraintStart_toStartOf="@id/TaxNameLayout"
+                        app:layout_constraintTop_toBottomOf="@+id/TaxNameLayout">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/baseCurrencyText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:clickable="true"
+                            android:text="₹ INR"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:fontFamily="@font/roboto"
+                            android:inputType="text"
+                            android:textColor="@color/lightBlack"
+                            android:textColorHint="@color/secondary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/card_SingleNext"
+                        style="@style/ButtonCardView"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/button_height"
+                        android:layout_marginBottom="40dp"
+                        android:layout_marginHorizontal="24dp"
+                        android:backgroundTint="@color/black"
+                        android:transitionName="Btn"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/cardImg">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/roboto_bold"
+                            android:text="@string/next"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/H5" />
+
+                    </androidx.cardview.widget.CardView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
