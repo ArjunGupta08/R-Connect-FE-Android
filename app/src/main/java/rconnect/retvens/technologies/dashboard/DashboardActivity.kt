@@ -20,7 +20,6 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,8 +29,6 @@ import rconnect.retvens.technologies.dashboard.channelManager.QuickReservation.Q
 import rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory.RatesAndInventoryFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AddPropertyFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddRoomTypeFragment
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRatePlanFragment
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateTypeFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ReviewRatePlanFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.properties.ViewPropertiesFragment
 import rconnect.retvens.technologies.dashboard.channelManager.promotions.PromotionsFragment
@@ -305,7 +302,7 @@ class DashboardActivity : AppCompatActivity() {
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
                 }
                 binding.ll3.setOnClickListener {
-                    replaceFragment(CreateRatePlanFragment())
+//                    replaceFragment(CreateRatePlanFragment())
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
                 }
                 binding.inclusionPlansLL.setOnClickListener {
