@@ -7,8 +7,11 @@ import rconnect.retvens.technologies.LoginResponse
 import rconnect.retvens.technologies.onboarding.authentication.SignUpDataClass
 import rconnect.retvens.technologies.onboarding.authentication.SignUpResponse
 import rconnect.retvens.technologies.onboarding.ResponseData
+import rconnect.retvens.technologies.onboarding.authentication.Designation
+import rconnect.retvens.technologies.onboarding.authentication.DesignationDataClass
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -115,6 +118,8 @@ interface AuthenticationInterface {
     ):Call<ResponseData>
 
 
+    @GET("getDesignation")
+    fun getDesignation():Call<DesignationDataClass>
 
 
 }
