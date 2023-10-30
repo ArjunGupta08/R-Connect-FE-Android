@@ -311,16 +311,19 @@
                             style="@style/TextInputLayoutStyle"
                             android:hint="Property Address"
                             android:layout_marginTop="10dp"
+                            app:endIconMode="clear_text"
+                            app:endIconTint="@color/black"
                             app:layout_constraintEnd_toEndOf="@id/cardGallery"
                             app:layout_constraintStart_toStartOf="@id/property_layout"
                             app:layout_constraintTop_toBottomOf="@+id/website_layout">
 
-                            <com.google.android.material.textfield.TextInputEditText
+                            <AutoCompleteTextView
                                 android:id="@+id/address_text"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:fontFamily="@font/roboto"
                                 android:inputType="text"
+                                android:paddingStart="15dp"
                                 android:textColorHint="@color/secondary"
                                 android:textColor="@color/secondary" />
 
@@ -333,6 +336,8 @@
                             style="@style/TextInputLayoutStyle"
                             android:hint="Country"
                             android:layout_marginTop="10dp"
+                            app:endIconMode="clear_text"
+                            app:endIconTint="@color/black"
                             app:layout_constraintEnd_toStartOf="@id/state_layout"
                             app:layout_constraintTop_toBottomOf="@id/address_layout"
                             app:layout_constraintStart_toStartOf="@id/address_layout">
@@ -357,6 +362,8 @@
                             style="@style/TextInputLayoutStyle"
                             android:hint="State"
                             android:layout_marginStart="10dp"
+                            app:endIconMode="clear_text"
+                            app:endIconTint="@color/black"
                             app:layout_constraintTop_toTopOf="@id/country_layout"
                             app:layout_constraintEnd_toEndOf="@id/address_layout"
                             app:layout_constraintBottom_toBottomOf="@id/country_layout"
@@ -382,6 +389,8 @@
                             style="@style/TextInputLayoutStyle"
                             android:hint="City"
                             android:layout_marginTop="10dp"
+                            app:endIconMode="clear_text"
+                            app:endIconTint="@color/black"
                             app:layout_constraintEnd_toStartOf="@id/pincode_layout"
                             app:layout_constraintTop_toBottomOf="@id/country_layout"
                             app:layout_constraintStart_toStartOf="@id/address_layout">
@@ -407,6 +416,8 @@
                             style="@style/TextInputLayoutStyle"
                             android:hint="PinCode"
                             android:layout_marginStart="10dp"
+                            app:endIconMode="clear_text"
+                            app:endIconTint="@color/black"
                             app:layout_constraintStart_toEndOf="@id/city_layout"
                             app:layout_constraintEnd_toEndOf="@id/address_layout"
                             app:layout_constraintTop_toTopOf="@id/city_layout">

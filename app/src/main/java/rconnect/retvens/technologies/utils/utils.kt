@@ -9,7 +9,7 @@ import java.util.TimeZone
 
 
 // ------------ Display the Location Suggestions ---------
- fun autoFillLocationSuggestion(context:Context, countryText : AutoCompleteTextView, stateText : AutoCompleteTextView, cityText : AutoCompleteTextView) {
+ fun autoFillLocationSuggestion(context:Context, countryList : ArrayList<String>, countryText : AutoCompleteTextView, stateText : AutoCompleteTextView, cityText : AutoCompleteTextView) {
 
     // Sample list of country names
     val countries = arrayOf(
@@ -28,7 +28,8 @@ import java.util.TimeZone
     )
 
     // Create an ArrayAdapter with the country names and set it to the AutoCompleteTextView
-    val adapterCountries = ArrayAdapter(context, R.layout.simple_dropdown_item_1line, countries)
+    val adapterCountries = ArrayAdapter(context, R.layout.simple_dropdown_item_1line, countryList)
+    adapterCountries.notifyDataSetChanged()
     val adapterStates = ArrayAdapter(context, R.layout.simple_dropdown_item_1line, states)
     val adapterCities = ArrayAdapter(context, R.layout.simple_dropdown_item_1line, cities)
     countryText.setAdapter(adapterCountries)
