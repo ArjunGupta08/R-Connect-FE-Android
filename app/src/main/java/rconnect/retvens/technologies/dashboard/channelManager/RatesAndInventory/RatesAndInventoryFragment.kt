@@ -27,6 +27,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.FragmentRatesAndInventoryBinding
+import rconnect.retvens.technologies.utils.utilCreateDatePickerDialog
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -56,8 +57,8 @@ class RatesAndInventoryFragment : Fragment() {
     lateinit var txt_custom:TextView
     lateinit var startDatePickerDialog:DatePickerDialog
     lateinit var endDatePickerDialog: DatePickerDialog
-    private var startDate:Date? = null
-    private var endDate:Date? = null
+     var startDate:Date? = null
+     var endDate:Date? = null
 
 
 
@@ -145,11 +146,11 @@ class RatesAndInventoryFragment : Fragment() {
                 dialog.cancel()
             }
 
-            startDatePickerDialog = createDatePickerDialog(from) {date->
+            startDatePickerDialog = utilCreateDatePickerDialog(requireContext(),from) { date->
                 startDate = date
             }
 
-            endDatePickerDialog = createDatePickerDialog(to){date->
+            endDatePickerDialog = utilCreateDatePickerDialog(requireContext(),to){date->
 
                 endDatePickerDialog.datePicker.minDate = startDate!!.time
 
