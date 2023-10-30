@@ -138,10 +138,10 @@ class SecondOnboardingScreen : AppCompatActivity() {
             val selectedAddress = adapter.getItem(position).toString()
 
             // Handle the selected address as needed
-            autoCompleteTextView.setText(selectedAddress)
             val lastThreeWords = extractLastThreeWords(selectedAddress)
             println("Last Three Words: $lastThreeWords")
             try {
+                autoCompleteTextView.setText(removeLastThreeWords(selectedAddress))
                 binding.cityText.setText(lastThreeWords.get(0))
                 binding.stateText.setText(lastThreeWords.get(1))
                 binding.countryText.setText(lastThreeWords.get(2))
@@ -191,6 +191,15 @@ class SecondOnboardingScreen : AppCompatActivity() {
             words.subList(words.size - 3, words.size)
         } else {
             words
+        }
+    }
+    fun removeLastThreeWords(input: String): String {
+        val words = input.split(",").map { it.trim() }
+        if (words.size >= 3) {
+            val remainingWords = words.subList(0, words.size - 3).joinToString(", ")
+            return remainingWords
+        } else {
+            return ""
         }
     }
 
