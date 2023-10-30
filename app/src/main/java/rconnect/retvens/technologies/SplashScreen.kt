@@ -15,7 +15,7 @@ class SplashScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
-            if (SharedPreference(applicationContext).getFlagValue()){
+            if (SharedPreference(applicationContext).getLoginFlagValue()){
                 Handler().postDelayed(Runnable {
                  startActivity(Intent(this@SplashScreen,DashboardActivity::class.java))
                     finish()

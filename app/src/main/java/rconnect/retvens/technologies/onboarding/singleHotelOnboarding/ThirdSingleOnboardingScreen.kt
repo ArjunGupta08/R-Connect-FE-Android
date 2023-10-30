@@ -1,16 +1,29 @@
-package rconnect.retvens.technologies.onboarding.chainHotelOnboarding
+package rconnect.retvens.technologies.onboarding.singleHotelOnboarding
 
 import android.app.ActivityOptions
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.databinding.ActivityThirdChainOnboardingScreenBinding
 import rconnect.retvens.technologies.onboarding.FinalOnboardingScreen
+import rconnect.retvens.technologies.onboarding.ResponseData
+import rconnect.retvens.technologies.onboarding.chainHotelOnboarding.ThirdChainOnboardingAdapter
+import rconnect.retvens.technologies.onboarding.chainHotelOnboarding.ThirdChainOnboardingDataClass
+import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.prepareFilePart
 import rconnect.retvens.technologies.utils.shakeAnimation
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class ThirdChainOnboardingScreen : AppCompatActivity() {
+class ThirdSingleOnboardingScreen : AppCompatActivity() {
 
     private lateinit var binding:ActivityThirdChainOnboardingScreenBinding
 
@@ -76,15 +89,9 @@ class ThirdChainOnboardingScreen : AppCompatActivity() {
         }
 
         binding.cardSingleNext.setOnClickListener {
-            if (binding.propertyText.text!!.isEmpty()) {
-                shakeAnimation(binding.propertyLayout,applicationContext)
-                binding.propertyLayout.error = "Please enter property name"
-
-            }
-            else if (binding.TaxNameText.text!!.isEmpty()) {
+            if (binding.taxNameText.text!!.isEmpty()) {
                 shakeAnimation(binding.TaxNameLayout,applicationContext)
                 binding.TaxNameLayout.error = "Please enter tax name"
-                binding.propertyLayout.isErrorEnabled = false
             }
             else if (binding.registrationNumberText.text!!.isEmpty()) {
                 shakeAnimation(binding.registrationNumberLayout,applicationContext)
@@ -92,22 +99,57 @@ class ThirdChainOnboardingScreen : AppCompatActivity() {
                 binding.TaxNameLayout.isErrorEnabled = false
             }
             else{
-                val intent = (Intent(this, FinalOnboardingScreen::class.java))
-
-                val options = ActivityOptions.makeSceneTransitionAnimation(this,
-                    android.util.Pair(binding.logo,"logo_img"),
-                    android.util.Pair(binding.onBoardingImg,"onBoardingImg"),
-                    android.util.Pair(binding.demoBackbtn,"backBtn")).toBundle()
-
-                startActivity(intent, options)
+                sendData()
             }
-
-
-
-
-
         }
+    }
 
+    private fun sendData() {
+        val userId = UserSessionManager(this).getUserId().toString()
+        val starCategory = binding.ratingBar.rating.toString()
+        val roomsInProperty = binding.roomCount.text.toString()
+        val taxName = binding.taxNameText.text.toString()
+        val registrationNumber = binding.registrationNumberText.text.toString()
+        val ratePercent = binding.rateCount.text.toString()
+
+            val secondOnboardingApi = RetrofitObject.retrofit.secondOnboarding(
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), starCategory),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), roomsInProperty),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), taxName),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), registrationNumber),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), ratePercent),
+            )
+
+            secondOnboardingApi.enqueue(object : Callback<ResponseData?> {
+                override fun onResponse(
+                    call: Call<ResponseData?>,
+                    response: Response<ResponseData?>
+                ) {
+                    if (response.isSuccessful) {
+                        val respons = response.body()!!
+                        Toast.makeText(
+                            applicationContext,
+                            respons.message.toString(),
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        val intent = (Intent(this@ThirdSingleOnboardingScreen, FinalOnboardingScreen::class.java))
+                        val options = ActivityOptions.makeSceneTransitionAnimation(this@ThirdSingleOnboardingScreen,
+                            android.util.Pair(binding.logo,"logo_img"),
+                            android.util.Pair(binding.onBoardingImg,"onBoardingImg"),
+                            android.util.Pair(binding.demoBackbtn,"backBtn")).toBundle()
+                        startActivity(intent, options)
+
+                    } else {
+                        Log.d("Error Onboarding", response.code().toString())
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                    Log.d("Error Onboarding", t.localizedMessage.toString())
+                }
+            })
     }
 
     private fun addData() {

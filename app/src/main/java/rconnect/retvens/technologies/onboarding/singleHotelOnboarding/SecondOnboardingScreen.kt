@@ -14,22 +14,25 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.core.widget.doAfterTextChanged
 import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.PlacesClient
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.ActivitySecondOnboardingScreenBinding
-import rconnect.retvens.technologies.onboarding.FinalOnboardingScreen
-import rconnect.retvens.technologies.onboarding.chainHotelOnboarding.ThirdChainOnboardingScreen
-import rconnect.retvens.technologies.utils.autoFillLocationSuggestion
+import rconnect.retvens.technologies.onboarding.ResponseData
+import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.fetchCountryName
+import rconnect.retvens.technologies.utils.prepareFilePart
 import rconnect.retvens.technologies.utils.shakeAnimation
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.lang.IndexOutOfBoundsException
 
 class SecondOnboardingScreen : AppCompatActivity() {
@@ -38,7 +41,7 @@ class SecondOnboardingScreen : AppCompatActivity() {
     val fullAddressList = ArrayList<String>()
     private lateinit var binding : ActivitySecondOnboardingScreenBinding
 
-    private lateinit var imageUri: Uri
+    private var imageUri: Uri ?= null
     private var PICK_IMAGE_REQUEST_CODE : Int = 0
 
     private var isImageSelected = false
@@ -105,16 +108,119 @@ class SecondOnboardingScreen : AppCompatActivity() {
 ////                binding.currencyLayout.isErrorEnabled = false
 //            }
             else {
-                val intent = Intent(this,ThirdChainOnboardingScreen::class.java)
-                intent.putExtra("isSingle", true)
-
-                val options = ActivityOptions.makeSceneTransitionAnimation(this,
-                    android.util.Pair(binding.logo,"logo_img"),
-                    android.util.Pair(binding.onBoardingImg,"onBoardingImg"),
-                    android.util.Pair(binding.demoBackbtn,"backBtn")).toBundle()
-
-                startActivity(intent, options)
+                sendData()
             }
+        }
+    }
+
+    private fun sendData() {
+        val userId = UserSessionManager(this).getUserId().toString()
+        val propertyTypeSOC = "Single"
+        val propertyName = binding.propertyText.text.toString()
+        val propertyType = binding.propertyTypeText.text.toString()
+        val websiteUrl = binding.websiteText.text.toString()
+        val propertyAddress1 = binding.addressText.text.toString()
+        val country = binding.countryText.text.toString()
+        val state = binding.stateText.text.toString()
+        val city = binding.cityText.text.toString()
+        val postCode = binding.pincodeText.text.toString()
+
+        if (imageUri != null) {
+            val hotelLogo = prepareFilePart(imageUri!!, "hotelLogo", this)
+            val firstOnboardingApi = RetrofitObject.retrofit.firstOnboarding(
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyTypeSOC),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), websiteUrl),
+                hotelLogo!!,
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyType),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyAddress1),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyName),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), postCode),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), state),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), city),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), country)
+            )
+
+            firstOnboardingApi.enqueue(object : Callback<ResponseData?> {
+                override fun onResponse(
+                    call: Call<ResponseData?>,
+                    response: Response<ResponseData?>
+                ) {
+                    if (response.isSuccessful) {
+                        val respons = response.body()!!
+                        Toast.makeText(
+                            applicationContext,
+                            respons.message.toString(),
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        val intent =
+                            Intent(applicationContext, ThirdSingleOnboardingScreen::class.java)
+                        intent.putExtra("isSingle", true)
+
+                        val options = ActivityOptions.makeSceneTransitionAnimation(
+                            this@SecondOnboardingScreen,
+                            android.util.Pair(binding.logo, "logo_img"),
+                            android.util.Pair(binding.onBoardingImg, "onBoardingImg"),
+                            android.util.Pair(binding.demoBackbtn, "backBtn")
+                        ).toBundle()
+                        startActivity(intent, options)
+
+                    } else {
+                        Log.d("Error Onboarding", response.code().toString())
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                    Log.d("Error Onboarding", t.localizedMessage.toString())
+                }
+            })
+        }else {
+            val firstOnboardingApi = RetrofitObject.retrofit.firstOnboardingWithoutImage(
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyTypeSOC),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), websiteUrl),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyType),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyAddress1),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyName),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), postCode),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), state),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), city),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), country)
+            )
+
+            firstOnboardingApi.enqueue(object : Callback<ResponseData?> {
+                override fun onResponse(
+                    call: Call<ResponseData?>,
+                    response: Response<ResponseData?>
+                ) {
+                    if (response.isSuccessful) {
+                        val respons = response.body()!!
+                        Toast.makeText(
+                            applicationContext,
+                            respons.message.toString(),
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        val intent =
+                            Intent(applicationContext, ThirdSingleOnboardingScreen::class.java)
+                        intent.putExtra("isSingle", true)
+
+                        val options = ActivityOptions.makeSceneTransitionAnimation(
+                            this@SecondOnboardingScreen,
+                            android.util.Pair(binding.logo, "logo_img"),
+                            android.util.Pair(binding.onBoardingImg, "onBoardingImg"),
+                            android.util.Pair(binding.demoBackbtn, "backBtn")
+                        ).toBundle()
+                        startActivity(intent, options)
+                    } else {
+                        Log.d("Error Onboarding", response.code().toString())
+                    }
+                }
+                override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                    Log.d("Error Onboarding", t.localizedMessage.toString())
+                }
+            })
         }
 
     }

@@ -1,7 +1,6 @@
 package rconnect.retvens.technologies.utils
 
 import android.content.Context
-import android.content.SharedPreferences
 
 class SharedPreference (context:Context){
 
@@ -12,12 +11,12 @@ class SharedPreference (context:Context){
     // Editor to make changes
     private val editor = sharedPreferences.edit()
 
-    fun saveFlagValue(login:Boolean){
+    fun saveLoginFlagValue(login:Boolean){
         editor.putBoolean("login",login)
         editor.apply()
     }
 
-    fun getFlagValue(): Boolean {
+    fun getLoginFlagValue(): Boolean {
         return sharedPreferences.getBoolean("login", false)
     }
 

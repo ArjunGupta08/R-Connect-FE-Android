@@ -10,5 +10,6 @@ data class SignUpDataClass(
 )
 
 data class SignUpResponse(
-    val message:String
+    val message:String,
+    val userId:String
 )

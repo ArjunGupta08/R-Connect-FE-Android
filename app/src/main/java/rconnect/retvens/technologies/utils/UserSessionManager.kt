@@ -1,4 +1,4 @@
-package rconnect.retvens.technologies
+package rconnect.retvens.technologies.utils
 
 import android.content.Context
 import android.content.SharedPreferences

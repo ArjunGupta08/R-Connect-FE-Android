@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".onboarding.chainHotelOnboarding.ThirdChainOnboardingScreen">
+    tools:context=".onboarding.singleHotelOnboarding.ThirdChainOnboardingScreen">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frame1"
@@ -159,6 +159,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/TextInputLayoutStyle"
+                            android:visibility="gone"
                             android:hint="Property Type Name"
                             android:layout_marginTop="20dp"
                             app:endIconMode="clear_text"
@@ -300,7 +301,7 @@
                             app:endIconTint="@color/black">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/TaxNameText"
+                                android:id="@+id/taxNameText"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:fontFamily="@font/roboto"

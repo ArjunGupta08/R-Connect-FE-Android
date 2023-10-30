@@ -301,7 +301,7 @@
                         app:layout_constraintTop_toBottomOf="@id/nop">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/TaxNameText"
+                            android:id="@+id/website_text"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
@@ -343,7 +343,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:hint="Base Currency"
-                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="@id/TaxNameLayout"
                         app:layout_constraintStart_toStartOf="@id/TaxNameLayout"
                         app:layout_constraintTop_toBottomOf="@+id/propertyTypeLayout">
