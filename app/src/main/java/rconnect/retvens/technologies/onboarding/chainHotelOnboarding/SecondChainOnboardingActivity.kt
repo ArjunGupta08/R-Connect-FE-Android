@@ -10,14 +10,23 @@ import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.ActivitySecondChainOnboardingBinding
 import rconnect.retvens.technologies.onboarding.FinalOnboardingScreen
+import rconnect.retvens.technologies.onboarding.ResponseData
+import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.prepareFilePart
 import rconnect.retvens.technologies.utils.shakeAnimation
-
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SecondChainOnboardingActivity : AppCompatActivity() {
 
@@ -25,7 +34,7 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
 
     var propertyCount : Int = 1
 
-    private lateinit var imageUri: Uri
+    private var imageUri: Uri ?= null
     private var PICK_IMAGE_REQUEST_CODE : Int = 0
 
     private var isImageSelected = false
@@ -49,16 +58,7 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
 //                binding.propertyTypeLayout.error = ("Please enter your password")
 //            }
             else {
-                val intent = Intent(this, FinalOnboardingScreen::class.java)
-                val options = ActivityOptions.makeSceneTransitionAnimation(
-                    this,
-                    android.util.Pair(binding.logo, "logo_img"),
-                    android.util.Pair(binding.onBoardingImg, "onBoardingImg"),
-                    android.util.Pair(binding.cardSingleNext, "Btn"),
-                    android.util.Pair(binding.demoBackbtn, "backBtn")
-                ).toBundle()
-
-                startActivity(intent, options)
+                sendData()
             }
         }
 
@@ -68,7 +68,7 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
         }
 
         binding.removeImage.setOnClickListener {
-            imageUri = Uri.EMPTY
+            imageUri = null
             binding.selectImg.setImageResource(R.drawable.svg_gallery)
             rightToLeftEditImageAnimation(binding.imageEditLayout)
             isImageSelected = false
@@ -120,6 +120,108 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
 
     }
 
+    private fun sendData() {
+        val userId = UserSessionManager(this).getUserId().toString()
+        val propertyTypeSOC = "Multiple"
+        val propertyName = binding.propertyChainText.text.toString()
+        val propertyType = binding.properytyTypeText.text.toString()
+        val websiteUrl = binding.websiteText.text.toString()
+        val numberOfProperties = binding.propertyCountEditText.text.toString()
+        val baseCurrency = binding.baseCurrencyText.text.toString()
+
+        if (imageUri != null) {
+            val hotelLogo = prepareFilePart(imageUri!!, "hotelLogo", this)
+            val chainOnboardingApi = RetrofitObject.retrofit.firstChainOnboarding(
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyTypeSOC),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), websiteUrl),
+                hotelLogo!!,
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), numberOfProperties),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyType),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), baseCurrency),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyName),
+            )
+
+            chainOnboardingApi.enqueue(object : Callback<ResponseData?> {
+                override fun onResponse(
+                    call: Call<ResponseData?>,
+                    response: Response<ResponseData?>
+                ) {
+                    if (response.isSuccessful) {
+                        val respons = response.body()!!
+                        Toast.makeText(
+                            applicationContext,
+                            respons.message.toString(),
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        val intent = Intent(applicationContext, FinalOnboardingScreen::class.java)
+                        val options = ActivityOptions.makeSceneTransitionAnimation(
+                            this@SecondChainOnboardingActivity,
+                            android.util.Pair(binding.logo, "logo_img"),
+                            android.util.Pair(binding.onBoardingImg, "onBoardingImg"),
+                            android.util.Pair(binding.cardSingleNext, "Btn"),
+                            android.util.Pair(binding.demoBackbtn, "backBtn")
+                        ).toBundle()
+
+                        startActivity(intent, options)
+
+                    } else {
+                        Log.d("Error Onboarding", response.code().toString())
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                    Log.d("Error Onboarding", t.localizedMessage.toString())
+                }
+            })
+        } else {
+            val chainOnboardingApi = RetrofitObject.retrofit.firstChainOnboardingWithoutImg(
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyTypeSOC),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), websiteUrl),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), numberOfProperties),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyType),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), baseCurrency),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyName),
+            )
+
+            chainOnboardingApi.enqueue(object : Callback<ResponseData?> {
+                override fun onResponse(
+                    call: Call<ResponseData?>,
+                    response: Response<ResponseData?>
+                ) {
+                    if (response.isSuccessful) {
+                        val respons = response.body()!!
+                        Toast.makeText(
+                            applicationContext,
+                            respons.message.toString(),
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        val intent = Intent(applicationContext, FinalOnboardingScreen::class.java)
+                        val options = ActivityOptions.makeSceneTransitionAnimation(
+                            this@SecondChainOnboardingActivity,
+                            android.util.Pair(binding.logo, "logo_img"),
+                            android.util.Pair(binding.onBoardingImg, "onBoardingImg"),
+                            android.util.Pair(binding.cardSingleNext, "Btn"),
+                            android.util.Pair(binding.demoBackbtn, "backBtn")
+                        ).toBundle()
+
+                        startActivity(intent, options)
+
+                    } else {
+                        Log.d("Error Onboarding", response.code().toString())
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                    Log.d("Error Onboarding", t.localizedMessage.toString())
+                }
+            })
+
+        }
+    }
     private fun rightToLeftEditImageAnimation(view: View) {
         isImageEdit = false
         // load the animation

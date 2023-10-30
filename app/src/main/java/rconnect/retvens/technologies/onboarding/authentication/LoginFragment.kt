@@ -21,11 +21,13 @@ import rconnect.retvens.technologies.databinding.ActivityLoginScreenBinding
 import rconnect.retvens.technologies.databinding.FragmentLoginBinding
 import rconnect.retvens.technologies.databinding.FragmentLoginMobileBinding
 import rconnect.retvens.technologies.utils.SharedPreference
+import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.shakeAnimation
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
+
 
 class LoginFragment : Fragment() {
 
@@ -125,10 +127,13 @@ class LoginFragment : Fragment() {
             ) {
                 if (response.isSuccessful){
                     Toast.makeText(requireContext(), "Login SuccessFull", Toast.LENGTH_SHORT).show()
+
+                    SharedPreference(requireContext()).saveLoginFlagValue(true)
+                    UserSessionManager(requireContext()).saveUserData(response.body()!!.data!!.userId, response.body()!!.data!!.token)
+
                     val intent = Intent(requireContext(), DashboardActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()
-                    SharedPreference(requireContext()).saveFlagValue(true)
                 } else{
                     Log.e("error",response.message().toString())
                     Toast.makeText(requireContext(), "Incorrect details", Toast.LENGTH_SHORT).show()

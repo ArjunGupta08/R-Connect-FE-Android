@@ -133,12 +133,13 @@
             app:layout_constraintEnd_toEndOf="@id/lastNameLayout"
             app:layout_constraintTop_toBottomOf="@id/firstNameLayout">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <AutoCompleteTextView
                 android:id="@+id/designationText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/roboto"
                 android:inputType="text"
+                android:paddingStart="15dp"
                 android:textColorHint="@color/secondary"
                 android:textColor="@color/secondary"
                 android:clickable="true"

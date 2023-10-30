@@ -9,6 +9,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.dashboard.channelManager.QuickReservation.QuickReservationAdapter
 import rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory.RatesAndInventoryFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AddPropertyFragment
@@ -80,6 +82,14 @@ class DashboardActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         toolBar()
+
+        val userSessionManager = UserSessionManager(applicationContext)
+
+        val userId = userSessionManager.getUserId()
+        val token = userSessionManager.getToken()
+
+        Log.e("userid",userId.toString())
+        Log.e("token",token.toString())
 
         notificationList.add(NotificationData("New Group Invitation","Karan Wants To Join Your Group ‘Salse Chat’","3 Hrs Ago"))
         notificationList.add(NotificationData("New Group Invitation","Karan Wants To Join Your Group ‘Salse Chat’","3 Hrs Ago"))
@@ -433,45 +443,53 @@ class DashboardActivity : AppCompatActivity() {
     }
 
     private fun openQuickReservationDialog() {
-        val dialog = Dialog(this) // Use 'this' as the context, assuming this code is within an Activity
+        val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
         dialog.setCanceledOnTouchOutside(true)
+
+        val width = (resources.displayMetrics.widthPixels * 0.75).toInt()
+        val height = ViewGroup.LayoutParams.MATCH_PARENT // Use MATCH_PARENT for height to take up the entire screen height
+
         dialog.setContentView(R.layout.dialog_layout_quickreservation)
         dialog.window?.apply {
             setBackgroundDrawableResource(android.R.color.transparent) // Makes the background transparent
+
+            // Hide the status bar and system navigation
+            decorView.systemUiVisibility = (
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            or View.SYSTEM_UI_FLAG_FULLSCREEN
+                            or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    )
+
             setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
+                width,
+                height
             )
+
+            setGravity(Gravity.END) // Set the dialog to attach to the right end of the screen
         }
-
-
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-        dialog.window?.setGravity(Gravity.END)
 
         dialog.show()
 
         val roomDetailRecycler = dialog.findViewById<RecyclerView>(R.id.room_detail_recycler)
         roomDetailRecycler.layoutManager = LinearLayoutManager(this)
 
-        val number:ArrayList<String> = ArrayList()
-
+        val number: ArrayList<String> = ArrayList()
         number.add("1")
 
-
-        val adapter = QuickReservationAdapter(number,this)
+        val adapter = QuickReservationAdapter(number, this)
         roomDetailRecycler.adapter = adapter
-        adapter.notifyDataSetChanged()
 
-        val addRoom = dialog.findViewById<CardView>(R.id.addRoomType);
+        val addRoom = dialog.findViewById<CardView>(R.id.addRoomType)
         addRoom.setOnClickListener {
             number.add("1")
             adapter.notifyDataSetChanged()
         }
     }
-
     private fun isCardSelected(card: MaterialCardView, text: TextView) {
 
         binding.dashboardCard.setCardBackgroundColor(

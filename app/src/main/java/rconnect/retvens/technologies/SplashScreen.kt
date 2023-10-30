@@ -47,7 +47,7 @@ class SplashScreen : AppCompatActivity() {
         if (binding is ActivitySplashScreenBinding){
 
         setContentView(R.layout.activity_splash_screen)
-            if (SharedPreference(applicationContext).getFlagValue()){
+            if (SharedPreference(applicationContext).getLoginFlagValue()){
                 Handler().postDelayed(Runnable {
                  startActivity(Intent(this@SplashScreen,DashboardActivity::class.java))
                     finish()

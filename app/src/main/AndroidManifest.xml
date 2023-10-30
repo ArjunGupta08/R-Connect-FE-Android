@@ -81,7 +81,7 @@
             android:exported="true"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".onboarding.chainHotelOnboarding.ThirdChainOnboardingScreen"
+            android:name=".onboarding.singleHotelOnboarding.ThirdSingleOnboardingScreen"
             android:exported="true"
             android:screenOrientation="landscape" />
         <activity
