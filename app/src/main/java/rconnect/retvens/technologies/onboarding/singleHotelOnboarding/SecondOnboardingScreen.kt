@@ -128,7 +128,7 @@ class SecondOnboardingScreen : AppCompatActivity() {
 
         if (imageUri != null) {
             val hotelLogo = prepareFilePart(imageUri!!, "hotelLogo", this)
-            val firstOnboardingApi = RetrofitObject.retrofit.firstOnboarding(
+            val firstOnboardingApi = RetrofitObject.authentication.firstOnboarding(
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyTypeSOC),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), websiteUrl),
@@ -181,7 +181,7 @@ class SecondOnboardingScreen : AppCompatActivity() {
                 }
             })
         }else {
-            val firstOnboardingApi = RetrofitObject.retrofit.firstOnboardingWithoutImage(
+            val firstOnboardingApi = RetrofitObject.authentication.firstOnboardingWithoutImage(
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyTypeSOC),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), websiteUrl),

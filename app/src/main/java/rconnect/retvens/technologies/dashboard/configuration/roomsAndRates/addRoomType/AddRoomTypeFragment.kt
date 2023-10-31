@@ -29,7 +29,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRo
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectImagesDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectRoomImagesAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectViewImagesAdapter
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.properties.ViewPropertiesFragment
+import rconnect.retvens.technologies.dashboard.configuration.properties.ViewPropertiesFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.FragmentAddRoomTypeBinding
 import rconnect.retvens.technologies.utils.Const

@@ -132,7 +132,7 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
 
         if (imageUri != null) {
             val hotelLogo = prepareFilePart(imageUri!!, "hotelLogo", this)
-            val chainOnboardingApi = RetrofitObject.retrofit.firstChainOnboarding(
+            val chainOnboardingApi = RetrofitObject.authentication.firstChainOnboarding(
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyTypeSOC),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), websiteUrl),
@@ -180,7 +180,7 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
                 }
             })
         } else {
-            val chainOnboardingApi = RetrofitObject.retrofit.firstChainOnboardingWithoutImg(
+            val chainOnboardingApi = RetrofitObject.authentication.firstChainOnboardingWithoutImg(
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyTypeSOC),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), websiteUrl),

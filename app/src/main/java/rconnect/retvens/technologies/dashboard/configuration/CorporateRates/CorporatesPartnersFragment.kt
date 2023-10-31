@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.AddCompany.AddCompanyFragment
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.properties.ViewPropertiesFragment
+import rconnect.retvens.technologies.dashboard.configuration.properties.ViewPropertiesFragment
 import rconnect.retvens.technologies.databinding.FragmentCorporatesPartnersBinding
 
 class CorporatesPartnersFragment : Fragment() {

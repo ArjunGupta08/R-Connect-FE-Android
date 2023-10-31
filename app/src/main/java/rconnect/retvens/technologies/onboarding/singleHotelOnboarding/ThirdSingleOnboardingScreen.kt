@@ -113,7 +113,7 @@ class ThirdSingleOnboardingScreen : AppCompatActivity() {
         val registrationNumber = binding.registrationNumberText.text.toString()
         val ratePercent = binding.rateCount.text.toString()
 
-            val secondOnboardingApi = RetrofitObject.retrofit.secondOnboarding(
+            val secondOnboardingApi = RetrofitObject.authentication.secondOnboarding(
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), starCategory),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), roomsInProperty),

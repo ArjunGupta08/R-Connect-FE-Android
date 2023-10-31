@@ -309,6 +309,7 @@
                     app:layout_constraintTop_toBottomOf="@id/propertyDetailsText">
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/propertyNameLayout"
                         style="@style/TextInputLayoutStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -317,6 +318,7 @@
                         app:endIconTint="@color/black">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/propertyNameET"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
@@ -328,6 +330,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/propertyTypeLayout"
                         style="@style/ClickableTextInputLayoutStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -335,6 +338,7 @@
                         android:hint="Property type">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/propertyTypeET"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:clickable="true"
@@ -349,6 +353,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/propertyRatingLayout"
                         style="@style/ClickableTextInputLayoutStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -356,6 +361,7 @@
                         android:hint="Property Ratting">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/propertyRatingET"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:clickable="true"
@@ -390,6 +396,7 @@
                         app:endIconTint="@color/black">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/websiteET"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
@@ -480,6 +487,7 @@
                         app:cardElevation="2dp">
 
                         <EditText
+                            android:id="@+id/descriptionET"
                             style="@style/TextAppearance.AppCompat.Body1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -580,15 +588,18 @@
                     app:layout_constraintTop_toBottomOf="@id/aT">
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/addressLine1Layout"
                         style="@style/TextInputLayoutStyle"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/textInputLayoutHeight"
                         android:layout_marginTop="10dp"
+                        app:errorEnabled="true"
                         android:hint="Address line 1"
                         app:endIconMode="clear_text"
                         app:endIconTint="@color/black">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/addressLine1ET"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
@@ -600,6 +611,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/addressLine2Layout"
                         style="@style/TextInputLayoutStyle"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/textInputLayoutHeight"
@@ -609,6 +621,7 @@
                         app:endIconTint="@color/black">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/addressLine2ET"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
@@ -622,105 +635,106 @@
                 </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/pincode_layout"
-                    style="@style/TextInputLayoutStyle"
+                    android:id="@+id/country_layout"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/textInputLayoutHeight"
+                    android:layout_height="50dp"
+                    style="@style/TextInputLayoutStyle"
+                    android:hint="Country"
                     android:layout_marginTop="10dp"
-                    android:hint="Zip Code"
-                    app:layout_constraintEnd_toStartOf="@id/city_layout"
-                    app:layout_constraintStart_toStartOf="@id/ll5"
-                    app:layout_constraintTop_toBottomOf="@+id/ll5">
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black"
+                    app:layout_constraintEnd_toStartOf="@id/state_layout"
+                    app:layout_constraintTop_toBottomOf="@id/ll5"
+                    app:layout_constraintStart_toStartOf="@id/ll5">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/country_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="text"
+                        android:textSize="@dimen/H4"
+                        android:paddingStart="15dp"
+                        android:textColorHint="@color/secondary"
+                        android:textColor="@color/secondary"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/state_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    style="@style/TextInputLayoutStyle"
+                    android:hint="State"
+                    android:layout_marginStart="10dp"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black"
+                    app:layout_constraintTop_toTopOf="@id/country_layout"
+                    app:layout_constraintEnd_toEndOf="@id/ll5"
+                    app:layout_constraintBottom_toBottomOf="@id/country_layout"
+                    app:layout_constraintStart_toEndOf="@id/country_layout">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/state_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="text"
+                        android:textSize="@dimen/H4"
+                        android:paddingStart="15dp"
+                        android:textColorHint="@color/secondary"
+                        android:textColor="@color/secondary"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/city_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    style="@style/TextInputLayoutStyle"
+                    android:hint="City"
+                    android:layout_marginTop="10dp"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black"
+                    app:layout_constraintEnd_toStartOf="@id/pincode_layout"
+                    app:layout_constraintTop_toBottomOf="@id/country_layout"
+                    app:layout_constraintStart_toStartOf="@id/ll5">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/city_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="text"
+                        android:textSize="@dimen/H4"
+                        android:paddingStart="15dp"
+                        android:textColorHint="@color/secondary"
+                        android:textColor="@color/secondary"/>
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/pincode_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    style="@style/TextInputLayoutStyle"
+                    android:hint="PinCode"
+                    android:layout_marginStart="10dp"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black"
+                    app:layout_constraintStart_toEndOf="@id/city_layout"
+                    app:layout_constraintEnd_toEndOf="@id/ll5"
+                    app:layout_constraintTop_toTopOf="@id/city_layout">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/pincode_text"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/roboto"
-                        android:textSize="@dimen/H5"
                         android:inputType="number"
-                        android:textColor="@color/secondary"
-                        android:textColorHint="@color/secondary" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/city_layout"
-                    style="@style/ClickableTextInputLayoutStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/textInputLayoutHeight"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:hint="City"
-                    app:layout_constraintEnd_toEndOf="@id/ll5"
-                    app:layout_constraintStart_toEndOf="@id/pincode_layout"
-                    app:layout_constraintTop_toBottomOf="@+id/ll5">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/city_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:clickable="true"
-                        android:fontFamily="@font/roboto"
-                        android:textSize="@dimen/H5"
-                        android:inputType="text"
-                        android:textColor="@color/secondary"
-                        android:textColorHint="@color/secondary" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/state_layout"
-                    style="@style/ClickableTextInputLayoutStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/textInputLayoutHeight"
-                    android:layout_marginTop="10dp"
-                    android:hint="State"
-                    app:layout_constraintEnd_toStartOf="@id/country_layout"
-                    app:layout_constraintStart_toStartOf="@id/pincode_layout"
-                    app:layout_constraintTop_toBottomOf="@+id/pincode_layout">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/state_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:clickable="true"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:textSize="@dimen/H5"
-                        android:fontFamily="@font/roboto"
-                        android:inputType="text"
-                        android:textColor="@color/secondary"
-                        android:textColorHint="@color/secondary" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/country_layout"
-                    style="@style/ClickableTextInputLayoutStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/textInputLayoutHeight"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:hint="Country"
-                    app:layout_constraintEnd_toEndOf="@id/city_layout"
-                    app:layout_constraintStart_toEndOf="@id/state_layout"
-                    app:layout_constraintTop_toBottomOf="@+id/city_layout">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/currency_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/roboto"
-                        android:textSize="@dimen/H5"
-                        android:inputType="text"
-                        android:editable="false"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:textColor="@color/secondary"
-                        android:textColorHint="@color/secondary" />
+                        android:textColorHint="@color/secondary"
+                        android:textColor="@color/secondary" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -734,7 +748,7 @@
                     android:text="Contacts"
                     android:textSize="@dimen/H4"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/state_layout" />
+                    app:layout_constraintTop_toBottomOf="@id/pincode_layout" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/phoneLayout"
@@ -798,7 +812,7 @@
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/black"
                     app:layout_constraintEnd_toStartOf="@id/websiteLayout"
-                    app:layout_constraintStart_toStartOf="@id/state_layout"
+                    app:layout_constraintStart_toStartOf="@id/city_layout"
                     app:layout_constraintTop_toBottomOf="@+id/phoneLayout">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -823,7 +837,7 @@
                     android:hint="Website"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/black"
-                    app:layout_constraintEnd_toEndOf="@id/city_layout"
+                    app:layout_constraintEnd_toEndOf="@id/pincode_layout"
                     app:layout_constraintStart_toEndOf="@id/emailLayout"
                     app:layout_constraintTop_toBottomOf="@+id/phoneLayout">
 
@@ -863,7 +877,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
             <fragment
-                android:id="@+id/map"
+                android:id="@+id/mapFragContainer"
                 class="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="0dp"
                 android:layout_height="0dp"

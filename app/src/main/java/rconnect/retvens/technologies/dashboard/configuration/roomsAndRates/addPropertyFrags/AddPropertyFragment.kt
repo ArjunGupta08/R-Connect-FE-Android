@@ -1,5 +1,6 @@
 package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags
 
+import android.app.ActivityOptions
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -19,6 +20,7 @@ import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -33,16 +35,30 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
+import okhttp3.RequestBody
+import rconnect.retvens.technologies.Api.OAuthClient
+import rconnect.retvens.technologies.Api.RetrofitObject
+import rconnect.retvens.technologies.Api.configurationApi.ChainConfiguration
 import rconnect.retvens.technologies.R
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.properties.ViewPropertiesFragment
+import rconnect.retvens.technologies.dashboard.configuration.properties.ViewPropertiesFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectRoomImagesAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectImagesDataClass
 import rconnect.retvens.technologies.databinding.FragmentAddPropertyBinding
+import rconnect.retvens.technologies.onboarding.FinalOnboardingScreen
+import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.Const
+import rconnect.retvens.technologies.utils.SharedPreference
+import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.fadeOutAnimation
 import rconnect.retvens.technologies.utils.fadeInAnimation
 import rconnect.retvens.technologies.utils.leftInAnimation
+import rconnect.retvens.technologies.utils.prepareFilePart
 import rconnect.retvens.technologies.utils.rightInAnimation
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdapter.OnItemClickListener {
 
@@ -51,7 +67,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
     private lateinit var roboto : Typeface
     private lateinit var robotoMedium : Typeface
 
-    private lateinit var imageUri: Uri
+    private var imageUri: Uri ?= null
     private var PICK_IMAGE_REQUEST_CODE : Int = 0
 
     private var page = 1
@@ -83,7 +99,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
 
         // Get the SupportMapFragment and request notification
         // when the map is ready to be used.
-        val mapFrag = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        val mapFrag = childFragmentManager.findFragmentById(R.id.mapFragContainer) as SupportMapFragment
         mapFrag.getMapAsync(this)
 
         binding.imagesRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
@@ -114,12 +130,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
                 rightInAnimation(binding.addressLayout, requireContext())
 
             } else {
-
-                val childFragment: Fragment = ViewPropertiesFragment()
-                val transaction = requireActivity().supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.dashboardFragmentContainer,childFragment)
-                transaction.commit()
-
+                sendData()
             }
         }
 
@@ -189,7 +200,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
         }
 
         binding.removeImage.setOnClickListener {
-            imageUri = Uri.EMPTY
+            imageUri = null
             isImageSelected = false
             binding.propertyLogoImage.setImageURI(imageUri)
             binding.propertyLogoImage.isVisible = false
@@ -219,6 +230,127 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
 
     }
 
+    private fun sendData(){
+        val propertyName = binding.propertyNameET.text.toString()
+        val propertyType = binding.propertyTypeET.text.toString()
+        val propertyRating = binding.propertyRatingET.text.toString()
+        val websiteUrl = binding.websiteText.text.toString()
+        val description = binding.descriptionET.text.toString()
+        val amenityIds = "51351"
+        val address1 = binding.addressLine1ET.text.toString()
+        val address2 = binding.addressLine2ET.text.toString()
+        val postCode = binding.pincodeText.text.toString()
+        val city = binding.cityText.text.toString()
+        val state = binding.stateText.text.toString()
+        val country = binding.countryText.text.toString()
+        val phone = binding.phoneText.text.toString()
+        val reservationPhoneText = binding.reservationPhoneText.text.toString()
+        val email = binding.emailText.text.toString()
+//        val lat = binding.emailText.text.toString()
+//        val long = binding.emailText.text.toString()
+        val userId = UserSessionManager(requireContext()).getUserId().toString()
+
+        if (imageUri != null) {
+            val hotelLogo = prepareFilePart(imageUri!!, "hotelLogo", requireContext())
+            val addProperty = OAuthClient<ChainConfiguration>(requireContext()).create(ChainConfiguration::class.java).addPropertyApi(
+                hotelLogo!!,
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyName),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyType),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyRating),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), websiteUrl),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), description),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), amenityIds),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), address1),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), address2),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), postCode),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), city),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), state),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), country),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), phone),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), reservationPhoneText),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), email),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
+            )
+
+            addProperty.enqueue(object : Callback<ResponseData?> {
+                override fun onResponse(
+                    call: Call<ResponseData?>,
+                    response: Response<ResponseData?>
+                ) {
+                    if (response.isSuccessful) {
+                        val respons = response.body()!!
+
+                        Toast.makeText(
+                            requireContext(),
+                            respons.message.toString(),
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        val childFragment: Fragment = ViewPropertiesFragment()
+                        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                        transaction.replace(R.id.dashboardFragmentContainer,childFragment)
+                        transaction.commit()
+
+                    } else {
+                        Log.d("Error Onboarding", response.code().toString())
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                    Log.d("Error Onboarding", t.localizedMessage.toString())
+                }
+            })
+        } else {
+            val addProperty = OAuthClient<ChainConfiguration>(requireContext()).create(ChainConfiguration::class.java).addPropertyWithoutLogoApi(
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyName),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyType),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyRating),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), websiteUrl),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), description),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), amenityIds),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), address1),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), address2),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), postCode),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), city),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), state),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), country),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), phone),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), reservationPhoneText),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), email),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
+            )
+
+            addProperty.enqueue(object : Callback<ResponseData?> {
+                override fun onResponse(
+                    call: Call<ResponseData?>,
+                    response: Response<ResponseData?>
+                ) {
+                    if (response.isSuccessful) {
+                        val respons = response.body()!!
+
+                        Toast.makeText(
+                            requireContext(),
+                            respons.message.toString(),
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        val childFragment: Fragment = ViewPropertiesFragment()
+                        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                        transaction.replace(R.id.dashboardFragmentContainer,childFragment)
+                        transaction.commit()
+
+                    } else {
+                        Log.d("Error Onboarding", "${response.code().toString()} ${response.message()} ${response.body()?.message}")
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                    Log.d("Error Onboarding", t.localizedMessage.toString())
+                }
+            })
+        }
+    }
+
     // This method is called when the map is ready to be used.
     override fun onMapReady(googleMap: GoogleMap) {
 
@@ -246,7 +378,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
                         binding.propertyLogoLayout.isVisible = false
                         isImageSelected = true
                     } else {
-                        selectedImagesList.add(SelectImagesDataClass(imageUri))
+                        selectedImagesList.add(SelectImagesDataClass(imageUri!!))
                         selectImagesAdapter =
                             SelectRoomImagesAdapter(requireContext(), selectedImagesList)
                         selectImagesAdapter.setOnItemClickListener(this)

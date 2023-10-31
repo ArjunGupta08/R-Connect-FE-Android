@@ -90,7 +90,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun getLogin() {
-        val apiClient = RetrofitObject.retrofit.login(LoginRequest(userName,authCode,password,"Android"))
+        val apiClient = RetrofitObject.authentication.login(LoginRequest(userName,authCode,password,"Android"))
 
         apiClient.enqueue(object : Callback<LoginResponse?> {
             override fun onResponse(

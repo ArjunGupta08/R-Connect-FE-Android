@@ -101,7 +101,7 @@ class SignUpFragment : Fragment() {
 
                 // Perform the autocomplete request
 
-                val getDesignation = RetrofitObject.retrofit.getDesignation()
+                val getDesignation = RetrofitObject.authentication.getDesignation()
 
                 getDesignation.enqueue(object : Callback<DesignationDataClass?> {
                     override fun onResponse(
@@ -142,7 +142,7 @@ class SignUpFragment : Fragment() {
 
     private fun signUp() {
 
-        val signUpApi = RetrofitObject.retrofit.signUp(
+        val signUpApi = RetrofitObject.authentication.signUp(
             SignUpDataClass(
             binding.firstNameText.text.toString(),
             binding.lastNameText.text.toString(),

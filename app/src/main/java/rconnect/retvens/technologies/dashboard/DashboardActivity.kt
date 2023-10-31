@@ -32,7 +32,7 @@ import rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory.
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AddPropertyFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddRoomTypeFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ReviewRatePlanFragment
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.properties.ViewPropertiesFragment
+import rconnect.retvens.technologies.dashboard.configuration.properties.ViewPropertiesFragment
 import rconnect.retvens.technologies.dashboard.channelManager.promotions.PromotionsFragment
 import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.CorporatesPartnersFragment
 import rconnect.retvens.technologies.dashboard.configuration.billings.PaymentTypesFragment
