@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".dashboard.configuration.roomsAndRates.properties.ViewPropertiesFragment"
+    tools:context=".dashboard.configuration.properties.ViewPropertiesFragment"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
