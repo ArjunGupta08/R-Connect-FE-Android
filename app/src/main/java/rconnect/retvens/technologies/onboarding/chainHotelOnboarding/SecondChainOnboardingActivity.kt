@@ -21,6 +21,7 @@ import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.ActivitySecondChainOnboardingBinding
 import rconnect.retvens.technologies.onboarding.FinalOnboardingScreen
 import rconnect.retvens.technologies.onboarding.ResponseData
+import rconnect.retvens.technologies.utils.SharedPreference
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.prepareFilePart
 import rconnect.retvens.technologies.utils.shakeAnimation
@@ -149,6 +150,8 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         val respons = response.body()!!
+                        SharedPreference(applicationContext).saveSecondChainFlagValue(true)
+
                         Toast.makeText(
                             applicationContext,
                             respons.message.toString(),
@@ -165,6 +168,7 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
                         ).toBundle()
 
                         startActivity(intent, options)
+                        finish()
 
                     } else {
                         Log.d("Error Onboarding", response.code().toString())
@@ -193,6 +197,7 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         val respons = response.body()!!
+                        SharedPreference(applicationContext).saveSecondChainFlagValue(true)
                         Toast.makeText(
                             applicationContext,
                             respons.message.toString(),
@@ -200,6 +205,9 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
                         ).show()
 
                         val intent = Intent(applicationContext, FinalOnboardingScreen::class.java)
+
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+
                         val options = ActivityOptions.makeSceneTransitionAnimation(
                             this@SecondChainOnboardingActivity,
                             android.util.Pair(binding.logo, "logo_img"),

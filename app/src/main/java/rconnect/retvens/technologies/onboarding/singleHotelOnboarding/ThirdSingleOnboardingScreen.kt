@@ -16,6 +16,7 @@ import rconnect.retvens.technologies.onboarding.FinalOnboardingScreen
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.onboarding.chainHotelOnboarding.ThirdChainOnboardingAdapter
 import rconnect.retvens.technologies.onboarding.chainHotelOnboarding.ThirdChainOnboardingDataClass
+import rconnect.retvens.technologies.utils.SharedPreference
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.prepareFilePart
 import rconnect.retvens.technologies.utils.shakeAnimation
@@ -128,6 +129,9 @@ class ThirdSingleOnboardingScreen : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         val respons = response.body()!!
+
+                        SharedPreference(applicationContext).saveSecondFlagValue(true)
+
                         Toast.makeText(
                             applicationContext,
                             respons.message.toString(),
@@ -135,12 +139,14 @@ class ThirdSingleOnboardingScreen : AppCompatActivity() {
                         ).show()
 
                         val intent = (Intent(this@ThirdSingleOnboardingScreen, FinalOnboardingScreen::class.java))
+
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+
                         val options = ActivityOptions.makeSceneTransitionAnimation(this@ThirdSingleOnboardingScreen,
                             android.util.Pair(binding.logo,"logo_img"),
                             android.util.Pair(binding.onBoardingImg,"onBoardingImg"),
                             android.util.Pair(binding.demoBackbtn,"backBtn")).toBundle()
                         startActivity(intent, options)
-
                     } else {
                         Log.d("Error Onboarding", response.code().toString())
                     }

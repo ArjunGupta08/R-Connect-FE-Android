@@ -26,6 +26,7 @@ import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.ActivitySecondOnboardingScreenBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
+import rconnect.retvens.technologies.utils.SharedPreference
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.fetchCountryName
 import rconnect.retvens.technologies.utils.prepareFilePart
@@ -148,6 +149,9 @@ class SecondOnboardingScreen : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         val respons = response.body()!!
+
+                        SharedPreference(applicationContext).saveFirstFlagValue(true)
+
                         Toast.makeText(
                             applicationContext,
                             respons.message.toString(),
@@ -165,6 +169,7 @@ class SecondOnboardingScreen : AppCompatActivity() {
                             android.util.Pair(binding.demoBackbtn, "backBtn")
                         ).toBundle()
                         startActivity(intent, options)
+                        finish()
 
                     } else {
                         Log.d("Error Onboarding", response.code().toString())
@@ -202,8 +207,10 @@ class SecondOnboardingScreen : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        val intent =
-                            Intent(applicationContext, ThirdSingleOnboardingScreen::class.java)
+                        val intent = Intent(applicationContext, ThirdSingleOnboardingScreen::class.java)
+
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+
                         intent.putExtra("isSingle", true)
 
                         val options = ActivityOptions.makeSceneTransitionAnimation(
@@ -213,6 +220,7 @@ class SecondOnboardingScreen : AppCompatActivity() {
                             android.util.Pair(binding.demoBackbtn, "backBtn")
                         ).toBundle()
                         startActivity(intent, options)
+
                     } else {
                         Log.d("Error Onboarding", response.code().toString())
                     }

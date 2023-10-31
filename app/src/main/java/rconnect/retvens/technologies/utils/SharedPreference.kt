@@ -20,7 +20,37 @@ class SharedPreference (context:Context){
         return sharedPreferences.getBoolean("login", false)
     }
 
+    fun saveSignUpFlagValue(login:Boolean){
+        editor.putBoolean("signUp",login)
+        editor.apply()
+    }
+    fun getSignUpFlagValue(): Boolean {
+        return sharedPreferences.getBoolean("signUp", false)
+    }
 
+    fun saveSecondChainFlagValue(login:Boolean){
+        editor.putBoolean("SecondChain",login)
+        editor.apply()
+    }
+    fun getSecondChainFlagValue(): Boolean {
+        return sharedPreferences.getBoolean("SecondChain", false)
+    }
+
+    fun saveFirstFlagValue(login:Boolean){
+        editor.putBoolean("First",login)
+        editor.apply()
+    }
+    fun getFirstFlagValue(): Boolean {
+        return sharedPreferences.getBoolean("First", false)
+    }
+
+    fun saveSecondFlagValue(login:Boolean){
+        editor.putBoolean("Second",login)
+        editor.apply()
+    }
+    fun getSecondFlagValue(): Boolean {
+        return sharedPreferences.getBoolean("Second", false)
+    }
 
 
 }

@@ -20,6 +20,7 @@ import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.FragmentSignUpBinding
 import rconnect.retvens.technologies.onboarding.FirstOnBoardingScreen
+import rconnect.retvens.technologies.utils.SharedPreference
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.shakeAnimation
 import retrofit2.Call
@@ -159,11 +160,15 @@ class SignUpFragment : Fragment() {
             ) {
                 if (response.isSuccessful){
                     val response = response.body()!!
+
+                    SharedPreference(requireContext()).saveSignUpFlagValue(true)
+
                     UserSessionManager(requireContext()).saveUserData(response.userId, "")
                     Toast.makeText(requireContext(),response.message,Toast.LENGTH_SHORT).show()
                     val intent = Intent(requireContext(), FirstOnBoardingScreen::class.java)
                     startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(requireActivity(),
                         android.util.Pair(binding.cardCreateAccount,"Btn")).toBundle())
+                    activity?.finish()
                 }else{
                     Log.e("error",response.body().toString())
                 }
