@@ -124,6 +124,7 @@ class ReservationTypeFragment : Fragment(), ReservationTypeAdapter.OnUpdate {
                     reservationTypeAdapter.setOnUpdateListener(this@ReservationTypeFragment)
                     reservationTypeAdapter.notifyDataSetChanged()
                 } else {
+                    openCreateNewDialog()
                     Log.d("respons", "${response.code()} ${response.message()}")
                 }
             }
