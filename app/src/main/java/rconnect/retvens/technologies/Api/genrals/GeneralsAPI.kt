@@ -1,6 +1,10 @@
 package rconnect.retvens.technologies.Api.genrals
 
 
+import rconnect.retvens.technologies.dashboard.configuration.billings.AddPaymentTypeDataClass
+import rconnect.retvens.technologies.dashboard.configuration.billings.GetPaymentTypeData
+import rconnect.retvens.technologies.dashboard.configuration.billings.GetPaymentTypeDataClass
+import rconnect.retvens.technologies.dashboard.configuration.billings.UpdatePaymentTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.reservation.CreateReservationTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.reservation.GetReservationTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.reservation.UpdateReservationTypeDataClass
@@ -29,6 +33,24 @@ interface GeneralsAPI {
         @Query("userId") userId : String,
         @Query("reservationTypeId") reservationTypeId : String,
         @Body updateReservationTypeDataClass: UpdateReservationTypeDataClass
+    ): Call<GetReservationTypeDataClass>
+
+    /*--------------------------------------- Payment Type-----------------------------------------*/
+    @POST("addPaymentType")
+    fun addPaymentTypeApi(
+        @Query("userId") userId: String,
+        @Body addPaymentTypeDataClass: AddPaymentTypeDataClass
+    ): Call<ResponseData>
+    @GET("getPaymentTypes")
+    fun getPaymentTypeApi (
+        @Query("userId") userId : String,
+        @Query("propertyId") propertyId : String,
+    ): Call<GetPaymentTypeDataClass>
+    @PATCH("patchPaymentType")
+    fun updatePaymentTypeApi (
+        @Query("userId") userId : String,
+        @Query("paymentTypeId") paymentTypeId : String,
+        @Body updatePaymentTypeDataClass: UpdatePaymentTypeDataClass
     ): Call<GetReservationTypeDataClass>
 
 }
