@@ -8,11 +8,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-const val baseUrl = "http://159.65.216.104/api/"
+const val baseUrl = "https://api.hotelratna.com/api/"
 object RetrofitObject {
     private val gson = GsonBuilder().setLenient().create()
 
-    val retrofit = Retrofit.Builder()
+    private val retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create(gson))
         .baseUrl(baseUrl)
         .build()

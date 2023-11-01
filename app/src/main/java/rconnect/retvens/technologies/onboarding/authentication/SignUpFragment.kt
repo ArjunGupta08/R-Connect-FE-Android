@@ -170,7 +170,7 @@ class SignUpFragment : Fragment() {
                         android.util.Pair(binding.cardCreateAccount,"Btn")).toBundle())
                     activity?.finish()
                 }else{
-                    Log.e("error",response.body().toString())
+                    Log.e("error","${response.body()?.message.toString()} ${response.code().toString()}")
                 }
             }
 

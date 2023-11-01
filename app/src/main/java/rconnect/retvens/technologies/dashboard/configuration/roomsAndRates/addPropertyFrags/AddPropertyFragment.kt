@@ -246,8 +246,8 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
         val phone = binding.phoneText.text.toString()
         val reservationPhoneText = binding.reservationPhoneText.text.toString()
         val email = binding.emailText.text.toString()
-//        val lat = binding.emailText.text.toString()
-//        val long = binding.emailText.text.toString()
+        val lat = binding.emailText.text.toString()
+        val long = binding.emailText.text.toString()
         val userId = UserSessionManager(requireContext()).getUserId().toString()
 
         if (imageUri != null) {
@@ -269,6 +269,8 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), phone),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), reservationPhoneText),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), email),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), lat),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), long),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
             )
 
@@ -317,6 +319,8 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), phone),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), reservationPhoneText),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), email),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), lat),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), long),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
             )
 

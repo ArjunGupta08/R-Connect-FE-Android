@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import org.json.JSONObject
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.Api.configurationApi.ChainConfiguration
@@ -144,11 +145,10 @@ class ViewPropertiesFragment : Fragment() {
     private fun fetchProp(){
         val i = UserSessionManager(requireContext()).getUserId().toString()
         val fetchProp = OAuthClient<ChainConfiguration>(requireContext()).create(ChainConfiguration::class.java).fetchProperty(i)
-//        val fetchProp = RetrofitObject.chainConfiguration.fetchProperty(i)
         fetchProp.enqueue(object : Callback<FetchPropertyData?> {
             override fun onResponse(call: Call<FetchPropertyData?>, response: Response<FetchPropertyData?>) {
 
-                println("Response : ${response.code()} ${response.message()} ${response.body()?.data} " )
+                println("Response : ${response.code()} ${response.message()} ${response.body()?.message} ${response.body()?.data}" )
 
             }
 

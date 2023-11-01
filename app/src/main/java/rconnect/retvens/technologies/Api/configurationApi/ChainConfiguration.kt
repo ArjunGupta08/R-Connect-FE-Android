@@ -3,6 +3,7 @@ package rconnect.retvens.technologies.Api.configurationApi
 
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.json.JSONObject
 import rconnect.retvens.technologies.dashboard.configuration.properties.FetchPropertyData
 import rconnect.retvens.technologies.onboarding.ResponseData
 import retrofit2.Call
@@ -36,8 +37,8 @@ interface ChainConfiguration {
         @Part("phone") phone: RequestBody,
         @Part("reservationPhone") reservationPhone: RequestBody,
         @Part("propertyEmail") propertyEmail: RequestBody,
-//        @Part("latitude") latitude: RequestBody,
-//        @Part("longitude") longitude: RequestBody,
+        @Part("latitude") latitude: RequestBody,
+        @Part("longitude") longitude: RequestBody,
         @Part("userId") userId: RequestBody,
     ): Call<ResponseData>
 
@@ -59,13 +60,17 @@ interface ChainConfiguration {
         @Part("phone") phone: RequestBody,
         @Part("reservationPhone") reservationPhone: RequestBody,
         @Part("propertyEmail") propertyEmail: RequestBody,
+        @Part("latitude") latitude: RequestBody,
+        @Part("longitude") longitude: RequestBody,
         @Part("userId") userId: RequestBody,
     ): Call<ResponseData>
-//        @Part("latitude") latitude: RequestBody,
-//        @Part("longitude") longitude: RequestBody,
 
-    @GET("fetchAmenity/{}")
-    fun getAmenities()
+    @GET("fetchAmenity")
+    fun getAmenities(
+        @Query("propertyId") propertyId: String,
+        @Query("propertyType") propertyType: String,
+        @Query("userId") userId: String
+    )
 
     @GET("fetchProperty")
     fun fetchProperty(
