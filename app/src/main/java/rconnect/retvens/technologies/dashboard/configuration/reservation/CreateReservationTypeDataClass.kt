@@ -6,3 +6,8 @@ data class CreateReservationTypeDataClass(
     val reservationName : String,
     val status : String,
 )
+
+data class UpdateReservationTypeDataClass(
+    val reservationName : String,
+    val status : String,
+)

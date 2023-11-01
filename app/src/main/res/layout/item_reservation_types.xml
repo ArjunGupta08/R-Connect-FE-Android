@@ -118,12 +118,14 @@
                 android:src="@drawable/svg_pen" />
 
             <ImageView
+                android:id="@+id/delete"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:src="@drawable/svg_delete_lite" />
 
             <ImageView
+                android:id="@+id/info"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

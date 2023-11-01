@@ -27,12 +27,11 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class ReservationTypeFragment : Fragment() {
+class ReservationTypeFragment : Fragment(), ReservationTypeAdapter.OnUpdate {
 
     private lateinit var binding : FragmentReservationTypeBinding
 
     private lateinit var reservationTypeAdapter: ReservationTypeAdapter
-    private var reservationTypeList = ArrayList<GetReservationTypeDataClass>()
 
 
     override fun onCreateView(
@@ -95,7 +94,6 @@ class ReservationTypeFragment : Fragment() {
 
     }
     private fun saveReservation(dialog: Dialog, rName : String, status:String) {
-        UserSessionManager(requireContext()).savePropertyId("Cg4vWWtt")
         val create = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).createReservationApi(
             CreateReservationTypeDataClass(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString(), rName, status))
 
@@ -123,6 +121,7 @@ class ReservationTypeFragment : Fragment() {
                 if (response.isSuccessful) {
                     reservationTypeAdapter = ReservationTypeAdapter(response.body()!!.data, requireContext())
                     binding.reservationTypeRecycler.adapter = reservationTypeAdapter
+                    reservationTypeAdapter.setOnUpdateListener(this@ReservationTypeFragment)
                     reservationTypeAdapter.notifyDataSetChanged()
                 } else {
                     Log.d("respons", "${response.code()} ${response.message()}")
@@ -136,6 +135,9 @@ class ReservationTypeFragment : Fragment() {
 
     }
 
+    override fun onUpdateReservationType() {
+        reservationTypeRecycler()
+    }
 
 
 }
