@@ -51,6 +51,10 @@ class AddRoomTypeFragment : Fragment(),
     private lateinit var selectBathroomImagesAdapter: SelectBathroomImagesAdapter
     private lateinit var selectBedImagesAdapter: SelectBedImagesAdapter
 
+    private var bedCount = 1
+    private var bedTypeList = ArrayList<String>()
+    private lateinit var addBedTypeAdapter: AddBedTypeAdapter
+
     private var selectedRoomImagesList = ArrayList<SelectImagesDataClass>()
     private var selectedViewImagesList = ArrayList<SelectImagesDataClass>()
     private var selectedBathroomImagesList = ArrayList<SelectImagesDataClass>()
@@ -91,6 +95,9 @@ class AddRoomTypeFragment : Fragment(),
             }
         }
 
+        binding.bedTypeRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
+
+
         binding.roomsRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
 
         binding.viewRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
@@ -118,6 +125,28 @@ class AddRoomTypeFragment : Fragment(),
 
         binding.add.setOnClickListener { openAddAmenitiesDialog() }
 
+        bedType()
+    }
+
+    private fun bedType(){
+        binding.addBeds.setOnClickListener {
+            bedCount++
+            binding.bedCount.setText("$bedCount")
+            bedTypeList.add("$bedCount")
+            addBedTypeAdapter = AddBedTypeAdapter(requireContext(), bedTypeList)
+            binding.bedTypeRecycler.adapter = addBedTypeAdapter
+            addBedTypeAdapter.notifyDataSetChanged()
+        }
+        binding.removeBeds.setOnClickListener {
+            if (bedCount>1) {
+                bedTypeList.remove("$bedCount")
+                bedCount--
+                binding.bedCount.setText("$bedCount")
+                addBedTypeAdapter = AddBedTypeAdapter(requireContext(), bedTypeList)
+                binding.bedTypeRecycler.adapter = addBedTypeAdapter
+                addBedTypeAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
     private fun openAddAmenitiesDialog() {
