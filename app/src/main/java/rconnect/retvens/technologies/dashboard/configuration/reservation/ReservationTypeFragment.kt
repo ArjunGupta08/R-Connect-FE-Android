@@ -4,21 +4,28 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.Switch
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.textfield.TextInputEditText
+import rconnect.retvens.technologies.Api.OAuthClient
+import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddRoomTypeFragment
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.roomType.RoomTypeAdapter
 import rconnect.retvens.technologies.databinding.FragmentReservationTypeBinding
-import rconnect.retvens.technologies.databinding.FragmentRoomTypeBinding
-import rconnect.retvens.technologies.utils.Const
+import rconnect.retvens.technologies.onboarding.ResponseData
+import rconnect.retvens.technologies.utils.UserSessionManager
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class ReservationTypeFragment : Fragment() {
@@ -64,6 +71,9 @@ class ReservationTypeFragment : Fragment() {
             )
         }
 
+        val reservationNameET = dialog.findViewById<TextInputEditText>(R.id.reservationNameET)
+        val isConfirmedSwitch = dialog.findViewById<Switch>(R.id.isConfirmedSwitch)
+
         val cancel = dialog.findViewById<TextView>(R.id.cancel)
         val save = dialog.findViewById<CardView>(R.id.saveBtn)
 
@@ -71,7 +81,11 @@ class ReservationTypeFragment : Fragment() {
             dialog.dismiss()
         }
         save.setOnClickListener {
-            dialog.dismiss()
+            saveReservation(  dialog,reservationNameET.text.toString(), if (isConfirmedSwitch.isChecked){
+                "Confirmed"
+            } else {
+                "Not Confirmed"
+            })
         }
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -81,7 +95,21 @@ class ReservationTypeFragment : Fragment() {
         dialog.show()
 
     }
+    private fun saveReservation(dialog: Dialog, rName : String, status:String) {
+        UserSessionManager(requireContext()).savePropertyId("Cg4vWWtt")
+        val create = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).createReservationApi(
+            AddReservationData(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString(), rName, status))
 
+        create.enqueue(object : Callback<ResponseData?> {
+            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                Log.d( "reservation", "${response.code()} ${response.message()}")
+                dialog.dismiss()
+            }
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                Log.d("saveReservationError", "${t.localizedMessage}")
+            }
+        })
+    }
 
     private fun reservationTypeRecycler() {
         binding.reservationTypeRecycler.layoutManager = LinearLayoutManager(requireContext())
