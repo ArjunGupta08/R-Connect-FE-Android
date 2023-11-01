@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Switch
 import android.widget.TextView
-import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputEditText
@@ -33,7 +32,7 @@ class ReservationTypeFragment : Fragment() {
     private lateinit var binding : FragmentReservationTypeBinding
 
     private lateinit var reservationTypeAdapter: ReservationTypeAdapter
-    private var reservationTypeList = ArrayList<String>()
+    private var reservationTypeList = ArrayList<GetReservationTypeDataClass>()
 
 
     override fun onCreateView(
@@ -84,7 +83,7 @@ class ReservationTypeFragment : Fragment() {
             saveReservation(  dialog,reservationNameET.text.toString(), if (isConfirmedSwitch.isChecked){
                 "Confirmed"
             } else {
-                "Not Confirmed"
+                "Unconfirmed"
             })
         }
 
@@ -98,12 +97,13 @@ class ReservationTypeFragment : Fragment() {
     private fun saveReservation(dialog: Dialog, rName : String, status:String) {
         UserSessionManager(requireContext()).savePropertyId("Cg4vWWtt")
         val create = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).createReservationApi(
-            AddReservationData(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString(), rName, status))
+            CreateReservationTypeDataClass(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString(), rName, status))
 
         create.enqueue(object : Callback<ResponseData?> {
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
                 Log.d( "reservation", "${response.code()} ${response.message()}")
                 dialog.dismiss()
+                reservationTypeRecycler()
             }
             override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
                 Log.d("saveReservationError", "${t.localizedMessage}")
@@ -114,24 +114,26 @@ class ReservationTypeFragment : Fragment() {
     private fun reservationTypeRecycler() {
         binding.reservationTypeRecycler.layoutManager = LinearLayoutManager(requireContext())
 
-        reservationTypeList.add("4")
-        reservationTypeList.add("4")
-        reservationTypeList.add("4")
-        reservationTypeList.add("4")
-        reservationTypeList.add("4")
-        reservationTypeList.add("4")
-        reservationTypeList.add("4")
-        reservationTypeList.add("4")
-        reservationTypeList.add("4")
-        reservationTypeList.add("4")
-        reservationTypeList.add("4")
-        reservationTypeList.add("4")
-        reservationTypeList.add("4")
-        reservationTypeList.add("4")
+        val reservation = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).getReservationApi(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString())
+        reservation.enqueue(object : Callback<GetReservationTypeDataClass?> {
+            override fun onResponse(
+                call: Call<GetReservationTypeDataClass?>,
+                response: Response<GetReservationTypeDataClass?>
+            ) {
+                if (response.isSuccessful) {
+                    reservationTypeAdapter = ReservationTypeAdapter(response.body()!!.data, requireContext())
+                    binding.reservationTypeRecycler.adapter = reservationTypeAdapter
+                    reservationTypeAdapter.notifyDataSetChanged()
+                } else {
+                    Log.d("respons", "${response.code()} ${response.message()}")
+                }
+            }
 
-        reservationTypeAdapter = ReservationTypeAdapter(reservationTypeList, requireContext())
-        binding.reservationTypeRecycler.adapter = reservationTypeAdapter
-        reservationTypeAdapter.notifyDataSetChanged()
+            override fun onFailure(call: Call<GetReservationTypeDataClass?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
+
     }
 
 

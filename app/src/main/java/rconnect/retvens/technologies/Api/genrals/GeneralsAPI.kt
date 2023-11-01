@@ -1,18 +1,26 @@
 package rconnect.retvens.technologies.Api.genrals
 
 
-import rconnect.retvens.technologies.dashboard.configuration.reservation.AddReservationData
+import rconnect.retvens.technologies.dashboard.configuration.reservation.CreateReservationTypeDataClass
+import rconnect.retvens.technologies.dashboard.configuration.reservation.GetReservationTypeDataClass
 import rconnect.retvens.technologies.onboarding.ResponseData
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface GeneralsAPI {
 
-    /*---------------------------------------Create Reservation-----------------------------------------*/
+    /*---------------------------------------Reservation-----------------------------------------*/
     @POST("addReservationType ")
     fun createReservationApi(
-        @Body addReservationData: AddReservationData
+        @Body addReservationData: CreateReservationTypeDataClass
     ): Call<ResponseData>
+    @GET("getReservation")
+    fun getReservationApi (
+        @Query("userId") userId : String,
+        @Query("propertyId") propertyId : String,
+    ): Call<GetReservationTypeDataClass>
 
 }
