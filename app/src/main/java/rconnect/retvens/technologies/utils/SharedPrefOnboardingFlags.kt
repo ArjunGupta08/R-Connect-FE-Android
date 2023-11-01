@@ -2,7 +2,7 @@ package rconnect.retvens.technologies.utils
 
 import android.content.Context
 
-class SharedPreference (context:Context){
+class SharedPrefOnboardingFlags (context:Context){
 
 
     // SharedPreferences instance

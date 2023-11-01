@@ -16,9 +16,8 @@ import rconnect.retvens.technologies.onboarding.FinalOnboardingScreen
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.onboarding.chainHotelOnboarding.ThirdChainOnboardingAdapter
 import rconnect.retvens.technologies.onboarding.chainHotelOnboarding.ThirdChainOnboardingDataClass
-import rconnect.retvens.technologies.utils.SharedPreference
+import rconnect.retvens.technologies.utils.SharedPrefOnboardingFlags
 import rconnect.retvens.technologies.utils.UserSessionManager
-import rconnect.retvens.technologies.utils.prepareFilePart
 import rconnect.retvens.technologies.utils.shakeAnimation
 import retrofit2.Call
 import retrofit2.Callback
@@ -130,7 +129,7 @@ class ThirdSingleOnboardingScreen : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val respons = response.body()!!
 
-                        SharedPreference(applicationContext).saveSecondFlagValue(true)
+                        SharedPrefOnboardingFlags(applicationContext).saveSecondFlagValue(true)
 
                         Toast.makeText(
                             applicationContext,

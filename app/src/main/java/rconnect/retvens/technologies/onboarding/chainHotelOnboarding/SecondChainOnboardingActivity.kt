@@ -21,7 +21,7 @@ import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.ActivitySecondChainOnboardingBinding
 import rconnect.retvens.technologies.onboarding.FinalOnboardingScreen
 import rconnect.retvens.technologies.onboarding.ResponseData
-import rconnect.retvens.technologies.utils.SharedPreference
+import rconnect.retvens.technologies.utils.SharedPrefOnboardingFlags
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.prepareFilePart
 import rconnect.retvens.technologies.utils.shakeAnimation
@@ -150,7 +150,7 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         val respons = response.body()!!
-                        SharedPreference(applicationContext).saveSecondChainFlagValue(true)
+                        SharedPrefOnboardingFlags(applicationContext).saveSecondChainFlagValue(true)
 
                         Toast.makeText(
                             applicationContext,
@@ -197,7 +197,7 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         val respons = response.body()!!
-                        SharedPreference(applicationContext).saveSecondChainFlagValue(true)
+                        SharedPrefOnboardingFlags(applicationContext).saveSecondChainFlagValue(true)
                         Toast.makeText(
                             applicationContext,
                             respons.message.toString(),

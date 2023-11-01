@@ -26,7 +26,7 @@ import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.ActivitySecondOnboardingScreenBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
-import rconnect.retvens.technologies.utils.SharedPreference
+import rconnect.retvens.technologies.utils.SharedPrefOnboardingFlags
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.fetchCountryName
 import rconnect.retvens.technologies.utils.prepareFilePart
@@ -150,7 +150,7 @@ class SecondOnboardingScreen : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val respons = response.body()!!
 
-                        SharedPreference(applicationContext).saveFirstFlagValue(true)
+                        SharedPrefOnboardingFlags(applicationContext).saveFirstFlagValue(true)
 
                         Toast.makeText(
                             applicationContext,

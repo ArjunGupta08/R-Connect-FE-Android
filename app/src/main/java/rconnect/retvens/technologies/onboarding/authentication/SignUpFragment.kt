@@ -12,21 +12,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
-import com.google.android.libraries.places.api.net.PlacesClient
 import rconnect.retvens.technologies.Api.RetrofitObject
-import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.FragmentSignUpBinding
 import rconnect.retvens.technologies.onboarding.FirstOnBoardingScreen
-import rconnect.retvens.technologies.utils.SharedPreference
+import rconnect.retvens.technologies.utils.SharedPrefOnboardingFlags
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.shakeAnimation
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.IndexOutOfBoundsException
 
 class SignUpFragment : Fragment() {
 
@@ -161,7 +157,7 @@ class SignUpFragment : Fragment() {
                 if (response.isSuccessful){
                     val response = response.body()!!
 
-                    SharedPreference(requireContext()).saveSignUpFlagValue(true)
+                    SharedPrefOnboardingFlags(requireContext()).saveSignUpFlagValue(true)
 
                     UserSessionManager(requireContext()).saveUserData(response.userId, "")
                     Toast.makeText(requireContext(),response.message,Toast.LENGTH_SHORT).show()
