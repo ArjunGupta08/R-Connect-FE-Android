@@ -10,6 +10,9 @@ import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservatio
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.GetReservationTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.identityType.UpdateIdentityTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.UpdateReservationTypeDataClass
+import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.AddTransportationTypeDataClass
+import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.GetTransportationTypeData
+import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.UpdateTransportationTypeDataClass
 import rconnect.retvens.technologies.onboarding.ResponseData
 import retrofit2.Call
 import retrofit2.http.Body
@@ -70,6 +73,23 @@ interface GeneralsAPI {
         @Query("userId") userId : String,
         @Query("identityTypeId") identityTypeId : String,
         @Body updateIdentityTypeDataClass: UpdateIdentityTypeDataClass
+    ): Call<GetReservationTypeDataClass>
+
+    /*--------------------------------------- Transportation Mode Type-----------------------------------------*/
+    @POST("addTransportation")
+    fun addTransportationModeTypeApi(
+        @Body addTransportationTypeDataClass: AddTransportationTypeDataClass
+    ): Call<ResponseData>
+    @GET("getTransportation ")
+    fun getTransportationModeTypeApi (
+        @Query("userId") userId : String,
+        @Query("propertyId") propertyId : String,
+    ): Call<GetTransportationTypeData>
+    @PATCH("updateTransportation")
+    fun updateTransportationModeTypeApi (
+        @Query("userId") userId : String,
+        @Query("transportationId") transportationId : String,
+        @Body updateTransportationTypeDataClass: UpdateTransportationTypeDataClass
     ): Call<GetReservationTypeDataClass>
 
 }
