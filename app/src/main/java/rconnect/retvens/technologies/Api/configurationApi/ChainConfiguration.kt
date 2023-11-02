@@ -5,6 +5,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.json.JSONObject
 import rconnect.retvens.technologies.dashboard.configuration.properties.FetchPropertyData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AddPropertyResponseDataClass
 import rconnect.retvens.technologies.onboarding.ResponseData
 import retrofit2.Call
 import retrofit2.Response
@@ -40,7 +41,7 @@ interface ChainConfiguration {
         @Part("latitude") latitude: RequestBody,
         @Part("longitude") longitude: RequestBody,
         @Part("userId") userId: RequestBody,
-    ): Call<ResponseData>
+    ): Call<AddPropertyResponseDataClass>
 
     @Multipart
     @POST("createProperty")
@@ -63,7 +64,7 @@ interface ChainConfiguration {
         @Part("latitude") latitude: RequestBody,
         @Part("longitude") longitude: RequestBody,
         @Part("userId") userId: RequestBody,
-    ): Call<ResponseData>
+    ): Call<AddPropertyResponseDataClass>
 
     @GET("fetchAmenity")
     fun getAmenities(

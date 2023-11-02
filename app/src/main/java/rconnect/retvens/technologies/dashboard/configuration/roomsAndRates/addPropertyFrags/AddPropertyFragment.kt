@@ -1,8 +1,6 @@
 package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags
 
-import android.app.ActivityOptions
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
@@ -15,8 +13,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -28,7 +24,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -36,20 +31,15 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import rconnect.retvens.technologies.Api.OAuthClient
-import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.Api.configurationApi.ChainConfiguration
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.properties.ViewPropertiesFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectRoomImagesAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectImagesDataClass
 import rconnect.retvens.technologies.databinding.FragmentAddPropertyBinding
-import rconnect.retvens.technologies.onboarding.FinalOnboardingScreen
-import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.Const
-import rconnect.retvens.technologies.utils.SharedPreference
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.fadeOutAnimation
 import rconnect.retvens.technologies.utils.fadeInAnimation
@@ -236,7 +226,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
         val propertyRating = binding.propertyRatingET.text.toString()
         val websiteUrl = binding.websiteText.text.toString()
         val description = binding.descriptionET.text.toString()
-        val amenityIds = "51351"
+        val amenityIds = "igig,ihinm"
         val address1 = binding.addressLine1ET.text.toString()
         val address2 = binding.addressLine2ET.text.toString()
         val postCode = binding.pincodeText.text.toString()
@@ -274,13 +264,15 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
             )
 
-            addProperty.enqueue(object : Callback<ResponseData?> {
+            addProperty.enqueue(object : Callback<AddPropertyResponseDataClass?> {
                 override fun onResponse(
-                    call: Call<ResponseData?>,
-                    response: Response<ResponseData?>
+                    call: Call<AddPropertyResponseDataClass?>,
+                    response: Response<AddPropertyResponseDataClass?>
                 ) {
                     if (response.isSuccessful) {
                         val respons = response.body()!!
+
+                        UserSessionManager(requireContext()).savePropertyId(response.body()?.propertyId.toString())
 
                         Toast.makeText(
                             requireContext(),
@@ -298,7 +290,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
                     }
                 }
 
-                override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                override fun onFailure(call: Call<AddPropertyResponseDataClass?>, t: Throwable) {
                     Log.d("Error Onboarding", t.localizedMessage.toString())
                 }
             })
@@ -324,17 +316,19 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
             )
 
-            addProperty.enqueue(object : Callback<ResponseData?> {
+            addProperty.enqueue(object : Callback<AddPropertyResponseDataClass?> {
                 override fun onResponse(
-                    call: Call<ResponseData?>,
-                    response: Response<ResponseData?>
+                    call: Call<AddPropertyResponseDataClass?>,
+                    response: Response<AddPropertyResponseDataClass?>
                 ) {
                     if (response.isSuccessful) {
                         val respons = response.body()!!
 
+                        UserSessionManager(requireContext()).savePropertyId(response.body()?.propertyId.toString())
+
                         Toast.makeText(
                             requireContext(),
-                            respons.message.toString(),
+                            respons.propertyId.toString(),
                             Toast.LENGTH_SHORT
                         ).show()
 
@@ -348,7 +342,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
                     }
                 }
 
-                override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                override fun onFailure(call: Call<AddPropertyResponseDataClass?>, t: Throwable) {
                     Log.d("Error Onboarding", t.localizedMessage.toString())
                 }
             })
