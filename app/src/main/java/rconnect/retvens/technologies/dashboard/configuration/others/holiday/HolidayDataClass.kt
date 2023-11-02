@@ -9,9 +9,11 @@ data class AddHolidayDataClass(
     val endDate : String
 )
 
-data class UpdateSeasonDataClass(
+data class UpdateHolidayDataClass(
     val shortCode : String,
-    val identityType : String,
+    val holidayName : String,
+    val startDate : String,
+    val endDate : String
 )
 
 data class GetHotelDataClass(

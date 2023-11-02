@@ -12,6 +12,7 @@ import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservatio
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.UpdateReservationTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.holiday.AddHolidayDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.holiday.GetHotelDataClass
+import rconnect.retvens.technologies.dashboard.configuration.others.holiday.UpdateHolidayDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.seasons.AddSeasonDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.seasons.GetSeasonData
 import rconnect.retvens.technologies.dashboard.configuration.others.seasons.GetSeasonDataClass
@@ -148,11 +149,11 @@ interface GeneralsAPI {
         @Query("propertyId") propertyId : String,
     ): Call<GetHotelDataClass>
 
-//    @PATCH("updateTransportation")
-//    fun updateBookingSourceTypeApi (
-//        @Query("userId") userId : String,
-//        @Query("transportationId") transportationId : String,
-//        @Body updateTransportationTypeDataClass: UpdateTransportationTypeDataClass
-//    ): Call<GetReservationTypeDataClass>
+    @PATCH("patchHoliday")
+    fun updateHolidayApi (
+        @Query("holidayId") holidayId : String,
+        @Query("userId") userId : String,
+        @Body updateHolidayDataClass: UpdateHolidayDataClass
+    ): Call<GetReservationTypeDataClass>
 
 }

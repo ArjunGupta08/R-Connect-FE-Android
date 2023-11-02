@@ -31,7 +31,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.Calendar
 
-class HolidaysFragment : Fragment() {
+class HolidaysFragment : Fragment(), HolidaysAdapter.OnItemUpdate {
 
     private lateinit var binding: FragmentHolidaysBinding
 
@@ -118,6 +118,7 @@ class HolidaysFragment : Fragment() {
                     if (response.isSuccessful) {
                         adapter = HolidaysAdapter(response.body()!!.data, requireContext())
                         binding.paymentTypeRecycler.adapter = adapter
+                        adapter.setOnItemUpdateListener(this@HolidaysFragment)
                         adapter.notifyDataSetChanged()
                     } else {
                         openCreateNewDialog()
@@ -161,6 +162,7 @@ class HolidaysFragment : Fragment() {
         create.enqueue(object : Callback<ResponseData?> {
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
                 Log.d( "holiday", "${response.code()} ${response.message()}")
+                setUpRecycler()
                 dialog.dismiss()
             }
 
@@ -168,6 +170,10 @@ class HolidaysFragment : Fragment() {
                 Log.d("error", t.localizedMessage)
             }
         })
+    }
+
+    override fun onUpdate() {
+        setUpRecycler()
     }
 
 }
