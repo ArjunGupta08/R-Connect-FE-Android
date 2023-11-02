@@ -66,6 +66,7 @@ class IdentityDocumentsFragment : Fragment(), IdentityTypeAdapter.OnUpdate {
                         identityTypeAdapter.setOnUpdateListener(this@IdentityDocumentsFragment)
                         identityTypeAdapter.notifyDataSetChanged()
                     } else {
+                        openCreateNewDialog()
                         Log.d("error" , "${response.code()} ${response.message()}")
                     }
                 }

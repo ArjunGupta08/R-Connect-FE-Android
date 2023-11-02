@@ -13,11 +13,14 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputEditText
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.billings.AddPaymentTypeDataClass
+import rconnect.retvens.technologies.dashboard.configuration.billings.GetPaymentTypeDataClass
+import rconnect.retvens.technologies.dashboard.configuration.billings.PaymentTypeAdapter
 import rconnect.retvens.technologies.databinding.FragmentTransportationTypesBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
@@ -40,11 +43,36 @@ class TransportationTypesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setUpRecycler()
 
         binding.createNewBtn.setOnClickListener {
             openCreateNewDialog()
         }
 
+    }
+    private fun setUpRecycler() {
+        binding.reservationTypeRecycler.layoutManager = LinearLayoutManager(requireContext())
+
+        val reservation = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).getTransportationModeTypeApi(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString())
+        reservation.enqueue(object : Callback<GetTransportationTypeDataClass?> {
+            override fun onResponse(
+                call: Call<GetTransportationTypeDataClass?>,
+                response: Response<GetTransportationTypeDataClass?>
+            ) {
+                if (response.isSuccessful) {
+                    val adapter = TransportationTypeAdapter(response.body()!!.data, requireContext())
+                    binding.reservationTypeRecycler.adapter = adapter
+                    adapter.notifyDataSetChanged()
+                } else {
+                    openCreateNewDialog()
+                    Log.d("respons", "${response.code()} ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<GetTransportationTypeDataClass?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
     }
 
     private fun openCreateNewDialog() {

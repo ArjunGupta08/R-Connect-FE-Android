@@ -12,6 +12,7 @@ import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservatio
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.UpdateReservationTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.AddTransportationTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.GetTransportationTypeData
+import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.GetTransportationTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.UpdateTransportationTypeDataClass
 import rconnect.retvens.technologies.onboarding.ResponseData
 import retrofit2.Call
@@ -84,7 +85,7 @@ interface GeneralsAPI {
     fun getTransportationModeTypeApi (
         @Query("userId") userId : String,
         @Query("propertyId") propertyId : String,
-    ): Call<GetTransportationTypeData>
+    ): Call<GetTransportationTypeDataClass>
     @PATCH("updateTransportation")
     fun updateTransportationModeTypeApi (
         @Query("userId") userId : String,
