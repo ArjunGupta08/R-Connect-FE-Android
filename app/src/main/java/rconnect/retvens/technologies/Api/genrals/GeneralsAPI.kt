@@ -10,6 +10,9 @@ import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservatio
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.GetReservationTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.identityType.UpdateIdentityTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.UpdateReservationTypeDataClass
+import rconnect.retvens.technologies.dashboard.configuration.others.seasons.AddSeasonDataClass
+import rconnect.retvens.technologies.dashboard.configuration.others.seasons.GetSeasonData
+import rconnect.retvens.technologies.dashboard.configuration.others.seasons.GetSeasonDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.AddTransportationTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.GetTransportationTypeData
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.GetTransportationTypeDataClass
@@ -92,5 +95,43 @@ interface GeneralsAPI {
         @Query("transportationId") transportationId : String,
         @Body updateTransportationTypeDataClass: UpdateTransportationTypeDataClass
     ): Call<GetReservationTypeDataClass>
+
+
+    /*--------------------------------------- Booking Source Type-----------------------------------------*/
+//    @POST("addTransportation")
+//    fun addBookingSourceTypeApi(
+//        @Body addTransportationTypeDataClass: AddTransportationTypeDataClass
+//    ): Call<ResponseData>
+
+    @GET("getBookingSource ")
+    fun getBookingSourceTypeApi (
+        @Query("userId") userId : String,
+        @Query("propertyId") propertyId : String,
+    ): Call<GetTransportationTypeDataClass>
+//    @PATCH("updateTransportation")
+//    fun updateBookingSourceTypeApi (
+//        @Query("userId") userId : String,
+//        @Query("transportationId") transportationId : String,
+//        @Body updateTransportationTypeDataClass: UpdateTransportationTypeDataClass
+//    ): Call<GetReservationTypeDataClass>
+
+
+    /*--------------------------------------- Booking Source Type-----------------------------------------*/
+    @POST("postSeason")
+    fun addSeasonApi(
+        @Body addSeasonDataClass: AddSeasonDataClass
+    ): Call<ResponseData>
+
+    @GET("getSeasons")
+    fun getSeasonApi (
+        @Query("userId") userId : String,
+        @Query("propertyId") propertyId : String,
+    ): Call<GetSeasonDataClass>
+//    @PATCH("updateTransportation")
+//    fun updateBookingSourceTypeApi (
+//        @Query("userId") userId : String,
+//        @Query("transportationId") transportationId : String,
+//        @Body updateTransportationTypeDataClass: UpdateTransportationTypeDataClass
+//    ): Call<GetReservationTypeDataClass>
 
 }

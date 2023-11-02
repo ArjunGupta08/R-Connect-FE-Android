@@ -8,6 +8,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,9 +22,20 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputEditText
+import rconnect.retvens.technologies.Api.OAuthClient
+import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.identityType.AddIdentityTypeDataClass
+import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.identityType.GetIdentityTypeDataClass
+import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.identityType.IdentityTypeAdapter
 import rconnect.retvens.technologies.dashboard.configuration.others.HolidaysAdapter
+import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.GetTransportationTypeDataClass
 import rconnect.retvens.technologies.databinding.FragmentSeasonsBinding
+import rconnect.retvens.technologies.onboarding.ResponseData
+import rconnect.retvens.technologies.utils.UserSessionManager
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.Calendar
 import java.util.Date
 
@@ -68,6 +80,7 @@ class SeasonsFragment : Fragment() {
     lateinit var to_date:TextView
     lateinit var from_date:TextView
 
+    var selectedDays = ArrayList<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -301,6 +314,8 @@ class SeasonsFragment : Fragment() {
         }
 
 
+        val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCodeText)
+        val seasonText = dialog.findViewById<TextInputEditText>(R.id.seasonText)
 
         cancel.setOnClickListener {
             startDate = null
@@ -308,7 +323,7 @@ class SeasonsFragment : Fragment() {
             dialog.dismiss()
         }
         save.setOnClickListener {
-            dialog.dismiss()
+            saveSeason(requireContext(), dialog, shortCode.text.toString(), seasonText.text.toString())
         }
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -316,6 +331,22 @@ class SeasonsFragment : Fragment() {
         dialog.window?.setGravity(Gravity.END)
 
         dialog.show()
+    }
+
+    private fun saveSeason(context: Context, dialog: Dialog, shortCodeTxt : String, season:String) {
+        val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).addSeasonApi(
+            AddSeasonDataClass(UserSessionManager(context).getUserId().toString(), UserSessionManager(context).getPropertyId().toString(), season, shortCodeTxt, from_date.text.toString(), to_date.text.toString(), selectedDays)
+        )
+        create.enqueue(object : Callback<ResponseData?> {
+            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                Log.d( "season", "${response.code()} ${response.message()}")
+                dialog.dismiss()
+            }
+
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
     }
 
     private fun allClickable() {
@@ -329,6 +360,7 @@ class SeasonsFragment : Fragment() {
     }
 
     private fun unSelectAllDays() {
+        selectedDays.clear()
         unSelectCard(sun)
         unSelectCard(mon)
         unSelectCard(tues)
@@ -362,25 +394,41 @@ class SeasonsFragment : Fragment() {
 
         binding.paymentTypeRecycler.layoutManager = LinearLayoutManager(requireContext())
 
-        list.add("4")
-        list.add("4")
-        list.add("4")
-        list.add("4")
-        list.add("4")
-        list.add("4")
-        list.add("4")
+        val identity = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).getSeasonApi(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString())
+        identity.enqueue(object : Callback<GetSeasonDataClass?> {
+            override fun onResponse(
+                call: Call<GetSeasonDataClass?>,
+                response: Response<GetSeasonDataClass?>
+            ) {
+                if (response.isSuccessful){
+                    val adapter = SeasonAdapter(response.body()!!.data, requireContext())
+                    binding.paymentTypeRecycler.adapter = adapter
+                    adapter.notifyDataSetChanged()
+                } else {
+                    openCreateNewDialog()
+                    Log.d("error" , "${response.code()} ${response.message()}")
+                }
+            }
 
-        adapter = HolidaysAdapter(list, requireContext())
-        binding.paymentTypeRecycler.adapter = adapter
-        adapter.notifyDataSetChanged()
+            override fun onFailure(call: Call<GetSeasonDataClass?>, t: Throwable) {
+
+            }
+        })
+
     }
 
     private fun selectCard(day: TextView?) {
+        if (!selectedDays.contains(day?.text.toString())){
+            selectedDays.add(day?.text.toString())
+        }
         day?.setBackgroundResource(R.drawable.rounded_border_black)
         day?.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
     }
 
     private fun unSelectCard(day: TextView?) {
+        if (selectedDays.contains(day?.text.toString())){
+            selectedDays.remove(day?.text.toString())
+        }
         day?.setBackgroundResource(R.drawable.rounded_border_light_black)
         day?.setTextColor(ContextCompat.getColor(requireContext(), R.color.lightBlack))
         day?.typeface = roboto
@@ -391,37 +439,6 @@ class SeasonsFragment : Fragment() {
 //    }
 
 
-    fun showCalendarDialog(context : Context, textDate: TextView) {
-        val calendar = Calendar.getInstance()
-        val currentYear = calendar.get(Calendar.YEAR)
-        val currentMonth = calendar.get(Calendar.MONTH)
-        val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
-
-        val datePickerDialog = DatePickerDialog(
-            context,
-            { _, year, month, dayOfMonth ->
-                // Set the selected date on the EditText
-                val selectedDate = "$dayOfMonth/${month+1}/$year"
-                textDate.text = selectedDate
-            },
-            currentYear,
-            currentMonth,
-            currentDay
-        )
-        datePickerDialog.setCancelable(false)
-
-        datePickerDialog.show()
-    }
-
-//    private fun makeDays(x:Boolean){
-//        isSun = x
-//        isMon = x
-//        isTue = x
-//        isWed = x
-//        isThu = x
-//        isFri = x
-//        isSat = x
-//    }
 private fun createDatePickerDialog(textDate:TextView,onDateSetListener: (Date) -> Unit): DatePickerDialog {
     val calendar = Calendar.getInstance()
     return DatePickerDialog(
@@ -449,35 +466,6 @@ private fun createDatePickerDialog(textDate:TextView,onDateSetListener: (Date) -
         calendar.get(Calendar.DAY_OF_MONTH)
     )
 }
-//    private fun showCustomDatePicker(textDate:TextView,onDateSetListener: (Date) -> Unit): DatePickerDialog{
-//        val calendar = Calendar.getInstance()
-//        val datePickerDialog = DatePickerDialog(
-//            requireContext(),
-//            R.style.CustomDatePickerDialog, // Apply a custom style
-//            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-//                val selectedDate = calendar.time
-//                // Invoke the provided listener
-//                onDateSetListener.invoke(selectedDate)
-//                // Handle the selected date
-//                // Your code here
-//                if (isRightEndDate){
-//                    val selectedDate2 = "$dayOfMonth/${month+1}/$year"
-//                    textDate.text = selectedDate2
-//                }
-//            },
-//            calendar.get(Calendar.YEAR),
-//            calendar.get(Calendar.MONTH),
-//            calendar.get(Calendar.DAY_OF_MONTH)
-//        )
-//
-//        // Increase the size of the DatePickerDialog
-//        datePickerDialog.datePicker.layoutParams?.height = resources.getDimensionPixelSize(R.dimen.createDialogWidth)
-//        datePickerDialog.datePicker.layoutParams?.width = resources.getDimensionPixelSize(R.dimen.createDialogHeight)
-//
-//        return datePickerDialog
-//        datePickerDialog.show()
-//    }
-
 
 
 }

@@ -68,7 +68,6 @@ class IdentityTypeAdapter(val list:ArrayList<GetIdentityTypeData>, val applicati
         holder.craetedBy.text = "${item.createdBy} ${item.createdOn}"
         holder.lastModified.text = "${item.modifiedBy} ${item.modifiedOn}"
 
-        Toast.makeText(applicationContext, "item.identityTypeId", Toast.LENGTH_SHORT).show()
         holder.edit.setOnClickListener {
             openCreateNewDialog(applicationContext, item.shortCode, item.identityType, item.identityTypeId)
         }
@@ -102,7 +101,7 @@ class IdentityTypeAdapter(val list:ArrayList<GetIdentityTypeData>, val applicati
             dialog.dismiss()
         }
         save.setOnClickListener {
-            saveIdentity(context, dialog, shortCodeTxt, identityTypeTxt, identityTypeIdTxt)
+            saveIdentity(context, dialog, shortCode.text.toString(), identityTypeName.text.toString(), identityTypeIdTxt)
         }
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
