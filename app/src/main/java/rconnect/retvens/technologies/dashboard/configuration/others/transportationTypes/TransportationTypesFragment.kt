@@ -28,7 +28,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class TransportationTypesFragment : Fragment() {
+class TransportationTypesFragment : Fragment(), TransportationTypeAdapter.OnUpdate {
     private lateinit var binding : FragmentTransportationTypesBinding
 
     override fun onCreateView(
@@ -62,6 +62,7 @@ class TransportationTypesFragment : Fragment() {
                 if (response.isSuccessful) {
                     val adapter = TransportationTypeAdapter(response.body()!!.data, requireContext())
                     binding.reservationTypeRecycler.adapter = adapter
+                    adapter.setOnUpdateListener(this@TransportationTypesFragment)
                     adapter.notifyDataSetChanged()
                 } else {
                     openCreateNewDialog()
@@ -70,6 +71,7 @@ class TransportationTypesFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<GetTransportationTypeDataClass?>, t: Throwable) {
+                openCreateNewDialog()
                 Log.d("error", t.localizedMessage)
             }
         })
@@ -118,12 +120,16 @@ class TransportationTypesFragment : Fragment() {
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
                 Log.d( "transport", "${response.code()} ${response.message()}")
                 dialog.dismiss()
-//                setUpRecycler()
+                setUpRecycler()
             }
             override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
                 Log.d("saveReservationError", "${t.localizedMessage}")
             }
         })
+    }
+
+    override fun onUpdateTransportationType() {
+        setUpRecycler()
     }
 
 }

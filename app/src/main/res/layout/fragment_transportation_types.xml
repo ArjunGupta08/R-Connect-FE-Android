@@ -214,7 +214,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         style="@style/listTextHeading"
-                        android:text="Room Type Name"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:text="Transportation Type Name"
+                        app:layout_constraintEnd_toEndOf="@id/guide2"
                         app:layout_constraintStart_toStartOf="@id/guide1"
                         app:layout_constraintBottom_toBottomOf="@id/shortCode"
                         app:layout_constraintTop_toTopOf="@id/shortCode"/>

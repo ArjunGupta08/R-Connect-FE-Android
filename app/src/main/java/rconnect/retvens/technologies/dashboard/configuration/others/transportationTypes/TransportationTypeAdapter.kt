@@ -70,7 +70,6 @@ class TransportationTypeAdapter(val list:ArrayList<GetTransportationTypeData>, v
         holder.craetedBy.text = "${item.createdBy} ${item.createdOn}"
         holder.lastModified.text = "${item.modifiedBy} ${item.modifiedOn}"
 
-        Toast.makeText(applicationContext, "item.identityTypeId", Toast.LENGTH_SHORT).show()
         holder.edit.setOnClickListener {
             openCreateNewDialog(applicationContext, item.shortCode, item.transportationModeName, item.transportationId)
         }
@@ -102,7 +101,7 @@ class TransportationTypeAdapter(val list:ArrayList<GetTransportationTypeData>, v
             dialog.dismiss()
         }
         save.setOnClickListener {
-            saveIdentity(context, dialog, shortCodeTxt, transportationMode, identityTypeIdTxt)
+            saveIdentity(context, dialog, shortCode.text.toString(), transportationModeText.text.toString(), identityTypeIdTxt)
         }
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
