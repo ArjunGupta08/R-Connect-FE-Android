@@ -418,7 +418,8 @@ class SeasonsFragment : Fragment() {
     }
 
     private fun selectCard(day: TextView?) {
-        if (!selectedDays.contains(day?.text.toString())){
+        val days = day?.text.toString()
+        if (!selectedDays.contains(days) && days != "All Days" && days != "Weekdays" && days != "Weekends" && days != "Custom"){
             selectedDays.add(day?.text.toString())
         }
         day?.setBackgroundResource(R.drawable.rounded_border_black)
@@ -426,7 +427,8 @@ class SeasonsFragment : Fragment() {
     }
 
     private fun unSelectCard(day: TextView?) {
-        if (selectedDays.contains(day?.text.toString())){
+        val days = day?.text.toString()
+        if (selectedDays.contains(day?.text.toString()) && days != "All Days" && days != "Weekdays" && days != "Weekends" && days != "Custom"){
             selectedDays.remove(day?.text.toString())
         }
         day?.setBackgroundResource(R.drawable.rounded_border_light_black)
