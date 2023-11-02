@@ -420,7 +420,29 @@ class SeasonsFragment : Fragment() {
     private fun selectCard(day: TextView?) {
         val days = day?.text.toString()
         if (!selectedDays.contains(days) && days != "All Days" && days != "Weekdays" && days != "Weekends" && days != "Custom"){
-            selectedDays.add(day?.text.toString())
+            when (days) {
+                "Mon" -> {
+                    selectedDays.add("Monday")
+                }
+                "Tue" -> {
+                    selectedDays.add("Tuesday")
+                }
+                "Wed" -> {
+                    selectedDays.add("Wednesday")
+                }
+                "Thu" -> {
+                    selectedDays.add("Thursday")
+                }
+                "Fri" -> {
+                    selectedDays.add("Friday")
+                }
+                "Sat" -> {
+                    selectedDays.add("Saturday")
+                }
+                else -> {
+                    selectedDays.add("Sunday")
+                }
+            }
         }
         day?.setBackgroundResource(R.drawable.rounded_border_black)
         day?.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
@@ -429,7 +451,31 @@ class SeasonsFragment : Fragment() {
     private fun unSelectCard(day: TextView?) {
         val days = day?.text.toString()
         if (selectedDays.contains(day?.text.toString()) && days != "All Days" && days != "Weekdays" && days != "Weekends" && days != "Custom"){
-            selectedDays.remove(day?.text.toString())
+
+            when (days) {
+                "Mon" -> {
+                    selectedDays.remove("Monday")
+                }
+                "Tue" -> {
+                    selectedDays.remove("Tuesday")
+                }
+                "Wed" -> {
+                    selectedDays.remove("Wednesday")
+                }
+                "Thu" -> {
+                    selectedDays.remove("Thursday")
+                }
+                "Fri" -> {
+                    selectedDays.remove("Friday")
+                }
+                "Sat" -> {
+                    selectedDays.remove("Saturday")
+                }
+                else -> {
+                    selectedDays.remove("Sunday")
+                }
+            }
+
         }
         day?.setBackgroundResource(R.drawable.rounded_border_light_black)
         day?.setTextColor(ContextCompat.getColor(requireContext(), R.color.lightBlack))
