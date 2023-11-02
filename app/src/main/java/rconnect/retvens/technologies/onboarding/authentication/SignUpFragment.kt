@@ -2,6 +2,8 @@ package rconnect.retvens.technologies.onboarding.authentication
 
 import android.app.ActivityOptions
 import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -18,8 +20,12 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.PlacesClient
 import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.databinding.FragmentLoginBinding
+import rconnect.retvens.technologies.databinding.FragmentLoginMobileBinding
 import rconnect.retvens.technologies.databinding.FragmentSignUpBinding
+import rconnect.retvens.technologies.databinding.FragmentSignUpMobileBinding
 import rconnect.retvens.technologies.onboarding.FirstOnBoardingScreen
+import rconnect.retvens.technologies.utils.SharedPreference
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.shakeAnimation
 import retrofit2.Call
@@ -29,43 +35,110 @@ import java.lang.IndexOutOfBoundsException
 
 class SignUpFragment : Fragment() {
 
-    lateinit var binding : FragmentSignUpBinding
+    var binding : FragmentSignUpBinding? = null
+    private lateinit var bindingMobile : FragmentSignUpMobileBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentSignUpBinding.inflate(layoutInflater, container, false)
-        return binding.root
+        val currentOrientation = resources.configuration.orientation
+
+        when (currentOrientation) {
+            Configuration.ORIENTATION_LANDSCAPE -> {
+                // Landscape orientation
+
+                requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                binding = FragmentSignUpBinding.inflate(layoutInflater)
+                return binding!!.root
+            }
+            else -> {
+                // Portrait orientation (default or any other orientation)
+                requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+                bindingMobile = FragmentSignUpMobileBinding.inflate(layoutInflater)
+                return bindingMobile!!.root
+            }
+        }
+//        binding = FragmentSignUpBinding.inflate(layoutInflater, container, false)
+//        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.cardCreateAccount.setOnClickListener {
 
-            if (binding.firstNameText.text!!.isEmpty()){
-                shakeAnimation(binding.firstNameLayout,requireContext())
-                binding.firstNameLayout.error = ( "Please enter your First Name" )
-            } else if (binding.lastNameText.text!!.isEmpty()){
-                shakeAnimation(binding.lastNameLayout, requireContext())
-                binding.lastNameLayout.error = ("Please enter your Last Name")
-            } else if (binding.phoneText.text!!.isEmpty()){
-                shakeAnimation(binding.phoneLayout, requireContext())
-                binding.phoneLayout.error  = ( "Please enter your Phone number" )
-            } else if (binding.emailText.text!!.isEmpty()){
-                shakeAnimation(binding.emailLayout, requireContext())
-                binding.emailLayout.error = ("Please enter your email")
-            } else if (binding .passwordText.text!!.isEmpty()){
-                shakeAnimation(binding.passwordLayout, requireContext())
-                binding.passwordLayout.error = ("Please enter your password")
-            } else{
-                signUp()
+        if (binding is FragmentSignUpBinding) {
+
+            binding!!.cardCreateAccount.setOnClickListener {
+
+                if (binding!!.firstNameText.text!!.isEmpty()) {
+                    shakeAnimation(binding!!.firstNameLayout, requireContext())
+                    binding!!.firstNameLayout.error = ("Please enter your First Name")
+                } else if (binding!!.lastNameText.text!!.isEmpty()) {
+                    shakeAnimation(binding!!.lastNameLayout, requireContext())
+                    binding!!.lastNameLayout.error = ("Please enter your Last Name")
+                } else if (binding!!.phoneText.text!!.isEmpty()) {
+                    shakeAnimation(binding!!.phoneLayout, requireContext())
+                    binding!!.phoneLayout.error = ("Please enter your Phone number")
+                } else if (binding!!.emailText.text!!.isEmpty()) {
+                    shakeAnimation(binding!!.emailLayout, requireContext())
+                    binding!!.emailLayout.error = ("Please enter your email")
+                } else if (binding!!.passwordText.text!!.isEmpty()) {
+                    shakeAnimation(binding!!.passwordLayout, requireContext())
+                    binding!!.passwordLayout.error = ("Please enter your password")
+                } else {
+                    signUp()
+                }
             }
+
+            selectDesignation()
         }
+        else{
 
-        selectDesignation()
+            bindingMobile!!.cardCreateAccount.setOnClickListener {
 
+                if (bindingMobile!!.firstNameText.text!!.isEmpty()) {
+                    shakeAnimation(bindingMobile!!.firstNameLayout, requireContext())
+                    bindingMobile.lastNameLayout.isErrorEnabled = false
+                    bindingMobile.phoneLayout.isErrorEnabled = false
+                    bindingMobile!!.emailLayout.isErrorEnabled = false
+                    bindingMobile.passwordLayout.isErrorEnabled = false
+                    bindingMobile!!.firstNameLayout.error = ("Please enter your First Name")
+                } else if (bindingMobile!!.lastNameText.text!!.isEmpty()) {
+                    shakeAnimation(bindingMobile!!.lastNameLayout, requireContext())
+                    bindingMobile!!.firstNameLayout.isErrorEnabled = false
+                    bindingMobile.phoneLayout.isErrorEnabled = false
+                    bindingMobile!!.emailLayout.isErrorEnabled = false
+                    bindingMobile.passwordLayout.isErrorEnabled = false
+                    bindingMobile!!.lastNameLayout.error = ("Please enter your Last Name")
+                } else if (bindingMobile!!.phoneText.text!!.isEmpty()) {
+                    shakeAnimation(bindingMobile!!.phoneLayout, requireContext())
+                    bindingMobile!!.firstNameLayout.isErrorEnabled = false
+                    bindingMobile.lastNameLayout.isErrorEnabled = false
+                    bindingMobile!!.emailLayout.isErrorEnabled = false
+                    bindingMobile.passwordLayout.isErrorEnabled = false
+                    bindingMobile!!.phoneLayout.error = ("Please enter your Phone number")
+                } else if (bindingMobile!!.emailText.text!!.isEmpty()) {
+                    shakeAnimation(bindingMobile!!.emailLayout, requireContext())
+                    bindingMobile!!.firstNameLayout.isErrorEnabled = false
+                    bindingMobile.lastNameLayout.isErrorEnabled = false
+                    bindingMobile.phoneLayout.isErrorEnabled = false
+                    bindingMobile.passwordLayout.isErrorEnabled = false
+                    bindingMobile!!.emailLayout.error = ("Please enter your email")
+                } else if (bindingMobile!!.passwordText.text!!.isEmpty()) {
+                    shakeAnimation(bindingMobile!!.passwordLayout, requireContext())
+                    bindingMobile!!.firstNameLayout.isErrorEnabled = false
+                    bindingMobile.lastNameLayout.isErrorEnabled = false
+                    bindingMobile.phoneLayout.isErrorEnabled = false
+                    bindingMobile!!.emailLayout.isErrorEnabled = false
+                    bindingMobile!!.passwordLayout.error = ("Please enter your password")
+                } else {
+                    signUpMobile()
+                }
+            }
+
+
+        }
     }
 
 
@@ -75,7 +148,7 @@ class SignUpFragment : Fragment() {
 
 
         // Initialize the AutoCompleteTextView and adapter
-        val autoCompleteTextView = binding.designationText
+        val autoCompleteTextView = binding!!.designationText
         val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line)
         autoCompleteTextView.setAdapter(adapter)
 
@@ -121,6 +194,8 @@ class SignUpFragment : Fragment() {
                             adapter.addAll(suggestionList)
                             autoCompleteTextView.setAdapter(adapter)
                             adapter.notifyDataSetChanged()
+                            requireActivity().finish()
+
 
                         }else{
                             Log.e("error",response.code().toString())
@@ -143,12 +218,12 @@ class SignUpFragment : Fragment() {
 
         val signUpApi = RetrofitObject.retrofit.signUp(
             SignUpDataClass(
-            binding.firstNameText.text.toString(),
-            binding.lastNameText.text.toString(),
-            binding.designationText.text.toString(),
-            binding.phoneText.text.toString(),
-            binding.emailText.text.toString(),
-            binding.passwordText.text.toString()
+                binding!!.firstNameText.text.toString(),
+                binding!!.lastNameText.text.toString(),
+                binding!!.designationText.text.toString(),
+                binding!!.phoneText.text.toString(),
+                binding!!.emailText.text.toString(),
+                binding!!.passwordText.text.toString()
         )
         )
 
@@ -163,7 +238,48 @@ class SignUpFragment : Fragment() {
                     Toast.makeText(requireContext(),response.message,Toast.LENGTH_SHORT).show()
                     val intent = Intent(requireContext(), FirstOnBoardingScreen::class.java)
                     startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(requireActivity(),
-                        android.util.Pair(binding.cardCreateAccount,"Btn")).toBundle())
+                        android.util.Pair(binding!!.cardCreateAccount,"Btn")).toBundle())
+                    requireActivity().finish()
+                    SharedPreference(requireContext()).saveSignUpFlagValue(true)
+                    requireActivity().finish()
+                }else{
+                    Log.e("error",response.body().toString())
+                }
+            }
+
+            override fun onFailure(call: Call<SignUpResponse?>, t: Throwable) {
+                Log.e("error",t.message.toString())
+            }
+        })
+
+    }
+    private fun signUpMobile() {
+
+        val signUpApi = RetrofitObject.retrofit.signUp(
+            SignUpDataClass(
+                bindingMobile!!.firstNameText.text.toString(),
+                bindingMobile!!.lastNameText.text.toString(),
+                bindingMobile!!.designationText.text.toString(),
+                bindingMobile!!.phoneText.text.toString(),
+                bindingMobile!!.emailText.text.toString(),
+                bindingMobile!!.passwordText.text.toString()
+        )
+        )
+
+        signUpApi.enqueue(object : Callback<SignUpResponse?> {
+            override fun onResponse(
+                call: Call<SignUpResponse?>,
+                response: Response<SignUpResponse?>
+            ) {
+                if (response.isSuccessful){
+                    val response = response.body()!!
+                    UserSessionManager(requireContext()).saveUserData(response.userId, "")
+                    Toast.makeText(requireContext(),response.message,Toast.LENGTH_SHORT).show()
+                    val intent = Intent(requireContext(), FirstOnBoardingScreen::class.java)
+                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(requireActivity(),
+                        android.util.Pair(bindingMobile!!.cardCreateAccount,"Btn")).toBundle())
+                    requireActivity().finish()
+                    SharedPreference(requireContext()).saveSignUpFlagValue(true)
                 }else{
                     Log.e("error",response.body().toString())
                 }

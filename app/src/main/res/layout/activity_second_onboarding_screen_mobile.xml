@@ -118,11 +118,11 @@
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cardGallery"
-                            android:layout_width="120dp"
+                            android:layout_width="100dp"
                             android:layout_height="0dp"
                             style="@style/CardViewTheme"
                             android:layout_marginStart="21dp"
-                            android:layout_marginTop="19dp"
+                            android:layout_marginTop="29dp"
                             app:cardElevation="2dp"
                             app:cardCornerRadius="10dp"
                             app:strokeWidth="1dp"
@@ -136,8 +136,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:src="@drawable/svg_gallery"
+                                android:layout_gravity="center"
                                 android:scaleType="centerCrop"
-                                android:layout_margin="10dp"/>
+                                android:layout_margin="12sp"/>
 
                         </com.google.android.material.card.MaterialCardView>
 
@@ -147,7 +148,6 @@
                             app:layout_constraintTop_toTopOf="@id/cardGallery"
                             app:layout_constraintBottom_toBottomOf="@id/cardGallery"
                             app:layout_constraintStart_toEndOf="@id/cardGallery"
-                            android:layout_marginEnd="21dp"
                             android:textSize="@dimen/H5"
                             android:textColor="@color/lightBlack"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -204,6 +204,7 @@
                                 android:id="@+id/property_text"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:textSize="@dimen/H5"
                                 android:fontFamily="@font/roboto"
                                 android:inputType="text"
                                 android:textColorHint="@color/secondary"
@@ -226,6 +227,7 @@
                                 android:id="@+id/propertyTypeText"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:textSize="@dimen/H5"
                                 android:fontFamily="@font/roboto"
                                 android:textColor="@color/secondary"
                                 android:editable="false"
@@ -252,6 +254,7 @@
                                 android:id="@+id/address_text"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:textSize="@dimen/H5"
                                 android:fontFamily="@font/roboto"
                                 android:inputType="text"
                                 android:paddingStart="15dp"
@@ -279,7 +282,7 @@
                                 android:layout_height="match_parent"
                                 android:fontFamily="@font/roboto"
                                 android:inputType="text"
-                                android:textSize="@dimen/H4"
+                                android:textSize="@dimen/H5"
                                 android:paddingStart="15dp"
                                 android:textColorHint="@color/secondary"
                                 android:textColor="@color/secondary"/>
@@ -306,7 +309,7 @@
                                 android:layout_height="match_parent"
                                 android:fontFamily="@font/roboto"
                                 android:inputType="text"
-                                android:textSize="@dimen/H4"
+                                android:textSize="@dimen/H5"
                                 android:paddingStart="15dp"
                                 android:textColorHint="@color/secondary"
                                 android:textColor="@color/secondary"/>
@@ -318,7 +321,7 @@
                             android:layout_width="0dp"
                             android:layout_height="50dp"
                             style="@style/TextInputLayoutStyle"
-                            android:hint="Property Name"
+                            android:hint="Registration Number"
                             android:layout_marginTop="10dp"
                             android:layout_marginHorizontal="21dp"
                             app:endIconMode="clear_text"
@@ -332,6 +335,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:fontFamily="@font/roboto"
+                                android:textSize="@dimen/H5"
                                 android:inputType="text"
                                 android:textColorHint="@color/secondary"
                                 android:textColor="@color/secondary" />
@@ -356,6 +360,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:fontFamily="@font/roboto"
+                                android:textSize="@dimen/H5"
                                 android:inputType="text"
                                 android:textColorHint="@color/secondary"
                                 android:textColor="@color/secondary" />

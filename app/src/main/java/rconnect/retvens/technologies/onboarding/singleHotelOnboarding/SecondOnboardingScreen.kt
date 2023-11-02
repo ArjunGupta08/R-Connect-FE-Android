@@ -2,6 +2,8 @@ package rconnect.retvens.technologies.onboarding.singleHotelOnboarding
 
 import android.app.ActivityOptions
 import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -24,8 +26,12 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.databinding.ActivityFirstOnBoardingScreenBinding
+import rconnect.retvens.technologies.databinding.ActivityFirstOnboardingScreenMobileBinding
 import rconnect.retvens.technologies.databinding.ActivitySecondOnboardingScreenBinding
+import rconnect.retvens.technologies.databinding.ActivitySecondOnboardingScreenMobileBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
+import rconnect.retvens.technologies.utils.SharedPreference
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.fetchCountryName
 import rconnect.retvens.technologies.utils.prepareFilePart
@@ -39,7 +45,8 @@ class SecondOnboardingScreen : AppCompatActivity() {
 
     val countryList = ArrayList<String>()
     val fullAddressList = ArrayList<String>()
-    private lateinit var binding : ActivitySecondOnboardingScreenBinding
+    private var binding : ActivitySecondOnboardingScreenBinding? =null
+    private lateinit var bindingMobile:ActivitySecondOnboardingScreenMobileBinding
 
     private var imageUri: Uri ?= null
     private var PICK_IMAGE_REQUEST_CODE : Int = 0
@@ -49,10 +56,29 @@ class SecondOnboardingScreen : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySecondOnboardingScreenBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        val currentOrientation = resources.configuration.orientation
+        when(currentOrientation){
 
-        binding.demoBackbtn.setOnClickListener {
+            Configuration.ORIENTATION_LANDSCAPE -> {
+                // Landscape orientation
+
+                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                binding = ActivitySecondOnboardingScreenBinding.inflate(layoutInflater)
+                setContentView(binding!!.root)
+            }
+            else -> {
+                // Portrait orientation (default or any other orientation)
+                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+                bindingMobile = ActivitySecondOnboardingScreenMobileBinding.inflate(layoutInflater)
+                setContentView(bindingMobile.root)
+            }
+        }
+//        binding = ActivitySecondOnboardingScreenBinding.inflate(layoutInflater)
+//        setContentView(binding.root)
+
+        if (binding is ActivitySecondOnboardingScreenBinding){
+
+        binding!!.demoBackbtn.setOnClickListener {
             onBackPressed()
         }
 
@@ -63,17 +89,17 @@ class SecondOnboardingScreen : AppCompatActivity() {
         // ------------ Display the country name using timezone---------
         val countryName = fetchCountryName()
         if (countryName != "Unknown"){
-            binding.countryText.setText(countryName)
+            binding!!.countryText.setText(countryName)
         }
 
         // ------------ Display the Location Suggestions ---------
 //        autoFillLocationSuggestion(this, fullAddressList, binding.addressText, binding.stateText, binding.cityText)
 
-        binding.cardSingleNext.setOnClickListener {
+        binding!!.cardSingleNext.setOnClickListener {
 
-            if (binding.propertyText.text!!.isEmpty()) {
-                shakeAnimation(binding.propertyLayout,applicationContext)
-                binding.propertyLayout.error = "Please enter property name"
+            if (binding!!.propertyText.text!!.isEmpty()) {
+                shakeAnimation(binding!!.propertyLayout,applicationContext)
+                binding!!.propertyLayout.error = "Please enter property name"
 
             }
 //            else if (binding.propertyTypeText.text!!.isEmpty()) {
@@ -82,15 +108,15 @@ class SecondOnboardingScreen : AppCompatActivity() {
 //                binding.propertyTypeLayout.isErrorEnabled = false
 //
 //            }
-            else if (binding.addressText.text!!.isEmpty()) {
-                binding.addressLayout.error = "Please enter property address"
-                shakeAnimation(binding.addressLayout,applicationContext)
-                binding.propertyLayout.isErrorEnabled = false
+            else if (binding!!.addressText.text!!.isEmpty()) {
+                binding!!.addressLayout.error = "Please enter property address"
+                shakeAnimation(binding!!.addressLayout,applicationContext)
+                binding!!.propertyLayout.isErrorEnabled = false
             }
-            else if (binding.pincodeText.text!!.isEmpty()) {
-                binding.pincodeLayout.error = "Please enter pin code"
-                shakeAnimation(binding.pincodeLayout,applicationContext)
-                binding.addressLayout.isErrorEnabled = false
+            else if (binding!!.pincodeText.text!!.isEmpty()) {
+                binding!!.pincodeLayout.error = "Please enter pin code"
+                shakeAnimation(binding!!.pincodeLayout,applicationContext)
+                binding!!.addressLayout.isErrorEnabled = false
             }
 //            else if (binding.cityText.text!!.isEmpty()) {
 //                binding.cityLayout.error = "Please enter city"
@@ -111,19 +137,77 @@ class SecondOnboardingScreen : AppCompatActivity() {
                 sendData()
             }
         }
+        }
+        else{
+
+//            Mobile works starts here
+
+            Toast.makeText(applicationContext, "mobile", Toast.LENGTH_SHORT).show()
+
+            imageSelectionMobile()
+
+            placesAPIMobile()
+
+            // ------------ Display the country name using timezone---------
+            val countryName = fetchCountryName()
+            if (countryName != "Unknown"){
+                bindingMobile!!.countryText.setText(countryName)
+            }
+
+            // ------------ Display the Location Suggestions ---------
+//        autoFillLocationSuggestion(this, fullAddressList, binding.addressText, binding.stateText, binding.cityText)
+
+            bindingMobile!!.cardSingleNext.setOnClickListener {
+
+                if (bindingMobile!!.propertyText.text!!.isEmpty()) {
+                    shakeAnimation(bindingMobile!!.propertyLayout,applicationContext)
+                    bindingMobile!!.propertyLayout.error = "Please enter property name"
+
+                }
+//            else if (bindingMobile.propertyTypeText.text!!.isEmpty()) {
+//                    bindingMobile.propertyTypeLayout.error = "Please enter property type"
+//                shakeAnimation(bindingMobile.propertyTypeLayout,applicationContext)
+//                    bindingMobile.propertyTypeLayout.isErrorEnabled = false
+//            }
+                else if (bindingMobile!!.addressText.text!!.isEmpty()) {
+                    bindingMobile!!.addressLayout.error = "Please enter property address"
+                    shakeAnimation(binding!!.addressLayout,applicationContext)
+                    bindingMobile!!.propertyLayout.isErrorEnabled = false
+                }
+//            else if (binding.cityText.text!!.isEmpty()) {
+//                binding.cityLayout.error = "Please enter city"
+//                shakeAnimation(binding.cityLayout,applicationContext)
+////                binding.cityLayout.isErrorEnabled = false
+//            }
+//            else if (binding.stateText.text!!.isEmpty()) {
+//                binding.stateLayout.error = "Please enter state"
+//                shakeAnimation(binding.stateLayout,applicationContext)
+////                binding.stateLayout.isErrorEnabled = false
+//            }
+//            else if (binding.currencyText.text!!.isEmpty()) {
+//                binding.currencyLayout.error = "Please enter currency"
+//                shakeAnimation(binding.currencyLayout,applicationContext)
+////                binding.currencyLayout.isErrorEnabled = false
+//            }
+                else {
+                    sendDataMobile()
+                }
+            }
+
+        }
     }
 
     private fun sendData() {
         val userId = UserSessionManager(this).getUserId().toString()
         val propertyTypeSOC = "Single"
-        val propertyName = binding.propertyText.text.toString()
-        val propertyType = binding.propertyTypeText.text.toString()
-        val websiteUrl = binding.websiteText.text.toString()
-        val propertyAddress1 = binding.addressText.text.toString()
-        val country = binding.countryText.text.toString()
-        val state = binding.stateText.text.toString()
-        val city = binding.cityText.text.toString()
-        val postCode = binding.pincodeText.text.toString()
+        val propertyName = binding!!.propertyText.text.toString()
+        val propertyType = binding!!.propertyTypeText.text.toString()
+        val websiteUrl = binding!!.websiteText.text.toString()
+        val propertyAddress1 = binding!!.addressText.text.toString()
+        val country = binding!!.countryText.text.toString()
+        val state = binding!!.stateText.text.toString()
+        val city = binding!!.cityText.text.toString()
+        val postCode = binding!!.pincodeText.text.toString()
 
         if (imageUri != null) {
             val hotelLogo = prepareFilePart(imageUri!!, "hotelLogo", this)
@@ -160,9 +244,9 @@ class SecondOnboardingScreen : AppCompatActivity() {
 
                         val options = ActivityOptions.makeSceneTransitionAnimation(
                             this@SecondOnboardingScreen,
-                            android.util.Pair(binding.logo, "logo_img"),
-                            android.util.Pair(binding.onBoardingImg, "onBoardingImg"),
-                            android.util.Pair(binding.demoBackbtn, "backBtn")
+                            android.util.Pair(binding!!.logo, "logo_img"),
+                            android.util.Pair(binding!!.onBoardingImg, "onBoardingImg"),
+                            android.util.Pair(binding!!.demoBackbtn, "backBtn")
                         ).toBundle()
                         startActivity(intent, options)
 
@@ -205,14 +289,138 @@ class SecondOnboardingScreen : AppCompatActivity() {
                         val intent =
                             Intent(applicationContext, ThirdSingleOnboardingScreen::class.java)
                         intent.putExtra("isSingle", true)
+                        finish()
 
                         val options = ActivityOptions.makeSceneTransitionAnimation(
                             this@SecondOnboardingScreen,
-                            android.util.Pair(binding.logo, "logo_img"),
-                            android.util.Pair(binding.onBoardingImg, "onBoardingImg"),
-                            android.util.Pair(binding.demoBackbtn, "backBtn")
+                            android.util.Pair(binding!!.logo, "logo_img"),
+                            android.util.Pair(binding!!.onBoardingImg, "onBoardingImg"),
+                            android.util.Pair(binding!!.demoBackbtn, "backBtn")
                         ).toBundle()
                         startActivity(intent, options)
+                    } else {
+                        Log.d("Error Onboarding", response.code().toString())
+                    }
+                }
+                override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                    Log.d("Error Onboarding", t.localizedMessage.toString())
+                }
+            })
+        }
+
+    }
+    private fun sendDataMobile() {
+        val userId = UserSessionManager(this).getUserId().toString()
+        val propertyTypeSOC = "Single"
+        val propertyName = bindingMobile!!.propertyText.text.toString()
+        val propertyType = bindingMobile!!.propertyTypeText.text.toString()
+        val websiteUrl = bindingMobile!!.websiteText.text.toString()
+        val propertyAddress1 = bindingMobile!!.addressText.text.toString()
+        val country = bindingMobile!!.countryText.text.toString()
+        val state = bindingMobile!!.stateText.text.toString()
+//        val city = bindingMobile!!.cityText.text.toString()
+//        val postCode = bindingMobile!!.pincodeText.text.toString()
+
+        if (imageUri != null) {
+            val hotelLogo = prepareFilePart(imageUri!!, "hotelLogo", this)
+            val firstOnboardingApi = RetrofitObject.retrofit.firstOnboarding(
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyTypeSOC),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), websiteUrl),
+                hotelLogo!!,
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyType),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyAddress1),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyName),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), "postCode"),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), state),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), "city"),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), country)
+            )
+
+            firstOnboardingApi.enqueue(object : Callback<ResponseData?> {
+                override fun onResponse(
+                    call: Call<ResponseData?>,
+                    response: Response<ResponseData?>
+                ) {
+                    if (response.isSuccessful) {
+                        val respons = response.body()!!
+                        Toast.makeText(
+                            applicationContext,
+                            respons.message.toString(),
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        val intent =
+                            Intent(applicationContext, ThirdSingleOnboardingScreen::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+//                        intent.putExtra("isSingle", true)
+                        finish()
+                        startActivity(intent)
+                        SharedPreference(applicationContext).saveSingleFlagValue(true)
+                        SharedPreference(applicationContext).saveSignUpFlagValue(false)
+
+//                        val options = ActivityOptions.makeSceneTransitionAnimation(
+//                            this@SecondOnboardingScreen,
+//                            android.util.Pair(binding!!.logo, "logo_img"),
+//                            android.util.Pair(binding!!.onBoardingImg, "onBoardingImg"),
+//                            android.util.Pair(binding!!.demoBackbtn, "backBtn")
+//                        ).toBundle()
+//                        startActivity(intent, options)
+
+                    }
+                    else {
+                        Log.d("Error Onboarding", response.code().toString())
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                    Log.d("Error Onboarding", t.localizedMessage.toString())
+                }
+            })
+        }else {
+            val firstOnboardingApi = RetrofitObject.retrofit.firstOnboardingWithoutImage(
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyTypeSOC),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), websiteUrl),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyType),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyAddress1),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyName),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), "postCode"),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), state),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), "city"),
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), country)
+            )
+
+            firstOnboardingApi.enqueue(object : Callback<ResponseData?> {
+                override fun onResponse(
+                    call: Call<ResponseData?>,
+                    response: Response<ResponseData?>
+                ) {
+                    if (response.isSuccessful) {
+                        val respons = response.body()!!
+                        Toast.makeText(
+                            applicationContext,
+                            respons.message.toString(),
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        val intent =
+                            Intent(applicationContext, ThirdSingleOnboardingScreen::class.java)
+//                        intent.putExtra("isSingle", true)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+
+                        SharedPreference(applicationContext).saveSingleFlagValue(true)
+                        SharedPreference(applicationContext).saveSignUpFlagValue(false)
+                        startActivity(intent)
+
+//
+//                        val options = ActivityOptions.makeSceneTransitionAnimation(
+//                            this@SecondOnboardingScreen,
+//                            android.util.Pair(binding!!.logo, "logo_img"),
+//                            android.util.Pair(binding!!.onBoardingImg, "onBoardingImg"),
+//                            android.util.Pair(binding!!.demoBackbtn, "backBtn")
+//                        ).toBundle()
+//                        startActivity(intent, options)
                     } else {
                         Log.d("Error Onboarding", response.code().toString())
                     }
@@ -234,7 +442,7 @@ class SecondOnboardingScreen : AppCompatActivity() {
         val placesClient: PlacesClient = Places.createClient(this)
 
         // Initialize the AutoCompleteTextView and adapter
-        val autoCompleteTextView = binding.addressText
+        val autoCompleteTextView = binding!!.addressText
         val adapter = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line)
         autoCompleteTextView.setAdapter(adapter)
 
@@ -248,9 +456,75 @@ class SecondOnboardingScreen : AppCompatActivity() {
             println("Last Three Words: $lastThreeWords")
             try {
                 autoCompleteTextView.setText(removeLastThreeWords(selectedAddress))
-                binding.cityText.setText(lastThreeWords.get(0))
-                binding.stateText.setText(lastThreeWords.get(1))
-                binding.countryText.setText(lastThreeWords.get(2))
+                binding!!.cityText.setText(lastThreeWords.get(0))
+                binding!!.stateText.setText(lastThreeWords.get(1))
+                binding!!.countryText.setText(lastThreeWords.get(2))
+            } catch (e : IndexOutOfBoundsException){
+                println(e.toString())
+            }
+        }
+
+        autoCompleteTextView.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Create a FindAutocompletePredictionsRequest
+                val request = FindAutocompletePredictionsRequest.builder()
+                    .setSessionToken(AutocompleteSessionToken.newInstance())
+                    .setQuery(s.toString())
+                    .build()
+
+                // Perform the autocomplete request
+                placesClient.findAutocompletePredictions(request).addOnSuccessListener { response ->
+                    val predictions = response.autocompletePredictions
+                    val suggestionList = mutableListOf<String>()
+
+                    for (prediction in predictions) {
+                        suggestionList.add(prediction.getFullText(null).toString())
+                        Log.d("suggetion", suggestionList.toString())
+                    }
+
+                    // Update the adapter with the new suggestions
+                    adapter.clear()
+                    adapter.addAll(suggestionList)
+                    autoCompleteTextView.setAdapter(adapter)
+                    adapter.notifyDataSetChanged()
+                }.addOnFailureListener { exception ->
+                    println(exception.toString())
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+        })
+    }
+    private fun placesAPIMobile() {
+
+        // Initialize Places API
+        Places.initialize(applicationContext, "AIzaSyBRAnfSXzM-fQXpa751GkbMQDEuavUSDP0")
+
+        // Create a PlacesClient
+        val placesClient: PlacesClient = Places.createClient(this)
+
+        // Initialize the AutoCompleteTextView and adapter
+        val autoCompleteTextView = bindingMobile!!.addressText
+        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line)
+        autoCompleteTextView.setAdapter(adapter)
+
+        // Set up the Autocomplete request
+        autoCompleteTextView.threshold = 1  // Minimum characters to start autocomplete
+        autoCompleteTextView.setOnItemClickListener { _, _, position, _ ->
+            val selectedAddress = adapter.getItem(position).toString()
+
+            // Handle the selected address as needed
+            val lastThreeWords = extractLastThreeWords(selectedAddress)
+            println("Last Three Words: $lastThreeWords")
+            try {
+                autoCompleteTextView.setText(removeLastThreeWords(selectedAddress))
+//                bindingMobile!!.cityText.setText(lastThreeWords.get(0))
+                bindingMobile!!.stateText.setText(lastThreeWords.get(1))
+                bindingMobile!!.countryText.setText(lastThreeWords.get(2))
             } catch (e : IndexOutOfBoundsException){
                 println(e.toString())
             }
@@ -311,39 +585,74 @@ class SecondOnboardingScreen : AppCompatActivity() {
 
     private fun imageSelection() {
 
-        binding.replaceImage.setOnClickListener {
+        binding!!.replaceImage.setOnClickListener {
             openGallery()
-            rightToLeftEditImageAnimation(binding.imageEditLayout)
+            rightToLeftEditImageAnimation(binding!!.imageEditLayout)
         }
 
-        binding.removeImage.setOnClickListener {
+        binding!!.removeImage.setOnClickListener {
             imageUri = Uri.EMPTY
-            binding.galleryImg.setImageResource(R.drawable.svg_gallery)
-            rightToLeftEditImageAnimation(binding.imageEditLayout)
+            binding!!.galleryImg.setImageResource(R.drawable.svg_gallery)
+            rightToLeftEditImageAnimation(binding!!.imageEditLayout)
             isImageSelected = false
-            setMargins(binding.galleryImg, 15, 15, 15, 15)
+            setMargins(binding!!.galleryImg, 15, 15, 15, 15)
         }
 
-        binding.cardGallery.setOnClickListener {
+        binding!!.cardGallery.setOnClickListener {
             if (!isImageSelected){
                 openGallery()
             } else {
                 if (!isImageEdit) {
-                    binding.imageEditLayout.isVisible = true
+                    binding!!.imageEditLayout.isVisible = true
                     // load the animation
                     val animFadein: Animation = AnimationUtils.loadAnimation(
                         applicationContext,
                         R.anim.l_to_r_in_animation
                     )
                     // start the animation
-                    binding.imageEditLayout.startAnimation(animFadein)
+                    binding!!.imageEditLayout.startAnimation(animFadein)
                     isImageEdit = true
                 } else {
-                    rightToLeftEditImageAnimation(binding.imageEditLayout)
+                    rightToLeftEditImageAnimation(binding!!.imageEditLayout)
                 }
             }
         }
 
+    }
+    private fun imageSelectionMobile() {
+
+        bindingMobile!!.replaceImage.setOnClickListener {
+            openGallery()
+            rightToLeftEditImageAnimation(bindingMobile!!.imageEditLayout)
+        }
+
+        bindingMobile!!.removeImage.setOnClickListener {
+            imageUri = Uri.EMPTY
+            bindingMobile!!.galleryImg.setImageResource(R.drawable.svg_gallery)
+            rightToLeftEditImageAnimation(bindingMobile!!.imageEditLayout)
+            isImageSelected = false
+            setMargins(bindingMobile!!.galleryImg, 15, 15, 15, 15)
+        }
+
+        bindingMobile!!.cardGallery.setOnClickListener {
+            if (!isImageSelected){
+                openGallery()
+            } else {
+                if (!isImageEdit) {
+                    bindingMobile!!.imageEditLayout.isVisible = true
+                    // load the animation
+                    val animFadein: Animation = AnimationUtils.loadAnimation(
+                        applicationContext,
+                        R.anim.l_to_r_in_animation
+                    )
+                    // start the animation
+                    bindingMobile!!.imageEditLayout.startAnimation(animFadein)
+                    isImageEdit = true
+                } else {
+                    rightToLeftEditImageAnimation(bindingMobile!!.imageEditLayout)
+                }
+            }
+        }
     }
 
     private fun openGallery() {
@@ -359,8 +668,14 @@ class SecondOnboardingScreen : AppCompatActivity() {
             if (imageUri != null) {
                 try {
                     isImageSelected = true
-                    setMargins(binding.galleryImg, 0, 0, 0, 0)
-                    binding.galleryImg.setImageURI(imageUri)
+                    if (binding is ActivitySecondOnboardingScreenBinding){
+                    setMargins(binding!!.galleryImg, 0, 0, 0, 0)
+                    binding!!.galleryImg.setImageURI(imageUri)
+                    }
+                    else{
+                        setMargins(bindingMobile.galleryImg,0,0,0,0)
+                        bindingMobile.galleryImg.setImageURI(imageUri)
+                    }
                 }catch(e:RuntimeException){
                     Log.d("cropperOnPersonal", e.toString())
                 }catch(e:ClassCastException){
@@ -379,7 +694,7 @@ class SecondOnboardingScreen : AppCompatActivity() {
         )
         // start the animation
         view.startAnimation(animSlideIn)
-        binding.imageEditLayout.isVisible = false
+        bindingMobile!!.imageEditLayout.isVisible = false
     }
 
     private fun setMargins(view: View, left: Int, top: Int, right: Int, bottom: Int) {

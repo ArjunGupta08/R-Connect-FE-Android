@@ -25,8 +25,9 @@
                     android:text="@string/let_s_create_your_property_chain_s_profile"
                     android:textColor="@color/black"
                     android:textFontWeight="500"
-                    android:textSize="@dimen/H2"
-                    android:layout_marginStart="21dp"
+                    android:textSize="@dimen/H3"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,14 +45,14 @@
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/cardImg"
                         style="@style/CardViewTheme"
-                        android:layout_width="120dp"
+                        android:layout_width="100dp"
                         android:layout_height="0dp"
                         android:layout_marginTop="19dp"
                         android:layout_marginEnd="60dp"
                         app:cardBackgroundColor="@color/white"
                         app:cardCornerRadius="10dp"
                         app:cardElevation="2dp"
-                        android:layout_marginStart="21dp"
+                        android:layout_marginStart="16dp"
                         app:layout_constraintDimensionRatio="1:1"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -61,7 +62,8 @@
                             android:id="@+id/selectImg"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_margin="10dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="12sp"
                             android:scaleType="centerCrop"
                             android:src="@drawable/svg_gallery" />
 
@@ -73,11 +75,10 @@
                         app:layout_constraintTop_toTopOf="@id/cardImg"
                         app:layout_constraintBottom_toBottomOf="@id/cardImg"
                         app:layout_constraintStart_toEndOf="@id/cardImg"
-                        android:layout_marginEnd="21dp"
                         android:textSize="@dimen/H5"
                         android:textColor="@color/lightBlack"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:text="Upload Property Chain Logo or Image"/>
+                        android:text="Upload Property Chain Logo or \nImage"/>
 
                     <LinearLayout
                         android:id="@+id/imageEditLayout"
@@ -119,7 +120,7 @@
                         android:layout_marginTop="20dp"
                         android:hint="Property Chain Name"
                         app:endIconMode="clear_text"
-                        android:layout_marginHorizontal="21dp"
+                        android:layout_marginHorizontal="16dp"
                         app:endIconTint="@color/black"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -130,6 +131,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
+                            android:textSize="@dimen/H5"
                             android:inputType="text"
                             android:textColor="@color/secondary"
                             android:textColorHint="@color/secondary" />
@@ -139,7 +141,7 @@
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/nop"
                         android:layout_width="0dp"
-                        android:layout_height="47dp"
+                        android:layout_height="45dp"
                         android:layout_marginTop="15dp"
                         app:cardBackgroundColor="@color/white"
                         app:cardCornerRadius="10dp"
@@ -161,7 +163,7 @@
                                 android:layout_marginStart="16dp"
                                 android:text="Number of Properties"
                                 android:textColor="@color/lightBlack"
-                                android:textSize="16sp"
+                                android:textSize="@dimen/H5"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -171,14 +173,15 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="10dp"
                                 android:orientation="horizontal"
+                                android:gravity="center_vertical"
                                 app:layout_constraintBottom_toBottomOf="@id/rate"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="@id/rate">
 
                                 <ImageView
                                     android:id="@+id/remove"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_width="19dp"
+                                    android:layout_height="19dp"
                                     android:src="@drawable/svg_remove" />
 
                                 <EditText
@@ -192,12 +195,12 @@
                                     android:textAlignment="center"
                                     android:maxLength="3"
                                     android:textColor="@color/black"
-                                    android:textSize="@dimen/H4" />
+                                    android:textSize="@dimen/H5" />
 
                                 <ImageView
                                     android:id="@+id/add"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_width="19dp"
+                                    android:layout_height="19dp"
                                     android:src="@drawable/svg_add" />
 
                             </LinearLayout>
@@ -223,6 +226,7 @@
                             android:id="@+id/TaxNameText"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:textSize="@dimen/H5"
                             android:fontFamily="@font/roboto"
                             android:inputType="text"
                             android:textColor="@color/secondary"
@@ -247,6 +251,7 @@
                             android:layout_height="match_parent"
                             android:clickable="true"
                             android:editable="false"
+                            android:textSize="@dimen/H5"
                             android:focusable="false"
                             android:fontFamily="@font/roboto"
                             android:inputType="text"
@@ -274,6 +279,7 @@
                             android:clickable="true"
                             android:text="₹ INR"
                             android:editable="false"
+                            android:textSize="@dimen/H5"
                             android:focusable="false"
                             android:fontFamily="@font/roboto"
                             android:inputType="text"

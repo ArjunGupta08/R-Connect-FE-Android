@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -57,6 +58,7 @@ class LoginScreen : AppCompatActivity() {
 
 
         if (binding is ActivityLoginScreenBinding){
+            Toast.makeText(applicationContext, "Tablet", Toast.LENGTH_SHORT).show()
 
             parentLayout = findViewById(R.id.parent_layout)
 
@@ -118,11 +120,30 @@ class LoginScreen : AppCompatActivity() {
 
             }
         }else{
-            replaceFragment(LoginFragment())
+            Toast.makeText(applicationContext, "Mobile", Toast.LENGTH_SHORT).show()
+            replaceMobileFragment(LoginFragment())
+            bindingMobile.openLoginScreen.setOnClickListener {
+                replaceMobileFragment(LoginFragment())
+                leftInAnimation( bindingMobile!!.authFragContainerMobile, applicationContext)
+                setText(bindingMobile!!.openSignUpScreen,"New here?\nSign up",12f,roboto,R.color.black,R.drawable.mobile_corner_right_grey_background)
+
+                setText(bindingMobile!!.openLoginScreen,"Log in",14f,robotoBold,R.color.white,R.drawable.mobile_corner_left_black_background)
+                bindingMobile.openLoginScreen.elevation = 9f
+                bindingMobile.openSignUpScreen.elevation = 0f
+
+            }
+            bindingMobile.openSignUpScreen.setOnClickListener {
+                replaceMobileFragment(SignUpFragment())
+                rightInAnimation(bindingMobile!!.authFragContainerMobile, applicationContext)
+                setText(bindingMobile!!.openSignUpScreen,"Sign up",14f,robotoBold,R.color.white,R.drawable.mobile_corner_left_black_background)
+                bindingMobile.openSignUpScreen.elevation = 9f
+                bindingMobile.openLoginScreen.elevation = 0f
+
+                setText(bindingMobile!!.openLoginScreen,"Existing User?\nLog in",12f,roboto,R.color.black,R.drawable.mobile_corner_right_grey_background)
+
+            }
 
         }
-
-
 
     }
 
@@ -133,6 +154,15 @@ class LoginScreen : AppCompatActivity() {
             transaction.commit()
         }
     }
+
+    private fun replaceMobileFragment(fragment: Fragment) {
+        if (fragment !=null){
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.authFragContainerMobile,fragment)
+            transaction.commit()
+        }
+    }
+
     private fun setText(textView:TextView, text:String, size: Float, typFace: Typeface,color:Int,setBackground:Int ){
         textView.text = text
         textView.textSize = size

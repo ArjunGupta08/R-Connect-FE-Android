@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Mobile.AddPropertyMobileFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <ImageView
+        android:id="@+id/btn_back"
+        android:layout_width="21dp"
+        android:layout_height="21dp"
+        android:layout_margin="12dp"
+        android:src="@drawable/btn_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:text="Next"
+        android:textColor="@color/selected_item"
+        android:textSize="@dimen/H4"
+        app:layout_constraintBottom_toBottomOf="@id/btn_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btn_back" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_back">
+
+        <TextView
+            android:id="@+id/a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:fontFamily="@font/roboto_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/b"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="Property Profile"
+            android:textColor="@color/selected_item"
+            android:textSize="@dimen/H5" />
+        <TextView
+            android:id="@+id/b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            app:layout_constraintStart_toEndOf="@id/a"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/c"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="Contacts &amp; Address"
+            android:textColor="@color/secondary"
+            android:textSize="@dimen/H5" />
+        <TextView
+            android:id="@+id/c"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:text="Images"
+            app:layout_constraintStart_toEndOf="@id/b"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/secondary"
+            android:textSize="@dimen/H5" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv1"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            app:cardCornerRadius="9dp"
+            android:layout_marginTop="6dp"
+            app:layout_constraintStart_toStartOf="@id/a"
+            app:layout_constraintEnd_toEndOf="@id/a"
+            app:layout_constraintTop_toBottomOf="@id/a"
+            app:cardBackgroundColor="@color/selected_item"/>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv2"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="6dp"
+            app:cardCornerRadius="9dp"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="@id/b"
+            app:layout_constraintEnd_toEndOf="@id/b"
+            app:layout_constraintTop_toBottomOf="@id/b"
+            app:cardBackgroundColor="@color/selected_item"/>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv3"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="6dp"
+            android:visibility="invisible"
+            app:cardCornerRadius="9dp"
+            app:layout_constraintStart_toStartOf="@id/c"
+            app:layout_constraintEnd_toEndOf="@id/c"
+            app:layout_constraintTop_toBottomOf="@id/c"
+            app:cardBackgroundColor="@color/selected_item"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll">
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/propertyLogoCard"
+        android:layout_width="0dp"
+        android:layout_height="155dp"
+        android:layout_marginTop="19dp"
+        app:cardCornerRadius="10dp"
+        android:layout_marginHorizontal="100dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/subtitle"
+        app:strokeWidth="1dp">
+
+        <LinearLayout
+            android:id="@+id/propertyLogoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/svg_gallery"
+                app:layout_constraintBottom_toBottomOf="@id/ll6"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/ll6"
+                app:shapeAppearance="@style/RoundedCornerImage_10" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="Property Logo" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/propertyLogoImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@color/grey10"
+            android:visibility="gone" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:id="@+id/ll6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/propertyLogoCard">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/TextInputLayoutStyle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/textInputLayoutHeight"
+            android:hint="Property Name"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/roboto"
+                android:inputType="text"
+                android:textColor="@color/secondary"
+                android:textColorHint="@color/secondary"
+                android:textSize="@dimen/H5" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/ClickableTextInputLayoutStyle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:hint="Property type">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:editable="false"
+                android:focusable="false"
+                android:fontFamily="@font/roboto"
+                android:inputType="text"
+                android:textColor="@color/secondary"
+                android:textColorHint="@color/secondary"
+                android:textSize="@dimen/H5" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/ClickableTextInputLayoutStyle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:hint="Property Ratting">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:editable="false"
+                android:focusable="false"
+                android:fontFamily="@font/roboto"
+                android:inputType="text"
+                android:textColor="@color/secondary"
+                android:textColorHint="@color/secondary"
+                android:textSize="@dimen/H5" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/TaxNameLayout"
+            style="@style/TextInputLayoutStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Website link "
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/black"
+            app:layout_constraintEnd_toEndOf="@id/propertyTypeLayout"
+            app:layout_constraintStart_toStartOf="@id/propertyTypeLayout"
+            app:layout_constraintTop_toBottomOf="@id/propertyTypeLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/TaxNameText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/H5"
+                android:fontFamily="@font/roboto"
+                android:inputType="text"
+                android:textColor="@color/secondary"
+                android:textColorHint="@color/secondary" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="Property Amenities"
+        android:textColor="@color/secondary"
+        android:textSize="@dimen/H5"
+        app:layout_constraintStart_toStartOf="@id/ll6"
+        app:layout_constraintTop_toBottomOf="@id/ll6" />
+
+    <TextView
+        android:id="@+id/add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="5dp"
+        android:fontFamily="@font/roboto_medium"
+        android:paddingVertical="5dp"
+        android:paddingStart="@dimen/H5"
+        android:text="+ Add"
+        android:textColor="@color/secondary"
+        android:textSize="@dimen/H5"
+        app:layout_constraintEnd_toEndOf="@id/ll6"
+        app:layout_constraintTop_toBottomOf="@id/ll6" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/amenitiesRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="10dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/add"
+        app:spanCount="2"
+        tools:listitem="@layout/item_property_aminities_mobile" />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

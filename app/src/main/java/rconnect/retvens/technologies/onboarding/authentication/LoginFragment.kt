@@ -50,71 +50,121 @@ class LoginFragment : Fragment() {
 
               requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
                 binding = FragmentLoginBinding.inflate(layoutInflater)
-                requireActivity().setContentView(binding!!.root)
+                return binding!!.root
             }
             else -> {
                 // Portrait orientation (default or any other orientation)
                 requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
                 bindingMobile = FragmentLoginMobileBinding.inflate(layoutInflater)
-                requireActivity().setContentView(bindingMobile.root)
+                return bindingMobile!!.root
             }
         }
 
-        binding = FragmentLoginBinding.inflate(inflater, container, false)
-        return binding!!.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding!!.forgotPassText.setOnClickListener {
-            val intent = (Intent(requireContext(), ForgetPasswordScreen::class.java))
+        if (binding is FragmentLoginBinding){
+            binding!!.forgotPassText.setOnClickListener {
+                val intent = (Intent(requireContext(), ForgetPasswordScreen::class.java))
 
-            val options = ActivityOptions.makeSceneTransitionAnimation(requireActivity(),
-                Pair(binding!!.signInCard,"Btn")
-            ).toBundle()
+                val options = ActivityOptions.makeSceneTransitionAnimation(requireActivity(),
+                    Pair(binding!!.signInCard,"Btn")
+                ).toBundle()
 
-            startActivity(intent, options)
-        }
+                startActivity(intent, options)
+            }
 
-        binding!!.signInCard.setOnClickListener {
+            binding!!.signInCard.setOnClickListener {
 
-            if (binding!!.username.text!!.isEmpty()) {
-                shakeAnimation(binding!!.usernameLayout,requireContext())
-                binding!!.usernameLayout.error = "Please enter username"
+                if (binding!!.username.text!!.isEmpty()) {
+                    shakeAnimation(binding!!.usernameLayout, requireContext())
+                    binding!!.usernameLayout.error = "Please enter username"
 
-            } else if (binding!!.authCode.text!!.isEmpty()) {
-                binding!!.authCodeLayout.error = "Please enter Hotel R code"
-                shakeAnimation(binding!!.authCodeLayout,requireContext())
-                binding!!.usernameLayout.isErrorEnabled = false
+                } else if (binding!!.authCode.text!!.isEmpty()) {
+                    binding!!.authCodeLayout.error = "Please enter Hotel R code"
+                    shakeAnimation(binding!!.authCodeLayout, requireContext())
+                    binding!!.usernameLayout.isErrorEnabled = false
 
-            } else if (binding!!.password.text!!.isEmpty()) {
-                binding!!.passwordLayout.error = "Please enter password"
-                shakeAnimation(binding!!.passwordLayout,requireContext())
-                binding!!.authCodeLayout.isErrorEnabled = false
+                } else if (binding!!.password.text!!.isEmpty()) {
+                    binding!!.passwordLayout.error = "Please enter password"
+                    shakeAnimation(binding!!.passwordLayout, requireContext())
+                    binding!!.authCodeLayout.isErrorEnabled = false
 
-            } else {
-                val intent = Intent(requireContext(), DashboardActivity::class.java)
-                startActivity(intent)
-                binding!!.usernameLayout.isErrorEnabled = false
-                binding!!.authCodeLayout.isErrorEnabled = false
-                binding!!.passwordLayout.isErrorEnabled = false
-                userName = binding!!.username.text.toString()
-                authCode = binding!!.authCode.text.toString()
-                password = binding!!.password.text.toString()
-                binding!!.usernameLayout.isErrorEnabled = false
-                binding!!.authCodeLayout.isErrorEnabled = false
-                binding!!.passwordLayout.isErrorEnabled = false
-                try {
-                    getLogin()
-                }
-                catch (e:Exception){
-                    println(e.toString())
+                } else {
+                    val intent = Intent(requireContext(), DashboardActivity::class.java)
+                    startActivity(intent)
+                    binding!!.usernameLayout.isErrorEnabled = false
+                    binding!!.authCodeLayout.isErrorEnabled = false
+                    binding!!.passwordLayout.isErrorEnabled = false
+                    userName = binding!!.username.text.toString()
+                    authCode = binding!!.authCode.text.toString()
+                    password = binding!!.password.text.toString()
+                    binding!!.usernameLayout.isErrorEnabled = false
+                    binding!!.authCodeLayout.isErrorEnabled = false
+                    binding!!.passwordLayout.isErrorEnabled = false
+                    try {
+                        getLogin()
+                    } catch (e: Exception) {
+                        println(e.toString())
+                    }
                 }
             }
         }
 
 
+        // Mobile work here : -
+
+
+
+        else{
+            bindingMobile!!.forgotPassText.setOnClickListener {
+                val intent = (Intent(requireContext(), ForgetPasswordScreen::class.java))
+
+                val options = ActivityOptions.makeSceneTransitionAnimation(requireActivity(),
+                    Pair(bindingMobile!!.signInCard,"Btn")
+                ).toBundle()
+
+                startActivity(intent, options)
+            }
+
+            bindingMobile!!.signInCard.setOnClickListener {
+
+                if (bindingMobile!!.username.text!!.isEmpty()) {
+                    shakeAnimation(bindingMobile!!.usernameLayout, requireContext())
+                    bindingMobile!!.usernameLayout.error = "Please enter username"
+
+                } else if (bindingMobile!!.authCode.text!!.isEmpty()) {
+                    bindingMobile!!.authCodeLayout.error = "Please enter Hotel R code"
+                    shakeAnimation(bindingMobile!!.authCodeLayout, requireContext())
+                    bindingMobile!!.usernameLayout.isErrorEnabled = false
+
+                } else if (bindingMobile!!.password.text!!.isEmpty()) {
+                    bindingMobile!!.passwordLayout.error = "Please enter password"
+                    shakeAnimation(bindingMobile!!.passwordLayout, requireContext())
+                    bindingMobile!!.authCodeLayout.isErrorEnabled = false
+
+                } else {
+                    bindingMobile!!.usernameLayout.isErrorEnabled = false
+                    bindingMobile!!.authCodeLayout.isErrorEnabled = false
+                    bindingMobile!!.passwordLayout.isErrorEnabled = false
+                    userName = bindingMobile!!.username.text.toString()
+                    authCode = bindingMobile!!.authCode.text.toString()
+                    password = bindingMobile!!.password.text.toString()
+                    bindingMobile!!.usernameLayout.isErrorEnabled = false
+                    bindingMobile!!.authCodeLayout.isErrorEnabled = false
+                    bindingMobile!!.passwordLayout.isErrorEnabled = false
+                    try {
+                        getLogin()
+                    } catch (e: Exception) {
+                        println(e.toString())
+                    }
+                }
+            }
+
+        }
     }
 
     private fun getLogin() {
@@ -141,6 +191,8 @@ class LoginFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<LoginResponse?>, t: Throwable) {
+                Log.e("failure",t.localizedMessage)
+                Log.e("f2",t.message.toString())
                 Toast.makeText(requireContext(), "Mission Failed successFully", Toast.LENGTH_SHORT).show()
             }
         })

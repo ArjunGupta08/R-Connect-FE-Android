@@ -15,9 +15,26 @@ class SharedPreference (context:Context){
         editor.putBoolean("login",login)
         editor.apply()
     }
+    fun saveSignUpFlagValue(sign:Boolean){
+        editor.putBoolean("sign",sign)
+        editor.apply()
+    }
 
     fun getLoginFlagValue(): Boolean {
         return sharedPreferences.getBoolean("login", false)
+    }
+    fun getSignUpFlagValue(): Boolean {
+        return sharedPreferences.getBoolean("sign", false)
+    }
+
+
+    fun saveSingleFlagValue(singleProperty:Boolean){
+        editor.putBoolean("single",singleProperty)
+        editor.apply()
+    }
+
+    fun getSingleFlagValue(): Boolean {
+        return sharedPreferences.getBoolean("single", false)
     }
 
 

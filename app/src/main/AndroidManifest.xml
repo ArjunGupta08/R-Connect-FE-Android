@@ -26,7 +26,7 @@
         <activity
             android:name=".SplashScreen"
             android:exported="true"
-            android:screenOrientation="landscape">
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,8 +38,7 @@
             android:exported="false" />
         <activity
             android:name=".dashboard.DashboardActivity"
-            android:exported="true"
-            android:screenOrientation="landscape" />
+            android:exported="true"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -47,47 +46,38 @@
         <activity
             android:name=".onboarding.authentication.LoginScreen"
             android:exported="true"
-            android:screenOrientation="landscape"/>
+            />
         <activity
             android:name=".onboarding.authentication.ForgetPasswordScreen"
-            android:exported="true"
-            android:screenOrientation="landscape" />
+            android:exported="true" />
         <activity
             android:name=".onboarding.authentication.EnterVerificationCodeActivity"
-            android:exported="true"
-            android:screenOrientation="landscape" />
+            android:exported="true"/>
         <activity
             android:name=".onboarding.authentication.CreateNewPasswordActivity"
-            android:exported="true"
-            android:screenOrientation="landscape" /> <!-- Onboarding Activities -->
+            android:exported="true" /> <!-- Onboarding Activities -->
         <activity
             android:name=".onboarding.FirstOnBoardingScreen"
-            android:exported="true"
-            android:screenOrientation="landscape" />
+            android:exported="true" />
         <activity
             android:name=".onboarding.singleHotelOnboarding.SecondOnboardingScreen"
-            android:exported="true"
-            android:screenOrientation="landscape" />
+            android:exported="true"/>
         <activity
             android:name=".onboarding.singleHotelOnboarding.ThirdOnboardingActivity"
-            android:exported="true"
-            android:screenOrientation="landscape" />
+            android:exported="true"/>
         <activity
             android:name=".onboarding.singleHotelOnboarding.FourOnboardingActivity"
             android:exported="true"
             android:screenOrientation="landscape" />
         <activity
             android:name=".onboarding.chainHotelOnboarding.SecondChainOnboardingActivity"
-            android:exported="true"
-            android:screenOrientation="landscape" />
+            android:exported="true" />
         <activity
             android:name=".onboarding.singleHotelOnboarding.ThirdSingleOnboardingScreen"
-            android:exported="true"
-            android:screenOrientation="landscape" />
+            android:exported="true"/>
         <activity
             android:name=".onboarding.FinalOnboardingScreen"
-            android:exported="true"
-            android:screenOrientation="landscape" />
+            android:exported="true"/>
 
         <meta-data
             android:name="preloaded_fonts"

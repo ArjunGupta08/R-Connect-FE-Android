@@ -9,7 +9,7 @@ object RetrofitObject {
 
     val retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create(gson))
-        .baseUrl("http://159.65.216.104/api/")
+        .baseUrl("https://api.hotelratna.com/api/")
         .build()
         .create(AuthenticationInterface::class.java)
 }

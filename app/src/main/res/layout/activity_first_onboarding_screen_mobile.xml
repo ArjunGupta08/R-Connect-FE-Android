@@ -120,11 +120,11 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_SingleNext"
-            android:layout_width="170dp"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"
             style="@style/ButtonCardView"
             android:transitionName="Btn"
-            android:layout_marginEnd="60dp"
+            android:layout_marginHorizontal="21dp"
             android:layout_marginBottom="40dp"
             app:cardBackgroundColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"

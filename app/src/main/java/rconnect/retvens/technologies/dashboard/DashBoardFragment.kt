@@ -12,6 +12,8 @@ import rconnect.retvens.technologies.databinding.FragmentDashBoardBinding
 
 class DashBoardFragment : Fragment() {
 
+//    lateinit var bindingMobile:FragmentDashBoardBinding
+
     private lateinit var bindingTab:FragmentDashBoardBinding
     private lateinit var bookingDetailsAdapter: BookingDetailsAdapter
     private  var mList:ArrayList<String> = ArrayList()

@@ -35,4 +35,8 @@
     <color name="grey40">#A9A9A9</color>
     <color name="dark_grey">#A7AFC2</color>
 
+
+<!--    mobile    -->
+    <color name="selected_item">#6750A4</color>
+
 </resources>
