@@ -42,7 +42,7 @@ import rconnect.retvens.technologies.dashboard.configuration.others.transportati
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.identityType.IdentityDocumentsFragment
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.ReservationTypeFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.AmenitiesFragment
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.InclusionPlansFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.InclusionPlansFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.RateType.RateTypeFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.ActivityDashboardBinding
