@@ -5,8 +5,11 @@ import rconnect.retvens.technologies.dashboard.configuration.billings.AddPayment
 import rconnect.retvens.technologies.dashboard.configuration.billings.GetPaymentTypeData
 import rconnect.retvens.technologies.dashboard.configuration.billings.GetPaymentTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.billings.UpdatePaymentTypeDataClass
+import rconnect.retvens.technologies.dashboard.configuration.reservation.AddIdentityTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.reservation.CreateReservationTypeDataClass
+import rconnect.retvens.technologies.dashboard.configuration.reservation.GetIdentityTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.reservation.GetReservationTypeDataClass
+import rconnect.retvens.technologies.dashboard.configuration.reservation.UpdateIdentityTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.reservation.UpdateReservationTypeDataClass
 import rconnect.retvens.technologies.onboarding.ResponseData
 import retrofit2.Call
@@ -51,6 +54,23 @@ interface GeneralsAPI {
         @Query("userId") userId : String,
         @Query("paymentTypeId") paymentTypeId : String,
         @Body updatePaymentTypeDataClass: UpdatePaymentTypeDataClass
+    ): Call<GetReservationTypeDataClass>
+
+    /*--------------------------------------- Payment Type-----------------------------------------*/
+    @POST("postIdentity")
+    fun addIdentityTypeApi(
+        @Body addIdentityTypeDataClass: AddIdentityTypeDataClass
+    ): Call<ResponseData>
+    @GET("fetchIdentity")
+    fun getIdentityTypeApi (
+        @Query("userId") userId : String,
+        @Query("propertyId") propertyId : String,
+    ): Call<GetIdentityTypeDataClass>
+    @PATCH("patchIdentityType")
+    fun updateIdentityTypeApi (
+        @Query("userId") userId : String,
+        @Query("identityTypeId") identityTypeId : String,
+        @Body updateIdentityTypeDataClass: UpdateIdentityTypeDataClass
     ): Call<GetReservationTypeDataClass>
 
 }

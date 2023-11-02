@@ -53,10 +53,10 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/shortCode"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/roboto"
-                        android:hint="Transportation Mode"
                         android:inputType="text"
                         android:textColor="@color/secondary"
                         android:textColorHint="@drawable/hint_selector" />
@@ -76,6 +76,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/identityTypeName"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/roboto"
