@@ -22,6 +22,7 @@ import rconnect.retvens.technologies.dashboard.configuration.others.transportati
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.UpdateTransportationTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.AddInclusionsDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.UpdateInclusionDataClass
 import rconnect.retvens.technologies.onboarding.ResponseData
 import retrofit2.Call
 import retrofit2.http.Body
@@ -156,7 +157,7 @@ interface GeneralsAPI {
         @Query("holidayId") holidayId : String,
         @Query("userId") userId : String,
         @Body updateHolidayDataClass: UpdateHolidayDataClass
-    ): Call<GetReservationTypeDataClass>
+    ): Call<ResponseData>
 
     /*--------------------------------------- Inclusions-----------------------------------------*/
     @POST("postInclusion")
@@ -170,11 +171,11 @@ interface GeneralsAPI {
         @Query("propertyId") propertyId : String,
     ): Call<GetInclusionsDataClass>
 
-//    @PATCH("patchHoliday")
-//    fun updateHolidayApi (
-//        @Query("holidayId") holidayId : String,
-//        @Query("userId") userId : String,
-//        @Body updateHolidayDataClass: UpdateHolidayDataClass
-//    ): Call<GetReservationTypeDataClass>
+    @PATCH("patchInclusion")
+    fun updateInclusionsApi (
+        @Query("userId") userId : String,
+        @Query("inclusionId") inclusionId : String,
+        @Body updateInclusionDataClass: UpdateInclusionDataClass
+    ): Call<ResponseData>
 
 }

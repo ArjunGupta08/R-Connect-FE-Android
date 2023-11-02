@@ -154,17 +154,17 @@ class HolidaysAdapter(val list:ArrayList<GetHotelData>, val applicationContext: 
         val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).updateHolidayApi(
              holidayId, UserSessionManager(context).getUserId().toString(), UpdateHolidayDataClass(shortCodeTxt, holidayName, startDate, endDate)
         )
-        create.enqueue(object : Callback<GetReservationTypeDataClass?> {
+        create.enqueue(object : Callback<ResponseData?> {
             override fun onResponse(
-                call: Call<GetReservationTypeDataClass?>,
-                response: Response<GetReservationTypeDataClass?>
+                call: Call<ResponseData?>,
+                response: Response<ResponseData?>
             ) {
                 Log.d( "holiday", "${response.code()} ${response.message()}")
                 mListener?.onUpdate()
                 dialog.dismiss()
             }
 
-            override fun onFailure(call: Call<GetReservationTypeDataClass?>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
                 Log.d("error", t.localizedMessage)
             }
         })

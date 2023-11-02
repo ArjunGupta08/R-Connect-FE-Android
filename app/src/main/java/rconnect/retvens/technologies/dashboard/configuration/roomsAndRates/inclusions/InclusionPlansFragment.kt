@@ -143,8 +143,4 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
         setUpRecycler()
     }
 
-    override fun toString(): String {
-        TODO("Not yet implemented")
-    }
-
 }

@@ -11,11 +11,13 @@ data class AddInclusionsDataClass(
     val postingRule : String,
 )
 
-data class UpdateHolidayDataClass(
+data class UpdateInclusionDataClass(
     val shortCode : String,
-    val holidayName : String,
-    val startDate : String,
-    val endDate : String
+    val charge : String,
+    val inclusionName : String,
+    val inclusionType : String,
+    val chargeRule : String,
+    val postingRule : String,
 )
 
 data class GetInclusionsDataClass(
