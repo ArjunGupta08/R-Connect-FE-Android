@@ -25,11 +25,6 @@ import com.google.android.material.textfield.TextInputEditText
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
-import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.identityType.AddIdentityTypeDataClass
-import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.identityType.GetIdentityTypeDataClass
-import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.identityType.IdentityTypeAdapter
-import rconnect.retvens.technologies.dashboard.configuration.others.HolidaysAdapter
-import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.GetTransportationTypeDataClass
 import rconnect.retvens.technologies.databinding.FragmentSeasonsBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
@@ -43,7 +38,6 @@ import java.util.Date
 class SeasonsFragment : Fragment() {
     private lateinit var binding: FragmentSeasonsBinding
 
-    private lateinit var adapter: HolidaysAdapter
     private var list = ArrayList<String>()
     private lateinit var robotoMedium : Typeface
     private lateinit var roboto:Typeface

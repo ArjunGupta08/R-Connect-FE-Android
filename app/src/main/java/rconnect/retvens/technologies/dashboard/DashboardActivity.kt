@@ -36,7 +36,7 @@ import rconnect.retvens.technologies.dashboard.configuration.properties.ViewProp
 import rconnect.retvens.technologies.dashboard.channelManager.promotions.PromotionsFragment
 import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.CorporatesPartnersFragment
 import rconnect.retvens.technologies.dashboard.configuration.billings.PaymentTypesFragment
-import rconnect.retvens.technologies.dashboard.configuration.others.HolidaysFragment
+import rconnect.retvens.technologies.dashboard.configuration.others.holiday.HolidaysFragment
 import rconnect.retvens.technologies.dashboard.configuration.others.seasons.SeasonsFragment
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.TransportationTypesFragment
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.identityType.IdentityDocumentsFragment

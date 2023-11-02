@@ -10,6 +10,8 @@ import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservatio
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.GetReservationTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.identityType.UpdateIdentityTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.UpdateReservationTypeDataClass
+import rconnect.retvens.technologies.dashboard.configuration.others.holiday.AddHolidayDataClass
+import rconnect.retvens.technologies.dashboard.configuration.others.holiday.GetHotelDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.seasons.AddSeasonDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.seasons.GetSeasonData
 import rconnect.retvens.technologies.dashboard.configuration.others.seasons.GetSeasonDataClass
@@ -116,7 +118,7 @@ interface GeneralsAPI {
 //    ): Call<GetReservationTypeDataClass>
 
 
-    /*--------------------------------------- Booking Source Type-----------------------------------------*/
+    /*--------------------------------------- Season Type-----------------------------------------*/
     @POST("postSeason")
     fun addSeasonApi(
         @Body addSeasonDataClass: AddSeasonDataClass
@@ -127,6 +129,25 @@ interface GeneralsAPI {
         @Query("userId") userId : String,
         @Query("propertyId") propertyId : String,
     ): Call<GetSeasonDataClass>
+//    @PATCH("updateTransportation")
+//    fun updateBookingSourceTypeApi (
+//        @Query("userId") userId : String,
+//        @Query("transportationId") transportationId : String,
+//        @Body updateTransportationTypeDataClass: UpdateTransportationTypeDataClass
+//    ): Call<GetReservationTypeDataClass>
+
+    /*--------------------------------------- Holiday-----------------------------------------*/
+    @POST("postHoliday")
+    fun addHolidayApi(
+        @Body addHolidayDataClass: AddHolidayDataClass
+    ): Call<ResponseData>
+
+    @GET("getHoliday")
+    fun getHolidayApi (
+        @Query("userId") userId : String,
+        @Query("propertyId") propertyId : String,
+    ): Call<GetHotelDataClass>
+
 //    @PATCH("updateTransportation")
 //    fun updateBookingSourceTypeApi (
 //        @Query("userId") userId : String,
