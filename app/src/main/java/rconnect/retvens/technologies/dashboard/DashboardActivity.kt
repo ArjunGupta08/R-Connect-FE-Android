@@ -39,8 +39,8 @@ import rconnect.retvens.technologies.dashboard.configuration.billings.PaymentTyp
 import rconnect.retvens.technologies.dashboard.configuration.others.HolidaysFragment
 import rconnect.retvens.technologies.dashboard.configuration.others.seasons.SeasonsFragment
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.TransportationTypesFragment
-import rconnect.retvens.technologies.dashboard.configuration.reservation.IdentityDocumentsFragment
-import rconnect.retvens.technologies.dashboard.configuration.reservation.ReservationTypeFragment
+import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.identityType.IdentityDocumentsFragment
+import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.ReservationTypeFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.AmenitiesFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.InclusionPlansFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.RateType.RateTypeFragment

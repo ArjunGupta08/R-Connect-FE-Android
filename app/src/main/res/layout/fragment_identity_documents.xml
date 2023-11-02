@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".dashboard.configuration.reservation.IdentityDocumentsFragment">
+    tools:context=".dashboard.configuration.guestsAndReservation.identityType.IdentityDocumentsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

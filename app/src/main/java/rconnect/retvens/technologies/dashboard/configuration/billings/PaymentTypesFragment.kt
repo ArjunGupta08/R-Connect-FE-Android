@@ -18,9 +18,6 @@ import com.google.android.material.textfield.TextInputEditText
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
-import rconnect.retvens.technologies.dashboard.configuration.reservation.CreateReservationTypeDataClass
-import rconnect.retvens.technologies.dashboard.configuration.reservation.GetReservationTypeDataClass
-import rconnect.retvens.technologies.dashboard.configuration.reservation.ReservationTypeAdapter
 import rconnect.retvens.technologies.databinding.FragmentPaymentTypesBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager

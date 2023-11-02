@@ -1,4 +1,4 @@
-package rconnect.retvens.technologies.dashboard.configuration.reservation
+package rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.identityType
 
 import android.app.Dialog
 import android.content.Context
@@ -11,30 +11,30 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
-import android.widget.Switch
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
-import rconnect.retvens.technologies.onboarding.ResponseData
+import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.GetReservationTypeDataClass
 import rconnect.retvens.technologies.utils.UserSessionManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ReservationTypeAdapter(val list:ArrayList<GetReservationTypeData>, val applicationContext: Context):RecyclerView.Adapter<ReservationTypeAdapter.NotificationHolder>() {
+class IdentityTypeAdapter(val list:ArrayList<GetIdentityTypeData>, val applicationContext: Context):RecyclerView.Adapter<IdentityTypeAdapter.NotificationHolder>() {
 
-    var mListener : OnUpdate ?= null
+    var mListener : OnUpdate?= null
 
     fun setOnUpdateListener(listener : OnUpdate){
         mListener = listener
     }
 
     interface OnUpdate {
-        fun onUpdateReservationType()
+        fun onUpdateIdentityType()
     }
 
     class NotificationHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
@@ -63,22 +63,23 @@ class ReservationTypeAdapter(val list:ArrayList<GetReservationTypeData>, val app
     override fun onBindViewHolder(holder: NotificationHolder, position: Int) {
         val item = list[position]
 
-        holder.reservationTypeName.text = item.reservationName
-        holder.status.text = item.status
+        holder.reservationTypeName.text = item.shortCode
+        holder.status.text = item.identityType
         holder.craetedBy.text = "${item.createdBy} ${item.createdOn}"
         holder.lastModified.text = "${item.modifiedBy} ${item.modifiedOn}"
 
+        Toast.makeText(applicationContext, "item.identityTypeId", Toast.LENGTH_SHORT).show()
         holder.edit.setOnClickListener {
-            openCreateNewDialog(applicationContext, item.reservationName, item.status, item.reservationTypeId)
+            openCreateNewDialog(applicationContext, item.shortCode, item.identityType, item.identityTypeId)
         }
     }
 
-    private fun openCreateNewDialog(context : Context, rName : String, status:String , rId : String) {
+    private fun openCreateNewDialog(context : Context, shortCodeTxt : String, identityTypeTxt:String , identityTypeIdTxt : String) {
         val dialog = Dialog(context) // Use 'this' as the context, assuming this code is within an Activity
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
         dialog.setCanceledOnTouchOutside(true)
-        dialog.setContentView(R.layout.dialog_create_reservation_type)
+        dialog.setContentView(R.layout.dialog_create_identity_type)
         dialog.window?.apply {
             setBackgroundDrawableResource(android.R.color.transparent) // Makes the background transparent
             setLayout(
@@ -87,12 +88,12 @@ class ReservationTypeAdapter(val list:ArrayList<GetReservationTypeData>, val app
             )
         }
 
-        val reservationNameET = dialog.findViewById<TextInputEditText>(R.id.reservationNameET)
-        val isConfirmedSwitch = dialog.findViewById<Switch>(R.id.isConfirmedSwitch)
+        val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCode)
+        val identityTypeName = dialog.findViewById<TextInputEditText>(R.id.identityTypeName)
 
-        reservationNameET.setText(rName)
+        shortCode.setText(shortCodeTxt)
+        identityTypeName.setText(identityTypeTxt)
 
-        isConfirmedSwitch.isChecked = status == "Confirmed"
 
         val cancel = dialog.findViewById<TextView>(R.id.cancel)
         val save = dialog.findViewById<CardView>(R.id.saveBtn)
@@ -101,11 +102,7 @@ class ReservationTypeAdapter(val list:ArrayList<GetReservationTypeData>, val app
             dialog.dismiss()
         }
         save.setOnClickListener {
-            saveReservation(context, dialog,reservationNameET.text.toString(), if (isConfirmedSwitch.isChecked){
-                "Confirmed"
-            } else {
-                "Unconfirmed"
-            }, rId)
+            saveIdentity(context, dialog, shortCodeTxt, identityTypeTxt, identityTypeIdTxt)
         }
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -115,15 +112,15 @@ class ReservationTypeAdapter(val list:ArrayList<GetReservationTypeData>, val app
         dialog.show()
     }
 
-    private fun saveReservation(context: Context, dialog: Dialog, rName : String, status:String, rId : String) {
-        val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).updateReservationTypeApi(UserSessionManager(context).getUserId().toString(), rId, UpdateReservationTypeDataClass(rName, status))
+    private fun saveIdentity(context: Context, dialog: Dialog, shortCodeTxt : String, identityTypeTxt:String , identityTypeIdTxt : String) {
+        val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).updateIdentityTypeApi(UserSessionManager(context).getUserId().toString(), identityTypeIdTxt, UpdateIdentityTypeDataClass(shortCodeTxt, identityTypeTxt))
         create.enqueue(object : Callback<GetReservationTypeDataClass?> {
             override fun onResponse(
                 call: Call<GetReservationTypeDataClass?>,
                 response: Response<GetReservationTypeDataClass?>
             ) {
                 Log.d( "reservation", "${response.code()} ${response.message()}")
-                mListener?.onUpdateReservationType()
+                mListener?.onUpdateIdentityType()
                 dialog.dismiss()
             }
 

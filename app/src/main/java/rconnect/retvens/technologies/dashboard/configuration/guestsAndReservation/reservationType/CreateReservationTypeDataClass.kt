@@ -1,4 +1,4 @@
-package rconnect.retvens.technologies.dashboard.configuration.reservation
+package rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType
 
 data class CreateReservationTypeDataClass(
     val userId : String,

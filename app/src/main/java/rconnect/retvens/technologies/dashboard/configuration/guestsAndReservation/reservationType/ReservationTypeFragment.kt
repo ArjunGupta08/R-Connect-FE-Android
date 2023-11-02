@@ -1,4 +1,4 @@
-package rconnect.retvens.technologies.dashboard.configuration.reservation
+package rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType
 
 import android.app.Dialog
 import android.graphics.Color
@@ -95,7 +95,8 @@ class ReservationTypeFragment : Fragment(), ReservationTypeAdapter.OnUpdate {
     }
     private fun saveReservation(dialog: Dialog, rName : String, status:String) {
         val create = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).createReservationApi(
-            CreateReservationTypeDataClass(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString(), rName, status))
+            CreateReservationTypeDataClass(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString(), rName, status)
+        )
 
         create.enqueue(object : Callback<ResponseData?> {
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {

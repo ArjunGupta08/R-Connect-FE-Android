@@ -1,4 +1,4 @@
-package rconnect.retvens.technologies.dashboard.configuration.reservation
+package rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.identityType
 
 import android.app.Dialog
 import android.content.Context
@@ -12,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.Switch
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -114,7 +113,9 @@ class IdentityDocumentsFragment : Fragment(), IdentityTypeAdapter.OnUpdate {
     }
 
     private fun saveIdentity(context: Context, dialog: Dialog, shortCodeTxt : String, identityTypeTxt:String) {
-        val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).addIdentityTypeApi(AddIdentityTypeDataClass(UserSessionManager(context).getUserId().toString(), UserSessionManager(context).getPropertyId().toString(), shortCodeTxt, identityTypeTxt))
+        val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).addIdentityTypeApi(
+            AddIdentityTypeDataClass(UserSessionManager(context).getUserId().toString(), UserSessionManager(context).getPropertyId().toString(), shortCodeTxt, identityTypeTxt)
+        )
         create.enqueue(object : Callback<ResponseData?> {
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
                 Log.d( "reservation", "${response.code()} ${response.message()}")
