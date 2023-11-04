@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="9dp"
+    app:cardElevation="6dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/roboto_medium"
+        android:layout_marginStart="6dp"
+        android:text="Karan Gupta"
+        android:textSize="@dimen/H5"
+        android:textColor="@color/black"/>
+        <TextView
+            android:id="@+id/room_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/item_name"
+            app:layout_constraintStart_toStartOf="@id/item_name"
+            android:text="Deluxe Room"
+            android:textSize="@dimen/H6"
+            android:textColor="@color/lightBlack"/>
+        <LinearLayout
+            android:id="@+id/ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:gravity="center_vertical"
+            app:layout_constraintTop_toBottomOf="@id/room_type">
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/svg_person"
+                android:layout_marginStart="6dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:textSize="@dimen/H5"
+                android:textColor="#424E61"
+                android:fontFamily="@font/roboto_medium"
+                android:text="2"/>
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/svg_child"
+                android:layout_marginStart="6dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:textSize="@dimen/H5"
+                android:textColor="#424E61"
+                android:fontFamily="@font/roboto_medium"
+                android:text="2"/>
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/svg_key"
+                android:layout_marginStart="6dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:textSize="@dimen/H5"
+                android:textColor="#424E61"
+                android:fontFamily="@font/roboto_medium"
+                android:text="2"/>
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/svg_moon"
+                android:layout_marginStart="6dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:textSize="@dimen/H5"
+                android:textColor="#424E61"
+                android:fontFamily="@font/roboto_medium"
+                android:layout_marginEnd="9dp"
+                android:text="2"/>
+        </LinearLayout>
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:layout_constraintTop_toBottomOf="@id/ll"
+            app:layout_constraintStart_toStartOf="@id/item_name"
+            android:src="@drawable/confirm"
+            android:layout_marginTop="9dp"/>
+
+
+
+
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

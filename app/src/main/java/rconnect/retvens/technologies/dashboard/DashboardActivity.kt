@@ -259,15 +259,16 @@ class DashboardActivity : AppCompatActivity() {
 
 
         else{
-            bindingMobile.addPropertyBtn.setOnClickListener {
-                bindingMobile.dashboardFragmentContainer.isVisible = true
-                bindingMobile.welcomeLayout.isVisible = false
-                bindingMobile.toolbar.visibility = View.GONE
-                val fragManager = supportFragmentManager
-                val fragTransaction = fragManager.beginTransaction()
-                fragTransaction.replace(R.id.dashboardFragmentContainer,AddPropertyMobileFragment())
-                fragTransaction.commit()
-            }
+//            bindingMobile.addPropertyBtn.setOnClickListener {
+//                bindingMobile.dashboardFragmentContainer.isVisible = false
+//                bindingMobile.welcomeLayout.isVisible = false
+//                bindingMobile.toolbar.visibility = View.GONE
+//                val fragManager = supportFragmentManager
+//                val fragTransaction = fragManager.beginTransaction()
+//                fragTransaction.replace(R.id.dashboardFragmentContainer,AddPropertyMobileFragment())
+//                fragTransaction.commit()
+//            }
+
         }
 
     }
