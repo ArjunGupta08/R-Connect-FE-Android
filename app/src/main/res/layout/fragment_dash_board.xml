@@ -591,6 +591,7 @@
 
                        <TextView
                            style="@style/GhraphsHeading"
+                           android:id="@+id/barChartHeading"
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
                            app:layout_constraintTop_toTopOf="parent"
@@ -600,14 +601,29 @@
                            android:text="Revenue"
                            />
 
+                       <TextView
+                           android:id="@+id/revenue_text"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           app:layout_constraintTop_toBottomOf="@+id/barChartHeading"
+                           app:layout_constraintStart_toStartOf="parent"
+                           android:layout_marginTop="5dp"
+                           android:layout_marginStart="12dp"
+                           android:textSize="@dimen/H2"
+                           android:text="₹ 132,098"
+                           android:fontFamily="@font/roboto_medium"
+                           android:textColor="@color/textColor"
+                           android:textFontWeight="500"
+                           />
+
                        <com.github.mikephil.charting.charts.BarChart
                            android:id="@+id/barchart"
                            android:layout_width="0dp"
                            android:layout_height="0dp"
-                           android:layout_marginTop="50dp"
+
                            app:layout_constraintStart_toStartOf="parent"
                            app:layout_constraintEnd_toEndOf="parent"
-                           app:layout_constraintTop_toTopOf="parent"
+                           app:layout_constraintTop_toBottomOf="@+id/revenue_text"
                            app:layout_constraintBottom_toBottomOf="parent"
                            app:layout_constraintCircleRadius="@dimen/H5"
 
