@@ -199,6 +199,12 @@
 
     </style>
 
+    <style name="GhraphsHeading">
+        <item name="android:textSize">@dimen/H4</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/textColor</item>
+    </style>
+
     <!--Button Card View Theme-->
     <style name="ButtonCardView" parent="CardView">
         <item name="android:outlineAmbientShadowColor">@color/shadowColor</item>
