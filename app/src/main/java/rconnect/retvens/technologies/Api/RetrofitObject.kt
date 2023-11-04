@@ -4,7 +4,6 @@ import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import rconnect.retvens.technologies.Api.configurationApi.ChainConfiguration
-import rconnect.retvens.technologies.Api.configurationApi.SingleConfiguration
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -20,5 +19,4 @@ object RetrofitObject {
 
     val authentication: AuthenticationInterface = retrofit.create(AuthenticationInterface::class.java)
     val chainConfiguration: ChainConfiguration = retrofit.create(ChainConfiguration::class.java)
-    val singleConfiguration: SingleConfiguration = retrofit.create(SingleConfiguration::class.java)
 }

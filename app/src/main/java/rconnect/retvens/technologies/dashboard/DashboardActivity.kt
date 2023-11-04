@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.channelManager.DashboardFragment.DashBoardFragment
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.dashboard.channelManager.QuickReservation.QuickReservationAdapter
 import rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory.RatesAndInventoryFragment

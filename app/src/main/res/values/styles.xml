@@ -64,6 +64,18 @@
         <item name="boxCornerRadiusTopStart">10dp</item>
     </style>
 
+
+    <!--Quick Action Text DashBoard-->
+    <style name="TextStyleQuickAction">
+        <item name="color">@color/black</item>
+        <item name="fontFamily">@font/roboto</item>
+        <item name="android:textSize">@dimen/H5</item>
+    </style>
+
+    <dimen name="dashBoardInternalMargin">
+        <item name="android:width">12dp</item>
+    </dimen>
+
     //textStyle
 
     <style name="listTextHeading" parent="@android:style/TextAppearance">
@@ -79,6 +91,15 @@
         <item name="singleLine">true</item>
         <item name="fontFamily">@font/roboto</item>
     </style>
+
+
+        <declare-styleable name="ArcProgressBar">
+            <attr name="arcColor" format="color" />
+            <attr name="backgroundColor" format="color" />
+            <attr name="progress" format="integer" />
+            <attr name="max" format="integer" />
+        </declare-styleable>
+
 
     //SubHeadingTextBold
     <style name="subHeadingTextBold" parent="android:Widget.TextView">

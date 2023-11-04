@@ -17,6 +17,9 @@
     <color name="secondaryBackground">#F7F7FC</color>
     <color name="unselectedBackground">#E6ECF5</color>
     <color name="textInputStrokeColor">#E6ECF5</color>
+    <color name="primarybackgroundNight">#10141A</color>
+    <color name="secondaryBackgroundNight">#161B24</color>
+
 
     <!--Text Colors-->
     <color name="secondary">#272A3D</color>

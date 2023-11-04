@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginTop="20dp"
-    android:layout_marginBottom="20dp"
+    android:background="@color/primaryBackground"
+    android:backgroundTint="@color/primaryBackground"
+    android:layout_marginTop="10dp"
+    android:layout_marginHorizontal="20dp"
+    app:strokeWidth="0dp"
+    app:cardElevation="2dp"
     android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/booking_date_cards"
         android:layout_width="50dp"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:backgroundTint="#424E61">
@@ -19,6 +29,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:weightSum="5"
+            android:layout_marginVertical="5dp"
             >
 
             <TextView
@@ -29,7 +40,6 @@
                 android:textColor="@color/primaryBackground"
                 android:textSize="@dimen/H6"
                 android:fontFamily="@font/roboto_bold"
-                android:layout_marginTop="5dp"
                 />
 
             <TextView
@@ -41,14 +51,14 @@
                 android:textColor="@color/primaryBackground"
                 android:textSize="@dimen/H6"
                 android:fontFamily="@font/roboto"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="2dp"
                 />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/primaryBackground"
-                android:layout_marginHorizontal="5dp"
+                android:background="#C5CDDB"
+                android:layout_marginHorizontal="10dp"
                 />
 
             <TextView
@@ -70,7 +80,7 @@
                 android:textColor="@color/primaryBackground"
                 android:textSize="@dimen/H6"
                 android:fontFamily="@font/roboto"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="2dp"
                 />
 
         </LinearLayout>
@@ -84,7 +94,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:weightSum="3"
+        android:weightSum="1"
         android:orientation="horizontal"
         app:layout_constraintEnd_toStartOf="@+id/confirm_text"
         android:layout_marginEnd="20dp"
@@ -106,7 +116,7 @@
                 android:layout_weight="0.1"
                 android:text="Rahul Bhalerao"
                 android:textSize="@dimen/H4"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="2dp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/roboto_bold"
                 />
@@ -116,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Deluxe Room with Breakfast"
-                android:textSize="@dimen/H6"
+                android:textSize="@dimen/H5"
                 android:textColor="#5E687F"
                 android:fontFamily="@font/roboto"
                 />
@@ -154,7 +164,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/icon_people"
+                    android:src="@drawable/child_svg"
                     android:layout_weight="1"
                     android:layout_gravity="top"
                     android:layout_marginTop="2dp"
@@ -175,7 +185,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/icon_people"
+                    android:src="@drawable/key_svg"
                     android:layout_weight="1"
                     android:layout_gravity="top"
                     android:layout_marginTop="2dp"
@@ -196,7 +206,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/icon_people"
+                    android:src="@drawable/child_svg"
                     android:layout_weight="1"
                     android:layout_gravity="top"
                     android:layout_marginTop="2dp"
@@ -220,109 +230,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:weightSum="4"
-            android:orientation="vertical"
-            >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Booking ID"
-                android:textColor="#858EA2"
-                android:textSize="@dimen/H6"
-                android:layout_weight="0.3"
-                android:fontFamily="@font/roboto"
-                android:layout_marginTop="10dp"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SOD235353249"
-                android:textColor="#5E687F"
-                android:textSize="@dimen/H5"
-                android:layout_weight="1"
-                android:fontFamily="@font/roboto"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Booking ID"
-                android:textColor="#858EA2"
-                android:textSize="@dimen/H6"
-                android:layout_weight="0.3"
-                android:fontFamily="@font/roboto"
-                android:layout_marginTop="10dp"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SOD235353249"
-                android:textColor="#5E687F"
-                android:textSize="@dimen/H5"
-                android:layout_weight="1"
-                android:fontFamily="@font/roboto"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:weightSum="4"
-            android:orientation="vertical"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Booking ID"
-                android:textColor="#858EA2"
-                android:textSize="@dimen/H6"
-                android:layout_weight="0.3"
-                android:fontFamily="@font/roboto"
-                android:layout_marginTop="10dp"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SOD235353249"
-                android:textColor="#5E687F"
-                android:textSize="@dimen/H5"
-                android:layout_weight="1"
-                android:fontFamily="@font/roboto"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Booking ID"
-                android:textColor="#858EA2"
-                android:textSize="@dimen/H6"
-                android:layout_weight="0.3"
-                android:fontFamily="@font/roboto"
-                android:layout_marginTop="10dp"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SOD235353249"
-                android:textColor="#5E687F"
-                android:textSize="@dimen/H5"
-                android:layout_weight="1"
-                android:fontFamily="@font/roboto"
-                />
-
-        </LinearLayout>
 
     </LinearLayout>
 
@@ -343,11 +251,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Confirmed"
+        android:textColor="#5E687F"
+        android:fontFamily="@font/roboto_bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="20dp"
         />
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
