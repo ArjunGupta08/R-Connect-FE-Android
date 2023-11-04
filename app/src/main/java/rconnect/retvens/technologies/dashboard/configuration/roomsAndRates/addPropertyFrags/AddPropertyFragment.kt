@@ -36,6 +36,7 @@ import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.configurationApi.ChainConfiguration
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.properties.ViewPropertiesFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddImagesFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectRoomImagesAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectImagesDataClass
 import rconnect.retvens.technologies.databinding.FragmentAddPropertyBinding
@@ -50,20 +51,15 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdapter.OnItemClickListener {
+class AddPropertyFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var binding : FragmentAddPropertyBinding
-
     private lateinit var roboto : Typeface
     private lateinit var robotoMedium : Typeface
+    private var page = 1
 
     private var imageUri: Uri ?= null
     private var PICK_IMAGE_REQUEST_CODE : Int = 0
-
-    private var page = 1
-
-    lateinit var selectImagesAdapter: SelectRoomImagesAdapter
-    private var selectedImagesList = ArrayList<SelectImagesDataClass>()
 
     private var isPropertyLogo = true
 
@@ -92,13 +88,6 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
         val mapFrag = childFragmentManager.findFragmentById(R.id.mapFragContainer) as SupportMapFragment
         mapFrag.getMapAsync(this)
 
-        binding.imagesRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
-        binding.imagesRecycler.setHasFixedSize(true)
-
-        selectImagesAdapter = SelectRoomImagesAdapter(requireContext(), selectedImagesList)
-        selectImagesAdapter.setOnItemClickListener(this)
-        binding.imagesRecycler.adapter = selectImagesAdapter
-
         binding.continueBtn.setOnClickListener {
 
             if (page == 1){
@@ -112,12 +101,45 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
                 binding.propertyProfile.textSize = 16.0f
                 binding.propertyProfile.typeface = roboto
 
+                binding.propertyImages.textSize = 16.0f
+                binding.propertyImages.typeface = roboto
+
                 binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
                 binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+                binding.propertyImagesFrameLayout.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
 
                 binding.propertyProfileLayout.visibility = View.GONE
+                binding.propertyImagesFrameLayout.visibility = View.GONE
                 binding.addressLayout.visibility = View.VISIBLE
                 rightInAnimation(binding.addressLayout, requireContext())
+
+            } else if (page == 2){
+
+                page = 3
+
+                binding.propertyImages.textSize = 20.0f
+                binding.propertyImages.typeface = robotoMedium
+                binding.propertyImages.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+
+                binding.propertyProfile.textSize = 16.0f
+                binding.propertyProfile.typeface = roboto
+
+                binding.addressAndContacts.textSize = 16.0f
+                binding.addressAndContacts.typeface = roboto
+
+                binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+                binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+                binding.propertyImagesFrameLayout.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+
+                val childFragment: Fragment = AddImagesFragment()
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.propertyImagesFrameLayout,childFragment)
+                transaction.commit()
+
+                binding.propertyProfileLayout.visibility = View.GONE
+                binding.addressLayout.visibility = View.GONE
+                binding.propertyImagesFrameLayout.visibility = View.VISIBLE
+                rightInAnimation(binding.propertyImagesFrameLayout, requireContext())
 
             } else {
                 sendData()
@@ -155,6 +177,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
             binding.addressAndContacts.typeface = roboto
 
             binding.propertyProfileLayout.visibility = View.VISIBLE
+            binding.propertyImagesFrameLayout.visibility = View.VISIBLE
             leftInAnimation(binding.propertyProfileLayout, requireContext())
             binding.addressLayout.visibility = View.GONE
 
@@ -172,6 +195,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
             binding.propertyProfile.textSize = 16.0f
             binding.propertyProfile.typeface = roboto
 
+            binding.propertyImagesFrameLayout.visibility = View.GONE
             binding.propertyProfileLayout.visibility = View.GONE
             binding.addressLayout.visibility = View.VISIBLE
             rightInAnimation(binding.addressLayout, requireContext())
@@ -375,12 +399,6 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
                         binding.propertyLogoImage.isVisible = true
                         binding.propertyLogoLayout.isVisible = false
                         isImageSelected = true
-                    } else {
-                        selectedImagesList.add(SelectImagesDataClass(imageUri!!))
-                        selectImagesAdapter =
-                            SelectRoomImagesAdapter(requireContext(), selectedImagesList)
-                        selectImagesAdapter.setOnItemClickListener(this)
-                        binding.imagesRecycler.adapter = selectImagesAdapter
                     }
                 }catch(e:RuntimeException){
                     Log.d("cropperOnPersonal", e.toString())
@@ -477,11 +495,6 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, SelectRoomImagesAdap
         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-    }
-
-    override fun onAddRoomImage() {
-        isPropertyLogo = false
-        openGallery()
     }
 
 }

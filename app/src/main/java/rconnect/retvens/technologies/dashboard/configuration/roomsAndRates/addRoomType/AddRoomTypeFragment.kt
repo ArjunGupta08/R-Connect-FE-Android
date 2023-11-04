@@ -3,6 +3,7 @@ package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addR
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -17,6 +18,8 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import rconnect.retvens.technologies.R
@@ -33,6 +36,7 @@ import rconnect.retvens.technologies.dashboard.configuration.properties.ViewProp
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.FragmentAddRoomTypeBinding
 import rconnect.retvens.technologies.utils.Const
+import rconnect.retvens.technologies.utils.rightInAnimation
 
 class AddRoomTypeFragment : Fragment(),
     SelectRoomImagesAdapter.OnItemClickListener,
@@ -51,9 +55,13 @@ class AddRoomTypeFragment : Fragment(),
     private lateinit var selectBathroomImagesAdapter: SelectBathroomImagesAdapter
     private lateinit var selectBedImagesAdapter: SelectBedImagesAdapter
 
+    private var page = 1
     private var bedCount = 1
     private var bedTypeList = ArrayList<String>()
     private lateinit var addBedTypeAdapter: AddBedTypeAdapter
+
+    private lateinit var roboto : Typeface
+    private lateinit var robotoMedium : Typeface
 
     private var selectedRoomImagesList = ArrayList<SelectImagesDataClass>()
     private var selectedViewImagesList = ArrayList<SelectImagesDataClass>()
@@ -71,6 +79,67 @@ class AddRoomTypeFragment : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        roboto = ResourcesCompat.getFont(requireContext(), R.font.roboto)!!
+        robotoMedium = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)!!
+
+        binding.continueBtn.setOnClickListener {
+
+            if (page == 1){
+
+                page = 2
+
+                binding.roomImages.textSize = 20.0f
+                binding.roomImages.typeface = robotoMedium
+                binding.roomImages.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+
+                binding.roomProfile.textSize = 16.0f
+                binding.roomProfile.typeface = roboto
+
+                binding.chargePlans.textSize = 16.0f
+                binding.chargePlans.typeface = roboto
+
+                binding.roomImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+                binding.roomProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+                binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+
+//                binding.propertyProfileLayout.visibility = View.GONE
+//                binding.propertyImagesFrameLayout.visibility = View.GONE
+//                binding.addressLayout.visibility = View.VISIBLE
+//                rightInAnimation(binding.addressLayout, requireContext())
+
+            } else if (page == 2){
+
+                page = 3
+
+                binding.chargePlans.textSize = 20.0f
+                binding.chargePlans.typeface = robotoMedium
+                binding.chargePlans.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+
+                binding.roomImages.textSize = 16.0f
+                binding.roomImages.typeface = roboto
+
+                binding.roomProfile.textSize = 16.0f
+                binding.roomProfile.typeface = roboto
+
+                binding.roomImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+                binding.roomProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+                binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+
+                val childFragment: Fragment = AddImagesFragment()
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.propertyImagesFrameLayout,childFragment)
+                transaction.commit()
+
+//                binding.propertyProfileLayout.visibility = View.GONE
+//                binding.addressLayout.visibility = View.GONE
+//                binding.propertyImagesFrameLayout.visibility = View.VISIBLE
+//                rightInAnimation(binding.propertyImagesFrameLayout, requireContext())
+
+            } else {
+//                sendData()
+            }
+        }
 
         binding.cancel.setOnClickListener {
 

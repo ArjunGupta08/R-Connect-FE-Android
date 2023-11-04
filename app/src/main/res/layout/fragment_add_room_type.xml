@@ -64,21 +64,79 @@
 
         </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/ll"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/CardViewTheme"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
-            android:layout_marginVertical="15dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/continueBtn"
-            app:layout_constraintStart_toStartOf="@id/heading"
-            app:layout_constraintTop_toBottomOf="@id/continueBtn">
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:background="@color/secondaryBackground"
+            android:layout_marginHorizontal="20dp"
+            app:layout_constraintTop_toBottomOf="@id/cancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/roomProfile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondary"
+                android:text="Room Profile"
+                android:textAlignment="center"
+                android:textSize="@dimen/H3"
+                android:paddingVertical="10dp"
+                android:background="@drawable/corner_top_white_background"
+                android:layout_weight="1"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/roboto_medium"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/roomImages"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/lightBlack"
+                android:text="Room Images"
+                android:textAlignment="center"
+                android:background="@drawable/corner_top_grey_background"
+                android:layout_weight="1"
+                android:textSize="@dimen/H5"
+                android:paddingVertical="10dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/roboto"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/chargePlans"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/lightBlack"
+                android:text="Charges &amp; Plans"
+                android:textAlignment="center"
+                android:background="@drawable/corner_top_grey_background"
+                android:layout_weight="1"
+                android:textSize="@dimen/H5"
+                android:paddingVertical="10dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/roboto"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+        </LinearLayout>
+
+          <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:paddingVertical="10dp">
+                android:paddingVertical="10dp"
+                android:background="@drawable/corner_bottom_white_background"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/continueBtn"
+                app:layout_constraintStart_toStartOf="@id/heading"
+                app:layout_constraintTop_toBottomOf="@id/ll">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/frame1"
@@ -1273,7 +1331,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
