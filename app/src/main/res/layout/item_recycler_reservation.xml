@@ -3,19 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="9dp"
     app:cardElevation="6dp"
+    android:layout_marginStart="9dp"
     android:layout_width="wrap_content"
+    android:layout_marginVertical="9dp"
     android:layout_height="wrap_content">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        android:layout_marginBottom="9dp"
+        android:layout_marginEnd="16dp">
     <TextView
         android:id="@+id/item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/roboto_medium"
         android:layout_marginStart="6dp"
         android:text="Karan Gupta"
@@ -62,7 +65,7 @@
                 android:textSize="@dimen/H5"
                 android:textColor="#424E61"
                 android:fontFamily="@font/roboto_medium"
-                android:text="2"/>
+                android:text="1"/>
             <ImageView
                 android:layout_width="14dp"
                 android:layout_height="14dp"
@@ -75,7 +78,7 @@
                 android:textSize="@dimen/H5"
                 android:textColor="#424E61"
                 android:fontFamily="@font/roboto_medium"
-                android:text="2"/>
+                android:text="1"/>
             <ImageView
                 android:layout_width="14dp"
                 android:layout_height="14dp"
@@ -89,23 +92,58 @@
                 android:textColor="#424E61"
                 android:fontFamily="@font/roboto_medium"
                 android:layout_marginEnd="9dp"
-                android:text="2"/>
+                android:text="3"/>
         </LinearLayout>
         <ImageView
+            android:id="@+id/img_confirm"
             android:layout_width="16dp"
             android:layout_height="16dp"
             app:layout_constraintTop_toBottomOf="@id/ll"
             app:layout_constraintStart_toStartOf="@id/item_name"
             android:src="@drawable/confirm"
             android:layout_marginTop="9dp"/>
-
-
-
-
-
-
-
-
-
+        <TextView
+            android:id="@+id/txt_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/img_confirm"
+            app:layout_constraintBottom_toBottomOf="@id/img_confirm"
+            android:layout_marginTop="6dp"
+            android:fontFamily="@font/roboto_medium"
+            android:layout_marginStart="6dp"
+            android:text="Confirmed"
+            android:textSize="@dimen/H5"
+            android:textColor="@color/black"/>
+        <TextView
+            android:id="@+id/from_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/img_confirm"
+            app:layout_constraintTop_toBottomOf="@id/img_confirm"
+            android:layout_marginTop="6dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="29 Sep, 2023"
+            android:textSize="@dimen/H6"
+            android:textColor="@color/black"/>
+        <ImageView
+            android:id="@+id/to_icon"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            app:layout_constraintStart_toEndOf="@id/from_date"
+            app:layout_constraintTop_toTopOf="@id/from_date"
+            android:src="@drawable/to_icon"
+            android:layout_marginStart="2dp"/>
+        <TextView
+            android:id="@+id/to_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/to_icon"
+            app:layout_constraintBottom_toBottomOf="@id/to_icon"
+            android:layout_marginTop="6dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="6 Oct, 2023"
+            android:layout_marginStart="3dp"
+            android:textSize="@dimen/H6"
+            android:textColor="@color/black"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

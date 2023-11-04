@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import rconnect.retvens.technologies.Mobile.AddPropertyMobileFragment
+import rconnect.retvens.technologies.Mobile.DashboardFragmentMobile
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.dashboard.channelManager.QuickReservation.QuickReservationAdapter
@@ -259,6 +260,10 @@ class DashboardActivity : AppCompatActivity() {
 
 
         else{
+            val fragManager = supportFragmentManager
+            val fragTransaction = fragManager.beginTransaction()
+            fragTransaction.replace(R.id.dashboardFragmentContainer,DashboardFragmentMobile())
+            fragTransaction.commit()
 //            bindingMobile.addPropertyBtn.setOnClickListener {
 //                bindingMobile.dashboardFragmentContainer.isVisible = false
 //                bindingMobile.welcomeLayout.isVisible = false
