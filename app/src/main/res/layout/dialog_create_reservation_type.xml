@@ -40,7 +40,7 @@
                     android:textSize="@dimen/H2"/>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/propertyChainLayout"
+                    android:id="@+id/reservationNameLayout"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/propertyChainText"
+                        android:id="@+id/reservationNameET"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/roboto"
@@ -106,6 +106,7 @@
                             app:layout_constraintTop_toTopOf="@id/rate">
 
                             <Switch
+                                android:id="@+id/isConfirmedSwitch"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 

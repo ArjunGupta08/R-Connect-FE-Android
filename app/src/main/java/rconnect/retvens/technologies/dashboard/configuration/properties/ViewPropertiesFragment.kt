@@ -1,4 +1,4 @@
-package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.properties
+package rconnect.retvens.technologies.dashboard.configuration.properties
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,11 +8,19 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import org.json.JSONObject
+import rconnect.retvens.technologies.Api.OAuthClient
+import rconnect.retvens.technologies.Api.RetrofitObject
+import rconnect.retvens.technologies.Api.configurationApi.ChainConfiguration
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AddPropertyFragment
 import rconnect.retvens.technologies.databinding.FragmentViewPropertiesBinding
 import rconnect.retvens.technologies.utils.Const
+import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.bottomSlideInAnimation
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ViewPropertiesFragment : Fragment() {
     lateinit var binding:FragmentViewPropertiesBinding
@@ -130,5 +138,23 @@ class ViewPropertiesFragment : Fragment() {
             bottomSlideInAnimation(dashboardFragmentContainer, requireContext())
 
         }
+
+        fetchProp()
+    }
+
+    private fun fetchProp(){
+        val i = UserSessionManager(requireContext()).getUserId().toString()
+        val fetchProp = OAuthClient<ChainConfiguration>(requireContext()).create(ChainConfiguration::class.java).fetchProperty(i)
+        fetchProp.enqueue(object : Callback<FetchPropertyData?> {
+            override fun onResponse(call: Call<FetchPropertyData?>, response: Response<FetchPropertyData?>) {
+
+                println("Response : ${response.code()} ${response.message()} ${response.body()?.message} ${response.body()?.data}" )
+
+            }
+
+            override fun onFailure(call: Call<FetchPropertyData?>, t: Throwable) {
+
+            }
+        })
     }
 }

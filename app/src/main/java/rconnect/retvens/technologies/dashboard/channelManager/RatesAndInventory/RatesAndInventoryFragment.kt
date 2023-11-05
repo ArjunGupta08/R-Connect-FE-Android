@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
@@ -54,6 +55,7 @@ class RatesAndInventoryFragment : Fragment() {
     lateinit var txt_all_days:TextView
     lateinit var txt_week_days:TextView
     lateinit var txt_weekends:TextView
+
     lateinit var txt_custom:TextView
     lateinit var startDatePickerDialog:DatePickerDialog
     lateinit var endDatePickerDialog: DatePickerDialog
@@ -128,6 +130,7 @@ class RatesAndInventoryFragment : Fragment() {
             var frid = false
             var satu = true
             var isSun = false
+
 
 
 
@@ -405,6 +408,10 @@ class RatesAndInventoryFragment : Fragment() {
         setInventory()
         bindingTab.inventoryRecycler.adapter = inventoryAdapter
         inventoryAdapter.notifyDataSetChanged()
+
+
+
+
     }
 
     private fun selectCard(day: TextView?) {

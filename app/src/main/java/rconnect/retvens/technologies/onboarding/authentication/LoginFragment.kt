@@ -21,6 +21,7 @@ import rconnect.retvens.technologies.databinding.ActivityLoginScreenBinding
 import rconnect.retvens.technologies.databinding.FragmentLoginBinding
 import rconnect.retvens.technologies.databinding.FragmentLoginMobileBinding
 import rconnect.retvens.technologies.utils.SharedPreference
+import rconnect.retvens.technologies.utils.SharedPrefOnboardingFlags
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.shakeAnimation
 import retrofit2.Call
@@ -168,7 +169,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun getLogin() {
-        val apiClient = RetrofitObject.retrofit.login(LoginRequest(userName,authCode,password,"Android"))
+        val apiClient = RetrofitObject.authentication.login(LoginRequest(userName,authCode,password,"Android"))
 
         apiClient.enqueue(object : Callback<LoginResponse?> {
             override fun onResponse(
@@ -178,7 +179,7 @@ class LoginFragment : Fragment() {
                 if (response.isSuccessful){
                     Toast.makeText(requireContext(), "Login SuccessFull", Toast.LENGTH_SHORT).show()
 
-                    SharedPreference(requireContext()).saveLoginFlagValue(true)
+                    SharedPrefOnboardingFlags(requireContext()).saveLoginFlagValue(true)
                     UserSessionManager(requireContext()).saveUserData(response.body()!!.data!!.userId, response.body()!!.data!!.token)
 
                     val intent = Intent(requireContext(), DashboardActivity::class.java)

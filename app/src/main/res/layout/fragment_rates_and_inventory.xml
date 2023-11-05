@@ -274,13 +274,14 @@
             android:layout_below="@id/calender_recycler">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/inventory_recycler"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:orientation="horizontal"
-                tools:listitem="@layout/item_remaining_inventory"
-                />
+            android:id="@+id/inventory_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            tools:listitem="@layout/item_remaining_inventory"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            />
 
         </androidx.core.widget.NestedScrollView>
 

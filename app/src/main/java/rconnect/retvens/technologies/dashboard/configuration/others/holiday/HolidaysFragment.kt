@@ -1,4 +1,4 @@
-package rconnect.retvens.technologies.dashboard.configuration.others
+package rconnect.retvens.technologies.dashboard.configuration.others.holiday
 
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -6,6 +6,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,19 +16,26 @@ import android.view.Window
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.textfield.TextInputEditText
+import rconnect.retvens.technologies.Api.OAuthClient
+import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
-import rconnect.retvens.technologies.dashboard.configuration.billings.PaymentTypeAdapter
+import rconnect.retvens.technologies.dashboard.configuration.others.seasons.AddSeasonDataClass
+import rconnect.retvens.technologies.dashboard.configuration.others.seasons.GetSeasonDataClass
+import rconnect.retvens.technologies.dashboard.configuration.others.seasons.SeasonAdapter
 import rconnect.retvens.technologies.databinding.FragmentHolidaysBinding
-import rconnect.retvens.technologies.databinding.FragmentPaymentTypesBinding
+import rconnect.retvens.technologies.onboarding.ResponseData
+import rconnect.retvens.technologies.utils.UserSessionManager
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.Calendar
 
-class HolidaysFragment : Fragment() {
+class HolidaysFragment : Fragment(), HolidaysAdapter.OnItemUpdate {
 
     private lateinit var binding: FragmentHolidaysBinding
 
     private lateinit var adapter : HolidaysAdapter
-    private var list = ArrayList<String>()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,6 +73,10 @@ class HolidaysFragment : Fragment() {
 
         val cancel = dialog.findViewById<TextView>(R.id.cancel)
         val save = dialog.findViewById<CardView>(R.id.saveBtn)
+
+        val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCode)
+        val holidayName = dialog.findViewById<TextInputEditText>(R.id.holidayName)
+
         val from_date = dialog.findViewById<TextView>(R.id.from_date)
         val to_date = dialog.findViewById<TextView>(R.id.to_date)
 
@@ -81,7 +93,7 @@ class HolidaysFragment : Fragment() {
             dialog.dismiss()
         }
         save.setOnClickListener {
-            dialog.dismiss()
+            saveHoliday(requireContext(), dialog, shortCode.text.toString(), holidayName.text.toString(), from_date.text.toString(), to_date.text.toString())
         }
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -96,17 +108,29 @@ class HolidaysFragment : Fragment() {
 
         binding.paymentTypeRecycler.layoutManager = LinearLayoutManager(requireContext())
 
-        list.add("4")
-        list.add("4")
-        list.add("4")
-        list.add("4")
-        list.add("4")
-        list.add("4")
-        list.add("4")
+        val identity = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).getHolidayApi(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString())
+        identity.enqueue(object : Callback<GetHotelDataClass?> {
+            override fun onResponse(
+                call: Call<GetHotelDataClass?>,
+                response: Response<GetHotelDataClass?>
+            ) {
+                if (isAdded) {
+                    if (response.isSuccessful) {
+                        adapter = HolidaysAdapter(response.body()!!.data, requireContext())
+                        binding.paymentTypeRecycler.adapter = adapter
+                        adapter.setOnItemUpdateListener(this@HolidaysFragment)
+                        adapter.notifyDataSetChanged()
+                    } else {
+                        openCreateNewDialog()
+                        Log.d("error", "${response.code()} ${response.message()}")
+                    }
+                }
+            }
+            override fun onFailure(call: Call<GetHotelDataClass?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
 
-        adapter = HolidaysAdapter(list, requireContext())
-        binding.paymentTypeRecycler.adapter = adapter
-        adapter.notifyDataSetChanged()
     }
 
     fun showCalendarDialog(context : Context, textDate: TextView) {
@@ -131,5 +155,25 @@ class HolidaysFragment : Fragment() {
         datePickerDialog.show()
     }
 
+    private fun saveHoliday(context: Context, dialog: Dialog, shortCodeTxt : String, holidayName:String, startDate:String, endDate:String) {
+        val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).addHolidayApi(
+            AddHolidayDataClass(UserSessionManager(context).getUserId().toString(), UserSessionManager(context).getPropertyId().toString(), shortCodeTxt, holidayName, startDate, endDate)
+        )
+        create.enqueue(object : Callback<ResponseData?> {
+            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                Log.d( "holiday", "${response.code()} ${response.message()}")
+                setUpRecycler()
+                dialog.dismiss()
+            }
+
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
+    }
+
+    override fun onUpdate() {
+        setUpRecycler()
+    }
 
 }

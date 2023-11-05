@@ -14,10 +14,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
-import com.google.android.libraries.places.api.net.PlacesClient
 import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.FragmentLoginBinding
@@ -25,13 +23,13 @@ import rconnect.retvens.technologies.databinding.FragmentLoginMobileBinding
 import rconnect.retvens.technologies.databinding.FragmentSignUpBinding
 import rconnect.retvens.technologies.databinding.FragmentSignUpMobileBinding
 import rconnect.retvens.technologies.onboarding.FirstOnBoardingScreen
+import rconnect.retvens.technologies.utils.SharedPrefOnboardingFlags
 import rconnect.retvens.technologies.utils.SharedPreference
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.shakeAnimation
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.IndexOutOfBoundsException
 
 class SignUpFragment : Fragment() {
 
@@ -173,7 +171,7 @@ class SignUpFragment : Fragment() {
 
                 // Perform the autocomplete request
 
-                val getDesignation = RetrofitObject.retrofit.getDesignation()
+                val getDesignation = RetrofitObject.authentication.getDesignation()
 
                 getDesignation.enqueue(object : Callback<DesignationDataClass?> {
                     override fun onResponse(
@@ -216,7 +214,7 @@ class SignUpFragment : Fragment() {
 
     private fun signUp() {
 
-        val signUpApi = RetrofitObject.retrofit.signUp(
+        val signUpApi = RetrofitObject.authentication.signUp(
             SignUpDataClass(
                 binding!!.firstNameText.text.toString(),
                 binding!!.lastNameText.text.toString(),
@@ -234,10 +232,15 @@ class SignUpFragment : Fragment() {
             ) {
                 if (response.isSuccessful){
                     val response = response.body()!!
+
+                    SharedPrefOnboardingFlags(requireContext()).saveSignUpFlagValue(true)
+
                     UserSessionManager(requireContext()).saveUserData(response.userId, "")
                     Toast.makeText(requireContext(),response.message,Toast.LENGTH_SHORT).show()
                     val intent = Intent(requireContext(), FirstOnBoardingScreen::class.java)
                     startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(requireActivity(),
+                        android.util.Pair(binding!!.cardCreateAccount,"Btn")).toBundle())
+                    activity?.finish()
                         android.util.Pair(binding!!.cardCreateAccount,"Btn")).toBundle())
                     requireActivity().finish()
                     SharedPreference(requireContext()).saveSignUpFlagValue(true)
@@ -281,7 +284,7 @@ class SignUpFragment : Fragment() {
                     requireActivity().finish()
                     SharedPreference(requireContext()).saveSignUpFlagValue(true)
                 }else{
-                    Log.e("error",response.body().toString())
+                    Log.e("error","${response.body()?.message.toString()} ${response.code().toString()}")
                 }
             }
 

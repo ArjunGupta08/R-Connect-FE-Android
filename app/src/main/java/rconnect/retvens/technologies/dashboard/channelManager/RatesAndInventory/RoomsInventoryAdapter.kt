@@ -9,12 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import androidx.core.content.ContextCompat.createDeviceProtectedStorageContext
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import rconnect.retvens.technologies.R
-
 
 class RoomsInventoryAdapter(val context: Context, private val stringList: ArrayList<String>) :
     RecyclerView.Adapter<RoomsInventoryAdapter.InventoryViewHolder>() {
@@ -23,8 +20,7 @@ class RoomsInventoryAdapter(val context: Context, private val stringList: ArrayL
     private  var mList:ArrayList<String> = ArrayList()
 
 
-
-    class InventoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class InventoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val inventory1: TextView = itemView.findViewById(R.id.inventory_1)
         val inventory2: TextView = itemView.findViewById(R.id.inventory_2)
         val inventory3: TextView = itemView.findViewById(R.id.inventory_3)
@@ -36,6 +32,9 @@ class RoomsInventoryAdapter(val context: Context, private val stringList: ArrayL
         val inventory9: TextView = itemView.findViewById(R.id.inventory_9)
         val inventory10: TextView = itemView.findViewById(R.id.inventory_10)
         val recyclerView = itemView.findViewById<RecyclerView>(R.id.roomPlan_recycler)
+
+
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InventoryViewHolder {
@@ -70,6 +69,9 @@ class RoomsInventoryAdapter(val context: Context, private val stringList: ArrayL
             holder.inventory1.requestFocus(); //to trigger the soft input
 
         }
+
+
+
 
         holder.recyclerView.layoutManager = LinearLayoutManager(context)
         ratePlanPricesAdapter = RatePlanPricesAdapter(context, mList)

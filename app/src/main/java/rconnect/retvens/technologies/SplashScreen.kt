@@ -17,9 +17,12 @@ import rconnect.retvens.technologies.databinding.ActivitySplashScreenMobileBindi
 import rconnect.retvens.technologies.databinding.FragmentLoginBinding
 import rconnect.retvens.technologies.databinding.FragmentLoginMobileBinding
 import rconnect.retvens.technologies.onboarding.FirstOnBoardingScreen
+import rconnect.retvens.technologies.onboarding.FirstOnBoardingScreen
 import rconnect.retvens.technologies.onboarding.authentication.LoginScreen
 import rconnect.retvens.technologies.onboarding.singleHotelOnboarding.ThirdSingleOnboardingScreen
 import rconnect.retvens.technologies.utils.SharedPreference
+import rconnect.retvens.technologies.onboarding.singleHotelOnboarding.ThirdSingleOnboardingScreen
+import rconnect.retvens.technologies.utils.SharedPrefOnboardingFlags
 
 @SuppressLint("CustomSplashScreen")
 class SplashScreen : AppCompatActivity() {
@@ -34,6 +37,8 @@ class SplashScreen : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_splash_screen)
+
 
         val currentOrientation = resources.configuration.orientation
 
@@ -82,6 +87,27 @@ class SplashScreen : AppCompatActivity() {
 
             if (SharedPreference(applicationContext).getLoginFlagValue()){
                 Handler().postDelayed(Runnable {
+
+                    if (SharedPrefOnboardingFlags(applicationContext).getLoginFlagValue()) {
+                        startActivity(Intent(this@SplashScreen, DashboardActivity::class.java))
+                        finish()
+                    } else if (SharedPrefOnboardingFlags(applicationContext).getSecondChainFlagValue()){
+                        startActivity(Intent(this@SplashScreen, DashboardActivity::class.java))
+                        finish()
+                    } else if (SharedPrefOnboardingFlags(applicationContext).getSecondFlagValue()){
+                        startActivity(Intent(this@SplashScreen, DashboardActivity::class.java))
+                        finish()
+                    } else if (SharedPrefOnboardingFlags(applicationContext).getFirstFlagValue()){
+                        startActivity(Intent(this@SplashScreen, ThirdSingleOnboardingScreen::class.java))
+                        finish()
+                    } else if (SharedPrefOnboardingFlags(applicationContext).getSignUpFlagValue()){
+                        startActivity(Intent(this@SplashScreen, FirstOnBoardingScreen::class.java))
+                        finish()
+                    } else {
+                        startActivity(Intent(this@SplashScreen, LoginScreen::class.java))
+                        finish()
+                    }
+
                     startActivity(Intent(this@SplashScreen,DashboardActivity::class.java))
                     finish()
                 },1000)

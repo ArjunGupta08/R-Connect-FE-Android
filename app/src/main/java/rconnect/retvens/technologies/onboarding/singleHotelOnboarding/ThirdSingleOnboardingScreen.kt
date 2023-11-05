@@ -21,9 +21,9 @@ import rconnect.retvens.technologies.onboarding.FinalOnboardingScreen
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.onboarding.chainHotelOnboarding.ThirdChainOnboardingAdapter
 import rconnect.retvens.technologies.onboarding.chainHotelOnboarding.ThirdChainOnboardingDataClass
+import rconnect.retvens.technologies.utils.SharedPrefOnboardingFlags
 import rconnect.retvens.technologies.utils.SharedPreference
 import rconnect.retvens.technologies.utils.UserSessionManager
-import rconnect.retvens.technologies.utils.prepareFilePart
 import rconnect.retvens.technologies.utils.shakeAnimation
 import retrofit2.Call
 import retrofit2.Callback
@@ -205,7 +205,7 @@ class ThirdSingleOnboardingScreen : AppCompatActivity() {
         val registrationNumber = binding!!.registrationNumberText.text.toString()
         val ratePercent = binding!!.rateCount.text.toString()
 
-            val secondOnboardingApi = RetrofitObject.retrofit.secondOnboarding(
+            val secondOnboardingApi = RetrofitObject.authentication.secondOnboarding(
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), starCategory),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), roomsInProperty),
@@ -221,11 +221,18 @@ class ThirdSingleOnboardingScreen : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         val respons = response.body()!!
+
+                        SharedPrefOnboardingFlags(applicationContext).saveSecondFlagValue(true)
+
                         Toast.makeText(
                             applicationContext,
                             respons.message.toString(),
                             Toast.LENGTH_SHORT
                         ).show()
+
+                        val intent = (Intent(this@ThirdSingleOnboardingScreen, FinalOnboardingScreen::class.java))
+
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
 
                         val intent = (Intent(this@ThirdSingleOnboardingScreen, FourOnboardingActivity::class.java))
                         val options = ActivityOptions.makeSceneTransitionAnimation(this@ThirdSingleOnboardingScreen,

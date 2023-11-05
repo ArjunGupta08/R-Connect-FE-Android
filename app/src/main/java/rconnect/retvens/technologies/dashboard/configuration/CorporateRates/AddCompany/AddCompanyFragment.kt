@@ -11,7 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.ViewCompany.ViewCompanyFragment
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.properties.ViewPropertiesFragment
+import rconnect.retvens.technologies.dashboard.configuration.properties.ViewPropertiesFragment
 import rconnect.retvens.technologies.databinding.FragmentAddCompanyBinding
 import rconnect.retvens.technologies.utils.leftInAnimation
 import rconnect.retvens.technologies.utils.rightInAnimation

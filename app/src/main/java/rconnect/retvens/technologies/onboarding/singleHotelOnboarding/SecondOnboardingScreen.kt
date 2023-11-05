@@ -31,6 +31,7 @@ import rconnect.retvens.technologies.databinding.ActivityFirstOnboardingScreenMo
 import rconnect.retvens.technologies.databinding.ActivitySecondOnboardingScreenBinding
 import rconnect.retvens.technologies.databinding.ActivitySecondOnboardingScreenMobileBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
+import rconnect.retvens.technologies.utils.SharedPrefOnboardingFlags
 import rconnect.retvens.technologies.utils.SharedPreference
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.fetchCountryName
@@ -211,7 +212,7 @@ class SecondOnboardingScreen : AppCompatActivity() {
 
         if (imageUri != null) {
             val hotelLogo = prepareFilePart(imageUri!!, "hotelLogo", this)
-            val firstOnboardingApi = RetrofitObject.retrofit.firstOnboarding(
+            val firstOnboardingApi = RetrofitObject.authentication.firstOnboarding(
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyTypeSOC),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), websiteUrl),
@@ -232,6 +233,9 @@ class SecondOnboardingScreen : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         val respons = response.body()!!
+
+                        SharedPrefOnboardingFlags(applicationContext).saveFirstFlagValue(true)
+
                         Toast.makeText(
                             applicationContext,
                             respons.message.toString(),
@@ -249,6 +253,7 @@ class SecondOnboardingScreen : AppCompatActivity() {
                             android.util.Pair(binding!!.demoBackbtn, "backBtn")
                         ).toBundle()
                         startActivity(intent, options)
+                        finish()
 
                     } else {
                         Log.d("Error Onboarding", response.code().toString())
@@ -260,7 +265,7 @@ class SecondOnboardingScreen : AppCompatActivity() {
                 }
             })
         }else {
-            val firstOnboardingApi = RetrofitObject.retrofit.firstOnboardingWithoutImage(
+            val firstOnboardingApi = RetrofitObject.authentication.firstOnboardingWithoutImage(
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyTypeSOC),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), websiteUrl),
@@ -286,8 +291,10 @@ class SecondOnboardingScreen : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        val intent =
-                            Intent(applicationContext, ThirdSingleOnboardingScreen::class.java)
+                        val intent = Intent(applicationContext, ThirdSingleOnboardingScreen::class.java)
+
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+
                         intent.putExtra("isSingle", true)
                         finish()
 
@@ -298,6 +305,7 @@ class SecondOnboardingScreen : AppCompatActivity() {
                             android.util.Pair(binding!!.demoBackbtn, "backBtn")
                         ).toBundle()
                         startActivity(intent, options)
+
                     } else {
                         Log.d("Error Onboarding", response.code().toString())
                     }
@@ -323,7 +331,7 @@ class SecondOnboardingScreen : AppCompatActivity() {
 
         if (imageUri != null) {
             val hotelLogo = prepareFilePart(imageUri!!, "hotelLogo", this)
-            val firstOnboardingApi = RetrofitObject.retrofit.firstOnboarding(
+            val firstOnboardingApi = RetrofitObject.authentication.firstOnboarding(
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyTypeSOC),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), websiteUrl),
@@ -378,7 +386,7 @@ class SecondOnboardingScreen : AppCompatActivity() {
                 }
             })
         }else {
-            val firstOnboardingApi = RetrofitObject.retrofit.firstOnboardingWithoutImage(
+            val firstOnboardingApi = RetrofitObject.authentication.firstOnboardingWithoutImage(
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyTypeSOC),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), websiteUrl),

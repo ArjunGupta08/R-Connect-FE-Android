@@ -1,17 +1,9 @@
-package rconnect.retvens.technologies.dashboard
+package rconnect.retvens.technologies.dashboard.channelManager.DashboardFragment
 
 import android.content.Context
-import android.content.Context.INPUT_METHOD_SERVICE
-import android.inputmethodservice.InputMethodService
-import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
-import androidx.core.content.ContextCompat.createDeviceProtectedStorageContext
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import rconnect.retvens.technologies.R
 

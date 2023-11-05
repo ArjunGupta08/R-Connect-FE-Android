@@ -27,7 +27,7 @@ import rconnect.retvens.technologies.databinding.ActivitySecondChainOnboardingMo
 import rconnect.retvens.technologies.databinding.ActivitySecondOnboardingScreenMobileBinding
 import rconnect.retvens.technologies.onboarding.FinalOnboardingScreen
 import rconnect.retvens.technologies.onboarding.ResponseData
-import rconnect.retvens.technologies.utils.SharedPreference
+import rconnect.retvens.technologies.utils.SharedPrefOnboardingFlags
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.prepareFilePart
 import rconnect.retvens.technologies.utils.shakeAnimation
@@ -240,7 +240,7 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
 
         if (imageUri != null) {
             val hotelLogo = prepareFilePart(imageUri!!, "hotelLogo", this)
-            val chainOnboardingApi = RetrofitObject.retrofit.firstChainOnboarding(
+            val chainOnboardingApi = RetrofitObject.authentication.firstChainOnboarding(
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyTypeSOC),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), websiteUrl),
@@ -258,6 +258,8 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         val respons = response.body()!!
+                        SharedPrefOnboardingFlags(applicationContext).saveSecondChainFlagValue(true)
+
                         Toast.makeText(
                             applicationContext,
                             respons.message.toString(),
@@ -274,6 +276,7 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
                         ).toBundle()
 
                         startActivity(intent, options)
+                        finish()
 
                     } else {
                         Log.d("Error Onboarding", response.code().toString())
@@ -285,7 +288,7 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
                 }
             })
         } else {
-            val chainOnboardingApi = RetrofitObject.retrofit.firstChainOnboardingWithoutImg(
+            val chainOnboardingApi = RetrofitObject.authentication.firstChainOnboardingWithoutImg(
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyTypeSOC),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), websiteUrl),
@@ -302,6 +305,7 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         val respons = response.body()!!
+                        SharedPrefOnboardingFlags(applicationContext).saveSecondChainFlagValue(true)
                         Toast.makeText(
                             applicationContext,
                             respons.message.toString(),
@@ -309,6 +313,9 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
                         ).show()
 
                         val intent = Intent(applicationContext, FinalOnboardingScreen::class.java)
+
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+
                         val options = ActivityOptions.makeSceneTransitionAnimation(
                             this@SecondChainOnboardingActivity,
                             android.util.Pair(binding!!.logo, "logo_img"),
@@ -392,7 +399,7 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
                 }
             })
         } else {
-            val chainOnboardingApi = RetrofitObject.retrofit.firstChainOnboardingWithoutImg(
+            val chainOnboardingApi = RetrofitObject.authentication.firstChainOnboardingWithoutImg(
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyTypeSOC),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), "websiteUrl"),

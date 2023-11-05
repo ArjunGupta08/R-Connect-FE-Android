@@ -8,6 +8,8 @@ class UserSessionManager(context: Context) {
     private val userIdKey = "userId"
     private val tokenKey = "token"
 
+    private val propertyIdKey = "propertyId"
+
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(prefName, Context.MODE_PRIVATE)
     private val editor: SharedPreferences.Editor = sharedPreferences.edit()
 
@@ -15,6 +17,15 @@ class UserSessionManager(context: Context) {
         editor.putString(userIdKey, userId)
         editor.putString(tokenKey, token)
         editor.apply()
+    }
+
+    fun savePropertyId(propertyId: String) {
+        editor.putString(propertyIdKey, propertyId)
+        editor.apply()
+    }
+
+    fun getPropertyId(): String? {
+        return sharedPreferences.getString(propertyIdKey, null)
     }
 
     fun getUserId(): String? {
