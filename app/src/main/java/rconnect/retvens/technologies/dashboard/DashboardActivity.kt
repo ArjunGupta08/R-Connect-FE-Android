@@ -263,7 +263,7 @@ class DashboardActivity : AppCompatActivity() {
         else{
             val fragManager = supportFragmentManager
             val fragTransaction = fragManager.beginTransaction()
-            fragTransaction.replace(R.id.dashboardFragmentContainer,DashboardFragmentMobile())
+            fragTransaction.replace(R.id.dashboardFragmentContainer,DashBoardFragment())
             fragTransaction.commit()
 //            bindingMobile.addPropertyBtn.setOnClickListener {
 //                bindingMobile.dashboardFragmentContainer.isVisible = false

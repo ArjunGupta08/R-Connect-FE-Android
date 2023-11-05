@@ -40,22 +40,20 @@ class SignUpFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val currentOrientation = resources.configuration.orientation
+        val screenSize = resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK
 
-        when (currentOrientation) {
-            Configuration.ORIENTATION_LANDSCAPE -> {
-                // Landscape orientation
+        if (screenSize >= Configuration.SCREENLAYOUT_SIZE_LARGE) {
 
-                requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-                binding = FragmentSignUpBinding.inflate(layoutInflater)
-                return binding!!.root
-            }
-            else -> {
-                // Portrait orientation (default or any other orientation)
-                requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-                bindingMobile = FragmentSignUpMobileBinding.inflate(layoutInflater)
-                return bindingMobile!!.root
-            }
+            // Use landscape layout for tablets (e.g., screen width greater than or equal to 600dp)
+            requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+            binding = FragmentSignUpBinding.inflate(layoutInflater)
+            return binding!!.root
+        }
+        else {
+            // Use portrait layout for mobile devices
+            requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+            bindingMobile = FragmentSignUpMobileBinding.inflate(layoutInflater)
+            return bindingMobile!!.root
         }
 //        binding = FragmentSignUpBinding.inflate(layoutInflater, container, false)
 //        return binding.root

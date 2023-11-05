@@ -31,22 +31,18 @@ class LoginScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val currentOrientation = resources.configuration.orientation
+        val screenSize = resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK
 
-        when (currentOrientation) {
-            Configuration.ORIENTATION_LANDSCAPE -> {
-                // Landscape orientation
+        if (screenSize >= Configuration.SCREENLAYOUT_SIZE_LARGE) {
+            // Landscape orientation for tablets
 
-                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-                binding = ActivityLoginScreenBinding.inflate(layoutInflater)
-                setContentView(binding!!.root)
-            }
-            else -> {
-                // Portrait orientation (default or any other orientation)
-                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-                bindingMobile = ActivityLoginMobileScreenBinding.inflate(layoutInflater)
-                setContentView(bindingMobile.root)
-            }
+            binding = ActivityLoginScreenBinding.inflate(layoutInflater)
+            setContentView(binding!!.root)
+        } else {
+            // Portrait orientation for mobile (default or any other orientation)
+
+            bindingMobile = ActivityLoginMobileScreenBinding.inflate(layoutInflater)
+            setContentView(bindingMobile.root)
         }
 
         window?.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)

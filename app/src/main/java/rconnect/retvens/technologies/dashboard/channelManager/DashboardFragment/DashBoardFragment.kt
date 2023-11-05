@@ -1,5 +1,7 @@
 package rconnect.retvens.technologies.dashboard.channelManager.DashboardFragment
 
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
@@ -32,23 +36,46 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.FileUtils
+import rconnect.retvens.technologies.Mobile.ReservationAdapter
+import rconnect.retvens.technologies.Mobile.ReservationData
+import rconnect.retvens.technologies.Mobile.RevenueAdapter
+import rconnect.retvens.technologies.Mobile.RevenueData
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.FragmentDashBoardBinding
+import rconnect.retvens.technologies.databinding.FragmentDashboardMobileBinding
+import rconnect.retvens.technologies.databinding.FragmentLoginBinding
+import rconnect.retvens.technologies.databinding.FragmentLoginMobileBinding
 
 
 class DashBoardFragment : Fragment(), OnChartValueSelectedListener {
 
-    private lateinit var bindingTab:FragmentDashBoardBinding
+    private  var bindingTab:FragmentDashBoardBinding ?= null
+    private lateinit var bindingMobile:FragmentDashboardMobileBinding
     private lateinit var bookingDetailsAdapter: BookingDetailsAdapter
     private  var mList:ArrayList<String> = ArrayList()
+    val list = ArrayList<ReservationData>()
+    val revenueList = ArrayList<RevenueData>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-       bindingTab = FragmentDashBoardBinding.inflate(layoutInflater,container,false)
-        return bindingTab.root
+        val screenSize = resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK
+
+        if (screenSize >= Configuration.SCREENLAYOUT_SIZE_LARGE) {
+
+            // Use landscape layout for tablets (e.g., screen width greater than or equal to 600dp)
+            requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+            bindingTab = FragmentDashBoardBinding.inflate(layoutInflater)
+            return bindingTab!!.root
+        }
+        else {
+            // Use portrait layout for mobile devices
+            requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+            bindingMobile = FragmentDashboardMobileBinding.inflate(layoutInflater)
+            return bindingMobile!!.root
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,45 +83,78 @@ class DashBoardFragment : Fragment(), OnChartValueSelectedListener {
 
         setBooking()
 
-        bindingTab.bookingDetailRecycler.layoutManager = LinearLayoutManager(requireContext())
+        if (bindingTab is FragmentDashBoardBinding) {
 
-        bookingDetailsAdapter = BookingDetailsAdapter(requireContext(),mList)
-        bindingTab.bookingDetailRecycler.adapter = bookingDetailsAdapter
-        bookingDetailsAdapter.notifyDataSetChanged()
+            bindingTab!!.bookingDetailRecycler.layoutManager = LinearLayoutManager(requireContext())
 
-        pieChart()
-        addChart()
-        lineChart()
-        stackChart()
+            bookingDetailsAdapter = BookingDetailsAdapter(requireContext(), mList)
+            bindingTab!!.bookingDetailRecycler.adapter = bookingDetailsAdapter
+            bookingDetailsAdapter.notifyDataSetChanged()
+
+            pieChart(bindingTab!!.pieChart)
+            addChart(bindingTab!!.barchart)
+            lineChart(bindingTab!!.lineChart)
+            stackChart(bindingTab!!.stackBar)
+        }else{
+            pieChart(bindingMobile.pieChart)
+            addChart(bindingMobile.barchart)
+            lineChart(bindingMobile.lineChart)
+            stackChart(bindingMobile.stackBar)
+
+            list.add(ReservationData("Karan Gupta"))
+            list.add(ReservationData("Karan Gupta"))
+            list.add(ReservationData("Karan Gupta"))
+            list.add(ReservationData("Karan Gupta"))
+            list.add(ReservationData("Karan Gupta"))
+            list.add(ReservationData("Karan Gupta"))
+            list.add(ReservationData("Karan Gupta"))
+            list.add(ReservationData("Karan Gupta"))
+            bindingMobile.reservationRecycler.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            val reservationAdapter = ReservationAdapter(list,requireContext())
+            bindingMobile.reservationRecycler.adapter = reservationAdapter
+            reservationAdapter.notifyDataSetChanged()
+
+            revenueList.add(RevenueData("Deluxe"))
+            revenueList.add(RevenueData("Deluxe"))
+            revenueList.add(RevenueData("Deluxe"))
+            revenueList.add(RevenueData("Deluxe"))
+            revenueList.add(RevenueData("Deluxe"))
+            revenueList.add(RevenueData("Deluxe"))
+            revenueList.add(RevenueData("Deluxe"))
+            bindingMobile.recyclerRevenue.layoutManager = LinearLayoutManager(requireContext())
+            val revenueAdapter = RevenueAdapter(revenueList,requireContext())
+            bindingMobile.recyclerRevenue.adapter = revenueAdapter
+            reservationAdapter.notifyDataSetChanged()
+        }
 
     }
 
-    private fun stackChart() {
-        bindingTab.stackBar.setOnChartValueSelectedListener(this)
+    private fun stackChart(bar:BarChart) {
+        bar.setOnChartValueSelectedListener(this)
 
-        bindingTab.stackBar.description.isEnabled = false
+        bar.description.isEnabled = false
 
 // If more than 60 entries are displayed in the chart, no values will be drawn
-        bindingTab.stackBar.maxVisibleCount
+        bar.maxVisibleCount
 
 // Scaling can now only be done on x- and y-axis separately
-        bindingTab.stackBar.setPinchZoom(false)
+        bar.setPinchZoom(false)
 
-        bindingTab.stackBar.setDrawGridBackground(false)
-        bindingTab.stackBar.setDrawBarShadow(false)
+        bar.setDrawGridBackground(false)
+        bar.setDrawBarShadow(false)
 
-        bindingTab.stackBar.setDrawValueAboveBar(false)
-        bindingTab.stackBar.isHighlightFullBarEnabled = false
+        bar.setDrawValueAboveBar(false)
+        bar.isHighlightFullBarEnabled = false
 
 // Change the position of the y-labels
-        val leftAxis = bindingTab.stackBar.axisLeft
+        val leftAxis = bar.axisLeft
         leftAxis.axisMinimum = 0f // This replaces setStartAtZero(true)
-        bindingTab.stackBar.axisRight.isEnabled = false
+        bar.axisRight.isEnabled = false
         leftAxis.setDrawAxisLine(false) // Hide Y-axis line
         leftAxis.setDrawLabels(true) // Show Y-axis values
         leftAxis.setDrawGridLines(false) // Hide Y-axis gridlines// Hide Y-axis gridlines
 
-        val xLabels = bindingTab.stackBar.xAxis
+        val xLabels = bar.xAxis
         xLabels.position = XAxisPosition.BOTTOM
         xLabels.setDrawAxisLine(false) // Hide Y-axis line
         xLabels.setDrawLabels(true) // Show Y-axis values
@@ -107,7 +167,7 @@ class DashBoardFragment : Fragment(), OnChartValueSelectedListener {
 // Setting data
 
 
-        val l = bindingTab.stackBar.legend
+        val l = bar.legend
         l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
         l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
         l.orientation = Legend.LegendOrientation.HORIZONTAL
@@ -117,47 +177,47 @@ class DashBoardFragment : Fragment(), OnChartValueSelectedListener {
         l.xEntrySpace = 6f
 
 
-        setBarChartData(bindingTab.stackBar, 12, 100)
+        setBarChartData(bar, 12, 100)
 
     }
 
-    private fun pieChart() {
+    private fun pieChart(pieChart: PieChart) {
 
-        bindingTab.pieChart.setUsePercentValues(true)
-        bindingTab.pieChart.description.isEnabled = false
-        bindingTab.pieChart.setExtraOffsets(5f, 10f, 5f, 5f)
+        pieChart.setUsePercentValues(true)
+        pieChart.description.isEnabled = false
+        pieChart.setExtraOffsets(5f, 10f, 5f, 5f)
 
-        bindingTab.pieChart.dragDecelerationFrictionCoef = 0.95f
-
-
-//        bindingTab.pieChart.centerText = generateCenterSpannableText()
+        pieChart.dragDecelerationFrictionCoef = 0.95f
 
 
-
-        bindingTab.pieChart.setDrawHoleEnabled(true)
-        bindingTab.pieChart.setHoleColor(Color.TRANSPARENT)
-
-        bindingTab.pieChart.setDrawEntryLabels(false)
+//        pieChart.centerText = generateCenterSpannableText()
 
 
-        bindingTab.pieChart.setDrawCenterText(false)
 
-        bindingTab.pieChart.rotationAngle = 0f
+        pieChart.setDrawHoleEnabled(true)
+        pieChart.setHoleColor(Color.TRANSPARENT)
+
+        pieChart.setDrawEntryLabels(false)
+
+
+        pieChart.setDrawCenterText(false)
+
+        pieChart.rotationAngle = 0f
 // enable rotation of the chart by touch
-        bindingTab.pieChart.isRotationEnabled = true
-        bindingTab.pieChart.isHighlightPerTapEnabled = true
+        pieChart.isRotationEnabled = true
+        pieChart.isHighlightPerTapEnabled = true
 
 // chart.setUnit(" €");
 // chart.setDrawUnitsInChart(true);
 
 // add a selection listener
-        bindingTab.pieChart.setOnChartValueSelectedListener(this)
+        pieChart.setOnChartValueSelectedListener(this)
 
 
 
-        bindingTab.pieChart.animateY(1400, Easing.EaseInOutQuad)
+        pieChart.animateY(1400, Easing.EaseInOutQuad)
 
-        val l: Legend = bindingTab.pieChart.legend
+        val l: Legend = pieChart.legend
         l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
         l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
         l.orientation = Legend.LegendOrientation.VERTICAL
@@ -167,15 +227,15 @@ class DashBoardFragment : Fragment(), OnChartValueSelectedListener {
         l.yOffset = 0f
 
 // entry label styling
-        bindingTab.pieChart.setEntryLabelColor(Color.WHITE)
-        bindingTab.pieChart.legend.isEnabled = false
-        bindingTab.pieChart.holeRadius = 45f
-        bindingTab.pieChart.isDrawSlicesUnderHoleEnabled
+        pieChart.setEntryLabelColor(Color.WHITE)
+        pieChart.legend.isEnabled = false
+        pieChart.holeRadius = 45f
+        pieChart.isDrawSlicesUnderHoleEnabled
 
 
-        bindingTab.pieChart.setEntryLabelTextSize(0f)
+        pieChart.setEntryLabelTextSize(0f)
 
-        setPieData(4,100f)
+        setPieData(pieChart,4,100f)
     }
 
 
@@ -193,7 +253,7 @@ class DashBoardFragment : Fragment(), OnChartValueSelectedListener {
 
     }
 
-    private fun setPieData(count: Int, range: Float) {
+    private fun setPieData(pieChart: PieChart,count: Int, range: Float) {
         val entries: ArrayList<PieEntry> = ArrayList()
 
         val parties = arrayOf(
@@ -268,12 +328,12 @@ class DashBoardFragment : Fragment(), OnChartValueSelectedListener {
 //        data.setValueTextSize(11f)
 //        data.setValueTextColor(Color.WHITE)
 
-        bindingTab.pieChart.data = data
+        pieChart.data = data
 
         // undo all highlights
-        bindingTab.pieChart.highlightValues(null)
+        pieChart.highlightValues(null)
 
-        bindingTab.pieChart.invalidate()
+        pieChart.invalidate()
     }
 
     override fun onValueSelected(e: Entry?, h: Highlight?) {
@@ -284,30 +344,30 @@ class DashBoardFragment : Fragment(), OnChartValueSelectedListener {
 
     }
 
-    private fun addChart() {
+    private fun addChart(barChart: BarChart) {
 
-        bindingTab.barchart.setOnChartValueSelectedListener(this)
+        barChart.setOnChartValueSelectedListener(this)
 
-        bindingTab.barchart.setDrawBarShadow(false)
-        bindingTab.barchart.setDrawValueAboveBar(true)
+        barChart.setDrawBarShadow(false)
+        barChart.setDrawValueAboveBar(true)
 
-        bindingTab.barchart.description.isEnabled = false
+        barChart.description.isEnabled = false
 
 // if more than 60 entries are displayed in the chart, no values will be drawn
-        bindingTab.barchart.maxVisibleCount
+        barChart.maxVisibleCount
 
-        bindingTab.barchart.setDrawBorders(false)
+        barChart.setDrawBorders(false)
 
 // scaling can now only be done on x- and y-axis separately
-        bindingTab.barchart.setPinchZoom(false)
+        barChart.setPinchZoom(false)
 
-        bindingTab.barchart.drawableState
+        barChart.drawableState
 
 // chart.setDrawYLabels(false);
 
-        val xAxisFormatter: IAxisValueFormatter = DayAxisValueFormatter( bindingTab.barchart)
+        val xAxisFormatter: IAxisValueFormatter = DayAxisValueFormatter( barChart)
 
-        val xAxis =  bindingTab.barchart.xAxis
+        val xAxis =  barChart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.setDrawGridLines(false)
         xAxis.granularity = 1f // only intervals of 1 day
@@ -319,7 +379,7 @@ class DashBoardFragment : Fragment(), OnChartValueSelectedListener {
 
         val custom: IAxisValueFormatter = MyAxisValueFormatter()
 
-        val leftAxis =  bindingTab.barchart.axisLeft
+        val leftAxis =  barChart.axisLeft
         leftAxis.labelCount = 8
         leftAxis.setDrawLabels(true)
         leftAxis.setDrawAxisLine(false)
@@ -329,7 +389,7 @@ class DashBoardFragment : Fragment(), OnChartValueSelectedListener {
         leftAxis.spaceTop = 15f
         leftAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
-        val rightAxis =  bindingTab.barchart.axisRight
+        val rightAxis =  barChart.axisRight
         rightAxis.setDrawGridLines(false)
         rightAxis.labelCount = 8
         rightAxis.setDrawLabels(false)
@@ -340,7 +400,7 @@ class DashBoardFragment : Fragment(), OnChartValueSelectedListener {
         rightAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
 
-        val l =  bindingTab.barchart.legend
+        val l =  barChart.legend
         l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
         l.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
         l.orientation = Legend.LegendOrientation.HORIZONTAL
@@ -351,25 +411,25 @@ class DashBoardFragment : Fragment(), OnChartValueSelectedListener {
         l.xEntrySpace = 4f
 
 //        val mv = XYMarkerView(requireContext(), xAxisFormatter)
-//        mv.chartView =  bindingTab.barchart // For bounds control
-//        bindingTab.barchart.marker = mv
+//        mv.chartView =  barChart // For bounds control
+//        barChart.marker = mv
 
-        setData(12,60f)
+        setData(barChart,12,60f)
     }
 
-    private fun lineChart() {
-        bindingTab.lineChart.description.isEnabled = false
-        bindingTab.lineChart.setDrawGridBackground(false)
-        bindingTab.lineChart.data = generateLineData()
-        bindingTab.lineChart.animateX(3000)
+    private fun lineChart(lineChart:LineChart) {
+        lineChart.description.isEnabled = false
+        lineChart.setDrawGridBackground(false)
+        lineChart.data = generateLineData()
+        lineChart.animateX(3000)
 
         val tf = ResourcesCompat.getFont(requireContext(), R.font.roboto_bold)
 
-        val l = bindingTab.lineChart.legend
+        val l = lineChart.legend
         l.isEnabled = false
         l.typeface = tf
 
-        val leftAxis = bindingTab.lineChart.axisLeft
+        val leftAxis = lineChart.axisLeft
         leftAxis.typeface = tf
         leftAxis.axisMaximum = 1.2f
         leftAxis.axisMinimum = -1.2f
@@ -378,10 +438,10 @@ class DashBoardFragment : Fragment(), OnChartValueSelectedListener {
         leftAxis.setDrawLabels(true) // Show labels on the left axis
         leftAxis.isInverted = false // Disable Y-axis inversion
 
-        val rightAxis = bindingTab.lineChart.axisRight
+        val rightAxis = lineChart.axisRight
         rightAxis.isEnabled = false // Hide the right axis
 
-        val xAxis = bindingTab.lineChart.xAxis
+        val xAxis = lineChart.xAxis
         xAxis.typeface = tf
         xAxis.setDrawGridLines(false) // Hide grid lines on the X-axis
         xAxis.setDrawAxisLine(false) // Hide the X-axis line
@@ -467,11 +527,11 @@ class DashBoardFragment : Fragment(), OnChartValueSelectedListener {
 
 
 
-    private fun setData(count: Int, range: Float) {
+    private fun setData(barChart: BarChart,barcount: Int, range: Float) {
         val start = 1f
         val values = ArrayList<BarEntry>()
 
-        for (i in start.toInt() until start.toInt() + count) {
+        for (i in start.toInt() until start.toInt() + barcount) {
             val num = (Math.random() * (range + 1)).toFloat()
 
             if (Math.random() * 100 < 25) {
@@ -483,11 +543,11 @@ class DashBoardFragment : Fragment(), OnChartValueSelectedListener {
 
         val set1: BarDataSet
 
-        if (bindingTab.barchart.data != null && bindingTab.barchart.data.dataSetCount > 0) {
-            set1 = bindingTab.barchart.data.getDataSetByIndex(0) as BarDataSet
+        if (barChart.data != null && barChart.data.dataSetCount > 0) {
+            set1 = barChart.data.getDataSetByIndex(0) as BarDataSet
             set1.values = values
-            bindingTab.barchart.data.notifyDataChanged()
-            bindingTab.barchart.notifyDataSetChanged()
+            barChart.data.notifyDataChanged()
+            barChart.notifyDataSetChanged()
 
         } else {
             set1 = BarDataSet(values, "The year 2017")
@@ -527,7 +587,7 @@ class DashBoardFragment : Fragment(), OnChartValueSelectedListener {
 
             data.barWidth = 0.7f
 
-            bindingTab.barchart.data = data
+            barChart.data = data
         }
     }
 
