@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+            <TextView
+                android:id="@+id/txt_seller"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="Deluxe Rooms"
+                android:layout_marginStart="9dp"
+                android:layout_marginTop="9dp"
+                android:textColor="@color/secondary"
+                android:textSize="@dimen/H5"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.38"/>
+            <TextView
+                android:id="@+id/txt_revenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/guide"
+                app:layout_constraintTop_toTopOf="@id/txt_seller"
+                android:text="1,24,264"
+                android:textSize="@dimen/H5"
+                android:textColor="@color/secondary"/>
+            <TextView
+                android:id="@+id/txt_night"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/txt_revenu"
+                app:layout_constraintTop_toTopOf="@id/txt_revenu"
+                app:layout_constraintBottom_toBottomOf="@id/txt_revenu"
+                app:layout_constraintEnd_toStartOf="@id/txt_adr"
+                android:textColor="@color/secondary"
+                android:textSize="@dimen/H5"
+                android:text="89 Nights"/>
+            <TextView
+                android:id="@+id/txt_adr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/txt_night"
+                app:layout_constraintTop_toTopOf="@id/txt_revenu"
+                app:layout_constraintBottom_toBottomOf="@id/txt_revenu"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textColor="@color/secondary"
+                android:textSize="@dimen/H5"
+                android:text="20,546"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        app:layout_constraintTop_toBottomOf="@id/txt_adr"
+        android:layout_marginTop="6dp"
+        android:background="#E6ECF5"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
