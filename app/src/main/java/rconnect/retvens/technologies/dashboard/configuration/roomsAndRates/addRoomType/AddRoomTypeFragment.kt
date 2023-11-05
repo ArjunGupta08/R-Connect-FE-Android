@@ -103,10 +103,15 @@ class AddRoomTypeFragment : Fragment(),
                 binding.roomProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
                 binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
 
-//                binding.propertyProfileLayout.visibility = View.GONE
-//                binding.propertyImagesFrameLayout.visibility = View.GONE
-//                binding.addressLayout.visibility = View.VISIBLE
-//                rightInAnimation(binding.addressLayout, requireContext())
+                val childFragment: Fragment = AddImagesFragment()
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.createRoomFragContainer,childFragment)
+                transaction.commit()
+
+                binding.frame.visibility = View.GONE
+                binding.createRoomFragContainer.visibility = View.VISIBLE
+                rightInAnimation(binding.createRoomFragContainer, requireContext())
+
 
             } else if (page == 2){
 
@@ -126,16 +131,16 @@ class AddRoomTypeFragment : Fragment(),
                 binding.roomProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
                 binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
 
-                val childFragment: Fragment = AddImagesFragment()
+                val childFragment: Fragment = ChargesAndRatesFragment()
                 val transaction = requireActivity().supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.propertyImagesFrameLayout,childFragment)
+                transaction.replace(R.id.createRoomFragContainer,childFragment)
                 transaction.commit()
 
-//                binding.propertyProfileLayout.visibility = View.GONE
-//                binding.addressLayout.visibility = View.GONE
-//                binding.propertyImagesFrameLayout.visibility = View.VISIBLE
-//                rightInAnimation(binding.propertyImagesFrameLayout, requireContext())
+                binding.frame.visibility = View.VISIBLE
+                binding.createRoomFragContainer.visibility = View.GONE
+                rightInAnimation(binding.createRoomFragContainer, requireContext())
 
+                binding.continueTxt.text = "Save"
             } else {
 //                sendData()
             }
