@@ -230,7 +230,7 @@ class ThirdSingleOnboardingScreen : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        val intent = (Intent(this@ThirdSingleOnboardingScreen, FinalOnboardingScreen::class.java))
+//                        val intent = (Intent(this@ThirdSingleOnboardingScreen, FinalOnboardingScreen::class.java))
 
                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
 
@@ -260,7 +260,7 @@ class ThirdSingleOnboardingScreen : AppCompatActivity() {
 //        val registrationNumber = bindingMobile!!.registrationNumberText.text.toString()
         val ratePercent = bindingMobile!!.rateCount.text.toString()
 
-            val secondOnboardingApi = RetrofitObject.retrofit.secondOnboarding(
+            val secondOnboardingApi = RetrofitObject.authentication.secondOnboarding(
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), starCategory),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), roomsInProperty),

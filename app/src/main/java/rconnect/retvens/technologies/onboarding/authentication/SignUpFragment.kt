@@ -241,8 +241,7 @@ class SignUpFragment : Fragment() {
                     startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(requireActivity(),
                         android.util.Pair(binding!!.cardCreateAccount,"Btn")).toBundle())
                     activity?.finish()
-                        android.util.Pair(binding!!.cardCreateAccount,"Btn")).toBundle())
-                    requireActivity().finish()
+
                     SharedPreference(requireContext()).saveSignUpFlagValue(true)
                     requireActivity().finish()
                 }else{
@@ -258,7 +257,7 @@ class SignUpFragment : Fragment() {
     }
     private fun signUpMobile() {
 
-        val signUpApi = RetrofitObject.retrofit.signUp(
+        val signUpApi = RetrofitObject.authentication.signUp(
             SignUpDataClass(
                 bindingMobile!!.firstNameText.text.toString(),
                 bindingMobile!!.lastNameText.text.toString(),

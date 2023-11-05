@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.channelManager.DashboardFragment.BookingDetailsAdapter
 import rconnect.retvens.technologies.databinding.FragmentDashBoardBinding
 
 

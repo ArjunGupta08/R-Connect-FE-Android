@@ -28,6 +28,7 @@ import rconnect.retvens.technologies.databinding.ActivitySecondOnboardingScreenM
 import rconnect.retvens.technologies.onboarding.FinalOnboardingScreen
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.SharedPrefOnboardingFlags
+import rconnect.retvens.technologies.utils.SharedPreference
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.prepareFilePart
 import rconnect.retvens.technologies.utils.shakeAnimation
@@ -349,7 +350,7 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
 
         if (imageUri != null) {
             val hotelLogo = prepareFilePart(imageUri!!, "hotelLogo", this)
-            val chainOnboardingApi = RetrofitObject.retrofit.firstChainOnboarding(
+            val chainOnboardingApi = RetrofitObject.authentication.firstChainOnboarding(
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyTypeSOC),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), "websiteUrl"),

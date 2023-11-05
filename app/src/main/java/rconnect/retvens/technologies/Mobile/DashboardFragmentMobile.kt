@@ -26,6 +26,14 @@ class DashboardFragmentMobile : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        list.add(ReservationData("Karan Gupta"))
+        list.add(ReservationData("Karan Gupta"))
+        list.add(ReservationData("Karan Gupta"))
+        list.add(ReservationData("Karan Gupta"))
+        list.add(ReservationData("Karan Gupta"))
+        list.add(ReservationData("Karan Gupta"))
+        list.add(ReservationData("Karan Gupta"))
+        list.add(ReservationData("Karan Gupta"))
         binding.reservationRecycler.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
         val reservationAdapter = ReservationAdapter(list,requireContext())
         binding.reservationRecycler.adapter = reservationAdapter

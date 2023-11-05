@@ -16,10 +16,10 @@ import rconnect.retvens.technologies.databinding.ActivitySplashScreenBinding
 import rconnect.retvens.technologies.databinding.ActivitySplashScreenMobileBinding
 import rconnect.retvens.technologies.databinding.FragmentLoginBinding
 import rconnect.retvens.technologies.databinding.FragmentLoginMobileBinding
-import rconnect.retvens.technologies.onboarding.FirstOnBoardingScreen
+//import rconnect.retvens.technologies.onboarding.FirstOnBoardingScreen
 import rconnect.retvens.technologies.onboarding.FirstOnBoardingScreen
 import rconnect.retvens.technologies.onboarding.authentication.LoginScreen
-import rconnect.retvens.technologies.onboarding.singleHotelOnboarding.ThirdSingleOnboardingScreen
+//import rconnect.retvens.technologies.onboarding.singleHotelOnboarding.ThirdSingleOnboardingScreen
 import rconnect.retvens.technologies.utils.SharedPreference
 import rconnect.retvens.technologies.onboarding.singleHotelOnboarding.ThirdSingleOnboardingScreen
 import rconnect.retvens.technologies.utils.SharedPrefOnboardingFlags
