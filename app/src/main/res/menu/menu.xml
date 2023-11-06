@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/dash"
+        android:title="Dashboard"
+        android:icon="@drawable/svg_dash_icon"/>
+
+    <item android:id="@+id/booking"
+        android:title="Booking"
+        android:icon="@drawable/svg_booking"/>
+
+    <item android:id="@+id/channel"
+        android:title="Channels"
+        android:icon="@drawable/svg_channels"/>
+
+    <item android:id="@+id/rate_inv"
+        android:title="Rates &amp; Inventory"
+        android:icon="@drawable/svg_rate_inv"/>
+
+    <item android:id="@+id/more"
+        android:title="More"
+        android:icon="@drawable/svg_more"/>
+
+</menu>

@@ -27,7 +27,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import rconnect.retvens.technologies.Mobile.AddPropertyMobileFragment
 import rconnect.retvens.technologies.Mobile.DashboardFragmentMobile
 import rconnect.retvens.technologies.R
@@ -252,13 +254,7 @@ class DashboardActivity : AppCompatActivity() {
             chanelManagerNavLayout()
         }
 
-
-
 //        Mobile work starts here...
-
-
-
-
 
         else{
             val fragManager = supportFragmentManager
@@ -274,9 +270,27 @@ class DashboardActivity : AppCompatActivity() {
 //                fragTransaction.replace(R.id.dashboardFragmentContainer,AddPropertyMobileFragment())
 //                fragTransaction.commit()
 //            }
+            bindingMobile.bottomNav!!.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
+                var temp: Fragment? = null
+                when (item.itemId) {
+                    R.id.dash -> {
+                        val fragManager = supportFragmentManager
+                        val fragTransaction = fragManager.beginTransaction()
+                        fragTransaction.replace(R.id.dashboardFragmentContainer,DashboardFragmentMobile())
+                        fragTransaction.commit()
+                    }
+                    R.id.booking->{
+                        val fragManager = supportFragmentManager
+                        val fragTransaction = fragManager.beginTransaction()
+                        fragTransaction.replace(R.id.dashboardFragmentContainer,AddPropertyMobileFragment(
+                        ))
+                        fragTransaction.commit()
+                    }
+                }
+                return@OnNavigationItemSelectedListener true
+             })
 
         }
-
     }
         private fun toolBar() {
 
