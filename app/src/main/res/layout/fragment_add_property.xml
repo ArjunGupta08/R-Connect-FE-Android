@@ -153,7 +153,7 @@
                 <TextView
                     android:id="@+id/propertyDetailsText"
                     android:layout_width="wrap_content"
-                    android:layout_height="45dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="15dp"
                     android:layout_weight="1"
@@ -221,6 +221,7 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     android:visibility="gone"
+                    android:elevation="5dp"
                     app:layout_constraintBottom_toBottomOf="@id/propertyLogoCard"
                     app:layout_constraintEnd_toEndOf="@id/propertyLogoCard"
                     app:layout_constraintStart_toStartOf="@id/propertyLogoCard"
@@ -297,13 +298,12 @@
                     </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
 
-
                 <LinearLayout
                     android:id="@+id/ll6"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/propertyLogoCard"
@@ -330,51 +330,75 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/propertyTypeLayout"
-                        style="@style/ClickableTextInputLayoutStyle"
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:hint="Property type">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/propertyTypeET"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="10dp"
+                        app:cardCornerRadius="10dp"
+                        >
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:clickable="true"
-                            android:editable="false"
-                            android:focusable="false"
-                            android:fontFamily="@font/roboto"
-                            android:inputType="text"
-                            android:textColor="@color/secondary"
-                            android:textColorHint="@color/secondary"
-                            android:textSize="@dimen/H5" />
+                            android:layout_height="match_parent">
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                            <!-- Spinner -->
+                            <Spinner
+                                android:id="@+id/spinner"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/rounded_border_white"
+                                android:paddingStart="10dp"
+                                android:spinnerMode="dropdown"
+                                android:layout_centerVertical="true"
+                                android:paddingEnd="16dp"
+                                android:textSize="16sp"
+                                android:textColor="@color/secondary" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/propertyRatingLayout"
-                        style="@style/ClickableTextInputLayoutStyle"
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:src="@drawable/svg_arrow_down"
+                                app:tint="@color/black"
+                                android:layout_marginEnd="10dp"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentEnd="true"/>
+
+                        </RelativeLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:hint="Property Ratting">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/propertyRatingET"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="10dp"
+                        app:cardCornerRadius="10dp"
+                        >
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:clickable="true"
-                            android:editable="false"
-                            android:focusable="false"
-                            android:fontFamily="@font/roboto"
-                            android:inputType="text"
-                            android:textColor="@color/secondary"
-                            android:textColorHint="@color/secondary"
-                            android:textSize="@dimen/H5" />
+                            android:layout_height="match_parent">
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                            <!-- Spinner -->
+                            <Spinner
+                                android:id="@+id/propertyRattingSpinner"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/rounded_border_white"
+                                android:paddingStart="10dp"
+                                android:spinnerMode="dropdown"
+                                android:layout_centerVertical="true"
+                                android:paddingEnd="16dp"
+                                android:textSize="16sp"
+                                android:textColor="@color/secondary" />
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:src="@drawable/svg_arrow_down"
+                                app:tint="@color/black"
+                                android:layout_marginEnd="10dp"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentEnd="true"/>
+
+                        </RelativeLayout>
+                    </com.google.android.material.card.MaterialCardView>
 
                 </LinearLayout>
 
@@ -431,7 +455,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             style="@style/CardViewTheme"
-                            android:layout_marginVertical="8dp"
+                            android:layout_marginVertical="10dp"
                             android:layout_marginHorizontal="3dp"
                             app:cardCornerRadius="10dp"
                             app:cardElevation="2dp">

@@ -32,7 +32,6 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRo
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectImagesDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectRoomImagesAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectViewImagesAdapter
-import rconnect.retvens.technologies.dashboard.configuration.properties.ViewPropertiesFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.FragmentAddRoomTypeBinding
 import rconnect.retvens.technologies.utils.Const
@@ -136,8 +135,8 @@ class AddRoomTypeFragment : Fragment(),
                 transaction.replace(R.id.createRoomFragContainer,childFragment)
                 transaction.commit()
 
-                binding.frame.visibility = View.VISIBLE
-                binding.createRoomFragContainer.visibility = View.GONE
+                binding.frame.visibility = View.GONE
+                binding.createRoomFragContainer.visibility = View.VISIBLE
                 rightInAnimation(binding.createRoomFragContainer, requireContext())
 
                 binding.continueTxt.text = "Save"
@@ -180,9 +179,9 @@ class AddRoomTypeFragment : Fragment(),
 
         binding.bedRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
 
-        selectRoomImagesAdapter = SelectRoomImagesAdapter(requireContext(), selectedRoomImagesList)
-        selectRoomImagesAdapter.setOnItemClickListener(this)
-        binding.roomsRecycler.adapter = selectRoomImagesAdapter
+//        selectRoomImagesAdapter = SelectRoomImagesAdapter(requireContext(), selectedRoomImagesList)
+//        selectRoomImagesAdapter.setOnItemClickListener(this)
+//        binding.roomsRecycler.adapter = selectRoomImagesAdapter
 
         selectViewImagesAdapter = SelectViewImagesAdapter(requireContext(), selectedViewImagesList)
         selectViewImagesAdapter.setOnItemClickListener(this)
@@ -327,9 +326,9 @@ class AddRoomTypeFragment : Fragment(),
                     when (recyclerType) {
                         1 -> {
                             selectedRoomImagesList.add(SelectImagesDataClass(imageUri))
-                            selectRoomImagesAdapter = SelectRoomImagesAdapter(requireContext(), selectedRoomImagesList)
-                            selectRoomImagesAdapter.setOnItemClickListener(this)
-                            binding.roomsRecycler.adapter = selectRoomImagesAdapter
+//                            selectRoomImagesAdapter = SelectRoomImagesAdapter(requireContext(), selectedRoomImagesList)
+//                            selectRoomImagesAdapter.setOnItemClickListener(this)
+//                            binding.roomsRecycler.adapter = selectRoomImagesAdapter
                         }
                         2 -> {
                             selectedViewImagesList.add(SelectImagesDataClass(imageUri))
