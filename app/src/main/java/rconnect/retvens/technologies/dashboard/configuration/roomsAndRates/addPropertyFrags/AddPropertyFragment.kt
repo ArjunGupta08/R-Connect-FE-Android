@@ -13,8 +13,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -33,6 +36,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import rconnect.retvens.technologies.Api.OAuthClient
+import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.Api.configurationApi.ChainConfiguration
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.properties.ViewPropertiesFragment
@@ -66,6 +70,11 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
     private var isImageSelected = false
     private var isImageEdited = false
 
+    val itemsPropertyType = ArrayList<String>()
+    var propertyType = "Property Type"
+
+    val itemsPropertyTypeRating = ArrayList<String>()
+    var propertyTypeRating = "Property Rating"
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -82,6 +91,10 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
         robotoMedium = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)!!
 
         leftInAnimation(binding.propertyProfileLayout, requireContext())
+
+        getPropertyType()
+
+        getPropertyTypeRating()
 
         // Get the SupportMapFragment and request notification
         // when the map is ready to be used.
@@ -106,7 +119,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
 
                 binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
                 binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
-                binding.propertyImagesFrameLayout.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+                binding.propertyImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
 
                 binding.propertyProfileLayout.visibility = View.GONE
                 binding.propertyImagesFrameLayout.visibility = View.GONE
@@ -129,20 +142,12 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
 
                 binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
                 binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-                binding.propertyImagesFrameLayout.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+                binding.propertyImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
 
-                val childFragment: Fragment = AddImagesFragment()
-                val transaction = requireActivity().supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.propertyImagesFrameLayout,childFragment)
-                transaction.commit()
-
-                binding.propertyProfileLayout.visibility = View.GONE
-                binding.addressLayout.visibility = View.GONE
-                binding.propertyImagesFrameLayout.visibility = View.VISIBLE
-                rightInAnimation(binding.propertyImagesFrameLayout, requireContext())
+                sendData()
 
             } else {
-                sendData()
+                // Call Send Photos API from Another Fragment
             }
         }
 
@@ -244,10 +249,129 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
 
     }
 
+    private fun getPropertyType() {
+        itemsPropertyType.add(0,"Property Type")
+        val getPropType = RetrofitObject.dropDownApis.getPropertyType()
+        getPropType.enqueue(object : Callback<GetPropertyTypeData?> {
+            override fun onResponse(
+                call: Call<GetPropertyTypeData?>,
+                response: Response<GetPropertyTypeData?>
+            ) {
+                if (isAdded) {
+//                    Toast.makeText(requireContext(), response.code().toString(), Toast.LENGTH_SHORT).show()
+                    if (response.isSuccessful) {
+
+                        val data = response.body()!!
+                        data.data.forEach{
+                            itemsPropertyType.add(it.propertyType)
+                        }
+                        val spinner: Spinner = binding.spinner
+                        val adapter = ArrayAdapter(
+                            requireContext(),
+                            R.layout.simple_dropdown_item_1line,
+                            itemsPropertyType
+                        )
+                        adapter.setDropDownViewResource(R.layout.simple_dropdown_item_1line)
+                        spinner.adapter = adapter
+                        spinner.setSelection(0) // Set the default selection to the first item
+                        spinner.onItemSelectedListener =
+                            object : AdapterView.OnItemSelectedListener {
+                                override fun onItemSelected(
+                                    parent: AdapterView<*>?,
+                                    view: View?,
+                                    position: Int,
+                                    id: Long
+                                ) {
+                                    val selectedItem = itemsPropertyType[position]
+                                    // Handle the selected item here
+                                    if (selectedItem == "Property Type") {
+
+                                    } else {
+                                        propertyType = selectedItem.toString()
+                                        Toast.makeText(
+                                            requireContext(),
+                                            "Selected: $selectedItem",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
+                                override fun onNothingSelected(parent: AdapterView<*>?) {
+                                    // Handle the case when nothing is selected (optional)
+                                }
+                            }
+                    }
+                }
+            }
+            override fun onFailure(call: Call<GetPropertyTypeData?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
+    }
+
+    private fun getPropertyTypeRating() {
+        itemsPropertyTypeRating.add(0,"Property Ratting")
+        val getPropType = RetrofitObject.dropDownApis.getPropertyTypeRating()
+        getPropType.enqueue(object : Callback<GetPropertyTypeRatingData?> {
+            override fun onResponse(
+                call: Call<GetPropertyTypeRatingData?>,
+                response: Response<GetPropertyTypeRatingData?>
+            ) {
+                if (isAdded) {
+//                    Toast.makeText(requireContext(), response.code().toString(), Toast.LENGTH_SHORT).show()
+                    if (response.isSuccessful) {
+
+                        val data = response.body()!!
+                        data.data.forEach{
+                            itemsPropertyTypeRating.add(it.propertyRating)
+                        }
+                        val spinner: Spinner = binding.propertyRattingSpinner
+                        val adapter = ArrayAdapter(
+                            requireContext(),
+                            R.layout.simple_dropdown_item_1line,
+                            itemsPropertyTypeRating
+                        )
+                        adapter.setDropDownViewResource(R.layout.simple_dropdown_item_1line)
+                        spinner.adapter = adapter
+                        spinner.setSelection(0) // Set the default selection to the first item
+                        spinner.onItemSelectedListener =
+                            object : AdapterView.OnItemSelectedListener {
+                                override fun onItemSelected(
+                                    parent: AdapterView<*>?,
+                                    view: View?,
+                                    position: Int,
+                                    id: Long
+                                ) {
+                                    val selectedItem = itemsPropertyType[position]
+                                    // Handle the selected item here
+                                    if (selectedItem == "Property Type") {
+
+                                    } else {
+                                        propertyTypeRating = selectedItem.toString()
+                                        Toast.makeText(
+                                            requireContext(),
+                                            "Selected: $selectedItem",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
+                                override fun onNothingSelected(parent: AdapterView<*>?) {
+                                    // Handle the case when nothing is selected (optional)
+                                }
+                            }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GetPropertyTypeRatingData?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
+    }
+
     private fun sendData(){
         val propertyName = binding.propertyNameET.text.toString()
-        val propertyType = binding.propertyTypeET.text.toString()
-        val propertyRating = binding.propertyRatingET.text.toString()
+        val propertyType = propertyType
+        val propertyRating = propertyTypeRating
         val websiteUrl = binding.websiteText.text.toString()
         val description = binding.descriptionET.text.toString()
         val amenityIds = "igig,ihinm"
@@ -304,11 +428,15 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        val childFragment: Fragment = ViewPropertiesFragment()
+                        val childFragment: Fragment = AddImagesFragment()
                         val transaction = requireActivity().supportFragmentManager.beginTransaction()
-                        transaction.replace(R.id.dashboardFragmentContainer,childFragment)
+                        transaction.replace(R.id.propertyImagesFrameLayout,childFragment)
                         transaction.commit()
 
+                        binding.propertyProfileLayout.visibility = View.GONE
+                        binding.addressLayout.visibility = View.GONE
+                        binding.propertyImagesFrameLayout.visibility = View.VISIBLE
+                        rightInAnimation(binding.propertyImagesFrameLayout, requireContext())
                     } else {
                         Log.d("Error Onboarding", response.code().toString())
                     }
@@ -356,11 +484,15 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        val childFragment: Fragment = ViewPropertiesFragment()
+                        val childFragment: Fragment = AddImagesFragment()
                         val transaction = requireActivity().supportFragmentManager.beginTransaction()
-                        transaction.replace(R.id.dashboardFragmentContainer,childFragment)
+                        transaction.replace(R.id.propertyImagesFrameLayout,childFragment)
                         transaction.commit()
 
+                        binding.propertyProfileLayout.visibility = View.GONE
+                        binding.addressLayout.visibility = View.GONE
+                        binding.propertyImagesFrameLayout.visibility = View.VISIBLE
+                        rightInAnimation(binding.propertyImagesFrameLayout, requireContext())
                     } else {
                         Log.d("Error Onboarding", "${response.code().toString()} ${response.message()} ${response.body()?.message}")
                     }

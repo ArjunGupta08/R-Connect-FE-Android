@@ -19,4 +19,5 @@ object RetrofitObject {
 
     val authentication: AuthenticationInterface = retrofit.create(AuthenticationInterface::class.java)
     val chainConfiguration: ChainConfiguration = retrofit.create(ChainConfiguration::class.java)
+    val dropDownApis: DropDownApis = retrofit.create(DropDownApis::class.java)
 }
