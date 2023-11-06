@@ -246,7 +246,6 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
                 }
             }
         }
-
     }
 
     private fun getPropertyType() {
@@ -341,17 +340,12 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
                                     position: Int,
                                     id: Long
                                 ) {
-                                    val selectedItem = itemsPropertyType[position]
+                                    val selectedItem = itemsPropertyTypeRating[position]
                                     // Handle the selected item here
                                     if (selectedItem == "Property Type") {
 
                                     } else {
                                         propertyTypeRating = selectedItem.toString()
-                                        Toast.makeText(
-                                            requireContext(),
-                                            "Selected: $selectedItem",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
                                     }
                                 }
                                 override fun onNothingSelected(parent: AdapterView<*>?) {

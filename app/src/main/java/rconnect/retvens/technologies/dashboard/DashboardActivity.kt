@@ -308,12 +308,12 @@ class DashboardActivity : AppCompatActivity() {
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
                 }
 
-                binding.ll2.setOnClickListener {
-                    replaceFragment(RateTypeFragment())
+                binding.mealPlan.setOnClickListener {
+//                    replaceFragment(CreateRatePlanFragment())
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
                 }
                 binding.ll3.setOnClickListener {
-//                    replaceFragment(CreateRatePlanFragment())
+                    replaceFragment(RateTypeFragment())
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
                 }
                 binding.inclusionPlansLL.setOnClickListener {
