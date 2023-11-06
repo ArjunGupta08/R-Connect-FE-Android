@@ -1,6 +1,7 @@
 package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter
 
 import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import rconnect.retvens.technologies.R
 
-class SelectRoomImagesAdapter(val context: Context, private val itemList: ArrayList<SelectImagesDataClass>) : RecyclerView.Adapter<SelectRoomImagesAdapter.ViewHolder>() {
+class SelectRoomImagesAdapter(val context: Context, private val itemList: ArrayList<Uri>) : RecyclerView.Adapter<SelectRoomImagesAdapter.ViewHolder>() {
 
     val VIEW_TYPE_DYNAMIC_ITEM = 1
     val VIEW_TYPE_STATIC_ITEM = 2
@@ -40,7 +41,7 @@ class SelectRoomImagesAdapter(val context: Context, private val itemList: ArrayL
         if (position < itemList.size) {
             // Handle dynamic items
             val item = itemList[position]
-            holder.image.setImageURI(item.image)
+            holder.image.setImageURI(item)
 
             holder.deleteImage.setOnClickListener {
                 itemList.remove(item)

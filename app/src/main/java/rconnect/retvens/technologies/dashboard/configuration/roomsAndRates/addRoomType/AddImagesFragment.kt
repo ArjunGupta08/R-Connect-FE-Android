@@ -1,5 +1,6 @@
 package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import android.net.Uri
@@ -14,7 +15,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.ImageCategoryDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.ImagesCategoryAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectImagesDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectRoomImagesAdapter
 import rconnect.retvens.technologies.databinding.FragmentAddImagesBinding
@@ -23,11 +27,16 @@ import rconnect.retvens.technologies.databinding.FragmentAddImagesBinding
 class AddImagesFragment : Fragment(), SelectRoomImagesAdapter.OnItemClickListener  {
     private lateinit var binding : FragmentAddImagesBinding
 
+    var contextFromFrag: Context ?= null
     private var imageUri: Uri?= null
     private var PICK_IMAGE_REQUEST_CODE : Int = 0
 
-    lateinit var selectImagesAdapter: SelectRoomImagesAdapter
-    private var selectedImagesList = ArrayList<SelectImagesDataClass>()
+    var isImgCategoryLayoutVisible = true
+
+    lateinit var imagesCategoryAdapter: ImagesCategoryAdapter
+    private var selectedImagesList = ArrayList<ImageCategoryDataClass>()
+
+    var uriList = ArrayList<Uri>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,12 +50,26 @@ class AddImagesFragment : Fragment(), SelectRoomImagesAdapter.OnItemClickListene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.imagesRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
-        binding.imagesRecycler.setHasFixedSize(true)
+        contextFromFrag = requireContext()
 
-        selectImagesAdapter = SelectRoomImagesAdapter(requireContext(), selectedImagesList)
-        selectImagesAdapter.setOnItemClickListener(this)
-        binding.imagesRecycler.adapter = selectImagesAdapter
+        binding.imagesRecycler.layoutManager = LinearLayoutManager(requireContext())
+
+        binding.addImgCategory.setOnClickListener {
+            if (isImgCategoryLayoutVisible) {
+                isImgCategoryLayoutVisible = !isImgCategoryLayoutVisible
+                binding.imgCategoryLayout.isVisible = true
+            } else {
+                isImgCategoryLayoutVisible = !isImgCategoryLayoutVisible
+                binding.imgCategoryLayout.isVisible = false
+            }
+        }
+
+        binding.addImageCard.setOnClickListener {
+            openGallery()
+        }
+//        selectImagesAdapter = SelectRoomImagesAdapter(requireContext(), selectedImagesList)
+//        selectImagesAdapter.setOnItemClickListener(this)
+//        binding.imagesRecycler.adapter = selectImagesAdapter
 
     }
     private fun openGallery() {
@@ -61,11 +84,12 @@ class AddImagesFragment : Fragment(), SelectRoomImagesAdapter.OnItemClickListene
             imageUri = data.data!!
             if (imageUri != null) {
                 try {
-                        selectedImagesList.add(SelectImagesDataClass(imageUri!!))
-                        selectImagesAdapter =
-                            SelectRoomImagesAdapter(requireContext(), selectedImagesList)
-                        selectImagesAdapter.setOnItemClickListener(this)
-                        binding.imagesRecycler.adapter = selectImagesAdapter
+                    uriList.add(imageUri!!)
+                        selectedImagesList.add(ImageCategoryDataClass(binding.enterH.text.toString(), uriList))
+                        imagesCategoryAdapter = ImagesCategoryAdapter(requireContext(), selectedImagesList)
+                        binding.imagesRecycler.adapter = imagesCategoryAdapter
+                    isImgCategoryLayoutVisible = !isImgCategoryLayoutVisible
+                    binding.imgCategoryLayout.visibility = View.GONE
                 }catch(e:RuntimeException){
                     Log.d("cropperOnPersonal", e.toString())
                 }catch(e:ClassCastException){
