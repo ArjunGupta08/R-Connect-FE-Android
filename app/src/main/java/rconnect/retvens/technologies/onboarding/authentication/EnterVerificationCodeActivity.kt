@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Pair
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.databinding.ActivityCreateNewPasswordBinding
+import rconnect.retvens.technologies.databinding.ActivityCreateNewPasswordMobileBinding
 import rconnect.retvens.technologies.databinding.ActivityEnterVerificationCodeBinding
 import rconnect.retvens.technologies.databinding.ActivityEnterVerificationCodeMobileBinding
 import rconnect.retvens.technologies.databinding.ActivityForgetPasswordScreenBinding
@@ -19,24 +21,25 @@ class EnterVerificationCodeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val currentOrientation = resources.configuration.orientation
-        when(currentOrientation){
-            Configuration.ORIENTATION_LANDSCAPE -> {
-                // Landscape orientation
 
-                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-                binding = ActivityEnterVerificationCodeBinding.inflate(layoutInflater)
-                setContentView(binding!!.root)
-            }
-            else -> {
-                // Portrait orientation (default or any other orientation)
-                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-                bindingMobile = ActivityEnterVerificationCodeMobileBinding.inflate(layoutInflater)
-                setContentView(bindingMobile.root)
-            }
-        }
 //        binding = ActivityEnterVerificationCodeBinding.inflate(layoutInflater)
 //        setContentView(binding.root)
+
+        val screenSize = resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK
+
+        if (screenSize >= Configuration.SCREENLAYOUT_SIZE_LARGE) {
+            // Landscape orientation for tablets
+
+            binding = ActivityEnterVerificationCodeBinding.inflate(layoutInflater)
+            setContentView(binding!!.root)
+        } else {
+            // Portrait orientation for mobile (default or any other orientation)
+
+            bindingMobile = ActivityEnterVerificationCodeMobileBinding.inflate(layoutInflater)
+            setContentView(bindingMobile.root)
+        }
+
+
         if (binding is ActivityEnterVerificationCodeBinding){
 
         binding!!.forgotBackbtn.setOnClickListener {

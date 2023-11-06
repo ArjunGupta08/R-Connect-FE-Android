@@ -40,12 +40,11 @@ class LoginScreen : AppCompatActivity() {
             setContentView(binding!!.root)
         } else {
             // Portrait orientation for mobile (default or any other orientation)
-
             bindingMobile = ActivityLoginMobileScreenBinding.inflate(layoutInflater)
             setContentView(bindingMobile.root)
         }
 
-        window?.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+//        window?.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
 
         roboto = ResourcesCompat.getFont(applicationContext, R.font.roboto)!!

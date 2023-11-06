@@ -55,6 +55,8 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.RateT
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.ActivityDashboardBinding
 import rconnect.retvens.technologies.databinding.ActivityDashboardMobileBinding
+import rconnect.retvens.technologies.databinding.ActivityLoginMobileScreenBinding
+import rconnect.retvens.technologies.databinding.ActivityLoginScreenBinding
 import rconnect.retvens.technologies.databinding.FragmentDashBoardBinding
 import rconnect.retvens.technologies.utils.bottomSlideInAnimation
 import rconnect.retvens.technologies.utils.topInAnimation
@@ -89,27 +91,14 @@ class DashboardActivity : AppCompatActivity() {
                     )
             decorView.systemUiVisibility = uiOptions
         }
-        val currentOrientation = resources.configuration.orientation
 
-        when (currentOrientation) {
+        val screenSize = resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK
 
-            Configuration.ORIENTATION_LANDSCAPE -> {
-                // Landscape orientation
+        if (screenSize >= Configuration.SCREENLAYOUT_SIZE_LARGE) {
+            // Landscape orientation for tablets
+            binding = ActivityDashboardBinding.inflate(layoutInflater)
+            setContentView(binding!!.root)
 
-                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-                binding = ActivityDashboardBinding.inflate(layoutInflater)
-                setContentView(binding!!.root)
-            }
-
-            else -> {
-                // Portrait orientation (default or any other orientation)
-                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-                bindingMobile = ActivityDashboardMobileBinding.inflate(layoutInflater)
-                setContentView(bindingMobile.root)
-            }
-        }
-
-        if (binding is ActivityDashboardBinding) {
 //        binding = ActivityDashboardBinding.inflate(layoutInflater)
 //        setContentView(binding.root)
 
@@ -257,19 +246,16 @@ class DashboardActivity : AppCompatActivity() {
 //        Mobile work starts here...
 
         else{
+            // Portrait orientation for mobile (default or any other orientation)
+
+            bindingMobile = ActivityDashboardMobileBinding.inflate(layoutInflater)
+            setContentView(bindingMobile.root)
+
             val fragManager = supportFragmentManager
             val fragTransaction = fragManager.beginTransaction()
             fragTransaction.replace(R.id.dashboardFragmentContainer,DashBoardFragment())
             fragTransaction.commit()
-//            bindingMobile.addPropertyBtn.setOnClickListener {
-//                bindingMobile.dashboardFragmentContainer.isVisible = false
-//                bindingMobile.welcomeLayout.isVisible = false
-//                bindingMobile.toolbar.visibility = View.GONE
-//                val fragManager = supportFragmentManager
-//                val fragTransaction = fragManager.beginTransaction()
-//                fragTransaction.replace(R.id.dashboardFragmentContainer,AddPropertyMobileFragment())
-//                fragTransaction.commit()
-//            }
+
             bindingMobile.bottomNav!!.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
                 var temp: Fragment? = null
                 when (item.itemId) {

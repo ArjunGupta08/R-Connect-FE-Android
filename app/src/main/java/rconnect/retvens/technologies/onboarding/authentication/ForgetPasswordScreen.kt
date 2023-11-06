@@ -10,6 +10,8 @@ import android.util.Pair
 import android.view.WindowManager
 import android.widget.Toast
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.databinding.ActivityCreateNewPasswordBinding
+import rconnect.retvens.technologies.databinding.ActivityCreateNewPasswordMobileBinding
 import rconnect.retvens.technologies.databinding.ActivityForgetPasswordScreenBinding
 import rconnect.retvens.technologies.databinding.ActivityForgetPasswordScreenMobileBinding
 import rconnect.retvens.technologies.databinding.ActivityLoginMobileScreenBinding
@@ -23,28 +25,43 @@ class ForgetPasswordScreen : AppCompatActivity() {
     private lateinit var bindingMobile : ActivityForgetPasswordScreenMobileBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-         val currentOrientation = resources.configuration.orientation
+//         val currentOrientation = resources.configuration.orientation
 
-        when (currentOrientation) {
-            Configuration.ORIENTATION_LANDSCAPE -> {
-                // Landscape orientation
-
-                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-                binding = ActivityForgetPasswordScreenBinding.inflate(layoutInflater)
-                setContentView(binding!!.root)
-            }
-            else -> {
-                // Portrait orientation (default or any other orientation)
-                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-                bindingMobile = ActivityForgetPasswordScreenMobileBinding.inflate(layoutInflater)
-                setContentView(bindingMobile.root)
-            }
-        }
-
-        window?.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+//        when (currentOrientation) {
+//            Configuration.ORIENTATION_LANDSCAPE -> {
+//                // Landscape orientation
+//
+//                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+//                binding = ActivityForgetPasswordScreenBinding.inflate(layoutInflater)
+//                setContentView(binding!!.root)
+//            }
+//            else -> {
+//                // Portrait orientation (default or any other orientation)
+//                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+//                bindingMobile = ActivityForgetPasswordScreenMobileBinding.inflate(layoutInflater)
+//                setContentView(bindingMobile.root)
+//            }
+//        }
+//
+//        window?.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
 //        bindingTab = ActivityForgetPasswordScreenBinding.inflate(layoutInflater)
 //        setContentView(bindingTab.root)
+
+
+        val screenSize = resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK
+
+        if (screenSize >= Configuration.SCREENLAYOUT_SIZE_LARGE) {
+            // Landscape orientation for tablets
+
+            binding = ActivityForgetPasswordScreenBinding.inflate(layoutInflater)
+            setContentView(binding!!.root)
+        } else {
+            // Portrait orientation for mobile (default or any other orientation)
+
+            bindingMobile = ActivityForgetPasswordScreenMobileBinding.inflate(layoutInflater)
+            setContentView(bindingMobile.root)
+        }
 
         if (binding is ActivityForgetPasswordScreenBinding){
             Toast.makeText(applicationContext, "Tablet", Toast.LENGTH_SHORT).show()
