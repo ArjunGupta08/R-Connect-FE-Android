@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
@@ -23,6 +22,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -408,7 +408,6 @@ class RatesAndInventoryFragment : Fragment() {
         setInventory()
         bindingTab.inventoryRecycler.adapter = inventoryAdapter
         inventoryAdapter.notifyDataSetChanged()
-
 
 
 
