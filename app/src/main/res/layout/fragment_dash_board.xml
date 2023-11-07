@@ -1435,18 +1435,18 @@
             </com.google.android.material.card.MaterialCardView>
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_reserve"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/card_icon"
                 app:layout_constraintStart_toStartOf="@id/booking"
+                app:layout_constraintEnd_toStartOf="@id/card_cancel"
                 android:layout_marginTop="12dp"
                 app:cardCornerRadius="7dp"
-                app:cardElevation="2dp">
+                app:cardElevation="3dp">
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginHorizontal="6dp"
-                    android:layout_marginVertical="3dp">
+                    android:layout_marginHorizontal="6dp">
                     <TextView
                         android:id="@+id/txt_reserv"
                         android:layout_width="wrap_content"
@@ -1454,27 +1454,31 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.38"
                         android:textSize="@dimen/H4"
-                        android:textColor="@color/secondary"
+                        android:textColor="@color/black"
                         android:fontFamily="@font/roboto_medium"
                         android:text="Reservations"/>
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/count_reserv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
                         app:layout_constraintStart_toEndOf="@id/txt_reserv"
                         app:layout_constraintTop_toTopOf="@id/txt_reserv"
                         app:layout_constraintBottom_toBottomOf="@id/txt_reserv"
-                        app:cardCornerRadius="14dp"
-                        app:cardBackgroundColor="#424E61"
+                        app:cardCornerRadius="19dp"
+                        android:layout_marginVertical="8dp"
+                        app:cardBackgroundColor="@color/selected_light_black"
                         app:cardElevation="2dp">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/H4"
+                            android:textSize="@dimen/H5"
                             android:textColor="@color/white"
                             android:layout_marginVertical="2dp"
-                            android:layout_marginHorizontal="9dp"
+                            android:layout_marginHorizontal="8dp"
                             android:text="9"/>
                             
                     </androidx.cardview.widget.CardView>
@@ -1483,19 +1487,18 @@
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_cancel"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/card_icon"
                 app:layout_constraintStart_toEndOf="@id/card_reserve"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/card_icon"
                 android:layout_marginTop="12dp"
                 app:cardCornerRadius="7dp"
                 app:cardElevation="0dp">
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginHorizontal="6dp"
-                    android:layout_marginVertical="3dp">
+                    android:layout_marginHorizontal="6dp">
                     <TextView
                         android:id="@+id/txt_cancel"
                         android:layout_width="wrap_content"
@@ -1503,27 +1506,31 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.38"
                         android:textSize="@dimen/H4"
                         android:textColor="@color/lightBlack"
-                        android:fontFamily="@font/roboto_medium"
-                        android:text="Cancel"/>
+                        android:fontFamily="@font/roboto"
+                        android:text=" Cancellations"/>
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/count_cancel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
                         app:layout_constraintStart_toEndOf="@id/txt_cancel"
                         app:layout_constraintTop_toTopOf="@id/txt_cancel"
                         app:layout_constraintBottom_toBottomOf="@id/txt_cancel"
-                        app:cardCornerRadius="14dp"
+                        app:cardCornerRadius="19dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginVertical="8dp"
                         app:cardBackgroundColor="@color/lightBlack"
                         app:cardElevation="2dp">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/H4"
+                            android:textSize="@dimen/H5"
                             android:textColor="@color/white"
                             android:layout_marginVertical="2dp"
-                            android:layout_marginHorizontal="9dp"
+                            android:layout_marginHorizontal="8dp"
                             android:text="9"/>
 
                     </androidx.cardview.widget.CardView>

@@ -38,5 +38,5 @@
     <color name="grey30">#C0C0C0</color>
     <color name="grey40">#A9A9A9</color>
     <color name="dark_grey">#A7AFC2</color>
-
+    <color name="selected_light_black">#424E61</color>
 </resources>

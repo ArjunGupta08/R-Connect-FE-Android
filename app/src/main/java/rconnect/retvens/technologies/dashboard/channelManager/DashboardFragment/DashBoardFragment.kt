@@ -60,6 +60,28 @@ class DashBoardFragment : Fragment(), OnChartValueSelectedListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        bindingTab.cardReserve.setOnClickListener {
+            bindingTab.cardCancel.elevation = 0f
+            bindingTab.cardReserve.elevation = 3f
+            bindingTab.txtReserv.setTextColor(ContextCompat.getColor(requireContext(),R.color.black))
+            bindingTab.txtCancel.setTextColor(ContextCompat.getColor(requireContext(),R.color.lightBlack))
+            bindingTab.txtReserv.typeface = ResourcesCompat.getFont(requireContext(),R.font.roboto_medium)
+            bindingTab.txtCancel.typeface = ResourcesCompat.getFont(requireContext(),R.font.roboto)
+            bindingTab.countReserv.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.selected_light_black))
+            bindingTab.countCancel.setCardBackgroundColor(ContextCompat.getColor(requireContext(),R.color.lightBlack))
+        }
+        bindingTab.cardCancel.setOnClickListener {
+            bindingTab.cardCancel.elevation = 3f
+            bindingTab.cardReserve.elevation = 0f
+            bindingTab.txtReserv.setTextColor(ContextCompat.getColor(requireContext(),R.color.lightBlack))
+            bindingTab.txtCancel.setTextColor(ContextCompat.getColor(requireContext(),R.color.black))
+            bindingTab.txtReserv.typeface = ResourcesCompat.getFont(requireContext(),R.font.roboto)
+            bindingTab.txtCancel.typeface = ResourcesCompat.getFont(requireContext(),R.font.roboto_medium)
+            bindingTab.countReserv.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.lightBlack))
+            bindingTab.countCancel.setCardBackgroundColor(ContextCompat.getColor(requireContext(),R.color.selected_light_black))
+        }
+
         sList.add(TopSourcesData("MakeMyTrip"))
         sList.add(TopSourcesData("MakeMyTrip"))
         sList.add(TopSourcesData("MakeMyTrip"))
