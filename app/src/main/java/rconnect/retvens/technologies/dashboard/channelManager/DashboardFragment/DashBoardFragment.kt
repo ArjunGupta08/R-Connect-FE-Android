@@ -32,7 +32,11 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.FileUtils
+import rconnect.retvens.technologies.BestSellerAdapter
+import rconnect.retvens.technologies.BestSellerData
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.TopSourcesAdapter
+import rconnect.retvens.technologies.TopSourcesData
 import rconnect.retvens.technologies.databinding.FragmentDashBoardBinding
 
 
@@ -41,6 +45,8 @@ class DashBoardFragment : Fragment(), OnChartValueSelectedListener {
     private lateinit var bindingTab:FragmentDashBoardBinding
     private lateinit var bookingDetailsAdapter: BookingDetailsAdapter
     private  var mList:ArrayList<String> = ArrayList()
+    private var sList = ArrayList<TopSourcesData>()
+    private var bList = ArrayList<BestSellerData>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,6 +59,39 @@ class DashBoardFragment : Fragment(), OnChartValueSelectedListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        sList.add(TopSourcesData("MakeMyTrip"))
+        sList.add(TopSourcesData("MakeMyTrip"))
+        sList.add(TopSourcesData("MakeMyTrip"))
+        sList.add(TopSourcesData("MakeMyTrip"))
+        sList.add(TopSourcesData("MakeMyTrip"))
+        sList.add(TopSourcesData("MakeMyTrip"))
+        sList.add(TopSourcesData("MakeMyTrip"))
+        sList.add(TopSourcesData("MakeMyTrip"))
+        sList.add(TopSourcesData("MakeMyTrip"))
+        sList.add(TopSourcesData("MakeMyTrip"))
+
+        bList.add(BestSellerData("Deluxe Room"))
+        bList.add(BestSellerData("Deluxe Room"))
+        bList.add(BestSellerData("Deluxe Room"))
+        bList.add(BestSellerData("Deluxe Room"))
+        bList.add(BestSellerData("Deluxe Room"))
+        bList.add(BestSellerData("Deluxe Room"))
+        bList.add(BestSellerData("Deluxe Room"))
+        bList.add(BestSellerData("Deluxe Room"))
+        bList.add(BestSellerData("Deluxe Room"))
+        bList.add(BestSellerData("Deluxe Room"))
+
+
+        bindingTab.recyclerTopSource.layoutManager = LinearLayoutManager(requireContext())
+        val topSourcesAdapter = TopSourcesAdapter(sList,requireContext())
+        bindingTab.recyclerTopSource.adapter = topSourcesAdapter
+        topSourcesAdapter.notifyDataSetChanged()
+
+        bindingTab.recyclerBestSeller.layoutManager = LinearLayoutManager(requireContext())
+        val bestSellerAdapter = BestSellerAdapter(bList,requireContext())
+        bindingTab.recyclerBestSeller.adapter = bestSellerAdapter
+        bestSellerAdapter.notifyDataSetChanged()
 
         setBooking()
 
