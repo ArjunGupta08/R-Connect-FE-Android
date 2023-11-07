@@ -181,13 +181,17 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
             binding.addressAndContacts.textSize = 16.0f
             binding.addressAndContacts.typeface = roboto
 
+            binding.propertyImages.textSize = 16.0f
+            binding.propertyImages.typeface = roboto
+
+            binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+            binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+            binding.propertyImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+
             binding.propertyProfileLayout.visibility = View.VISIBLE
             binding.propertyImagesFrameLayout.visibility = View.VISIBLE
             leftInAnimation(binding.propertyProfileLayout, requireContext())
             binding.addressLayout.visibility = View.GONE
-
-            binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-            binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
         }
 
         binding.addressAndContacts.setOnClickListener {
@@ -200,13 +204,45 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
             binding.propertyProfile.textSize = 16.0f
             binding.propertyProfile.typeface = roboto
 
-            binding.propertyImagesFrameLayout.visibility = View.GONE
-            binding.propertyProfileLayout.visibility = View.GONE
-            binding.addressLayout.visibility = View.VISIBLE
-            rightInAnimation(binding.addressLayout, requireContext())
+            binding.propertyImages.textSize = 16.0f
+            binding.propertyImages.typeface = roboto
 
             binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
             binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+            binding.propertyImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+
+            binding.propertyProfileLayout.visibility = View.GONE
+            binding.propertyImagesFrameLayout.visibility = View.GONE
+            binding.addressLayout.visibility = View.VISIBLE
+            rightInAnimation(binding.addressLayout, requireContext())
+        }
+
+        binding.propertyImages.setOnClickListener {
+            page = 3
+
+            binding.propertyImages.textSize = 20.0f
+            binding.propertyImages.typeface = robotoMedium
+            binding.propertyImages.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+
+            binding.propertyProfile.textSize = 16.0f
+            binding.propertyProfile.typeface = roboto
+
+            binding.addressAndContacts.textSize = 16.0f
+            binding.addressAndContacts.typeface = roboto
+
+            binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+            binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+            binding.propertyImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+
+            val childFragment: Fragment = AddImagesFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.propertyImagesFrameLayout,childFragment)
+            transaction.commit()
+
+            binding.propertyProfileLayout.visibility = View.GONE
+            binding.propertyImagesFrameLayout.visibility = View.VISIBLE
+            binding.addressLayout.visibility = View.GONE
+            rightInAnimation(binding.addressLayout, requireContext())
         }
 
         binding.add.setOnClickListener { openAddAmenitiesDialog() }
@@ -267,7 +303,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
                         val spinner: Spinner = binding.spinner
                         val adapter = ArrayAdapter(
                             requireContext(),
-                            R.layout.simple_dropdown_item_1line,
+                            android.R.layout.simple_spinner_dropdown_item,
                             itemsPropertyType
                         )
                         adapter.setDropDownViewResource(R.layout.simple_dropdown_item_1line)
@@ -326,7 +362,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
                         val spinner: Spinner = binding.propertyRattingSpinner
                         val adapter = ArrayAdapter(
                             requireContext(),
-                            R.layout.simple_dropdown_item_1line,
+                            android.R.layout.simple_spinner_dropdown_item,
                             itemsPropertyTypeRating
                         )
                         adapter.setDropDownViewResource(R.layout.simple_dropdown_item_1line)

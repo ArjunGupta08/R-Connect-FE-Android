@@ -26,9 +26,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import rconnect.retvens.technologies.Api.OAuthClient
+import rconnect.retvens.technologies.Api.RatesAndInventoryInterface
+import rconnect.retvens.technologies.Api.RetrofitObject
+import rconnect.retvens.technologies.Api.configurationApi.ChainConfiguration
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.FragmentRatesAndInventoryBinding
+import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.utilCreateDatePickerDialog
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -40,7 +48,7 @@ class RatesAndInventoryFragment : Fragment() {
     private lateinit var calenderAdapter: CalenderAdapter
     private lateinit var inventoryAdapter: RoomsInventoryAdapter
     private val cal = Calendar.getInstance(Locale.ENGLISH)
-    private  var mList: ArrayList<String> = ArrayList();
+    private  var mList: ArrayList<ResponseData> = ArrayList();
     lateinit var dialog: Dialog
     private lateinit var robotoMedium : Typeface
     private lateinit var roboto:Typeface
@@ -61,6 +69,9 @@ class RatesAndInventoryFragment : Fragment() {
     lateinit var endDatePickerDialog: DatePickerDialog
      var startDate:Date? = null
      var endDate:Date? = null
+    private var checkInDate: String? = null
+    private var checkOutDate: String? = null
+
 
 
 
@@ -402,12 +413,13 @@ class RatesAndInventoryFragment : Fragment() {
 
 
         bindingTab.inventoryRecycler.layoutManager = LinearLayoutManager(requireContext())
-        inventoryAdapter = RoomsInventoryAdapter(requireContext(),mList)
 
 
-        setInventory()
-        bindingTab.inventoryRecycler.adapter = inventoryAdapter
-        inventoryAdapter.notifyDataSetChanged()
+        val userId = UserSessionManager(requireContext()).getUserId()
+        val propertyId = UserSessionManager(requireContext()).getPropertyId()
+
+        setInventory(userId,propertyId,checkInDate,checkOutDate)
+
 
 
 
@@ -441,44 +453,54 @@ class RatesAndInventoryFragment : Fragment() {
         sat.isClickable = false
     }
 
-    private fun setInventory() {
-        mList.add("7")
-        mList.add("7")
-        mList.add("7")
-        mList.add("6")
-        mList.add("6")
-        mList.add("6")
-        mList.add("6")
-        mList.add("6")
-        mList.add("6")
-        mList.add("6")
-        mList.add("6")
-        mList.add("7")
-        mList.add("7")
-        mList.add("7")
-        mList.add("6")
-        mList.add("6")
-        mList.add("6")
-        mList.add("6")
-        mList.add("6")
-        mList.add("6")
-        mList.add("6")
-        mList.add("6")
+    private fun setInventory(userId:String?,propertyId:String?,startDate:String?,endDate:String?) {
+
+
+
+        val inventoryApi = OAuthClient<RatesAndInventoryInterface>(requireContext()).create(RatesAndInventoryInterface::class.java).getInventory("cVDoB8BP","4OCGYRmP",startDate!!,endDate!!)
+
+       inventoryApi.enqueue(object : Callback<ResponseData?> {
+           override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+               if (response.isSuccessful && isAdded){
+                   val response = response.body()!!
+                   Log.e("res",response.toString())
+                   inventoryAdapter = RoomsInventoryAdapter(requireContext(),response)
+                   bindingTab.inventoryRecycler.adapter = inventoryAdapter
+                   inventoryAdapter.notifyDataSetChanged()
+                   Toast.makeText(requireContext(), "success", Toast.LENGTH_SHORT).show()
+               }else{
+                   Log.e("error",response.code().toString())
+                   Log.e("message",response.message().toString())
+               }
+           }
+
+           override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+               Log.e("error",t.message.toString())
+           }
+       })
+
 
     }
 
     private fun setUpCalendar() {
         val calendarList = ArrayList<Calendar>()
         val today = Calendar.getInstance(Locale.ENGLISH)
-        val maxDaysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH)
 
-        val monthCalendar = cal.clone() as Calendar
-        monthCalendar.set(Calendar.DAY_OF_MONTH, today.get(Calendar.DAY_OF_MONTH))
+        // Add the current date as the start date
+        checkInDate = formatDate(today)
 
-        for (i in 1..maxDaysInMonth) {
-            calendarList.add(monthCalendar.clone() as Calendar)
-            monthCalendar.add(Calendar.DAY_OF_MONTH, 1)
+        // Add the current date
+        calendarList.add(today.clone() as Calendar)
+
+        // Get the next 9 days
+        for (i in 1 until 10) {
+            val nextDay = today.clone() as Calendar
+            nextDay.add(Calendar.DAY_OF_MONTH, i)
+            calendarList.add(nextDay)
         }
+
+        // Calculate the end date
+        checkOutDate = formatDate(calendarList[calendarList.size - 1])
 
         calenderAdapter.setData(calendarList)
         Log.d("CalendarValue", "CalenderAdapter data updated with ${calendarList.size} days")
@@ -486,6 +508,15 @@ class RatesAndInventoryFragment : Fragment() {
         calenderAdapter.notifyDataSetChanged() // Notify the adapter after all changes
     }
 
+    // Function to format a Calendar instance as "YYYY-MM-DD"
+    fun formatDate(calendar: Calendar): String {
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH) + 1 // Months are zero-based
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        // Use String.format to format the date as "YYYY-MM-DD"
+        return String.format("%d-%02d-%02d", year, month, day)
+    }
     fun showCalendarDialog(context : Context, editTextDate: TextInputEditText) {
         val calendar = Calendar.getInstance()
         val currentYear = calendar.get(Calendar.YEAR)

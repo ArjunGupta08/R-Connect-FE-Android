@@ -27,14 +27,12 @@ import rconnect.retvens.technologies.databinding.FragmentAddImagesBinding
 class AddImagesFragment : Fragment(), SelectRoomImagesAdapter.OnItemClickListener  {
     private lateinit var binding : FragmentAddImagesBinding
 
-    var contextFromFrag: Context ?= null
     private var imageUri: Uri?= null
     private var PICK_IMAGE_REQUEST_CODE : Int = 0
 
     var isImgCategoryLayoutVisible = true
 
     lateinit var imagesCategoryAdapter: ImagesCategoryAdapter
-    private var selectedImagesList = ArrayList<ImageCategoryDataClass>()
 
     var uriList = ArrayList<Uri>()
 
@@ -49,8 +47,6 @@ class AddImagesFragment : Fragment(), SelectRoomImagesAdapter.OnItemClickListene
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        contextFromFrag = requireContext()
 
         binding.imagesRecycler.layoutManager = LinearLayoutManager(requireContext())
 
@@ -72,11 +68,11 @@ class AddImagesFragment : Fragment(), SelectRoomImagesAdapter.OnItemClickListene
 //        binding.imagesRecycler.adapter = selectImagesAdapter
 
     }
-    private fun openGallery() {
+
+    fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent,PICK_IMAGE_REQUEST_CODE)
     }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -84,8 +80,11 @@ class AddImagesFragment : Fragment(), SelectRoomImagesAdapter.OnItemClickListene
             imageUri = data.data!!
             if (imageUri != null) {
                 try {
-                    uriList.add(imageUri!!)
-                        selectedImagesList.add(ImageCategoryDataClass(binding.enterH.text.toString(), uriList))
+                        val selectedImagesList = ArrayList<ImageCategoryDataClass>()
+                        uriList.add(imageUri!!)
+                        selectedImagesList.add(
+                            ImageCategoryDataClass(binding.enterH.text.toString(), uriList)
+                        )
                         imagesCategoryAdapter = ImagesCategoryAdapter(requireContext(), selectedImagesList)
                         binding.imagesRecycler.adapter = imagesCategoryAdapter
                     isImgCategoryLayoutVisible = !isImgCategoryLayoutVisible

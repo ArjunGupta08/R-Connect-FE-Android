@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.channelManager.ChannelsManagement.ChannelManagementFragment
 import rconnect.retvens.technologies.dashboard.channelManager.DashboardFragment.DashBoardFragment
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.dashboard.channelManager.QuickReservation.QuickReservationAdapter
@@ -44,7 +45,7 @@ import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservatio
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.ReservationTypeFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.AmenitiesFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.InclusionPlansFragment
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.RateType.RateTypeFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.RatePlan.RatePlanFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.ActivityDashboardBinding
 import rconnect.retvens.technologies.utils.bottomSlideInAnimation
@@ -258,6 +259,12 @@ class DashboardActivity : AppCompatActivity() {
         }
         binding.channelCard.setOnClickListener {
             isCardSelected(binding.channelCard, binding.channelTxt)
+            replaceFragment(ChannelManagementFragment())
+
+
+            if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                binding.drawerLayout.closeDrawer(GravityCompat.START)
+            }
         }
         binding.othersCard.setOnClickListener {
             replaceFragment(ReviewRatePlanFragment())
@@ -313,7 +320,7 @@ class DashboardActivity : AppCompatActivity() {
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
                 }
                 binding.ll3.setOnClickListener {
-                    replaceFragment(RateTypeFragment())
+                    replaceFragment(RatePlanFragment())
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
                 }
                 binding.inclusionPlansLL.setOnClickListener {

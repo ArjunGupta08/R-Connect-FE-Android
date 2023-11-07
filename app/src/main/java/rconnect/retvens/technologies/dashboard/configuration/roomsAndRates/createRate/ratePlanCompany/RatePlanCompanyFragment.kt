@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateTypeAdapter
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.RatePlanDetailsAdapter
 import rconnect.retvens.technologies.databinding.FragmentRatePlanCompanyBinding
 
 
@@ -16,6 +17,7 @@ class RatePlanCompanyFragment : Fragment() {
     private lateinit var binding : FragmentRatePlanCompanyBinding
 
     val rateList = ArrayList<CreateRateData>()
+    val ratePlanDetailsList = ArrayList<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,10 +36,20 @@ class RatePlanCompanyFragment : Fragment() {
         rateList.add(CreateRateData("Breakfast","Sunday","Per Adult","200"))
         rateList.add(CreateRateData("Breakfast","Sunday","Per Adult","200"))
 
+        ratePlanDetailsList.add("5")
+        ratePlanDetailsList.add("5")
+        ratePlanDetailsList.add("5")
+
         binding.recyclerInclusion.layoutManager = LinearLayoutManager(requireContext())
         val createRateTypeAdapter = CreateRateTypeAdapter(requireContext(),rateList)
         binding.recyclerInclusion.adapter = createRateTypeAdapter
         createRateTypeAdapter.notifyDataSetChanged()
+
+
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val ratePlanDetailsAdapter = RatePlanDetailsAdapter(requireContext(),ratePlanDetailsList)
+        binding.recyclerView.adapter = ratePlanDetailsAdapter
+        ratePlanDetailsAdapter.notifyDataSetChanged()
 
     }
 

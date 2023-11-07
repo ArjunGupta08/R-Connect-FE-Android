@@ -1,33 +1,37 @@
-package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.RateType
+package rconnect.retvens.technologies.dashboard.channelManager.ChannelsManagement
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.cardview.widget.CardView
 import rconnect.retvens.technologies.R
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateTypeFragment
-import rconnect.retvens.technologies.databinding.FragmentRateTypeBinding
-import rconnect.retvens.technologies.databinding.FragmentViewCompanyBinding
+import rconnect.retvens.technologies.databinding.FragmentConnectionSettingBinding
 
-class RateTypeFragment : Fragment() {
 
-    lateinit var binding: FragmentRateTypeBinding
+class ConnectionSettingFragment : Fragment() {
+
+    private lateinit var bindingTab:FragmentConnectionSettingBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentRateTypeBinding.inflate(inflater,container,false)
-        return binding.root
+        bindingTab = FragmentConnectionSettingBinding.inflate(layoutInflater)
+        return bindingTab.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.createNewBtn.setOnClickListener {
-            replaceFragment(CreateRateTypeFragment())
+
+        bindingTab.continueBtn.setOnClickListener {
+            replaceFragment(ChannelDetailFragment())
         }
 
     }
@@ -39,4 +43,6 @@ class RateTypeFragment : Fragment() {
             transaction.commit()
         }
     }
+
+
 }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fillViewport="true"
+    android:orientation="vertical"
     android:background="@color/secondaryBackground"
     tools:context=".dashboard.configuration.roomsAndRates.createRate.CreateRateTypeFragment">
 
@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/secondary"
-        android:text="Create Rate Type"
+        android:text="Create Rate Plan"
         android:textSize="@dimen/H2"
         android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
@@ -68,16 +68,15 @@
 
         <LinearLayout
             android:id="@+id/dropDownLayout"
-            android:layout_width="0dp"
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:orientation="vertical"
             android:elevation="2dp"
             android:layout_marginHorizontal="5dp"
             android:background="@drawable/corner_bottom_white_background"
-            app:layout_constraintTop_toBottomOf="@id/rateTypeLayout"
-            app:layout_constraintStart_toStartOf="@id/rateTypeLayout"
-            app:layout_constraintEnd_toEndOf="@id/rateTypeLayout">
+            app:layout_constraintTop_toBottomOf="@id/ll7"
+            app:layout_constraintStart_toStartOf="@id/ll7">
 
             <LinearLayout
                 android:id="@+id/companyRateType"
@@ -188,128 +187,140 @@
 
         </LinearLayout>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/rateTypeLayout"
-                        android:layout_width="350dp"
-                        android:layout_height="@dimen/textInputLayoutHeight"
-                        android:layout_weight="1"
-                        android:hint="Rate Type"
-                        android:elevation="2dp"
-                        style="@style/ClickableTextInputLayoutStyle"
-                        android:layout_marginTop="10dp"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintEnd_toStartOf="@id/companyNameLayout"
-                        app:layout_constraintStart_toStartOf="@id/heading"
-                        app:layout_constraintTop_toBottomOf="@id/continueBtn">
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/rateTypeET"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:fontFamily="@font/roboto"
-                            android:textSize="@dimen/H5"
-                            android:text="Company"
-                            android:inputType="text"
-                            android:textColorHint="@color/secondary"
-                            android:textColor="@color/secondary"
-                            android:clickable="true"
-                            android:editable="false"
-                            android:focusable="false" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/companyNameLayout"
-                        android:layout_width="350dp"
-                        android:layout_height="@dimen/textInputLayoutHeight"
-                        android:visibility="gone"
-                        android:background="@color/secondaryBackground"
-                        android:hint="Company Name"
-                        android:layout_marginStart="10dp"
-                        style="@style/TextInputLayoutStyle"
-                        app:endIconMode="clear_text"
-                        app:endIconTint="@color/black"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintEnd_toStartOf="@id/roomTypeLayout"
-                        app:layout_constraintTop_toTopOf="@id/rateTypeLayout"
-                        app:layout_constraintBottom_toBottomOf="@id/rateTypeLayout"
-                        app:layout_constraintStart_toEndOf="@id/rateTypeLayout">
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:fontFamily="@font/roboto"
-                            android:textSize="@dimen/H5"
-                            android:hint="Select Company"
-                            android:inputType="text"
-                            android:textColorHint="@drawable/hint_selector"
-                            android:textColor="@color/secondary" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/roomTypeLayout"
-                        android:layout_width="350dp"
-                        android:layout_height="@dimen/textInputLayoutHeight"
-                        android:visibility="gone"
-                        android:background="@color/secondaryBackground"
-                        android:layout_marginStart="10dp"
-                        android:hint="Room Type"
-                        style="@style/TextInputLayoutStyle"
-                        app:endIconMode="clear_text"
-                        app:endIconTint="@color/black"
-                        app:layout_constraintEnd_toStartOf="@id/masterRatePlanLayout"
-                        app:layout_constraintTop_toTopOf="@id/companyNameLayout"
-                        app:layout_constraintBottom_toBottomOf="@id/companyNameLayout"
-                        app:layout_constraintStart_toEndOf="@id/companyNameLayout">
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:fontFamily="@font/roboto"
-                            android:textSize="@dimen/H5"
-                            android:hint="Room Type"
-                            android:inputType="text"
-                            android:textColorHint="@drawable/hint_selector"
-                            android:textColor="@color/secondary" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/masterRatePlanLayout"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/textInputLayoutHeight"
-                        android:visibility="gone"
-                        android:background="@color/secondaryBackground"
-                        android:layout_marginStart="10dp"
-                        android:hint="Master Rate Plan"
-                        style="@style/TextInputLayoutStyle"
-                        app:endIconMode="clear_text"
-                        app:endIconTint="@color/black"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintEnd_toEndOf="@id/continueBtn"
-                        app:layout_constraintTop_toTopOf="@id/companyNameLayout"
-                        app:layout_constraintBottom_toBottomOf="@id/companyNameLayout"
-                        app:layout_constraintStart_toEndOf="@id/roomTypeLayout">
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:fontFamily="@font/roboto"
-                            android:textSize="@dimen/H5"
-                            android:hint="Room Type"
-                            android:inputType="text"
-                            android:textColorHint="@drawable/hint_selector"
-                            android:textColor="@color/secondary" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+        <LinearLayout
+            android:id="@+id/ll7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
             android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@id/rateTypeLayout"
-            app:layout_constraintBottom_toBottomOf="parent">
+            android:gravity="center_vertical"
+            app:layout_constraintEnd_toEndOf="@id/continueBtn"
+            app:layout_constraintStart_toStartOf="@id/heading"
+            app:layout_constraintTop_toBottomOf="@id/continueBtn">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/rateTypeLayout"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/textInputLayoutHeight"
+                android:layout_weight="1"
+                android:hint="Rate Type"
+                android:elevation="2dp"
+                style="@style/ClickableTextInputLayoutStyle">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/rateTypeET"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/roboto"
+                    android:textSize="@dimen/H5"
+                    android:text="Company"
+                    android:inputType="text"
+                    android:textColorHint="@color/secondary"
+                    android:textColor="@color/secondary"
+                    android:clickable="true"
+                    android:editable="false"
+                    android:focusable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/companyNameLayout"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/textInputLayoutHeight"
+                android:background="@color/secondaryBackground"
+                android:hint="Company Name"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                style="@style/TextInputLayoutStyle"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/black">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/roboto"
+                    android:textSize="@dimen/H5"
+                    android:hint="Select Company"
+                    android:inputType="text"
+                    android:textColorHint="@drawable/hint_selector"
+                    android:textColor="@color/secondary" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/roomTypeLayout"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/textInputLayoutHeight"
+                android:background="@color/secondaryBackground"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:hint="Room Type"
+                style="@style/TextInputLayoutStyle"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/black">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/roboto"
+                    android:textSize="@dimen/H5"
+                    android:hint="Room Type"
+                    android:inputType="text"
+                    android:textColorHint="@drawable/hint_selector"
+                    android:textColor="@color/secondary" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/mealPlanLayout"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/textInputLayoutHeight"
+                android:layout_weight="1"
+                android:background="@color/secondaryBackground"
+                android:layout_marginStart="10dp"
+                android:hint="Master Rate Plan"
+                style="@style/TextInputLayoutStyle"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/black">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/roboto"
+                    android:textSize="@dimen/H5"
+                    android:hint="Room Type"
+                    android:inputType="text"
+                    android:textColorHint="@drawable/hint_selector"
+                    android:textColor="@color/secondary" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/masterRatePlanLayout"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/textInputLayoutHeight"
+                android:visibility="gone"
+                android:layout_weight="1"
+                android:background="@color/secondaryBackground"
+                android:layout_marginStart="10dp"
+                android:hint="Master Rate Plan"
+                style="@style/TextInputLayoutStyle"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/black">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/roboto"
+                    android:textSize="@dimen/H5"
+                    android:hint="Room Type"
+                    android:inputType="text"
+                    android:textColorHint="@drawable/hint_selector"
+                    android:textColor="@color/secondary" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
 
             <FrameLayout
                 android:id="@+id/ratePlanFragContainer"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"/>
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@id/ll7"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
-        </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+</LinearLayout>

@@ -168,6 +168,86 @@ class AddRoomTypeFragment : Fragment(),
             }
         }
 
+        binding.roomProfile.setOnClickListener {
+
+            page = 1
+
+            binding.roomProfile.textSize = 20.0f
+            binding.roomProfile.typeface = robotoMedium
+            binding.roomProfile.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+
+            binding.roomImages.textSize = 16.0f
+            binding.roomImages.typeface = roboto
+
+            binding.chargePlans.textSize = 16.0f
+            binding.chargePlans.typeface = roboto
+
+            binding.roomProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+            binding.roomImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+            binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+
+            binding.frame.visibility = View.VISIBLE
+            binding.createRoomFragContainer.visibility = View.GONE
+            rightInAnimation(binding.createRoomFragContainer, requireContext())
+        }
+
+        binding.roomImages.setOnClickListener {
+
+            page = 2
+
+            binding.roomImages.textSize = 20.0f
+            binding.roomImages.typeface = robotoMedium
+            binding.roomImages.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+
+            binding.roomProfile.textSize = 16.0f
+            binding.roomProfile.typeface = roboto
+
+            binding.chargePlans.textSize = 16.0f
+            binding.chargePlans.typeface = roboto
+
+            binding.roomImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+            binding.roomProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+            binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+
+            val childFragment: Fragment = AddImagesFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.createRoomFragContainer,childFragment)
+            transaction.commit()
+
+            binding.frame.visibility = View.GONE
+            binding.createRoomFragContainer.visibility = View.VISIBLE
+            rightInAnimation(binding.createRoomFragContainer, requireContext())
+        }
+
+        binding.chargePlans.setOnClickListener {
+
+            page = 3
+
+            binding.chargePlans.textSize = 20.0f
+            binding.chargePlans.typeface = robotoMedium
+            binding.chargePlans.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+
+            binding.roomImages.textSize = 16.0f
+            binding.roomImages.typeface = roboto
+
+            binding.roomProfile.textSize = 16.0f
+            binding.roomProfile.typeface = roboto
+
+            binding.roomImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+            binding.roomProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+            binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+
+            val childFragment: Fragment = ChargesAndRatesFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.createRoomFragContainer,childFragment)
+            transaction.commit()
+
+            binding.frame.visibility = View.GONE
+            binding.createRoomFragContainer.visibility = View.VISIBLE
+            rightInAnimation(binding.createRoomFragContainer, requireContext())
+
+        }
+
         binding.bedTypeRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
 
 
