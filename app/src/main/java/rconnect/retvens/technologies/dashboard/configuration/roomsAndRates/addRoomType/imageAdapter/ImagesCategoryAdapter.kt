@@ -46,16 +46,12 @@ class ImagesCategoryAdapter(val context: Context, private val itemList: ArrayLis
         return position
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
-        SelectRoomImagesAdapter.OnItemClickListener {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val textH = itemView.findViewById<TextView>(R.id.enterH)
         val imagesRecycler = itemView.findViewById<RecyclerView>(R.id.imagesRecycler)
 
         lateinit var selectImagesAdapter: SelectRoomImagesAdapter
 
-        override fun onAddRoomImage() {
-
-        }
     }
 }

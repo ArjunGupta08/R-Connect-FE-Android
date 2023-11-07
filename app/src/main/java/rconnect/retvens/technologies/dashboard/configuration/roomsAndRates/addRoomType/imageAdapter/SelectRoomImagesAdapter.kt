@@ -9,6 +9,8 @@ import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddImagesFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddRoomTypeFragment
 
 class SelectRoomImagesAdapter(val context: Context, private val itemList: ArrayList<Uri>) : RecyclerView.Adapter<SelectRoomImagesAdapter.ViewHolder>() {
 
@@ -50,7 +52,8 @@ class SelectRoomImagesAdapter(val context: Context, private val itemList: ArrayL
         } else if (position == itemList.size) {
             // Handle the static item
             holder.addImage.setOnClickListener {
-                onItemClickListener?.onAddRoomImage()
+                // open Gallery
+
             }
         }
 
@@ -72,26 +75,4 @@ class SelectRoomImagesAdapter(val context: Context, private val itemList: ArrayL
             VIEW_TYPE_DYNAMIC_ITEM
         }
     }
-//        override fun getItemViewType(position: Int): Int {
-//
-//           return if (position === itemList.size) R.layout.item_add_image else R.layout.item_image
-//
-//        }
-
-//    override fun getItemViewType(position: Int): Int {
-//        // Check if the list size is 3 or 4 and handle the position accordingly
-//        return if (itemList.size in 0..9) {
-//            when (position) {
-//                0 -> VIEW_TYPE_STATIC_ITEM
-////                9 -> VIEW_TYPE_DYNAMIC_ITEM
-//                else -> VIEW_TYPE_DYNAMIC_ITEM
-//            }
-//        } else {
-//            when (position) {
-//                0 -> VIEW_TYPE_STATIC_ITEM
-//                else -> VIEW_TYPE_DYNAMIC_ITEM
-//            }
-//        }
-//    }
-
 }
