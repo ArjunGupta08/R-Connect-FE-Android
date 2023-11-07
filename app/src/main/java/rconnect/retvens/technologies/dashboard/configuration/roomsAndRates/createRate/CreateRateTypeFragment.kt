@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.RatePlanBarFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.RatePlanCompanyFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanPackage.RatePlanPackageFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlaneDiscount.RatePlanDiscountFragment
@@ -62,7 +63,7 @@ class CreateRateTypeFragment : Fragment() {
         }
 
         binding.barRateType.setOnClickListener {
-            replaceChildFrag(RatePlanCompanyFragment())
+            replaceChildFrag(RatePlanBarFragment())
             binding.rateTypeET.setText("Bar")
             binding.roomTypeLayout.isVisible = true
             binding.mealPlanLayout.isVisible = true
