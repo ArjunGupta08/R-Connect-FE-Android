@@ -223,6 +223,10 @@
                                 <item name="cornerSize">5%</item>
                             </style>
 
+                            <style name="RoundedCornerImage_8">
+                                <item name="cornerSize">8%</item>
+                            </style>
+
                             <style name="RoundedCornerImage_10">
                                 <item name="cornerSize">10%</item>
                             </style>
@@ -232,6 +236,10 @@
                             </style>
 
     <!--Dialog Animation-->
+
+    <style name="layoutMarginParent">
+        <item name="android:layout_margin">20dp</item>
+    </style>
 
     <style name="DialogAnimation">
         <item name="android:windowEnterAnimation">@anim/right_in_animation</item>

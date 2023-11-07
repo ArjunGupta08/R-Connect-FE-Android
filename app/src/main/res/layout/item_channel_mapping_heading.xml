@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="#E6ECF5"
+    android:orientation="horizontal"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deluxe Room"
+        android:layout_gravity="center"
+        android:layout_marginStart="5dp"
+        android:textSize="@dimen/H4"
+        android:fontFamily="@font/roboto_medium"
+        android:textColor="@color/textColor"
+        android:textFontWeight="400"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Map Room"
+        android:layout_gravity="center"
+        android:layout_marginStart="5dp"
+        android:textSize="@dimen/H6"
+        android:fontFamily="@font/roboto_bold"
+        android:textColor="#3D94E4"
+        android:textFontWeight="400"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Base Occ."
+        android:layout_gravity="center"
+        android:layout_marginStart="70dp"
+        android:textSize="@dimen/H6"
+        android:fontFamily="@font/roboto"
+        android:textColor="@color/subtitle"
+        android:textFontWeight="400"
+        />
+
+</LinearLayout>
