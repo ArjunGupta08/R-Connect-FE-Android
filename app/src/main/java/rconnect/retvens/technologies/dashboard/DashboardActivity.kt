@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.channelManager.ChannelsManagement.ChannelManagementFragment
 import rconnect.retvens.technologies.dashboard.channelManager.DashboardFragment.DashBoardFragment
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.dashboard.channelManager.QuickReservation.QuickReservationAdapter
@@ -258,6 +259,12 @@ class DashboardActivity : AppCompatActivity() {
         }
         binding.channelCard.setOnClickListener {
             isCardSelected(binding.channelCard, binding.channelTxt)
+            replaceFragment(ChannelManagementFragment())
+
+
+            if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                binding.drawerLayout.closeDrawer(GravityCompat.START)
+            }
         }
         binding.othersCard.setOnClickListener {
             replaceFragment(ReviewRatePlanFragment())

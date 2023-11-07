@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="10dp"
+    android:layout_marginStart="2dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/propertyLogo"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:paddingVertical="5dp"
+            android:layout_marginStart="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:shapeAppearance="@style/RoundedCornerImage_8"
+            android:src="@color/unselectedBackground"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+
+        <TextView
+            android:id="@+id/channel_site"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondary"
+            android:text="HotelBooking.com"
+            android:textSize="@dimen/H4"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/roboto_medium"
+            android:background="@color/white"
+            app:layout_constraintStart_toEndOf="@id/propertyLogo"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="10dp"
+            />
+
+        <TextView
+            android:id="@+id/active_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/channel_site"
+            app:layout_constraintStart_toEndOf="@id/propertyLogo"
+            android:layout_marginStart="8dp"
+            android:text="Active"
+            android:textSize="@dimen/H4"
+            android:textColor="#3EEA5A"
+            android:fontFamily="@font/roboto"
+            />
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:src="@drawable/svg_active_dot"
+            app:layout_constraintTop_toTopOf="@+id/active_status"
+            app:layout_constraintStart_toEndOf="@id/active_status"
+            app:layout_constraintBottom_toBottomOf="@id/active_status"
+            android:layout_marginStart="5dp"
+            />
+
+        <TextView
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/active_status"
+            app:layout_constraintStart_toStartOf="@id/active_status"
+            android:text="6 Rooms 23 Rate Plans"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/H6"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/roboto"
+            />
+        
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/propertyLogo"
+            app:layout_constraintStart_toStartOf="@+id/active_status"
+            android:backgroundTint="#10141A"
+            android:layout_marginBottom="12dp"
+            app:cardCornerRadius="10dp"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginHorizontal="5dp"
+                >
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/setting_svg2"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Manage"
+                    android:paddingVertical="5dp"
+                    android:textColor="@color/primaryBackground"
+                    android:fontFamily="@font/roboto_medium"
+                    android:textSize="@dimen/H5"
+                    android:layout_marginStart="5dp"
+                    />
+
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

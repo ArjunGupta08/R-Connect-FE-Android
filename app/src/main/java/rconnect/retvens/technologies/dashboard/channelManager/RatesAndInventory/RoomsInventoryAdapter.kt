@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import rconnect.retvens.technologies.R
 
-class RoomsInventoryAdapter(val context: Context, private val stringList: ArrayList<String>) :
+class RoomsInventoryAdapter(val context: Context, private val inventory:ResponseData) :
     RecyclerView.Adapter<RoomsInventoryAdapter.InventoryViewHolder>() {
 
     private lateinit var ratePlanPricesAdapter: RatePlanPricesAdapter
@@ -21,6 +21,7 @@ class RoomsInventoryAdapter(val context: Context, private val stringList: ArrayL
 
 
     class InventoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+        val roomType:TextView = itemView.findViewById(R.id.roomType)
         val inventory1: TextView = itemView.findViewById(R.id.inventory_1)
         val inventory2: TextView = itemView.findViewById(R.id.inventory_2)
         val inventory3: TextView = itemView.findViewById(R.id.inventory_3)
@@ -43,20 +44,24 @@ class RoomsInventoryAdapter(val context: Context, private val stringList: ArrayL
     }
 
     override fun onBindViewHolder(holder: InventoryViewHolder, position: Int) {
-        val currentItem = stringList[position]
+        val data = inventory.data
+        val room = data[position]
+        val inventory = room.calculatedInventoryData[position]
 
 
-        holder.inventory1.setText(currentItem)
+        holder.roomType.setText(room.roomTypeName)
 
-        holder.inventory2.setText(currentItem)
-        holder.inventory3.setText(currentItem)
-        holder.inventory4.setText(currentItem)
-        holder.inventory5.setText(currentItem)
-        holder.inventory6.setText(currentItem)
-        holder.inventory7.setText(currentItem)
-        holder.inventory8.setText(currentItem)
-        holder.inventory9.setText(currentItem)
-        holder.inventory10.setText(currentItem)
+        holder.inventory1.text = inventory.inventory.toString()
+
+        holder.inventory2.text = inventory.inventory.toString()
+        holder.inventory3.text = inventory.inventory.toString()
+        holder.inventory4.text = inventory.inventory.toString()
+        holder.inventory5.text = inventory.inventory.toString()
+        holder.inventory6.text = inventory.inventory.toString()
+        holder.inventory7.text = inventory.inventory.toString()
+        holder.inventory8.text = inventory.inventory.toString()
+        holder.inventory9.text = inventory.inventory.toString()
+        holder.inventory10.text = inventory.inventory.toString()
 
         holder.inventory1.isCursorVisible = true;
         holder.inventory1.inputType = InputType.TYPE_CLASS_NUMBER;
@@ -91,7 +96,7 @@ class RoomsInventoryAdapter(val context: Context, private val stringList: ArrayL
     }
 
     override fun getItemCount(): Int {
-        return stringList.size
+        return inventory.data.size
     }
 }
 
