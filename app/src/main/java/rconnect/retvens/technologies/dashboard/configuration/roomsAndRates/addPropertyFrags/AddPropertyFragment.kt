@@ -234,6 +234,11 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
             binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
             binding.propertyImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
 
+            val childFragment: Fragment = AddImagesFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.propertyImagesFrameLayout,childFragment)
+            transaction.commit()
+
             binding.propertyProfileLayout.visibility = View.GONE
             binding.propertyImagesFrameLayout.visibility = View.VISIBLE
             binding.addressLayout.visibility = View.GONE

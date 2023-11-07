@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.RatePlanCompanyFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -64,71 +69,82 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:weightSum="4"
                     android:orientation="horizontal">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/room_type_layout"
+                        style="@style/TextInputLayoutStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/textInputLayoutHeight"
+                        android:layout_marginTop="5dp"
+                        android:hint="Rate Plan Name"
+                        android:layout_weight="1"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/black"
+                        app:layout_constraintEnd_toStartOf="@id/short_code_layout"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                        <androidx.constraintlayout.widget.Guideline
-                            android:id="@+id/guide1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            app:layout_constraintGuide_percent="0.5" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/room_type_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:text="Deluxe CP"
+                            android:inputType="text"
+                            android:textColor="@color/secondary"
+                            android:textColorHint="@drawable/hint_selector"
+                            android:textSize="@dimen/H5" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/room_type_layout"
-                            style="@style/TextInputLayoutStyle"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/textInputLayoutHeight"
-                            android:layout_marginTop="5dp"
-                            android:hint="Rate Plan Name"
-                            app:endIconMode="clear_text"
-                            app:endIconTint="@color/black"
-                            app:layout_constraintEnd_toStartOf="@id/short_code_layout"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/short_code_layout"
+                        style="@style/TextInputLayoutStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/textInputLayoutHeight"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:hint="Rate Code"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/black">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/room_type_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:fontFamily="@font/roboto"
-                                android:hint="Enter rate plan name"
-                                android:inputType="text"
-                                android:textColor="@color/secondary"
-                                android:textColorHint="@drawable/hint_selector"
-                                android:textSize="@dimen/H5" />
-                        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/short_code_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:text="DLXCP"
+                            android:textColor="@color/secondary"
+                            android:textColorHint="@drawable/hint_selector"
+                            android:textSize="@dimen/H5" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/short_code_layout"
-                            style="@style/TextInputLayoutStyle"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/textInputLayoutHeight"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="5dp"
-                            android:hint="Short Code"
-                            app:endIconMode="clear_text"
-                            app:endIconTint="@color/black"
-                            app:layout_constraintEnd_toStartOf="@id/guide1"
-                            app:layout_constraintStart_toEndOf="@id/room_type_layout"
-                            app:layout_constraintTop_toTopOf="parent">
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/TextInputLayoutStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/textInputLayoutHeight"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:hint="Meal Plan"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/black">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/short_code_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:fontFamily="@font/roboto"
-                                android:hint="Code"
-                                android:inputType="text"
-                                android:textColor="@color/secondary"
-                                android:textColorHint="@drawable/hint_selector"
-                                android:textSize="@dimen/H5" />
-                        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:text="CP"
+                            android:inputType="text"
+                            android:textColor="@color/secondary"
+                            android:textColorHint="@drawable/hint_selector"
+                            android:textSize="@dimen/H5"
+                            android:focusable="false"
+                            android:editable="false"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -140,27 +156,42 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_medium"
-                        android:paddingVertical="11dp"
-                        android:text="Rate Plan Inclusions and Charges"
+                        android:layout_marginTop="15dp"
+                        android:text="Inclusions and Charges"
                         android:textAlignment="center"
                         android:textColor="@color/secondary"
                         android:textSize="@dimen/H4"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
+                    <androidx.cardview.widget.CardView
                         android:id="@+id/add_name"
+                        style="@style/CardViewTheme"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:layout_marginEnd="30dp"
-                        android:fontFamily="@font/roboto_medium"
-                        android:paddingVertical="11dp"
-                        android:text="+Add Plan Inclusions"
-                        android:textAlignment="center"
-                        android:textColor="@color/secondary"
-                        android:textSize="@dimen/H4"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardBackgroundColor="@color/black"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="4dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintBottom_toBottomOf="@id/charges_head"
+                        app:layout_constraintTop_toTopOf="@id/charges_head" >
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto_medium"
+                            android:paddingVertical="8dp"
+                            android:paddingHorizontal="10dp"
+                            android:text="+ Add Inclusions"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/H5"/>
+
+                    </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/c2"
@@ -168,7 +199,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="2dp"
-                        android:layout_marginBottom="9dp"
+                        android:layout_marginTop="9dp"
                         app:cardBackgroundColor="@color/secondaryBackground"
                         app:cardCornerRadius="9dp"
                         app:cardElevation="2dp"
@@ -389,46 +420,243 @@
 
                     </androidx.cardview.widget.CardView>
 
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@id/ll8"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="10dp"
-                        android:fontFamily="@font/roboto_bold"
-                        android:padding="15dp"
-                        android:text="Rate Plan Total"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/H5"
-                        app:layout_constraintBottom_toBottomOf="@id/rateCard"
-                        app:layout_constraintEnd_toStartOf="@id/rateCard"
-                        app:layout_constraintTop_toTopOf="@id/rateCard" />
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/rateCard"
-                        style="@style/CardViewTheme"
-                        android:layout_width="110dp"
-                        android:layout_height="45dp"
+                        android:orientation="vertical"
                         android:layout_marginTop="15dp"
-                        android:layout_marginEnd="30dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        app:cardBackgroundColor="@color/grey20"
-                        app:cardCornerRadius="10dp"
-                        app:cardElevation="4dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/c2">
+                        app:layout_constraintStart_toStartOf="@id/c2"
+                        app:layout_constraintTop_toBottomOf="@id/c2"
+                        app:layout_constraintEnd_toEndOf="@id/c2">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/roboto"
-                            android:text="₹ 121212.00"
-                            android:textColor="@color/textColor"
-                            android:textSize="@dimen/H5" />
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="Bar Rate Breakdown"
+                            android:textAlignment="center"
+                            android:textColor="@color/secondary"
+                            android:textSize="@dimen/H4"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    </androidx.cardview.widget.CardView>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="5"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/rateTypeLayout"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/textInputLayoutHeight"
+                                android:layout_weight="1"
+                                android:hint="Room Base Rate"
+                                style="@style/TextInputLayoutStyle">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/rateTypeET"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:fontFamily="@font/roboto"
+                                    android:textSize="@dimen/H5"
+                                    android:text="₹ 1300.00"
+                                    android:inputType="text"
+                                    android:textColorHint="@color/secondary"
+                                    android:textColor="@color/secondary"
+                                    android:clickable="true"
+                                    android:editable="false"
+                                    android:focusable="false" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/companyNameLayout"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/textInputLayoutHeight"
+                                android:background="@color/white"
+                                android:hint="Meal Charges"
+                                android:layout_weight="1"
+                                android:layout_marginStart="10dp"
+                                style="@style/TextInputLayoutStyle"
+                                app:endIconMode="clear_text"
+                                app:endIconTint="@color/black">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:fontFamily="@font/roboto"
+                                    android:textSize="@dimen/H5"
+                                    android:text="₹ 1300.00"
+                                    android:inputType="text"
+                                    android:textColorHint="@drawable/hint_selector"
+                                    android:textColor="@color/secondary" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/roomTypeLayout"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/textInputLayoutHeight"
+                                android:background="@color/white"
+                                android:layout_marginStart="10dp"
+                                android:layout_weight="1"
+                                android:hint="Inclusion Charges"
+                                style="@style/TextInputLayoutStyle"
+                                app:endIconMode="clear_text"
+                                app:endIconTint="@color/black">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:fontFamily="@font/roboto"
+                                    android:textSize="@dimen/H5"
+                                    android:text="₹ 1300.00"
+                                    android:inputType="text"
+                                    android:textColorHint="@drawable/hint_selector"
+                                    android:textColor="@color/secondary" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/mealPlanLayout"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/textInputLayoutHeight"
+                                android:layout_weight="1"
+                                android:background="@color/white"
+                                android:layout_marginStart="10dp"
+                                android:hint="Round Up"
+                                style="@style/TextInputLayoutStyle"
+                                app:endIconMode="clear_text"
+                                app:endIconTint="@color/black">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:fontFamily="@font/roboto"
+                                    android:textSize="@dimen/H5"
+                                    android:text="₹ 1300.00"
+                                    android:inputType="text"
+                                    android:textColorHint="@drawable/hint_selector"
+                                    android:textColor="@color/secondary" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/rateCard"
+                                style="@style/CardViewTheme"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginVertical="4dp"
+                                android:layout_marginHorizontal="10dp"
+                                android:clickable="true"
+                                android:focusable="true"
+                                app:cardBackgroundColor="@color/unselectedBackground"
+                                app:cardCornerRadius="10dp"
+                                app:cardElevation="4dp">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="8dp"
+                                    android:paddingHorizontal="10dp">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/roboto_medium"
+                                            android:text="Rate Plan Total"
+                                            android:textColor="@color/black"
+                                            android:textSize="@dimen/H5"
+                                            app:layout_constraintBottom_toBottomOf="@id/rateCard"
+                                            app:layout_constraintEnd_toStartOf="@id/rateCard"
+                                            app:layout_constraintTop_toTopOf="@id/rateCard" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/roboto"
+                                            android:text="₹ 121212.00"
+                                            android:textColor="@color/textColor"
+                                            android:textSize="@dimen/H5" />
+
+                                    </LinearLayout>
+
+                                    <ImageView
+                                        android:layout_width="35dp"
+                                        android:layout_height="35dp"
+                                        android:layout_marginEnd="5dp"
+                                        android:src="@drawable/svg_edit"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            </androidx.cardview.widget.CardView>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="5"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/textInputLayoutHeight"
+                                android:layout_weight="1"
+                                android:hint="Extra Adult Rate"
+                                style="@style/TextInputLayoutStyle">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:fontFamily="@font/roboto"
+                                    android:textSize="@dimen/H5"
+                                    android:text="₹ 1300.00"
+                                    android:inputType="text"
+                                    android:textColorHint="@color/secondary"
+                                    android:textColor="@color/secondary"
+                                    android:clickable="true"
+                                    android:editable="false"
+                                    android:focusable="false" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/textInputLayoutHeight"
+                                android:background="@color/white"
+                                android:hint="Extra Child Rate"
+                                android:layout_weight="1"
+                                android:layout_marginStart="10dp"
+                                style="@style/TextInputLayoutStyle"
+                                app:endIconMode="clear_text"
+                                app:endIconTint="@color/black">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:fontFamily="@font/roboto"
+                                    android:textSize="@dimen/H5"
+                                    android:text="₹ 1300.00"
+                                    android:inputType="text"
+                                    android:textColorHint="@drawable/hint_selector"
+                                    android:textColor="@color/secondary" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -457,7 +685,7 @@
                         app:cardCornerRadius="10dp"
                         app:cardElevation="4dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/rateCard">
+                        app:layout_constraintTop_toBottomOf="@id/ll8">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -505,4 +733,6 @@
 
     </androidx.cardview.widget.CardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

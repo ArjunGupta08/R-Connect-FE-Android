@@ -55,14 +55,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
-                android:text="Short Code"
+                android:text="Rate Code"
                 android:textSize="@dimen/H5"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
-                android:text="Short Code"
+                android:text="Rate Code"
                 android:textSize="@dimen/H5"/>
 
         </LinearLayout>
@@ -99,9 +99,62 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_margin="8dp"
-            app:layout_constraintEnd_toStartOf="@id/edit"
+            app:layout_constraintEnd_toStartOf="@id/l5"
             app:layout_constraintBottom_toBottomOf="@id/l1"
             app:layout_constraintStart_toEndOf="@id/l3"
+            app:layout_constraintTop_toTopOf="@id/l1" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Extra Adult Rate"
+                android:textSize="@dimen/H5"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="₹ 12,555.00"
+                android:textSize="@dimen/H5"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/l5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@id/l6"
+            app:layout_constraintBottom_toBottomOf="@id/l1"
+            app:layout_constraintStart_toEndOf="@id/l4"
+            app:layout_constraintTop_toTopOf="@id/l1" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Extra Child Rate"
+                android:textSize="@dimen/H5"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="₹ 12,555.00"
+                android:textSize="@dimen/H5"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/l6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="8dp"
+            app:layout_constraintEnd_toStartOf="@id/l7"
+            app:layout_constraintBottom_toBottomOf="@id/l1"
+            app:layout_constraintStart_toEndOf="@id/l5"
             app:layout_constraintTop_toTopOf="@id/l1" >
 
             <TextView
@@ -120,16 +173,32 @@
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/edit"
+        <LinearLayout
+            android:id="@+id/l7"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:src="@drawable/svg_edit"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="8dp"
+            android:gravity="center_vertical"
             android:layout_marginEnd="10dp"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintTop_toTopOf="@id/l1"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/l1"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="@id/l1" >
+
+            <ImageView
+                android:id="@+id/edit"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/svg_edit"/>
+
+            <ImageView
+                android:id="@+id/delete"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/svg_delete_lite"/>
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
