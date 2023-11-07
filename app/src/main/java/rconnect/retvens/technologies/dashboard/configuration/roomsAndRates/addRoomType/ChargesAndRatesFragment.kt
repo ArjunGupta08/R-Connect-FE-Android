@@ -31,6 +31,73 @@ class ChargesAndRatesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecycler()
+
+        var minRate = 1000.00
+        var maxRate = 5000.00
+        var baseRate = 2500.00
+        var adultRate = 1500.00
+        var childRate = 600.00
+
+        binding.removeMinimumRate.setOnClickListener {
+            if (minRate>0){
+                minRate -= 100
+                binding.countMinimumRate.text = "₹ ${minRate}"
+            }
+            }
+        binding.addMinimumRate.setOnClickListener {
+            minRate += 100
+            binding.countMinimumRate.text = "₹ ${minRate}"
+        }
+
+        binding.addMaximumCharges.setOnClickListener {
+            maxRate += 100
+            binding.countMaximumCharges.text = "₹ ${maxRate}" }
+        binding.removeMaximumCharges.setOnClickListener {
+            if (maxRate>0){
+                maxRate -= 100
+                binding.countMaximumCharges.text = "₹ ${maxRate}"
+            }
+        }
+
+        binding.addBaseRate.setOnClickListener {
+            baseRate+=100
+            binding.countBaseRate.text = "₹ ${baseRate}"
+        }
+        binding.removeBaseRate.setOnClickListener {
+            if (baseRate>0){
+                baseRate-=100
+                binding.countBaseRate.text = "₹ ${baseRate}"
+            }
+        }
+        binding.addExtraAdultRate.setOnClickListener {
+            adultRate+=100
+            binding.countExtraAdultRate.text = "₹ ${adultRate}"
+        }
+        binding.removeExtraAdultRate.setOnClickListener {
+            if (adultRate>0){
+                adultRate-=100
+                binding.countExtraAdultRate.text = "₹ ${adultRate}"
+            }
+        }
+        binding.addMaxChildRate.setOnClickListener {
+            childRate+=100
+            binding.countMaxChildRate.text = "₹ ${childRate}"
+        }
+        binding.removeMaxChildRate.setOnClickListener {
+            if (childRate>0){
+                childRate-=100
+                binding.countMaxChildRate.text = "₹ ${childRate}"
+            }
+        }
+
+
+
+
+
+
+
+
+
     }
     private fun setUpRecycler() {
 
