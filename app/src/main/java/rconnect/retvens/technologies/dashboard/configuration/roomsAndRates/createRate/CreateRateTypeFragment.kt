@@ -36,6 +36,7 @@ class CreateRateTypeFragment : Fragment() {
 
         rateTypeSelection()
 
+        replaceChildFrag(RatePlanCompanyFragment())
     }
 
     private fun rateTypeSelection() {
@@ -56,6 +57,7 @@ class CreateRateTypeFragment : Fragment() {
             binding.rateTypeET.setText("Company")
             binding.companyNameLayout.isVisible = true
             binding.roomTypeLayout.isVisible = true
+            binding.mealPlanLayout.isVisible = true
             binding.masterRatePlanLayout.isVisible = false
         }
 
@@ -63,6 +65,7 @@ class CreateRateTypeFragment : Fragment() {
             replaceChildFrag(RatePlanCompanyFragment())
             binding.rateTypeET.setText("Bar")
             binding.roomTypeLayout.isVisible = true
+            binding.mealPlanLayout.isVisible = true
             binding.companyNameLayout.isVisible = false
             binding.masterRatePlanLayout.isVisible = false
         }
@@ -71,6 +74,7 @@ class CreateRateTypeFragment : Fragment() {
             replaceChildFrag(RatePlanDiscountFragment())
             binding.rateTypeET.setText("Discount")
             binding.companyNameLayout.isVisible = false
+            binding.mealPlanLayout.isVisible = false
             binding.roomTypeLayout.isVisible = false
             binding.masterRatePlanLayout.isVisible = false
         }
@@ -80,6 +84,7 @@ class CreateRateTypeFragment : Fragment() {
             binding.rateTypeET.setText("Package")
             binding.roomTypeLayout.isVisible = true
             binding.companyNameLayout.isVisible = false
+            binding.mealPlanLayout.isVisible = false
             binding.masterRatePlanLayout.isVisible = true
         }
 
