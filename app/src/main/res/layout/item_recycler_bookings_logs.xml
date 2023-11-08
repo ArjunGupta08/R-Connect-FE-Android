@@ -20,13 +20,7 @@
         android:id="@+id/g3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.52"
-        android:orientation="vertical"/>
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/g4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent=".68"
+        app:layout_constraintGuide_percent="0.6"
         android:orientation="vertical"/>
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/g5"
@@ -194,16 +188,16 @@
         android:fontFamily="@font/roboto"
         android:textSize="@dimen/H6"
         android:textColor="@color/secondary"
-        android:text="12 Sep, 2023,11:30 AM"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/g4"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="12dp"
-        android:textSize="@dimen/H6"
-        android:textColor="@color/secondary"
-        android:text="12 Sep, 2023,11:30 AM"/>
+        android:text="12 Sep, 2023,11:30 AM /\n12 Sep, 2023,11:30 AM"/>
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintStart_toStartOf="@id/g4"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        android:layout_marginTop="12dp"-->
+<!--        android:textSize="@dimen/H6"-->
+<!--        android:textColor="@color/secondary"-->
+<!--        android:text="12 Sep, 2023,11:30 AM"/>-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
