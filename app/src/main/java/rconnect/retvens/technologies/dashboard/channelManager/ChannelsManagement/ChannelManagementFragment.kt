@@ -5,10 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.channelManager.promotions.PromotionsAdapter
 import rconnect.retvens.technologies.dashboard.channelManager.promotions.PromotionsDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.roomType.ChannelListAdapter
 import rconnect.retvens.technologies.databinding.FragmentChannelManagementBinding
 
 
@@ -18,6 +21,8 @@ class ChannelManagementFragment : Fragment() {
     private lateinit var bindingTab:FragmentChannelManagementBinding
     private  var activeList:ArrayList<String> = ArrayList()
     private lateinit var channelManagementAdapter: ChannelManagementAdapter
+    private var channelLogList = ArrayList<String>()
+    private var isP1 = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +40,36 @@ class ChannelManagementFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        bindingTab.llView.setOnClickListener {
+            if (isP1){
+                bindingTab.propLayout.isVisible = false
+                bindingTab.propLayout2.isVisible = true
+                bindingTab.viewTypeIcon.setImageResource(R.drawable.prop_view2)
+                isP1 = false
+            }
+            else{
+                bindingTab.viewTypeIcon.setImageResource(R.drawable.svg_view_type)
+                bindingTab.propLayout.isVisible = true
+                bindingTab.propLayout2.isVisible = false
+                isP1 = true
+            }
+        }
+
+        channelLogList.add("")
+        channelLogList.add("")
+        channelLogList.add("")
+        channelLogList.add("")
+        channelLogList.add("")
+        channelLogList.add("")
+        channelLogList.add("")
+        channelLogList.add("")
+
+        bindingTab.recyclerChannelLogsList.layoutManager = LinearLayoutManager(requireContext())
+        val channelListAdapter = ChannelListAdapter(requireContext(),channelLogList)
+        bindingTab.recyclerChannelLogsList.adapter = channelListAdapter
+        channelListAdapter.notifyDataSetChanged()
+
 
         bindingTab.activeChannelsRecycler.layoutManager = GridLayoutManager(requireContext(), 3)
         bindingTab.activeChannelsRecycler.setHasFixedSize(true)
