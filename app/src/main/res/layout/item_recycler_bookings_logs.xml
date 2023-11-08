@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/g1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.17"
+        android:orientation="vertical"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/g2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.35"
+        android:orientation="vertical"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/g3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.52"
+        android:orientation="vertical"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/g4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent=".68"
+        android:orientation="vertical"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/g5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.86"
+        android:orientation="vertical"/>
+
+    <TextView
+        android:id="@+id/txt_id1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="9dp"
+        android:textSize="@dimen/H5"
+        android:fontFamily="@font/roboto"
+        android:textColor="@color/secondary"
+        android:text="ABC123456789"/>
+    <TextView
+        android:id="@+id/txt_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_id1"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="9dp"
+        android:textSize="@dimen/H5"
+        android:background="@drawable/rounded_light_green"
+        android:fontFamily="@font/roboto"
+        android:textColor="#3EB40D"
+        android:text="Confirmed"/>
+
+
+    <TextView
+        android:id="@+id/guest_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/g1"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/roboto"
+        android:textSize="@dimen/H6"
+        android:textColor="@color/secondary"
+        android:text="Mr. Karan Gupta ji"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/txt_id1"
+        app:layout_constraintStart_toStartOf="@id/guest_name"
+        android:orientation="horizontal"
+        android:weightSum="8"
+        android:layout_marginTop="5dp"
+        >
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/icon_people"
+            android:layout_weight="1"
+            android:layout_gravity="top"
+            android:layout_marginTop="2dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2"
+            android:textSize="@dimen/H5"
+            android:layout_weight="1"
+            android:layout_gravity="top"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/black"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="5dp"
+            />
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/child_svg"
+            android:layout_weight="1"
+            android:layout_gravity="top"
+            android:layout_marginTop="2dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2"
+            android:textSize="@dimen/H5"
+            android:layout_marginStart="3dp"
+            android:layout_weight="1"
+            android:layout_gravity="top"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/black"
+            android:layout_marginEnd="5dp"
+            />
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/key_svg"
+            android:layout_weight="1"
+            android:layout_gravity="top"
+            android:layout_marginTop="2dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2"
+            android:textSize="@dimen/H5"
+            android:layout_marginStart="3dp"
+            android:layout_weight="1"
+            android:layout_gravity="top"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/black"
+            android:layout_marginEnd="5dp"
+            />
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/child_svg"
+            android:layout_weight="1"
+            android:layout_gravity="top"
+            android:layout_marginTop="2dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2"
+            android:layout_marginStart="3dp"
+            android:textSize="@dimen/H5"
+            android:layout_weight="1"
+            android:layout_gravity="top"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/black"
+            android:layout_marginEnd="5dp"
+            />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/g2"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="12dp"
+        android:textSize="@dimen/H6"
+        android:fontFamily="@font/roboto"
+        android:textColor="@color/secondary"
+        android:text="12 Sep, 2023,11:30 AM"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/g3"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/roboto"
+        android:textSize="@dimen/H6"
+        android:textColor="@color/secondary"
+        android:text="12 Sep, 2023,11:30 AM"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/g4"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="12dp"
+        android:textSize="@dimen/H6"
+        android:textColor="@color/secondary"
+        android:text="12 Sep, 2023,11:30 AM"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/g5"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="12dp"
+        android:textSize="@dimen/H6"
+        android:textColor="@color/secondary"
+        android:text="₹ 12,999.00"/>
+
+    <View
+        android:id="@+id/l"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#AAB2C4"
+        app:layout_constraintTop_toBottomOf="@id/txt_id"
+        android:layout_margin="9dp"/>
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

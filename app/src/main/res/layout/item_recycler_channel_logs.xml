@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="9dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView
+        android:id="@+id/item_log_heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="Log Heading"
+        android:textColor="@color/black"
+        android:fontFamily="@font/roboto_medium"
+        android:textSize="@dimen/H4"/>
+    <TextView
+        android:id="@+id/item_log_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/item_log_heading"
+        android:text="Log Heading"
+        android:textColor="@color/lightBlack"
+        android:fontFamily="@font/roboto"
+        android:textSize="@dimen/H5"/>
+    <TextView
+        android:id="@+id/item_log_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/item_log_heading"
+        android:text="16-12-2023 17:30:54"
+        android:textColor="@color/lightBlack"
+        android:fontFamily="@font/roboto"
+        android:textSize="@dimen/H5"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
