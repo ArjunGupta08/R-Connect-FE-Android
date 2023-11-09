@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
@@ -23,16 +24,18 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRo
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectRoomImagesAdapter
 import rconnect.retvens.technologies.databinding.FragmentAddImagesBinding
 
-
-class AddImagesFragment : Fragment(), SelectRoomImagesAdapter.OnItemClickListener  {
+class AddImagesFragment : Fragment(),
+    ImagesCategoryAdapter.OnItemClickListener {
     private lateinit var binding : FragmentAddImagesBinding
 
     private var imageUri: Uri?= null
     private var PICK_IMAGE_REQUEST_CODE : Int = 0
-
+    private var selectedImagesList:ArrayList<ImageCategoryDataClass> = ArrayList()
     var isImgCategoryLayoutVisible = true
+    private  var position: Int = 0
 
     lateinit var imagesCategoryAdapter: ImagesCategoryAdapter
+    lateinit var selectRoomImagesAdapter: SelectRoomImagesAdapter
 
     var uriList = ArrayList<Uri>()
 
@@ -50,23 +53,22 @@ class AddImagesFragment : Fragment(), SelectRoomImagesAdapter.OnItemClickListene
 
         binding.imagesRecycler.layoutManager = LinearLayoutManager(requireContext())
 
+
         binding.addImgCategory.setOnClickListener {
-            if (isImgCategoryLayoutVisible) {
-                isImgCategoryLayoutVisible = !isImgCategoryLayoutVisible
-                binding.imgCategoryLayout.isVisible = true
-            } else {
-                isImgCategoryLayoutVisible = !isImgCategoryLayoutVisible
-                binding.imgCategoryLayout.isVisible = false
-            }
+
+            imagesCategoryAdapter.addEmptyItem("Room")
+            imagesCategoryAdapter.notifyDataSetChanged()
         }
 
         binding.addImageCard.setOnClickListener {
             openGallery()
         }
-//        selectImagesAdapter = SelectRoomImagesAdapter(requireContext(), selectedImagesList)
-//        selectImagesAdapter.setOnItemClickListener(this)
-//        binding.imagesRecycler.adapter = selectImagesAdapter
 
+        imagesCategoryAdapter = ImagesCategoryAdapter(requireContext(), selectedImagesList)
+        binding.imagesRecycler.adapter = imagesCategoryAdapter
+        imagesCategoryAdapter.notifyDataSetChanged()
+
+        imagesCategoryAdapter.setOnItemClickListener(this)
     }
 
     fun openGallery() {
@@ -80,13 +82,13 @@ class AddImagesFragment : Fragment(), SelectRoomImagesAdapter.OnItemClickListene
             imageUri = data.data!!
             if (imageUri != null) {
                 try {
-                        val selectedImagesList = ArrayList<ImageCategoryDataClass>()
                         uriList.add(imageUri!!)
-                        selectedImagesList.add(
-                            ImageCategoryDataClass(binding.enterH.text.toString(), uriList)
-                        )
-                        imagesCategoryAdapter = ImagesCategoryAdapter(requireContext(), selectedImagesList)
-                        binding.imagesRecycler.adapter = imagesCategoryAdapter
+
+                    selectedImagesList.add(ImageCategoryDataClass("1",uriList))
+                    imagesCategoryAdapter.updateData(selectedImagesList)
+
+                    // Notify the adapter that the data has changed
+                    imagesCategoryAdapter.notifyItemChanged(position)
                     isImgCategoryLayoutVisible = !isImgCategoryLayoutVisible
                     binding.imgCategoryLayout.visibility = View.GONE
                 }catch(e:RuntimeException){
@@ -98,8 +100,12 @@ class AddImagesFragment : Fragment(), SelectRoomImagesAdapter.OnItemClickListene
         }
     }
 
-    override fun onAddRoomImage() {
+
+    override fun onAddRoomImage(position: Int) {
         openGallery()
+        Toast.makeText(requireContext(), position.toString(), Toast.LENGTH_SHORT).show()
+
     }
+
 
 }

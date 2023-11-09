@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.channelManager.AddReservationFragment.AddReservationFragment
 import rconnect.retvens.technologies.dashboard.channelManager.ChannelsManagement.ChannelManagementFragment
 import rconnect.retvens.technologies.dashboard.channelManager.DashboardFragment.DashBoardFragment
 import rconnect.retvens.technologies.utils.UserSessionManager
@@ -271,6 +272,7 @@ class DashboardActivity : AppCompatActivity() {
             isCardSelected(binding.othersCard, binding.othersTxt)
         }
         binding.createReservationCard.setOnClickListener {
+            replaceFragment(AddReservationFragment())
             isCardSelected(binding.createReservationCard, binding.createReservationTxt)
         }
         binding.helpCard.setOnClickListener {

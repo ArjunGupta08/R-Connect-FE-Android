@@ -3,6 +3,8 @@ package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addR
 import android.net.Uri
 
 data class ImageCategoryDataClass(
-    val imageType : String,
-    val image : ArrayList<Uri>,
-)
+    val imageType: String,
+    val imageList: ArrayList<Uri>
+) {
+    constructor(imageType: String) : this(imageType, ArrayList())
+}

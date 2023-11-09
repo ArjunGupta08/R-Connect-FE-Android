@@ -12,7 +12,6 @@ import rconnect.retvens.technologies.R
 class CreateRateTypeAdapter(val applicationContext:Context,val rateTypeList:ArrayList<CreateRateData>):RecyclerView.Adapter<CreateRateTypeAdapter.ViewHolder>() {
     class ViewHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
         val inclusion:TextInputEditText = itemView.findViewById(R.id.inclusion)
-        val inclusionType:TextView = itemView.findViewById(R.id.inclusionType)
         val posting:TextInputEditText = itemView.findViewById(R.id.posting)
         val charge:TextInputEditText = itemView.findViewById(R.id.charge)
         val rate:TextInputEditText = itemView.findViewById(R.id.rate)

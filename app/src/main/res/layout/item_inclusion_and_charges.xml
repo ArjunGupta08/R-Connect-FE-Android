@@ -22,7 +22,7 @@
             android:layout_marginHorizontal="10dp"
             android:background="@color/secondaryBackground"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/inclusionType"
+            app:layout_constraintEnd_toStartOf="@id/cl2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent" >
 
@@ -34,17 +34,7 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/inclusionType"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_medium"
-            android:text="Inclusion Type"
-            android:textSize="@dimen/H5"
-            app:layout_constraintTop_toTopOf="@id/cl1"
-            app:layout_constraintBottom_toBottomOf="@id/cl1"
-            app:layout_constraintEnd_toStartOf="@id/cl2"
-            app:layout_constraintStart_toEndOf="@id/cl1"/>
+
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/cl2"
@@ -56,7 +46,7 @@
             android:background="@color/secondaryBackground"
             app:layout_constraintEnd_toStartOf="@id/cl3"
             app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@id/inclusionType"
+            app:layout_constraintStart_toEndOf="@id/cl1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -94,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.88"/>
+            app:layout_constraintGuide_percent="0.86" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl5"

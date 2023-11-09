@@ -439,10 +439,7 @@ class AddRoomTypeFragment : Fragment(),
         }
     }
 
-    override fun onAddRoomImage() {
-        recyclerType = 1
-        openGallery()
-    }
+
 
     override fun onAddViewImage() {
         recyclerType = 2
@@ -456,6 +453,11 @@ class AddRoomTypeFragment : Fragment(),
 
     override fun onAddBedImage() {
         recyclerType = 4
+        openGallery()
+    }
+
+    override fun onAddRoomImage(position: Int) {
+        recyclerType = 1
         openGallery()
     }
 

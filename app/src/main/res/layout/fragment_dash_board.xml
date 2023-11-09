@@ -768,6 +768,8 @@
                                    android:layout_width="wrap_content"
                                    android:layout_height="wrap_content"
                                    android:text="YTD"
+                                   android:paddingHorizontal="5dp"
+                                   android:fontFamily="@font/roboto_medium"
                                    android:textColor="@color/black"
                                    android:textSize="@dimen/H6"/>
                                <ImageView
@@ -943,6 +945,9 @@
                                    android:layout_width="wrap_content"
                                    android:layout_height="wrap_content"
                                    android:text="YTD"
+
+                                   android:paddingHorizontal="5dp"
+                                   android:fontFamily="@font/roboto_medium"
                                    android:textColor="@color/black"
                                    android:textSize="@dimen/H6"/>
                                <ImageView
@@ -1054,6 +1059,8 @@
                                android:layout_width="wrap_content"
                                android:layout_height="wrap_content"
                                android:text="YTD"
+                               android:paddingHorizontal="5dp"
+                               android:fontFamily="@font/roboto_medium"
                                android:textColor="@color/black"
                                android:textSize="@dimen/H6"/>
                            <ImageView
@@ -1108,8 +1115,9 @@
                        app:layout_constraintStart_toStartOf="parent"
                        android:layout_margin="9dp"
                        android:text="Top Sources"
+                       style="@style/GhraphsHeading"
                        android:textColor="@color/secondary"
-                       android:textSize="@dimen/H5"/>
+                       />
 
                    <androidx.cardview.widget.CardView
                        android:layout_width="wrap_content"
@@ -1131,6 +1139,8 @@
                                android:layout_width="wrap_content"
                                android:layout_height="wrap_content"
                                android:text="YTD"
+                               android:paddingHorizontal="5dp"
+                               android:fontFamily="@font/roboto_medium"
                                android:textColor="@color/black"
                                android:textSize="@dimen/H6"/>
                            <ImageView
@@ -1167,7 +1177,7 @@
                                app:layout_constraintBottom_toBottomOf="parent"
                                app:layout_constraintStart_toEndOf="@id/guide_source"
                                android:text="Source Name"
-                               android:textSize="@dimen/H5"
+                               android:textSize="@dimen/H6"
                                android:textColor="@color/secondary"/>
                            <TextView
                                android:id="@+id/s_booking"
@@ -1178,7 +1188,7 @@
                                app:layout_constraintStart_toEndOf="@id/source_name"
                                app:layout_constraintEnd_toStartOf="@id/s_revenue"
                                android:text="Bookings"
-                               android:textSize="@dimen/H5"
+                               android:textSize="@dimen/H6"
                                android:textColor="@color/secondary"/>
                            <TextView
                                android:id="@+id/s_revenue"
@@ -1189,7 +1199,7 @@
                                app:layout_constraintStart_toEndOf="@id/s_booking"
                                app:layout_constraintEnd_toStartOf="@id/s_los"
                                android:text="Revenue"
-                               android:textSize="@dimen/H5"
+                               android:textSize="@dimen/H6"
                                android:textColor="@color/secondary"/>
                            <TextView
                                android:id="@+id/s_los"
@@ -1200,7 +1210,7 @@
                                app:layout_constraintStart_toEndOf="@id/s_revenue"
                                app:layout_constraintEnd_toEndOf="parent"
                                android:text="Avg LOS"
-                               android:textSize="@dimen/H5"
+                               android:textSize="@dimen/H6"
                                android:textColor="@color/secondary"/>
                        </androidx.constraintlayout.widget.ConstraintLayout>
                    </androidx.cardview.widget.CardView>
@@ -1238,9 +1248,10 @@
                        app:layout_constraintTop_toTopOf="parent"
                        app:layout_constraintStart_toStartOf="parent"
                        android:layout_margin="9dp"
+                       style="@style/GhraphsHeading"
                        android:text="Best Sellers"
                        android:textColor="@color/secondary"
-                       android:textSize="@dimen/H5"/>
+                       />
                    <androidx.cardview.widget.CardView
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
@@ -1261,6 +1272,7 @@
                                android:layout_width="wrap_content"
                                android:layout_height="wrap_content"
                                android:text="YTD"
+
                                android:textColor="@color/black"
                                android:textSize="@dimen/H6"/>
                            <ImageView
@@ -1293,7 +1305,7 @@
                                app:layout_constraintStart_toStartOf="parent"
                                android:layout_marginStart="12dp"
                                android:text="Room Type"
-                               android:textSize="@dimen/H5"
+                               android:textSize="@dimen/H6"
                                android:textColor="@color/secondary"/>
                            <TextView
                                android:id="@+id/b_booking"
@@ -1304,7 +1316,7 @@
                                app:layout_constraintStart_toEndOf="@id/best_name"
                                app:layout_constraintEnd_toStartOf="@id/b_revenue"
                                android:text="Bookings"
-                               android:textSize="@dimen/H5"
+                               android:textSize="@dimen/H6"
                                android:textColor="@color/secondary"/>
                            <TextView
                                android:id="@+id/b_revenue"
@@ -1315,7 +1327,7 @@
                                app:layout_constraintStart_toEndOf="@id/b_booking"
                                app:layout_constraintEnd_toStartOf="@id/b_los"
                                android:text="Revenue"
-                               android:textSize="@dimen/H5"
+                               android:textSize="@dimen/H6"
                                android:textColor="@color/secondary"/>
                            <TextView
                                android:id="@+id/b_los"
@@ -1326,7 +1338,7 @@
                                app:layout_constraintStart_toEndOf="@id/b_revenue"
                                app:layout_constraintEnd_toEndOf="parent"
                                android:text="Avg LOS"
-                               android:textSize="@dimen/H5"
+                               android:textSize="@dimen/H6"
                                android:textColor="@color/secondary"/>
                        </androidx.constraintlayout.widget.ConstraintLayout>
                    </androidx.cardview.widget.CardView>

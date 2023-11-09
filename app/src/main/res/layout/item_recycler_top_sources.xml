@@ -10,8 +10,8 @@
         android:layout_height="match_parent"
         android:layout_marginVertical="3dp">
         <ImageView
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/guide_source"
             app:layout_constraintTop_toTopOf="parent"
@@ -32,7 +32,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/guide_source"
             android:text="Source Name"
-            android:textSize="@dimen/H5"
+            android:textSize="@dimen/H6"
             android:textColor="@color/secondary"/>
         <TextView
             android:id="@+id/s_booking"
@@ -42,8 +42,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/item_source_name"
             app:layout_constraintEnd_toStartOf="@id/s_revenue"
-            android:text="Bookings"
-            android:textSize="@dimen/H5"
+            android:text="137"
+            android:textSize="@dimen/H6"
             android:textColor="@color/secondary"/>
         <TextView
             android:id="@+id/s_revenue"
@@ -53,8 +53,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/s_booking"
             app:layout_constraintEnd_toStartOf="@id/s_los"
-            android:text="Revenue"
-            android:textSize="@dimen/H5"
+            android:text="2,05,000.00"
+            android:textSize="@dimen/H6"
             android:textColor="@color/secondary"/>
         <TextView
             android:id="@+id/s_los"
@@ -64,8 +64,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/s_revenue"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="Avg LOS"
-            android:textSize="@dimen/H5"
+            android:text="2.7 Nights"
+            android:textSize="@dimen/H6"
             android:textColor="@color/secondary"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

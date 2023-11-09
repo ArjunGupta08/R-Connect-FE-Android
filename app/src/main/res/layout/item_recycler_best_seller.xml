@@ -18,7 +18,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:text="Source Name"
-            android:textSize="@dimen/H5"
+            android:textSize="@dimen/H6"
             android:textColor="@color/secondary"/>
         <TextView
             android:id="@+id/ib_booking"
@@ -28,8 +28,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/item_best_name"
             app:layout_constraintEnd_toStartOf="@id/ib_revenue"
-            android:text="Bookings"
-            android:textSize="@dimen/H5"
+            android:text="155"
+            android:textSize="@dimen/H6"
             android:textColor="@color/secondary"/>
         <TextView
             android:id="@+id/ib_revenue"
@@ -39,8 +39,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/ib_booking"
             app:layout_constraintEnd_toStartOf="@id/ib_los"
-            android:text="Revenue"
-            android:textSize="@dimen/H5"
+            android:text="2,05,000.00"
+            android:textSize="@dimen/H6"
             android:textColor="@color/secondary"/>
         <TextView
             android:id="@+id/ib_los"
@@ -51,7 +51,7 @@
             app:layout_constraintStart_toEndOf="@id/ib_revenue"
             app:layout_constraintEnd_toEndOf="parent"
             android:text="2.7 Nights"
-            android:textSize="@dimen/H5"
+            android:textSize="@dimen/H6"
             android:textColor="@color/secondary"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

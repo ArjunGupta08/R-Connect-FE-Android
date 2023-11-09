@@ -1,6 +1,7 @@
 package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags
 
 import android.app.Dialog
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
@@ -8,6 +9,8 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -27,12 +30,20 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
+import com.google.android.libraries.places.api.net.FetchPlaceResponse
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
+import com.google.android.libraries.places.api.net.PlacesClient
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import rconnect.retvens.technologies.Api.OAuthClient
@@ -54,6 +65,8 @@ import rconnect.retvens.technologies.utils.rightInAnimation
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.IndexOutOfBoundsException
+import java.lang.NullPointerException
 
 class AddPropertyFragment : Fragment(), OnMapReadyCallback {
 
@@ -75,6 +88,9 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
 
     val itemsPropertyTypeRating = ArrayList<String>()
     var propertyTypeRating = "Property Rating"
+
+    var latitude:Double = 0.0
+    var longitude:Double = 0.0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -93,13 +109,11 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
         leftInAnimation(binding.propertyProfileLayout, requireContext())
 
         getPropertyType()
+        placesAPI()
 
         getPropertyTypeRating()
 
-        // Get the SupportMapFragment and request notification
-        // when the map is ready to be used.
-        val mapFrag = childFragmentManager.findFragmentById(R.id.mapFragContainer) as SupportMapFragment
-        mapFrag.getMapAsync(this)
+
 
         binding.continueBtn.setOnClickListener {
 
@@ -187,11 +201,11 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
             binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
             binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
             binding.propertyImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-
             binding.propertyProfileLayout.visibility = View.VISIBLE
-            binding.propertyImagesFrameLayout.visibility = View.VISIBLE
-            leftInAnimation(binding.propertyProfileLayout, requireContext())
             binding.addressLayout.visibility = View.GONE
+            binding.propertyImagesFrameLayout.visibility = View.GONE
+            leftInAnimation(binding.propertyProfileLayout, requireContext())
+
         }
 
         binding.addressAndContacts.setOnClickListener {
@@ -539,7 +553,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
 
         // Add a marker at the specified location and move the camera to that location.
-        val target = LatLng(28.679079, 77.069710)
+        val target = LatLng(latitude, longitude)
         googleMap.addMarker(MarkerOptions().position(target).title("Marker at Your Location"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(target, 15f))
 
@@ -657,6 +671,143 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+
+
     }
+
+    private fun placesAPI() {
+        // Initialize Places API
+        Places.initialize(requireContext(), "AIzaSyBRAnfSXzM-fQXpa751GkbMQDEuavUSDP0")
+
+        // Create a PlacesClient
+        val placesClient: PlacesClient = Places.createClient(requireContext())
+
+        // Initialize the AutoCompleteTextView and adapter
+        val autoCompleteTextView = binding.addressLine1ET
+        val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line)
+        autoCompleteTextView.setAdapter(adapter)
+
+        // Set up the Autocomplete request
+        autoCompleteTextView.threshold = 1  // Minimum characters to start autocomplete
+
+        autoCompleteTextView.setOnItemClickListener { _, _, position, _ ->
+            val selectedAddress = adapter.getItem(position).toString()
+
+            // Handle the selected address as needed
+            val lastThreeWords = extractLastThreeWords(selectedAddress)
+            println("Last Three Words: $lastThreeWords")
+            try {
+                autoCompleteTextView.setText(removeLastThreeWords(selectedAddress))
+                binding.cityText.setText(lastThreeWords.get(0))
+                binding.stateText.setText(lastThreeWords.get(1))
+                binding.countryText.setText(lastThreeWords.get(2))
+
+                val mapFrag = childFragmentManager.findFragmentById(R.id.mapFragContainer) as SupportMapFragment
+                mapFrag.getMapAsync { googleMap ->
+                    // Fetch place details and update the map
+                    fetchPlaceDetails(selectedAddress, placesClient, googleMap)
+                }
+            } catch (e: IndexOutOfBoundsException) {
+                println(e.toString())
+            }
+        }
+
+        autoCompleteTextView.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Create a FindAutocompletePredictionsRequest
+                val request = FindAutocompletePredictionsRequest.builder()
+                    .setSessionToken(AutocompleteSessionToken.newInstance())
+                    .setQuery(s.toString())
+                    .build()
+
+                // Perform the autocomplete request
+                placesClient.findAutocompletePredictions(request).addOnSuccessListener { response ->
+                    val predictions = response.autocompletePredictions
+                    val suggestionList = mutableListOf<String>()
+
+                    for (prediction in predictions) {
+                        suggestionList.add(prediction.getFullText(null).toString())
+                    }
+
+                    // Update the adapter with the new suggestions
+                    adapter.clear()
+                    adapter.addAll(suggestionList)
+                    autoCompleteTextView.setAdapter(adapter)
+                    adapter.notifyDataSetChanged()
+                }.addOnFailureListener { exception ->
+                    println(exception.toString())
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+    }
+
+
+    private fun fetchPlaceDetails(selectedAddress: String, placesClient: PlacesClient, googleMap: GoogleMap) {
+        // Create a FindAutocompletePredictionsRequest
+        val request = FindAutocompletePredictionsRequest.builder()
+            .setSessionToken(AutocompleteSessionToken.newInstance())
+            .setQuery(selectedAddress)
+            .build()
+
+        // Perform the autocomplete request
+        placesClient.findAutocompletePredictions(request).addOnSuccessListener { response ->
+            val predictions = response.autocompletePredictions
+
+            if (predictions.isNotEmpty()) {
+                val placeId = predictions[0].placeId
+                val placeFields = listOf(Place.Field.LAT_LNG)
+                val placeRequest = FetchPlaceRequest.builder(placeId, placeFields).build()
+
+                placesClient.fetchPlace(placeRequest).addOnSuccessListener { placeResponse ->
+                    val place = placeResponse.place
+                    val latLng = place.latLng
+
+                    if (latLng != null) {
+                        val latitude = latLng.latitude
+                        val longitude = latLng.longitude
+
+                        // Create a LatLng object for the location
+                        val location = LatLng(latitude, longitude)
+
+                        // Move the camera to the location
+                        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(location, 15f)
+                        googleMap.moveCamera(cameraUpdate)
+
+                        // Add a marker to the location
+                        googleMap.addMarker(MarkerOptions().position(location).title("Selected Location"))
+                    }
+                }.addOnFailureListener { exception ->
+                    println(exception.toString())
+                }
+            }
+        }.addOnFailureListener { exception ->
+            println(exception.toString())
+        }
+    }
+
+
+
+    private fun extractLastThreeWords(input: String): List<String> {
+        val words = input.split(",").map { it.trim() }
+        return if (words.size >= 3) {
+            words.subList(words.size - 3, words.size)
+        } else {
+            words
+        }
+    }
+    fun removeLastThreeWords(input: String): String {
+        val words = input.split(",").map { it.trim() }
+        if (words.size >= 3) {
+            val remainingWords = words.subList(0, words.size - 3).joinToString(", ")
+            return remainingWords
+        } else {
+            return ""
+        }
+    }
+
 
 }

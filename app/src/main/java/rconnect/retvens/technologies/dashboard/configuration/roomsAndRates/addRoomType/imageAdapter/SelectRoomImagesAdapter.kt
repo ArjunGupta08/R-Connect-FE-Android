@@ -12,7 +12,7 @@ import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddImagesFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddRoomTypeFragment
 
-class SelectRoomImagesAdapter(val context: Context, private val itemList: ArrayList<Uri>) : RecyclerView.Adapter<SelectRoomImagesAdapter.ViewHolder>() {
+class SelectRoomImagesAdapter(val context: Context, private val itemList: ArrayList<Uri>,private val position: Int) : RecyclerView.Adapter<SelectRoomImagesAdapter.ViewHolder>() {
 
     val VIEW_TYPE_DYNAMIC_ITEM = 1
     val VIEW_TYPE_STATIC_ITEM = 2
@@ -22,7 +22,7 @@ class SelectRoomImagesAdapter(val context: Context, private val itemList: ArrayL
         onItemClickListener = listener
     }
     interface OnItemClickListener {
-        fun onAddRoomImage()
+        fun onAddRoomImage(position: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -52,8 +52,7 @@ class SelectRoomImagesAdapter(val context: Context, private val itemList: ArrayL
         } else if (position == itemList.size) {
             // Handle the static item
             holder.addImage.setOnClickListener {
-                // open Gallery
-
+                onItemClickListener?.onAddRoomImage(position)
             }
         }
 
