@@ -135,6 +135,7 @@ interface GeneralsAPI {
     fun getSeasonApi (
         @Query("userId") userId : String,
         @Query("propertyId") propertyId : String,
+        @Query("targetTimeZone") targetTimeZone : String? = "Asia/Kolkata"
     ): Call<GetSeasonDataClass>
 //    @PATCH("updateTransportation")
 //    fun updateBookingSourceTypeApi (
