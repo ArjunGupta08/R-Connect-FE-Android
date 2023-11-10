@@ -41,6 +41,7 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
         holder.room_count.text = "Room ${reservationList.size}"
         holder.delete.setOnClickListener {
             reservationList.remove("")
+            notifyDataSetChanged()
         }
         holder.addChild.setOnClickListener {
             cc++
