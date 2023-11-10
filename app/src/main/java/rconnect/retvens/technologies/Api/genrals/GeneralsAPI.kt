@@ -172,6 +172,7 @@ interface GeneralsAPI {
     fun getInclusionApi (
         @Query("userId") userId : String,
         @Query("propertyId") propertyId : String,
+        @Query("targetTimeZone") targetTimeZone : String? = "Asia/Kolkata"
     ): Call<GetInclusionsDataClass>
 
     @PATCH("patchInclusion")
