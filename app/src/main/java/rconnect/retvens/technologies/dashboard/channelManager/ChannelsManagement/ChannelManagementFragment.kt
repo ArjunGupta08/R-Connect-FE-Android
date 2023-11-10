@@ -66,9 +66,10 @@ class ChannelManagementFragment : Fragment() {
         channelLogList.add("")
 
         bindingTab.recyclerChannelLogsList.layoutManager = LinearLayoutManager(requireContext())
-        val channelListAdapter = ChannelListAdapter(requireContext(),channelLogList)
+        val channelListAdapter = ChannelListAdapter(requireActivity(),channelLogList)
         bindingTab.recyclerChannelLogsList.adapter = channelListAdapter
         channelListAdapter.notifyDataSetChanged()
+
 
 
         bindingTab.activeChannelsRecycler.layoutManager = GridLayoutManager(requireContext(), 3)
@@ -77,7 +78,7 @@ class ChannelManagementFragment : Fragment() {
         setData()
 
 
-        channelManagementAdapter = ChannelManagementAdapter(requireContext(), activeList)
+        channelManagementAdapter = ChannelManagementAdapter(requireActivity(), activeList)
         bindingTab.activeChannelsRecycler.adapter = channelManagementAdapter
         channelManagementAdapter.notifyDataSetChanged()
 

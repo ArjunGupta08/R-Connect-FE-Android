@@ -24,7 +24,8 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRo
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectRoomImagesAdapter
 import rconnect.retvens.technologies.databinding.FragmentAddImagesBinding
 
-class AddImagesFragment : Fragment(),
+class
+AddImagesFragment : Fragment(),
     ImagesCategoryAdapter.OnItemClickListener {
     private lateinit var binding : FragmentAddImagesBinding
 
