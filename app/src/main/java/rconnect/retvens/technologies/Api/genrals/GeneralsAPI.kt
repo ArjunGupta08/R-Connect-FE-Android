@@ -45,6 +45,7 @@ interface GeneralsAPI {
     fun getReservationApi (
         @Query("userId") userId : String,
         @Query("propertyId") propertyId : String,
+        @Query("targetTimeZone") targetTimeZone : String? = "Asia/Kolkata"
     ): Call<GetReservationTypeDataClass>
     @PATCH("updateReservationType")
     fun updateReservationTypeApi (
