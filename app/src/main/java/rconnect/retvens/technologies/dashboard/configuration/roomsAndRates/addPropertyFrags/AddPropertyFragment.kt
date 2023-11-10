@@ -54,6 +54,7 @@ import rconnect.retvens.technologies.dashboard.configuration.properties.ViewProp
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddImagesFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectRoomImagesAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectImagesDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.AmenityDataClass
 import rconnect.retvens.technologies.databinding.FragmentAddPropertyBinding
 import rconnect.retvens.technologies.utils.Const
 import rconnect.retvens.technologies.utils.UserSessionManager
@@ -601,26 +602,28 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
         }
 
         val amenitiesRecycler = dialog.findViewById<RecyclerView>(R.id.amenitiesRecycler)
-        amenitiesRecycler.layoutManager = GridLayoutManager(requireContext(), 3)
+        amenitiesRecycler.layoutManager = GridLayoutManager(requireContext(), 8)
 
         val amenities = ArrayList<AddAmenitiesDataClass>()
 
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
+        val getAmenity = RetrofitObject.getGeneralsAPI.getAmenityApi()
+        getAmenity.enqueue(object : Callback<AmenityDataClass?> {
+            override fun onResponse(
+                call: Call<AmenityDataClass?>,
+                response: Response<AmenityDataClass?>
+            ) {
 
-        val addAmenitiesAdapter = AddAmenitiesAdapter(requireContext(), amenities)
-        amenitiesRecycler.adapter = addAmenitiesAdapter
+                if (response.isSuccessful) {
+                    val addAmenitiesAdapter = AddAmenitiesAdapter(requireContext(), response.body()!!.data)
+                    amenitiesRecycler.adapter = addAmenitiesAdapter
+                    addAmenitiesAdapter.notifyDataSetChanged()
+                }
+            }
+
+            override fun onFailure(call: Call<AmenityDataClass?>, t: Throwable) {
+                Log.d("error" , t.localizedMessage)
+            }
+        })
 
         dialog.show()
         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
