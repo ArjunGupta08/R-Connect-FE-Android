@@ -23,6 +23,9 @@ import rconnect.retvens.technologies.dashboard.configuration.others.transportati
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.AddInclusionsDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.UpdateInclusionDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.GetMealPlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.MealPlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.UpdateMealPlanData
 import rconnect.retvens.technologies.onboarding.ResponseData
 import retrofit2.Call
 import retrofit2.http.Body
@@ -42,6 +45,7 @@ interface GeneralsAPI {
     fun getReservationApi (
         @Query("userId") userId : String,
         @Query("propertyId") propertyId : String,
+        @Query("targetTimeZone") targetTimeZone : String? = "Asia/Kolkata"
     ): Call<GetReservationTypeDataClass>
     @PATCH("updateReservationType")
     fun updateReservationTypeApi (
@@ -60,6 +64,7 @@ interface GeneralsAPI {
     fun getPaymentTypeApi (
         @Query("userId") userId : String,
         @Query("propertyId") propertyId : String,
+        @Query("targetTimeZone") targetTimeZone : String? = "Asia/Kolkata"
     ): Call<GetPaymentTypeDataClass>
     @PATCH("patchPaymentType")
     fun updatePaymentTypeApi (
@@ -77,6 +82,7 @@ interface GeneralsAPI {
     fun getIdentityTypeApi (
         @Query("userId") userId : String,
         @Query("propertyId") propertyId : String,
+        @Query("targetTimeZone") targetTimeZone : String? = "Asia/Kolkata"
     ): Call<GetIdentityTypeDataClass>
     @PATCH("patchIdentityType")
     fun updateIdentityTypeApi (
@@ -94,6 +100,7 @@ interface GeneralsAPI {
     fun getTransportationModeTypeApi (
         @Query("userId") userId : String,
         @Query("propertyId") propertyId : String,
+        @Query("targetTimeZone") targetTimeZone : String? = "Asia/Kolkata"
     ): Call<GetTransportationTypeDataClass>
     @PATCH("updateTransportation")
     fun updateTransportationModeTypeApi (
@@ -132,6 +139,7 @@ interface GeneralsAPI {
     fun getSeasonApi (
         @Query("userId") userId : String,
         @Query("propertyId") propertyId : String,
+        @Query("targetTimeZone") targetTimeZone : String? = "Asia/Kolkata"
     ): Call<GetSeasonDataClass>
 //    @PATCH("updateTransportation")
 //    fun updateBookingSourceTypeApi (
@@ -150,6 +158,7 @@ interface GeneralsAPI {
     fun getHolidayApi (
         @Query("userId") userId : String,
         @Query("propertyId") propertyId : String,
+        @Query("targetTimeZone") targetTimeZone : String? = "Asia/Kolkata"
     ): Call<GetHotelDataClass>
 
     @PATCH("patchHoliday")
@@ -169,6 +178,7 @@ interface GeneralsAPI {
     fun getInclusionApi (
         @Query("userId") userId : String,
         @Query("propertyId") propertyId : String,
+        @Query("targetTimeZone") targetTimeZone : String? = "Asia/Kolkata"
     ): Call<GetInclusionsDataClass>
 
     @PATCH("patchInclusion")
@@ -176,6 +186,24 @@ interface GeneralsAPI {
         @Query("userId") userId : String,
         @Query("inclusionId") inclusionId : String,
         @Body updateInclusionDataClass: UpdateInclusionDataClass
+    ): Call<ResponseData>
+
+    /*--------------------------------------- Inclusions-----------------------------------------*/
+    @POST("postMealPlan")
+    fun postMealPlanApi(
+        @Body mealPlanDataClass: MealPlanDataClass
+    ): Call<ResponseData>
+    @GET("getMealPlan")
+    fun getMealPlanApi (
+        @Query("userId") userId : String,
+        @Query("propertyId") propertyId : String,
+        @Query("targetTimeZone") targetTimeZone : String? = "Asia/Kolkata"
+    ): Call<GetMealPlanDataClass>
+    @PATCH("patchMeal")
+    fun updateMealPlanApi (
+        @Query("userId") userId : String,
+        @Query("mealPlanId") mealPlanId : String,
+        @Body updateMealPlanData: UpdateMealPlanData
     ): Call<ResponseData>
 
 }
