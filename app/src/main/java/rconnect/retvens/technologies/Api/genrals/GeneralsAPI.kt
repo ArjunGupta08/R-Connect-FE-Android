@@ -80,6 +80,7 @@ interface GeneralsAPI {
     fun getIdentityTypeApi (
         @Query("userId") userId : String,
         @Query("propertyId") propertyId : String,
+        @Query("targetTimeZone") targetTimeZone : String? = "Asia/Kolkata"
     ): Call<GetIdentityTypeDataClass>
     @PATCH("patchIdentityType")
     fun updateIdentityTypeApi (
