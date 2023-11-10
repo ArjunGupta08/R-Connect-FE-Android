@@ -336,8 +336,8 @@ class AddRoomTypeFragment : Fragment(),
         amenities.add(AddAmenitiesDataClass("amenityName"))
         amenities.add(AddAmenitiesDataClass("amenityName"))
 
-        val addAmenitiesAdapter = AddAmenitiesAdapter(requireContext(), amenities)
-        amenitiesRecycler.adapter = addAmenitiesAdapter
+//        val addAmenitiesAdapter = AddAmenitiesAdapter(requireContext(), amenities)
+//        amenitiesRecycler.adapter = addAmenitiesAdapter
 
         dialog.show()
         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
