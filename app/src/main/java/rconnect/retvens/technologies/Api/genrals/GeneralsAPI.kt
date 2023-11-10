@@ -63,6 +63,7 @@ interface GeneralsAPI {
     fun getPaymentTypeApi (
         @Query("userId") userId : String,
         @Query("propertyId") propertyId : String,
+        @Query("targetTimeZone") targetTimeZone : String? = "Asia/Kolkata"
     ): Call<GetPaymentTypeDataClass>
     @PATCH("patchPaymentType")
     fun updatePaymentTypeApi (
