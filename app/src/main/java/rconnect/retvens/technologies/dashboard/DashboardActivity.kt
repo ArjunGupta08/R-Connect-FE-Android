@@ -47,6 +47,7 @@ import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservatio
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.AmenitiesFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.InclusionPlansFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.RatePlan.RatePlanFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.MealPlanFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.ActivityDashboardBinding
 import rconnect.retvens.technologies.utils.bottomSlideInAnimation
@@ -318,7 +319,7 @@ class DashboardActivity : AppCompatActivity() {
                 }
 
                 binding.mealPlan.setOnClickListener {
-//                    replaceFragment(CreateRatePlanFragment())
+                    replaceFragment(MealPlanFragment())
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
                 }
                 binding.ll3.setOnClickListener {

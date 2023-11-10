@@ -23,6 +23,9 @@ import rconnect.retvens.technologies.dashboard.configuration.others.transportati
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.AddInclusionsDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.UpdateInclusionDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.GetMealPlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.MealPlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.UpdateMealPlanData
 import rconnect.retvens.technologies.onboarding.ResponseData
 import retrofit2.Call
 import retrofit2.http.Body
@@ -176,6 +179,24 @@ interface GeneralsAPI {
         @Query("userId") userId : String,
         @Query("inclusionId") inclusionId : String,
         @Body updateInclusionDataClass: UpdateInclusionDataClass
+    ): Call<ResponseData>
+
+    /*--------------------------------------- Inclusions-----------------------------------------*/
+    @POST("postMealPlan")
+    fun postMealPlanApi(
+        @Body mealPlanDataClass: MealPlanDataClass
+    ): Call<ResponseData>
+    @GET("getMealPlan")
+    fun getMealPlanApi (
+        @Query("userId") userId : String,
+        @Query("propertyId") propertyId : String,
+        @Query("targetTimeZone") targetTimeZone : String? = "Asia/Kolkata"
+    ): Call<GetMealPlanDataClass>
+    @PATCH("patchMeal")
+    fun updateMealPlanApi (
+        @Query("userId") userId : String,
+        @Query("mealPlanId") mealPlanId : String,
+        @Body updateMealPlanData: UpdateMealPlanData
     ): Call<ResponseData>
 
 }
