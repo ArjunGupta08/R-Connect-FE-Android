@@ -1,32 +1,42 @@
 package rconnect.retvens.technologies.dashboard.channelManager.AddReservationFragment
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.ListPopupWindow
 import androidx.recyclerview.widget.LinearLayoutManager
-import rconnect.retvens.technologies.R
+import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.databinding.FragmentAddReservationBinding
+import rconnect.retvens.technologies.utils.utilCreateDatePickerDialog
+import java.util.Date
 
 class AddReservationFragment : Fragment() {
-    lateinit var binding:FragmentAddReservationBinding
+    lateinit var binding: FragmentAddReservationBinding
     var rList = ArrayList<String>()
+    var startDate: Date? = null
+    var endDate: Date? = null
+    lateinit var startDatePickerDialog: DatePickerDialog
+    lateinit var endDatePickerDialog: DatePickerDialog
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentAddReservationBinding.inflate(layoutInflater,container,false)
+        binding = FragmentAddReservationBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        rList.addAll(List(1){""})
+        rList.addAll(List(1) { "" })
 
         binding.recyclerRoomDetails.layoutManager = LinearLayoutManager(requireContext())
-        val addReservationAdapter = AddReservationAdapter(requireContext(),rList)
+        val addReservationAdapter = AddReservationAdapter(requireContext(), rList)
         binding.recyclerRoomDetails.adapter = addReservationAdapter
 
         binding.roomCount.text = "(${rList.size} Rooms Added)"
@@ -39,8 +49,57 @@ class AddReservationFragment : Fragment() {
             binding.roomCount.text = "(${rList.size} Rooms Added)"
         }
 
+        startDatePickerDialog =
+            utilCreateDatePickerDialog(requireContext(), binding.checkIn) { date ->
+                startDate = date
+            }
+        endDatePickerDialog =
+            utilCreateDatePickerDialog(requireContext(), binding.checkOut) { date ->
+                endDate = date
+            }
 
+        binding.CheckInLayout.setEndIconOnClickListener {
+            endDate = null
+
+            // Set the minimum date for the start date picker to be the current date
+            startDatePickerDialog.datePicker.minDate = System.currentTimeMillis()
+            startDatePickerDialog.show()
+        }
+        binding.CheckOutLayout.setEndIconOnClickListener {
+            if (startDate != null) {
+                endDatePickerDialog.datePicker.minDate = startDate!!.time
+                endDatePickerDialog.show()
+            }
+        }
+
+        val options = arrayOf("Deluxe", "Premium", "Elite")
+
+
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, options)
+
+        // Set up the TextInputLayout with an end icon
+        binding.bookingSourceLayout.endIconMode = TextInputLayout.END_ICON_CUSTOM
+//        binding.bookingSourceLayout.setEndIconDrawable(R.drawable.ic_dropdown)
+
+        // Set a click listener for the end icon
+        binding.spin.setOnClickListener {
+            // Show dropdown menu
+            showDropdownMenu(adapter,it)
+        }
     }
 
+    private fun showDropdownMenu(adapter: ArrayAdapter<String>, anchorView: View) {
+        val listPopupWindow = ListPopupWindow(requireContext())
+        listPopupWindow.setAdapter(adapter)
+        listPopupWindow.anchorView = anchorView
+        listPopupWindow.setOnItemClickListener { _, _, position, _ ->
+            val selectedItem = adapter.getItem(position)
+            binding.bookingSourceLayout.editText?.setText(selectedItem)
+            listPopupWindow.dismiss()
+        }
 
-}
+
+        listPopupWindow.show()
+    }
+
+    }
