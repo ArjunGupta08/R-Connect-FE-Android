@@ -153,6 +153,7 @@ interface GeneralsAPI {
     fun getHolidayApi (
         @Query("userId") userId : String,
         @Query("propertyId") propertyId : String,
+        @Query("targetTimeZone") targetTimeZone : String? = "Asia/Kolkata"
     ): Call<GetHotelDataClass>
 
     @PATCH("patchHoliday")
