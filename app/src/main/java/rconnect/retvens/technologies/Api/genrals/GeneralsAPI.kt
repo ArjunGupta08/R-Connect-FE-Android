@@ -97,6 +97,7 @@ interface GeneralsAPI {
     fun getTransportationModeTypeApi (
         @Query("userId") userId : String,
         @Query("propertyId") propertyId : String,
+        @Query("targetTimeZone") targetTimeZone : String? = "Asia/Kolkata"
     ): Call<GetTransportationTypeDataClass>
     @PATCH("updateTransportation")
     fun updateTransportationModeTypeApi (
