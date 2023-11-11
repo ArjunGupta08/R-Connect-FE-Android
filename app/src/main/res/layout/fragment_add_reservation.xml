@@ -156,7 +156,7 @@
                                         android:fontFamily="@font/roboto"
                                         android:editable="false"
                                         android:focusable="false"
-                                        android:text="13/03/2023 - 16:00"
+                                        android:text="_ _ /_ _ /_ _ _ _"
                                         android:clickable="true"
                                         android:inputType="none"
                                         android:textColor="@color/secondary"
@@ -190,7 +190,7 @@
                                         android:focusable="false"
                                         android:clickable="true"
                                         android:layout_marginTop="5dp"
-                                        android:text="13/03/2023 - 16:00"
+                                        android:text="_ _ /_ _ /_ _ _ _"
                                         android:inputType="none"
                                         android:textColor="@color/secondary"
                                         android:textColorHint="@drawable/hint_selector"
@@ -218,9 +218,10 @@
                                         >
 
                                         <TextView
+                                            android:id="@+id/count_night"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="3"
+                                            android:text="0"
                                             android:textSize="@dimen/H5"
                                             android:fontFamily="@font/roboto_bold"
                                             android:layout_gravity="center"
@@ -932,9 +933,10 @@
                         >
 
                         <TextView
+                            android:id="@+id/count_night2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="3"
+                            android:text="0"
                             android:textSize="@dimen/H5"
                             android:fontFamily="@font/roboto_bold"
                             android:layout_gravity="center"
