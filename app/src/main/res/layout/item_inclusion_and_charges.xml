@@ -101,7 +101,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/textInputLayoutHeight"
                 style="@style/TextInputLayoutStyle"
-                android:hint="₹ 200.00"
+                android:hint="Rate"
                 android:background="@color/secondaryBackground"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/img_del"
