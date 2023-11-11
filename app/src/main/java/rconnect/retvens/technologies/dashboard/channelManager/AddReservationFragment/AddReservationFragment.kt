@@ -8,11 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ListPopupWindow
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.databinding.FragmentAddReservationBinding
 import rconnect.retvens.technologies.utils.utilCreateDatePickerDialog
 import java.util.Date
+import java.util.concurrent.TimeUnit
 
 class AddReservationFragment : Fragment() {
     lateinit var binding: FragmentAddReservationBinding
@@ -21,6 +23,7 @@ class AddReservationFragment : Fragment() {
     var endDate: Date? = null
     lateinit var startDatePickerDialog: DatePickerDialog
     lateinit var endDatePickerDialog: DatePickerDialog
+    var nights = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,6 +59,10 @@ class AddReservationFragment : Fragment() {
         endDatePickerDialog =
             utilCreateDatePickerDialog(requireContext(), binding.checkOut) { date ->
                 endDate = date
+                nights = getDaysBetween(startDate!!,endDate!!).toString()
+                Toast.makeText(requireContext(), "$nights night", Toast.LENGTH_SHORT).show()
+                binding.countNight.text = nights.toString()
+                binding.countNight2.text = nights.toString()
             }
 
         binding.CheckInLayout.setEndIconOnClickListener {
@@ -69,6 +76,12 @@ class AddReservationFragment : Fragment() {
             if (startDate != null) {
                 endDatePickerDialog.datePicker.minDate = startDate!!.time
                 endDatePickerDialog.show()
+                if (endDate!=null){
+                    nights = getDaysBetween(startDate!!,endDate!!).toString()
+                }
+                Toast.makeText(requireContext(), "$nights night", Toast.LENGTH_SHORT).show()
+                binding.countNight.text = nights.toString()
+                binding.countNight2.text = nights.toString()
             }
         }
 
@@ -100,6 +113,10 @@ class AddReservationFragment : Fragment() {
 
 
         listPopupWindow.show()
+    }
+    fun getDaysBetween(startDate: Date, endDate: Date): Long {
+        val diffInMillies = endDate.time - startDate.time
+        return TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS)
     }
 
     }

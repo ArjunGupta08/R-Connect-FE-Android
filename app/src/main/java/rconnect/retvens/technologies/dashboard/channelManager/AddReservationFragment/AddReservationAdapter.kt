@@ -40,7 +40,7 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
     override fun onBindViewHolder(holder: ReservationHolder, position: Int) {
         holder.room_count.text = "Room ${reservationList.size}"
         holder.delete.setOnClickListener {
-            reservationList.remove("")
+            reservationList.remove(reservationList[position])
             notifyDataSetChanged()
         }
         holder.addChild.setOnClickListener {
