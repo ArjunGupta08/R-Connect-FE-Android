@@ -1,4 +1,4 @@
-package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates
+package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity
 
 import android.app.Dialog
 import android.graphics.Color
@@ -16,7 +16,6 @@ import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AmenitiesIconAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AmenitiesIconDataClass
 import rconnect.retvens.technologies.databinding.FragmentAmenitiesBinding
-import rconnect.retvens.technologies.databinding.FragmentTransportationTypesBinding
 
 
 class AmenitiesFragment : Fragment() {

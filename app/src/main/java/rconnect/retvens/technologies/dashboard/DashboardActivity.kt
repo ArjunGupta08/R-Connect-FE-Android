@@ -44,7 +44,7 @@ import rconnect.retvens.technologies.dashboard.configuration.others.seasons.Seas
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.TransportationTypesFragment
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.identityType.IdentityDocumentsFragment
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.ReservationTypeFragment
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.AmenitiesFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.AmenitiesFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.InclusionPlansFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.RatePlan.RatePlanFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.MealPlanFragment

@@ -20,6 +20,7 @@ import rconnect.retvens.technologies.dashboard.configuration.others.transportati
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.GetTransportationTypeData
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.GetTransportationTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.UpdateTransportationTypeDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.AmenityDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.AddInclusionsDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.UpdateInclusionDataClass
@@ -205,5 +206,9 @@ interface GeneralsAPI {
         @Query("mealPlanId") mealPlanId : String,
         @Body updateMealPlanData: UpdateMealPlanData
     ): Call<ResponseData>
+
+    /*--------------------------------------- Inclusions-----------------------------------------*/
+    @GET("getAmenity")
+    fun getAmenityApi (): Call<AmenityDataClass>
 
 }
