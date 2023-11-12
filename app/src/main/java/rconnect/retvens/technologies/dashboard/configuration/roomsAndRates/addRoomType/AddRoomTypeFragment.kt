@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AddAmenitiesAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AddAmenitiesDataClass
@@ -32,10 +33,14 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRo
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectImagesDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectRoomImagesAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectViewImagesAdapter
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.AmenityDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.FragmentAddRoomTypeBinding
 import rconnect.retvens.technologies.utils.Const
 import rconnect.retvens.technologies.utils.rightInAnimation
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class AddRoomTypeFragment : Fragment(),
     SelectRoomImagesAdapter.OnItemClickListener,
@@ -318,26 +323,28 @@ class AddRoomTypeFragment : Fragment(),
         }
 
         val amenitiesRecycler = dialog.findViewById<RecyclerView>(R.id.amenitiesRecycler)
-        amenitiesRecycler.layoutManager = GridLayoutManager(requireContext(), 3)
+        amenitiesRecycler.layoutManager = GridLayoutManager(requireContext(), 8)
 
         val amenities = ArrayList<AddAmenitiesDataClass>()
 
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
-        amenities.add(AddAmenitiesDataClass("amenityName"))
+        val getAmenity = RetrofitObject.getGeneralsAPI.getAmenityApi()
+        getAmenity.enqueue(object : Callback<AmenityDataClass?> {
+            override fun onResponse(
+                call: Call<AmenityDataClass?>,
+                response: Response<AmenityDataClass?>
+            ) {
 
-//        val addAmenitiesAdapter = AddAmenitiesAdapter(requireContext(), amenities)
-//        amenitiesRecycler.adapter = addAmenitiesAdapter
+                if (response.isSuccessful) {
+                    val addAmenitiesAdapter = AddAmenitiesAdapter(requireContext(), response.body()!!.data)
+                    amenitiesRecycler.adapter = addAmenitiesAdapter
+                    addAmenitiesAdapter.notifyDataSetChanged()
+                }
+            }
+
+            override fun onFailure(call: Call<AmenityDataClass?>, t: Throwable) {
+                Log.d("error" , t.localizedMessage)
+            }
+        })
 
         dialog.show()
         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)

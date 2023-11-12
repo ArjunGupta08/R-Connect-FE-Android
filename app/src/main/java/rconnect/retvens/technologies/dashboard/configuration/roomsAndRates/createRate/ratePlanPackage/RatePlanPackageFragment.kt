@@ -44,16 +44,16 @@ class RatePlanPackageFragment : Fragment() {
         ratePlanDetailsList.add("5")
         ratePlanDetailsList.add("5")
 
-        binding.recyclerInclusion.layoutManager = LinearLayoutManager(requireContext())
-        val createRateTypeAdapter = CreateRateTypeAdapter(requireContext(),rateList)
-        binding.recyclerInclusion.adapter = createRateTypeAdapter
-        createRateTypeAdapter.notifyDataSetChanged()
+//        binding.recyclerInclusion.layoutManager = LinearLayoutManager(requireContext())
+//        val createRateTypeAdapter = CreateRateTypeAdapter(requireContext(),rateList)
+//        binding.recyclerInclusion.adapter = createRateTypeAdapter
+//        createRateTypeAdapter.notifyDataSetChanged()
 
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val ratePlanDetailsAdapter = RatePlanDetailsAdapter(requireContext(),ratePlanDetailsList)
-        binding.recyclerView.adapter = ratePlanDetailsAdapter
-        ratePlanDetailsAdapter.notifyDataSetChanged()
+//        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+//        val ratePlanDetailsAdapter = RatePlanDetailsAdapter(requireContext(),ratePlanDetailsList)
+//        binding.recyclerView.adapter = ratePlanDetailsAdapter
+//        ratePlanDetailsAdapter.notifyDataSetChanged()
 
     }
 

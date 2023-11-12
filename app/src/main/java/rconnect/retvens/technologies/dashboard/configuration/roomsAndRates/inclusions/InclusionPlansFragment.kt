@@ -109,7 +109,7 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
                         adapter.setOnUpdateListener(this@InclusionPlansFragment)
                         adapter.notifyDataSetChanged()
                     } else {
-                        openCreateNewDialog()
+//                        openCreateNewDialog()
                         Log.d("error", "${response.code()} ${response.message()}")
                     }
                 }
