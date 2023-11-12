@@ -384,11 +384,14 @@
                                 android:layout_height="wrap_content"
                                 android:background="@color/white"
                                 android:spinnerMode="dropdown"
+                                android:text="Property Rating"
                                 android:layout_centerVertical="true"
                                 android:textSize="@dimen/H5"
-                                android:textColor="@color/secondary" />
+                                android:layout_marginStart="12dp"
+                                android:textColor="@color/lightBlack" />
 
                             <ImageView
+                                android:id="@+id/drop2"
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
                                 android:src="@drawable/svg_arrow_down"

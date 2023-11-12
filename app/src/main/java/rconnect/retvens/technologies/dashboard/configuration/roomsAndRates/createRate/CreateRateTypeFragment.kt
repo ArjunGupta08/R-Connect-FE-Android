@@ -1,13 +1,20 @@
 package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.ListPopupWindow
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import rconnect.retvens.technologies.Api.DropDownApis
+import rconnect.retvens.technologies.Api.OAuthClient
+import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.RatePlanBarFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.RatePlanCompanyFragment
@@ -15,12 +22,17 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.creat
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlaneDiscount.RatePlanDiscountFragment
 import rconnect.retvens.technologies.databinding.FragmentCreateRateTypeBinding
 import rconnect.retvens.technologies.databinding.FragmentViewPropertiesBinding
+import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.topInAnimation
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class CreateRateTypeFragment : Fragment() {
 
     lateinit var binding:FragmentCreateRateTypeBinding
 
+    var roomTypeList = ArrayList<String>()
     private var isRateDropDownOpen = false
 
     override fun onCreateView(
@@ -36,8 +48,63 @@ class CreateRateTypeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         rateTypeSelection()
+        getRateType()
 
+        val options = arrayOf("Deluxe", "Premium", "Elite")
+
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, roomTypeList)
+        // Set a click listener for the end icon
+        binding.dropRoom.setOnClickListener {
+            // Show dropdown menu
+            showDropdownMenu(adapter,it)
+        }
         replaceChildFrag(RatePlanCompanyFragment())
+    }
+
+
+    private fun showDropdownMenu(adapter: ArrayAdapter<String>, anchorView: View) {
+        val listPopupWindow = ListPopupWindow(requireContext())
+        listPopupWindow.setAdapter(adapter)
+        listPopupWindow.anchorView = anchorView
+        listPopupWindow.setOnItemClickListener { _, _, position, _ ->
+            val selectedItem = adapter.getItem(position)
+            binding.dropRoom.setText(selectedItem)
+            listPopupWindow.dismiss()
+        }
+
+
+        listPopupWindow.show()
+    }
+
+    private fun getRateType() {
+        val retrofit = OAuthClient<DropDownApis>(requireContext()).create(DropDownApis::class.java).getRoomList(UserSessionManager(requireContext()).getPropertyId().toString(),UserSessionManager(requireContext()).getUserId().toString())
+        retrofit.enqueue(object : Callback<GetRoomTypeData?> {
+            override fun onResponse(
+                call: Call<GetRoomTypeData?>,
+                response: Response<GetRoomTypeData?>
+            ) {
+                if (response.isSuccessful){
+                    Toast.makeText(requireContext(), "Mission SuccessFull", Toast.LENGTH_SHORT).show()
+                    val data = response.body()!!.data
+                    data.forEach{
+                        val roomType = it.roomTypeName
+                        roomTypeList.add(roomType)
+                    }
+
+                }
+                else{
+                    Toast.makeText(requireContext(), response.code().toString(), Toast.LENGTH_SHORT).show()
+                    Log.e("error",response.message().toString())
+                    Log.e("error",response.body().toString())
+                }
+            }
+
+            override fun onFailure(call: Call<GetRoomTypeData?>, t: Throwable) {
+                Toast.makeText(requireContext(), "Mission failed SuccessFully", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+
     }
 
     private fun rateTypeSelection() {

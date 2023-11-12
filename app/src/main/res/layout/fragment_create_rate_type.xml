@@ -230,8 +230,8 @@
                 android:hint="Company Name"
                 android:layout_weight="1"
                 android:layout_marginStart="10dp"
-                style="@style/TextInputLayoutStyle"
-                app:endIconMode="clear_text"
+                style="@style/ClickableTextInputLayoutStyle"
+                app:endIconMode="custom"
                 app:endIconTint="@color/black">
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -252,16 +252,17 @@
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:hint="Room Type"
-                style="@style/TextInputLayoutStyle"
-                app:endIconMode="clear_text"
+                style="@style/ClickableTextInputLayoutStyle"
+                app:endIconMode="custom"
                 app:endIconTint="@color/black">
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/drop_room"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/roboto"
+                    android:editable="false"
                     android:textSize="@dimen/H5"
                     android:hint="Room Type"
-                    android:inputType="text"
                     android:textColorHint="@drawable/hint_selector"
                     android:textColor="@color/secondary" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -274,8 +275,8 @@
                 android:background="@color/secondaryBackground"
                 android:layout_marginStart="10dp"
                 android:hint="Master Rate Plan"
-                style="@style/TextInputLayoutStyle"
-                app:endIconMode="clear_text"
+                style="@style/ClickableTextInputLayoutStyle"
+                app:endIconMode="custom"
                 app:endIconTint="@color/black">
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
