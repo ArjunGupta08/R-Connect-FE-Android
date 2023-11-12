@@ -9,14 +9,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
@@ -51,6 +54,19 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
         val ratePlanEText = itemView.findViewById<TextInputEditText>(R.id.ratePlan_text)
         val rate_codeEText = itemView.findViewById<TextInputEditText>(R.id.rate_code_text)
         val mealPlanETxt = itemView.findViewById<TextInputEditText>(R.id.mealPlanETxt)
+
+        val ratePlanTotalTxtCalculated = itemView.findViewById<EditText>(R.id.ratePlanTotalTxtCalculated)
+
+        val barRoomBaseRateLayout = itemView.findViewById<TextInputLayout>(R.id.barRoomBaseRateLayout)
+        val barRoomBaseRateET = itemView.findViewById<TextInputEditText>(R.id.barRoomBaseRateET)
+        val mealChargesLayout = itemView.findViewById<TextInputLayout>(R.id.mealChargesLayout)
+        val mealChargesET = itemView.findViewById<TextInputEditText>(R.id.mealChargesET)
+        val totalInclusionChargesLayout = itemView.findViewById<TextInputLayout>(R.id.totalInclusionChargesLayout)
+        val totalInclusionChargesET = itemView.findViewById<TextInputEditText>(R.id.totalInclusionChargesET)
+        val extraChildMealRateLayout = itemView.findViewById<TextInputLayout>(R.id.extraChildMealRateLayout)
+        val extraChildMealRateET = itemView.findViewById<TextInputEditText>(R.id.extraChildMealRateET)
+        val extraAdultMealRateLayout = itemView.findViewById<TextInputLayout>(R.id.extraAdultMealRateLayout)
+        val extraAdultMealRateET = itemView.findViewById<TextInputEditText>(R.id.extraAdultMealRateET)
 
     }
 
@@ -91,12 +107,21 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
         holder.rate_codeEText.setText(currentData.rateCode)
         holder.mealPlanETxt.setText(currentData.mealPlan)
 
+        var totalInclusionCharges = 0.00
+
         val myInterfaceImplementation = object : AddInclusionsAdapter.OnUpdate {
             override fun onUpdateList(selectedList: ArrayList<GetInclusionsData>) {
                 holder.recycler_inclusion.layoutManager = LinearLayoutManager(applicationContext)
                 val createRateTypeAdapter = CreateRateTypeAdapter(applicationContext, selectedList)
                 holder.recycler_inclusion.adapter = createRateTypeAdapter
                 createRateTypeAdapter.notifyDataSetChanged()
+
+                selectedList.forEach {
+                    totalInclusionCharges += it.charge.toDouble()
+                }
+
+                holder.totalInclusionChargesET.setText("$totalInclusionCharges")
+
             }
         }
 
@@ -104,6 +129,99 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
             openAddInclusionDialog(myInterfaceImplementation)
         }
 
+        var ratePlanTotalTxtCalculated = 0.00
+        var barRoomBaseRate = 0.00
+        var mealCharges = 0.00
+        var extraAdultMealRate = 0.00
+        var extraChildMealRate = 0.00
+
+        holder.barRoomBaseRateET.doAfterTextChanged {
+            if (holder.barRoomBaseRateET.text!!.isNotEmpty()) {
+                if ( holder.barRoomBaseRateET.text.toString() == ".") {
+                    holder.barRoomBaseRateET.setText("")
+                } else {
+                    barRoomBaseRate = holder.barRoomBaseRateET.text.toString().toDouble()
+                    ratePlanTotalTxtCalculated = barRoomBaseRate + mealCharges + totalInclusionCharges + extraChildMealRate + extraAdultMealRate
+                    holder.ratePlanTotalTxtCalculated.setText("$ratePlanTotalTxtCalculated")
+                }
+            } else {
+                barRoomBaseRate = 0.00
+                ratePlanTotalTxtCalculated = barRoomBaseRate + mealCharges + totalInclusionCharges + extraChildMealRate + extraAdultMealRate
+                holder.ratePlanTotalTxtCalculated.setText("$ratePlanTotalTxtCalculated")
+            }
+        }
+
+        holder.mealChargesET.doAfterTextChanged {
+            if (holder.mealChargesET.text!!.isNotEmpty()) {
+                if ( holder.mealChargesET.text.toString() == ".") {
+                    holder.mealChargesET.setText("")
+                } else {
+                    mealCharges = holder.mealChargesET.text.toString().toDouble()
+                    ratePlanTotalTxtCalculated = barRoomBaseRate + mealCharges + totalInclusionCharges + extraChildMealRate + extraAdultMealRate
+                    holder.ratePlanTotalTxtCalculated.setText("$ratePlanTotalTxtCalculated")
+                }
+            } else {
+                mealCharges = 0.00
+                ratePlanTotalTxtCalculated = barRoomBaseRate + mealCharges + totalInclusionCharges + extraChildMealRate + extraAdultMealRate
+                holder.ratePlanTotalTxtCalculated.setText("$ratePlanTotalTxtCalculated")
+            }
+        }
+
+        holder.totalInclusionChargesET.doAfterTextChanged {
+            if (holder.totalInclusionChargesET.text!!.isNotEmpty()) {
+                if (holder.totalInclusionChargesET.text.toString() == ".") {
+                    holder.totalInclusionChargesET.setText("")
+                } else {
+                    totalInclusionCharges = holder.totalInclusionChargesET.text.toString().toDouble()
+                    ratePlanTotalTxtCalculated = barRoomBaseRate + mealCharges + totalInclusionCharges + extraChildMealRate + extraAdultMealRate
+                    holder.ratePlanTotalTxtCalculated.setText("$ratePlanTotalTxtCalculated")
+                }
+            } else {
+                totalInclusionCharges = 0.00
+                ratePlanTotalTxtCalculated = barRoomBaseRate + mealCharges + totalInclusionCharges + extraChildMealRate + extraAdultMealRate
+                holder.ratePlanTotalTxtCalculated.setText("$ratePlanTotalTxtCalculated")
+            }
+        }
+
+        holder.extraChildMealRateET.doAfterTextChanged {
+            if (holder.extraChildMealRateET.text!!.isNotEmpty()) {
+                if (holder.extraChildMealRateET.text.toString() == ".") {
+                    holder.extraChildMealRateET.setText("")
+                } else {
+                    extraChildMealRate = holder.extraChildMealRateET.text.toString().toDouble()
+                    ratePlanTotalTxtCalculated = barRoomBaseRate + mealCharges + totalInclusionCharges + extraChildMealRate + extraAdultMealRate
+                    holder.ratePlanTotalTxtCalculated.setText("$ratePlanTotalTxtCalculated")
+                }
+            } else {
+                extraChildMealRate = 0.00
+                ratePlanTotalTxtCalculated = barRoomBaseRate + mealCharges + totalInclusionCharges + extraChildMealRate + extraAdultMealRate
+                holder.ratePlanTotalTxtCalculated.setText("$ratePlanTotalTxtCalculated")
+            }
+        }
+
+        holder.extraAdultMealRateET.doAfterTextChanged {
+            if (holder.extraAdultMealRateET.text!!.isNotEmpty()) {
+                if (holder.extraAdultMealRateET.text.toString() == ".") {
+                    holder.extraAdultMealRateET.setText("")
+                } else {
+                    extraAdultMealRate = holder.extraAdultMealRateET.text.toString().toDouble()
+                    ratePlanTotalTxtCalculated = barRoomBaseRate + mealCharges + totalInclusionCharges + extraChildMealRate + extraAdultMealRate
+                    holder.ratePlanTotalTxtCalculated.setText("$ratePlanTotalTxtCalculated")
+                    holder.ratePlanTotalTxt.text = ("$ratePlanTotalTxtCalculated")
+                }
+            } else {
+                extraAdultMealRate = 0.00
+                ratePlanTotalTxtCalculated = barRoomBaseRate + mealCharges + totalInclusionCharges + extraChildMealRate + extraAdultMealRate
+                holder.ratePlanTotalTxtCalculated.setText("$ratePlanTotalTxtCalculated")
+                holder.ratePlanTotalTxt.text = ("$ratePlanTotalTxtCalculated")
+            }
+        }
+
+        holder.ratePlanTotalTxtCalculated.doAfterTextChanged {
+            if (holder.ratePlanTotalTxtCalculated.text.isNotEmpty() && holder.ratePlanTotalTxtCalculated.text.toString() != "."){
+                holder.ratePlanTotalTxt.text = holder.ratePlanTotalTxtCalculated.text.toString()
+            }
+        }
     }
 
     private fun openAddInclusionDialog(myInterfaceImplementation: AddInclusionsAdapter.OnUpdate) {

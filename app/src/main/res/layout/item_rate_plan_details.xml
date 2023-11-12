@@ -223,7 +223,6 @@
         android:layout_margin="5dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="10dp"
-        android:visibility="gone"
         app:cardElevation="2dp">
 
         <LinearLayout
@@ -278,7 +277,11 @@
                         android:inputType="text"
                         android:textColor="@color/secondary"
                         android:textColorHint="@drawable/hint_selector"
-                        android:textSize="@dimen/H5" />
+                        android:textSize="@dimen/H5"
+                        android:editable="false"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:cursorVisible="false"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -301,7 +304,11 @@
                         android:text="DLXCP"
                         android:textColor="@color/secondary"
                         android:textColorHint="@drawable/hint_selector"
-                        android:textSize="@dimen/H5" />
+                        android:textSize="@dimen/H5"
+                        android:editable="false"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:cursorVisible="false"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -325,8 +332,10 @@
                         android:textColor="@color/secondary"
                         android:textColorHint="@drawable/hint_selector"
                         android:textSize="@dimen/H5"
+                        android:editable="false"
+                        android:clickable="true"
                         android:focusable="false"
-                        android:editable="false"/>
+                        android:cursorVisible="false"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
@@ -408,7 +417,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_medium"
-                                android:layout_marginHorizontal="10dp"
+                                android:layout_marginStart="15dp"
                                 android:text="Inclusion"
                                 android:textSize="@dimen/H5"
                                 app:layout_constraintEnd_toStartOf="@id/inclusionType"
@@ -422,6 +431,7 @@
                                 android:fontFamily="@font/roboto_medium"
                                 android:text="Inclusion Type"
                                 android:textSize="@dimen/H5"
+                                android:visibility="gone"
                                 app:layout_constraintEnd_toStartOf="@id/posting"
                                 app:layout_constraintStart_toEndOf="@id/inclusion"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -433,7 +443,7 @@
                                 android:fontFamily="@font/roboto_medium"
                                 android:text="Posting Rule"
                                 android:textSize="@dimen/H5"
-                                android:layout_marginHorizontal="10dp"
+                                android:layout_marginHorizontal="5dp"
                                 app:layout_constraintEnd_toStartOf="@id/charge"
                                 app:layout_constraintStart_toEndOf="@id/inclusionType"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -444,7 +454,6 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_medium"
                                 android:text="Charge Rule"
-                                android:layout_marginStart="10dp"
                                 android:textSize="@dimen/H5"
                                 app:layout_constraintEnd_toStartOf="@id/guide"
                                 app:layout_constraintStart_toEndOf="@id/posting"
@@ -455,7 +464,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
-                                app:layout_constraintGuide_percent="0.88" />
+                                app:layout_constraintGuide_percent="0.87" />
 
                             <TextView
                                 android:id="@+id/rate"
@@ -636,14 +645,14 @@
                         android:gravity="center_vertical">
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/rateTypeLayout"
+                            android:id="@+id/barRoomBaseRateLayout"
                             android:layout_width="0dp"
                             android:layout_height="@dimen/textInputLayoutHeight"
                             android:layout_weight="1"
                             android:hint="Room Base Rate"
                             style="@style/TextInputLayoutStyle">
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/rateTypeET"
+                                android:id="@+id/barRoomBaseRateET"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:fontFamily="@font/roboto"
@@ -657,7 +666,7 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/companyNameLayout"
+                            android:id="@+id/mealChargesLayout"
                             android:layout_width="0dp"
                             android:layout_height="@dimen/textInputLayoutHeight"
                             android:background="@color/white"
@@ -668,6 +677,7 @@
                             app:endIconMode="clear_text"
                             app:endIconTint="@color/black">
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/mealChargesET"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:fontFamily="@font/roboto"
@@ -681,7 +691,7 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/roomTypeLayout"
+                            android:id="@+id/totalInclusionChargesLayout"
                             android:layout_width="0dp"
                             android:layout_height="@dimen/textInputLayoutHeight"
                             android:background="@color/white"
@@ -692,7 +702,7 @@
                             app:endIconMode="clear_text"
                             app:endIconTint="@color/black">
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/totalInclusionCharges"
+                                android:id="@+id/totalInclusionChargesET"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:fontFamily="@font/roboto"
@@ -706,7 +716,7 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/mealPlanLayout"
+                            android:id="@+id/roundUpLayout"
                             android:layout_width="0dp"
                             android:layout_height="@dimen/textInputLayoutHeight"
                             android:layout_weight="1"
@@ -717,6 +727,7 @@
                             app:endIconMode="clear_text"
                             app:endIconTint="@color/black">
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/roundUpET"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:fontFamily="@font/roboto"
@@ -809,12 +820,14 @@
                         android:gravity="center_vertical">
 
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/extraAdultMealRateLayout"
                             android:layout_width="0dp"
                             android:layout_height="@dimen/textInputLayoutHeight"
                             android:layout_weight="1"
                             android:hint="Extra Adult Rate"
                             style="@style/TextInputLayoutStyle">
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/extraAdultMealRateET"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:fontFamily="@font/roboto"
@@ -828,6 +841,7 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/extraChildMealRateLayout"
                             android:layout_width="0dp"
                             android:layout_height="@dimen/textInputLayoutHeight"
                             android:background="@color/white"
@@ -838,6 +852,7 @@
                             app:endIconMode="clear_text"
                             app:endIconTint="@color/black">
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/extraChildMealRateET"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:fontFamily="@font/roboto"
