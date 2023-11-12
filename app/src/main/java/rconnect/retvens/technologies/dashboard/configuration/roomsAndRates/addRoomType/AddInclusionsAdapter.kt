@@ -43,7 +43,7 @@ class AddInclusionsAdapter(val list:ArrayList<GetInclusionsData>, val applicatio
     class NotificationHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
 
         val inclusionName = itemView.findViewById<TextView>(R.id.inclusionName)
-        val charges = itemView.findViewById<TextView>(R.id.charges)
+//        val charges = itemView.findViewById<TextView>(R.id.charges)
 
         val card = itemView.findViewById<MaterialCardView>(R.id.card)
 
@@ -51,7 +51,7 @@ class AddInclusionsAdapter(val list:ArrayList<GetInclusionsData>, val applicatio
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationHolder {
         val inflater = LayoutInflater.from(applicationContext)
-        val view = inflater.inflate(R.layout.item_add_inclusion,parent,false)
+        val view = inflater.inflate(R.layout.item_amenities,parent,false)
         return NotificationHolder(view)
     }
 
@@ -63,7 +63,7 @@ class AddInclusionsAdapter(val list:ArrayList<GetInclusionsData>, val applicatio
         val item = list[position]
 
         holder.inclusionName.text = item.inclusionName
-        holder.charges.text = "₹${item.charge}/Person"
+//        holder.charges.text = "₹${item.charge}/Person"
 
         holder.card.setOnClickListener {
             if (selectedList.contains(item)) {
