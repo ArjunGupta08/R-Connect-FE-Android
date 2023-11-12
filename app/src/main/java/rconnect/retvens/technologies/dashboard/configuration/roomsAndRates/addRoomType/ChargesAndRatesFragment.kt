@@ -43,6 +43,11 @@ class ChargesAndRatesFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
 
     private val ratePlanDetailsList = ArrayList<RatePlanDataClass>()
 
+    var cpCheckBox = false
+    var epCheckBox = false
+    var apCheckBox = false
+    var mapCheckBox = false
+
     var inclusions = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -116,67 +121,62 @@ class ChargesAndRatesFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
             }
         }
 
-        binding.cpCheckBox.isChecked = false
-        binding.epCheckBox.isChecked = false
-        binding.apCheckBox.isChecked = false
-        binding.mapCheckBox.isChecked = false
-
         binding.cpCheckBox.setOnClickListener {
             val selectedList: ArrayList<GetInclusionsData> = arrayListOf()
 
-//            if (binding.cpCheckBox.isChecked) {
-//                ratePlanDetailsList.remove(RatePlanDataClass( "Deluxe CP", "DLXCP", "CP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
-//                setUpRecycler()
-//                binding.cpCheckBox.isChecked = false
-//            } else {
+            if (cpCheckBox) {
+                ratePlanDetailsList.remove(RatePlanDataClass( "Deluxe CP", "DLXCP", "CP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
+                setUpRecycler()
+                cpCheckBox = false
+            } else {
                 ratePlanDetailsList.add(RatePlanDataClass( "Deluxe CP", "DLXCP", "CP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
                 setUpRecycler()
-                binding.cpCheckBox.isChecked = true
-//            }
+                cpCheckBox = true
+            }
         }
+
         binding.epCheckBox.setOnClickListener {
             val selectedList: ArrayList<GetInclusionsData> = arrayListOf()
 
-//            if (binding.epCheckBox.isChecked) {
-//                ratePlanDetailsList.remove(RatePlanDataClass( "Deluxe EP", "DLXEP", "EP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
-//                setUpRecycler()
-//                binding.epCheckBox.isChecked = false
-//            } else {
+            if (epCheckBox) {
+                ratePlanDetailsList.remove(RatePlanDataClass( "Deluxe EP", "DLXEP", "EP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
+                setUpRecycler()
+                epCheckBox = false
+            } else {
                 ratePlanDetailsList.add(RatePlanDataClass( "Deluxe EP", "DLXEP", "EP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
                 setUpRecycler()
-                binding.epCheckBox.isChecked = true
-
-//            }
+                epCheckBox = true
+            }
 
         }
         binding.apCheckBox.setOnClickListener {
 
             val selectedList: ArrayList<GetInclusionsData> = arrayListOf()
 
-//            if (binding.apCheckBox.isChecked) {
-//                ratePlanDetailsList.remove(RatePlanDataClass( "Deluxe AP", "DLXAP", "AP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
-//                setUpRecycler()
-//                binding.apCheckBox.isChecked = false
-//            } else {
+            if (apCheckBox) {
+                ratePlanDetailsList.remove(RatePlanDataClass( "Deluxe AP", "DLXAP", "AP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
+                setUpRecycler()
+                apCheckBox = false
+            } else {
                 ratePlanDetailsList.add(RatePlanDataClass( "Deluxe AP", "DLXAP", "AP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
                 setUpRecycler()
-                binding.apCheckBox.isChecked = true
-//            }
+                apCheckBox = true
+            }
 
         }
         binding.mapCheckBox.setOnClickListener {
 
             val selectedList: ArrayList<GetInclusionsData> = arrayListOf()
 
-//            if (binding.mapCheckBox.isChecked) {
-//                ratePlanDetailsList.remove(RatePlanDataClass( "Deluxe MAP", "DLXMAP", "MAP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
-//                setUpRecycler()
-//                binding.mapCheckBox.isChecked = false
-//            } else {
+            if (mapCheckBox) {
+                ratePlanDetailsList.remove(RatePlanDataClass( "Deluxe MAP", "DLXMAP", "MAP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
+                setUpRecycler()
+                mapCheckBox = false
+            } else {
                 ratePlanDetailsList.add(RatePlanDataClass( "Deluxe MAP", "DLXMAP", "MAP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
                 setUpRecycler()
-                binding.mapCheckBox.isChecked = true
-//            }
+                mapCheckBox = true
+            }
 
         }
 
