@@ -116,75 +116,72 @@ class ChargesAndRatesFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
             }
         }
 
-        binding.cpCheckBox.setOnClickListener {
-            binding.cpCheckBox.isChecked = true
-            binding.epCheckBox.isChecked = false
-            binding.apCheckBox.isChecked = false
-            binding.mapCheckBox.isChecked = false
-
-            binding.ratePlanText.setText("Deluxe CP")
-            binding.rateCodeText.setText("DLXCP")
-            binding.mealPlanETxt.setText("CP")
-            binding.ll7.isVisible = true
-
-        }
-        binding.epCheckBox.setOnClickListener {
-            binding.cpCheckBox.isChecked = false
-            binding.epCheckBox.isChecked = true
-            binding.apCheckBox.isChecked = false
-            binding.mapCheckBox.isChecked = false
-
-            binding.ratePlanText.setText("Deluxe EP")
-            binding.rateCodeText.setText("DLXEP")
-            binding.mealPlanETxt.setText("EP")
-            binding.ll7.isVisible = true
-
-        }
-        binding.apCheckBox.setOnClickListener {
-            binding.cpCheckBox.isChecked = false
-            binding.epCheckBox.isChecked = false
-            binding.apCheckBox.isChecked = true
-            binding.mapCheckBox.isChecked = false
-
-            binding.ratePlanText.setText("Deluxe AP")
-            binding.rateCodeText.setText("DLXAP")
-            binding.mealPlanETxt.setText("AP")
-            binding.ll7.isVisible = true
-
-        }
-        binding.mapCheckBox.setOnClickListener {
-            binding.cpCheckBox.isChecked = false
-            binding.epCheckBox.isChecked = false
-            binding.apCheckBox.isChecked = false
-            binding.mapCheckBox.isChecked = true
-
-            binding.ratePlanText.setText("Deluxe MAP")
-            binding.rateCodeText.setText("DLXMAP")
-            binding.mealPlanETxt.setText("MAP")
-            binding.ll7.isVisible = true
-
-        }
-
-        binding.addInclusions.setOnClickListener {
-            openAddInclusionDialog()
-        }
-
-        binding.saveIC.setOnClickListener {
-            ratePlanDetailsList.add(RatePlanDataClass(binding.ratePlanText.text.toString(), binding.rateCodeText.text.toString(), "$inclusions", binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.ratePlanTotalTxt.text.toString()))
-            setUpRecycler()
-        }
-    }
-    private fun setUpRecycler() {
-
-        binding.ratePlanText.text?.clear()
-        binding.rateCodeText.text?.clear()
-        binding.mealPlanETxt.text?.clear()
-        binding.ll7.isVisible = false
-
         binding.cpCheckBox.isChecked = false
         binding.epCheckBox.isChecked = false
         binding.apCheckBox.isChecked = false
         binding.mapCheckBox.isChecked = false
+
+        binding.cpCheckBox.setOnClickListener {
+            val selectedList: ArrayList<GetInclusionsData> = arrayListOf()
+
+//            if (binding.cpCheckBox.isChecked) {
+//                ratePlanDetailsList.remove(RatePlanDataClass( "Deluxe CP", "DLXCP", "CP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
+//                setUpRecycler()
+//                binding.cpCheckBox.isChecked = false
+//            } else {
+                ratePlanDetailsList.add(RatePlanDataClass( "Deluxe CP", "DLXCP", "CP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
+                setUpRecycler()
+                binding.cpCheckBox.isChecked = true
+//            }
+        }
+        binding.epCheckBox.setOnClickListener {
+            val selectedList: ArrayList<GetInclusionsData> = arrayListOf()
+
+//            if (binding.epCheckBox.isChecked) {
+//                ratePlanDetailsList.remove(RatePlanDataClass( "Deluxe EP", "DLXEP", "EP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
+//                setUpRecycler()
+//                binding.epCheckBox.isChecked = false
+//            } else {
+                ratePlanDetailsList.add(RatePlanDataClass( "Deluxe EP", "DLXEP", "EP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
+                setUpRecycler()
+                binding.epCheckBox.isChecked = true
+
+//            }
+
+        }
+        binding.apCheckBox.setOnClickListener {
+
+            val selectedList: ArrayList<GetInclusionsData> = arrayListOf()
+
+//            if (binding.apCheckBox.isChecked) {
+//                ratePlanDetailsList.remove(RatePlanDataClass( "Deluxe AP", "DLXAP", "AP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
+//                setUpRecycler()
+//                binding.apCheckBox.isChecked = false
+//            } else {
+                ratePlanDetailsList.add(RatePlanDataClass( "Deluxe AP", "DLXAP", "AP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
+                setUpRecycler()
+                binding.apCheckBox.isChecked = true
+//            }
+
+        }
+        binding.mapCheckBox.setOnClickListener {
+
+            val selectedList: ArrayList<GetInclusionsData> = arrayListOf()
+
+//            if (binding.mapCheckBox.isChecked) {
+//                ratePlanDetailsList.remove(RatePlanDataClass( "Deluxe MAP", "DLXMAP", "MAP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
+//                setUpRecycler()
+//                binding.mapCheckBox.isChecked = false
+//            } else {
+                ratePlanDetailsList.add(RatePlanDataClass( "Deluxe MAP", "DLXMAP", "MAP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
+                setUpRecycler()
+                binding.mapCheckBox.isChecked = true
+//            }
+
+        }
+
+    }
+    private fun setUpRecycler() {
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         val ratePlanDetailsAdapter = RatePlanDetailsAdapter(requireContext(),ratePlanDetailsList)
@@ -293,11 +290,6 @@ class ChargesAndRatesFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
     override fun onUpdateList(selectedList: ArrayList<GetInclusionsData>) {
 
         inclusions = selectedList.size
-
-        binding.recyclerInclusion.layoutManager = LinearLayoutManager(requireContext())
-        val createRateTypeAdapter = CreateRateTypeAdapter(requireContext(), selectedList)
-        binding.recyclerInclusion.adapter = createRateTypeAdapter
-        createRateTypeAdapter.notifyDataSetChanged()
 
     }
 
