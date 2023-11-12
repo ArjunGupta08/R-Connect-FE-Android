@@ -31,9 +31,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:ArrayList<RatePlanDataClass>):RecyclerView.Adapter<RatePlanDetailsAdapter.ViewHolder>(), AddInclusionsAdapter.OnUpdate {
-
-    val myInterfaceImplementation: AddInclusionsAdapter.OnUpdate ?= null
+class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:ArrayList<RatePlanDataClass>):RecyclerView.Adapter<RatePlanDetailsAdapter.ViewHolder>(){
 
     class ViewHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
 
@@ -137,7 +135,7 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
                 if (response.isSuccessful) {
                     val adapter = AddInclusionsAdapter(response.body()!!.data, applicationContext)
                     recyclerView.adapter = adapter
-                    adapter.setOnUpdateListener(this@RatePlanDetailsAdapter)
+                    adapter.setOnUpdateListener(myInterfaceImplementation)
                     myInterfaceImplementation
                     adapter.notifyDataSetChanged()
                 } else {
@@ -204,7 +202,4 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
         })
     }
 
-    override fun onUpdateList(selectedList: ArrayList<GetInclusionsData>) {
-        myInterfaceImplementation!!.onUpdateList(selectedList)
-    }
 }

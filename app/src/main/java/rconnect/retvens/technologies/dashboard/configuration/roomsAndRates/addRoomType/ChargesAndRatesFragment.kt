@@ -38,9 +38,10 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class ChargesAndRatesFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
+class ChargesAndRatesFragment : Fragment() {
     private lateinit var binding : FragmentChargesAndRatesBinding
 
+    private lateinit var ratePlanDetailsAdapter : RatePlanDetailsAdapter
     private val ratePlanDetailsList = ArrayList<RatePlanDataClass>()
 
     var cpCheckBox = false
@@ -121,18 +122,19 @@ class ChargesAndRatesFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
             }
         }
 
+        setUpRecycler()
+
         binding.cpCheckBox.setOnClickListener {
             val selectedList: ArrayList<GetInclusionsData> = arrayListOf()
 
             if (cpCheckBox) {
                 ratePlanDetailsList.remove(RatePlanDataClass( "Deluxe CP", "DLXCP", "CP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
-                setUpRecycler()
                 cpCheckBox = false
             } else {
                 ratePlanDetailsList.add(RatePlanDataClass( "Deluxe CP", "DLXCP", "CP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
-                setUpRecycler()
                 cpCheckBox = true
             }
+            ratePlanDetailsAdapter.notifyDataSetChanged()
         }
 
         binding.epCheckBox.setOnClickListener {
@@ -140,14 +142,12 @@ class ChargesAndRatesFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
 
             if (epCheckBox) {
                 ratePlanDetailsList.remove(RatePlanDataClass( "Deluxe EP", "DLXEP", "EP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
-                setUpRecycler()
                 epCheckBox = false
             } else {
                 ratePlanDetailsList.add(RatePlanDataClass( "Deluxe EP", "DLXEP", "EP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
-                setUpRecycler()
                 epCheckBox = true
             }
-
+            ratePlanDetailsAdapter.notifyDataSetChanged()
         }
         binding.apCheckBox.setOnClickListener {
 
@@ -155,14 +155,12 @@ class ChargesAndRatesFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
 
             if (apCheckBox) {
                 ratePlanDetailsList.remove(RatePlanDataClass( "Deluxe AP", "DLXAP", "AP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
-                setUpRecycler()
                 apCheckBox = false
             } else {
                 ratePlanDetailsList.add(RatePlanDataClass( "Deluxe AP", "DLXAP", "AP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
-                setUpRecycler()
                 apCheckBox = true
             }
-
+            ratePlanDetailsAdapter.notifyDataSetChanged()
         }
         binding.mapCheckBox.setOnClickListener {
 
@@ -170,126 +168,21 @@ class ChargesAndRatesFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
 
             if (mapCheckBox) {
                 ratePlanDetailsList.remove(RatePlanDataClass( "Deluxe MAP", "DLXMAP", "MAP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
-                setUpRecycler()
                 mapCheckBox = false
             } else {
                 ratePlanDetailsList.add(RatePlanDataClass( "Deluxe MAP", "DLXMAP", "MAP",selectedList, binding.countExtraAdultRate.text.toString(), binding.countMaxChildRate.text.toString(), binding.countBaseRate.text.toString()))
-                setUpRecycler()
                 mapCheckBox = true
             }
-
+            ratePlanDetailsAdapter.notifyDataSetChanged()
         }
 
     }
     private fun setUpRecycler() {
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val ratePlanDetailsAdapter = RatePlanDetailsAdapter(requireContext(),ratePlanDetailsList)
+        ratePlanDetailsAdapter = RatePlanDetailsAdapter(requireContext(),ratePlanDetailsList)
         binding.recyclerView.adapter = ratePlanDetailsAdapter
         ratePlanDetailsAdapter.notifyDataSetChanged()
-
-    }
-
-    private fun openAddInclusionDialog() {
-        val dialog = Dialog(requireContext())
-        dialog.setCancelable(true)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.dialog_add_inclusion)
-
-        val createNewInclusionBtn = dialog.findViewById<TextView>(R.id.createNewInclusionBtn)
-        createNewInclusionBtn.setOnClickListener {
-            openCreateInclusionDialog()
-        }
-
-        val cancel = dialog.findViewById<TextView>(R.id.cancel)
-        cancel.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        val recyclerView = dialog.findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-
-        val identity = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).getInclusionApi(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString())
-        identity.enqueue(object : Callback<GetInclusionsDataClass?> {
-            override fun onResponse(
-                call: Call<GetInclusionsDataClass?>,
-                response: Response<GetInclusionsDataClass?>
-            ) {
-
-                if (isAdded) {
-                    if (response.isSuccessful) {
-                        val adapter = AddInclusionsAdapter(response.body()!!.data, requireContext())
-                        recyclerView.adapter = adapter
-                        adapter.setOnUpdateListener(this@ChargesAndRatesFragment)
-                        adapter.notifyDataSetChanged()
-                    } else {
-                        Log.d("error", "${response.code()} ${response.message()}")
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<GetInclusionsDataClass?>, t: Throwable) {
-                Log.d("error", t.localizedMessage)
-            }
-        })
-
-
-        dialog.show()
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-
-    }
-    private fun openCreateInclusionDialog() {
-        val dialog = Dialog(requireContext())
-        dialog.setCancelable(true)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.dialog_create_inclusion)
-
-        val cancel = dialog.findViewById<TextView>(R.id.cancel)
-        cancel.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        val inclusionName = dialog.findViewById<TextInputEditText>(R.id.inclusionName)
-        val inclusionType = dialog.findViewById<TextInputEditText>(R.id.inclusionType)
-        val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCode)
-        val charge = dialog.findViewById<TextInputEditText>(R.id.charge)
-        val chargeRule = dialog.findViewById<TextInputEditText>(R.id.chargeRule)
-        val postingRule = dialog.findViewById<TextInputEditText>(R.id.postingRule)
-
-        val save = dialog.findViewById<CardView>(R.id.saveBtn)
-
-        save.setOnClickListener {
-            saveInclusion(requireContext(), dialog, shortCode.text.toString(), charge.text.toString(), inclusionName.text.toString(), inclusionType.text.toString(), chargeRule.text.toString(), postingRule.text.toString())
-        }
-
-        dialog.show()
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-
-    }
-    private fun saveInclusion(context: Context, dialog: Dialog, shortCodeTxt : String, charge:String, inclusionName:String, inclusionType:String, chargeRule:String, postingRule:String) {
-        val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).addInclusionsApi(
-            AddInclusionsDataClass(UserSessionManager(context).getUserId().toString(), UserSessionManager(context).getPropertyId().toString(), shortCodeTxt, charge, inclusionName, inclusionType, chargeRule, postingRule)
-        )
-
-        create.enqueue(object : Callback<ResponseData?> {
-            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
-                Log.d( "inclusion", "${response.code()} ${response.message()}")
-                setUpRecycler()
-                dialog.dismiss()
-            }
-
-            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
-                Log.d("error", t.localizedMessage)
-            }
-        })
-    }
-    override fun onUpdateList(selectedList: ArrayList<GetInclusionsData>) {
-
-        inclusions = selectedList.size
 
     }
 
