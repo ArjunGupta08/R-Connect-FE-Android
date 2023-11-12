@@ -944,13 +944,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            android:paddingVertical="10dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/corner_bottom_white_background"
             app:layout_constraintVertical_bias="0.0"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/continueBtn"
-            app:layout_constraintStart_toStartOf="@id/heading"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ll"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

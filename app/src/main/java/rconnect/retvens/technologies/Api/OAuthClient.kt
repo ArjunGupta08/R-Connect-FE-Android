@@ -21,6 +21,7 @@ class OAuthClient<T>(context: Context) {
 
     val token = UserSessionManager(context).getToken()
 
+
     private val client =  OkHttpClient.Builder().connectTimeout(30, TimeUnit.SECONDS)
         .addInterceptor(OAuthInterceptor("$token", headers))
         .build()

@@ -74,7 +74,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.75"
+            android:layout_weight="0.6"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="50dp"
             >
@@ -855,7 +855,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1.25"
+            android:layout_weight="1.4"
             android:layout_marginTop="20dp"
             app:cardCornerRadius="12dp">
         <androidx.cardview.widget.CardView

@@ -76,12 +76,12 @@ class RatePlanBarFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
         val dialog = Dialog(requireContext())
         dialog.setCancelable(true)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.dialog_add_inclusion)
-
-        val createNewInclusionBtn = dialog.findViewById<TextView>(R.id.createNewInclusionBtn)
-        createNewInclusionBtn.setOnClickListener {
-            openCreateInclusionDialog(dialog)
-        }
+//        dialog.setContentView(R.layout.dialog_add_inclusion)
+//
+//        val createNewInclusionBtn = dialog.findViewById<TextView>(R.id.createNewInclusionBtn)
+//        createNewInclusionBtn.setOnClickListener {
+//            openCreateInclusionDialog(dialog)
+//        }
 
         val cancel = dialog.findViewById<TextView>(R.id.cancel)
         cancel.setOnClickListener {

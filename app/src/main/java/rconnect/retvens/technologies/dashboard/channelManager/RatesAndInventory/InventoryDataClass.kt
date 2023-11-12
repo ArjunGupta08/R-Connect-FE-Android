@@ -1,27 +1,24 @@
 package rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory
 
-data class InventoryDataClass(
-    val date: String,
-    val inventory: Int,
-    val stopSell: String,
-    val COA: String,
-    val COD: String,
-    val minimumLOS: String,
-    val maximumLOS: String
-)
-
-data class RoomData(
+data class RoomType(
     val roomTypeId: String,
     val roomTypeName: String,
     val numberOfRooms: Int,
     val calculatedInventoryData: List<InventoryDataClass>
 )
 
-data class ResponseData(
-    val data: List<RoomData>,
-    val statuscode: Int
+data class InventoryDataClass(
+    val date: String,
+    val inventory: Int,
+    val COA: String,
+    val COD: String,
+    val isBlocked: String
 )
 
+data class ResponseData(
+    val data: List<RoomType>,
+    val statuscode: Int
+)
 
 
 
