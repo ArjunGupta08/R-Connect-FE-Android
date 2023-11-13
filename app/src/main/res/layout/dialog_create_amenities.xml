@@ -120,12 +120,17 @@
                 app:endIconTint="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/amenityTypeET"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/roboto"
                     android:inputType="text"
                     android:textColorHint="@color/secondary"
-                    android:textColor="@color/secondary" />
+                    android:textColor="@color/secondary"
+                    android:cursorVisible="false"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:clickable="true"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 

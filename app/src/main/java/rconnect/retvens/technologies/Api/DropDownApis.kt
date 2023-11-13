@@ -3,6 +3,7 @@ package rconnect.retvens.technologies.Api
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.GetPropertyTypeData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.GetPropertyTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.GetPropertyTypeRatingData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.GetAmenityType
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomType
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomTypeData
 import retrofit2.Call
@@ -11,6 +12,9 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface DropDownApis {
+
+    @GET("getAmenityType")
+    fun getAmenityType (): Call<GetAmenityType>
 
     @GET("getPropertyType")
     fun getPropertyType(): Call<GetPropertyTypeData>
