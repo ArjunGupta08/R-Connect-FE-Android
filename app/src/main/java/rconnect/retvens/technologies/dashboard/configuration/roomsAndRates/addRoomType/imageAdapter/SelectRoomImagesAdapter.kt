@@ -22,7 +22,7 @@ class SelectRoomImagesAdapter(val context: Context, private val itemList: ArrayL
         onItemClickListener = listener
     }
     interface OnItemClickListener {
-        fun onAddRoomImage(position: Int)
+        fun onAddRoomImage()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -52,7 +52,7 @@ class SelectRoomImagesAdapter(val context: Context, private val itemList: ArrayL
         } else if (position == itemList.size) {
             // Handle the static item
             holder.addImage.setOnClickListener {
-                onItemClickListener?.onAddRoomImage(position)
+                onItemClickListener?.onAddRoomImage()
             }
         }
 

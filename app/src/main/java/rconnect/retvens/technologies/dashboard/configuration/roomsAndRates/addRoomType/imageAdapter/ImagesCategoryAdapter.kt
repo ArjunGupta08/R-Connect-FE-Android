@@ -45,7 +45,14 @@ class ImagesCategoryAdapter(val context: Context, private val itemList: ArrayLis
         holder.selectImagesAdapter = SelectRoomImagesAdapter(context, item.imageList,position)
         holder.imagesRecycler.adapter = holder.selectImagesAdapter
         holder.selectImagesAdapter.setOnItemClickListener(this)
+
         holder.selectImagesAdapter.notifyDataSetChanged()
+
+        holder.addImage.setOnClickListener {
+            onItemClickListener?.onAddRoomImage(position)
+        }
+
+
     }
 
     override fun getItemCount(): Int {
@@ -64,16 +71,16 @@ class ImagesCategoryAdapter(val context: Context, private val itemList: ArrayLis
 
         val textH = itemView.findViewById<TextView>(R.id.enterH)
         val imagesRecycler = itemView.findViewById<RecyclerView>(R.id.imagesRecycler)
-
+        val addImage = itemView.findViewById<TextView>(R.id.addImages)
         lateinit var selectImagesAdapter: SelectRoomImagesAdapter
 
     }
 
-
     fun updateData(newData: ArrayList<ImageCategoryDataClass>) {
         itemList.clear()
+        Log.e("newData",newData.toString())
         itemList.addAll(newData)
-
+        notifyDataSetChanged()
     }
 
     fun addEmptyItem(imageType: String) {
@@ -82,7 +89,7 @@ class ImagesCategoryAdapter(val context: Context, private val itemList: ArrayLis
         notifyItemInserted(itemList.size - 1) // Notify the adapter that a new item has been inserted
     }
 
-    override fun onAddRoomImage(position: Int) {
-        onItemClickListener?.onAddRoomImage(position)
+    override fun onAddRoomImage() {
+
     }
 }
