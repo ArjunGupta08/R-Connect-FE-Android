@@ -1,5 +1,6 @@
 package rconnect.retvens.technologies.Api
 
+import rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory.GetOtaSourceData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.GetPropertyTypeData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.GetPropertyTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.GetPropertyTypeRatingData
@@ -23,4 +24,10 @@ interface DropDownApis {
         @Query("propertyId") propertyId :String,
         @Query("userId") userId :String
     ):Call<GetRoomTypeData>
+
+    @GET("base_url")
+    fun getOtaList(
+        @Query("userId") userId:String,
+        @Query("propertyId") propertyId:String
+    ):Call<GetOtaSourceData>
 }

@@ -13,8 +13,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ListPopupWindow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -26,11 +28,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import rconnect.retvens.technologies.Api.DropDownApis
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.RatesAndInventoryInterface
 import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.Api.configurationApi.ChainConfiguration
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomTypeData
 import rconnect.retvens.technologies.databinding.FragmentRatesAndInventoryBinding
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.utilCreateDatePickerDialog
@@ -73,6 +77,9 @@ class RatesAndInventoryFragment : Fragment() {
     private var checkOutDate: String? = null
 
 
+    var otaList = ArrayList<String>()
+
+    var roomTypeList = ArrayList<String>()
 
 
     override fun onCreateView(
@@ -90,6 +97,36 @@ class RatesAndInventoryFragment : Fragment() {
 
         robotoMedium = ResourcesCompat.getFont(requireContext(),R.font.roboto_medium)!!
         roboto = ResourcesCompat.getFont(requireContext(),R.font.roboto)!!
+
+
+        getOta()
+        getRoomType()
+
+        val rateOptions = arrayOf("Rates", "Stop sell", "COA","COD","Min Night","Extra Adult Rates","Extra Child Rates")
+
+        val rateAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, rateOptions)
+
+        // Set a click listener for the end icon
+        bindingTab.ratesText.setOnClickListener {
+            // Show dropdown menu
+            showRateDropdownMenu(rateAdapter,it)
+        }
+
+
+        val roomAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, roomTypeList)
+        // Set a click listener for the end icon
+        bindingTab.roomTypeText.setOnClickListener {
+            // Show dropdown menu
+            showRoomDropdownMenu(roomAdapter,it)
+        }
+
+
+        val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, otaList)
+        // Set a click listener for the end icon
+        bindingTab.sourceText.setOnClickListener {
+            // Show dropdown menu
+            showDropdownMenu(adapter,it)
+        }
 
         bindingTab.calenderRecycler.layoutManager = LinearLayoutManager(requireContext(),
             LinearLayoutManager.HORIZONTAL,false)
@@ -421,6 +458,105 @@ class RatesAndInventoryFragment : Fragment() {
         setInventory(userId,propertyId,checkInDate,checkOutDate)
 
 
+
+
+    }
+
+    private fun showDropdownMenu(adapter: ArrayAdapter<String>, anchorView: View) {
+        val listPopupWindow = ListPopupWindow(requireContext())
+        listPopupWindow.setAdapter(adapter)
+        listPopupWindow.anchorView = anchorView
+        listPopupWindow.setOnItemClickListener { _, _, position, _ ->
+            val selectedItem = adapter.getItem(position)
+            bindingTab.sourceText.setText(selectedItem)
+            listPopupWindow.dismiss()
+        }
+
+
+        listPopupWindow.show()
+    }
+    private fun showRoomDropdownMenu(adapter: ArrayAdapter<String>, anchorView: View) {
+        val listPopupWindow = ListPopupWindow(requireContext())
+        listPopupWindow.setAdapter(adapter)
+        listPopupWindow.anchorView = anchorView
+        listPopupWindow.setOnItemClickListener { _, _, position, _ ->
+            val selectedItem = adapter.getItem(position)
+            bindingTab.roomTypeText.setText(selectedItem)
+            listPopupWindow.dismiss()
+        }
+
+
+        listPopupWindow.show()
+    }
+    private fun showRateDropdownMenu(adapter: ArrayAdapter<String>, anchorView: View) {
+        val listPopupWindow = ListPopupWindow(requireContext())
+        listPopupWindow.setAdapter(adapter)
+        listPopupWindow.anchorView = anchorView
+        listPopupWindow.setOnItemClickListener { _, _, position, _ ->
+            val selectedItem = adapter.getItem(position)
+            bindingTab.ratesText.setText(selectedItem)
+            listPopupWindow.dismiss()
+        }
+
+
+        listPopupWindow.show()
+    }
+
+    private fun getOta() {
+        val retrofit = OAuthClient<DropDownApis>(requireContext()).create(DropDownApis::class.java).getOtaList( "cVDoB8BP","4OCGYRmP")
+        retrofit.enqueue(object : Callback<GetOtaSourceData?> {
+            override fun onResponse(
+                call: Call<GetOtaSourceData?>,
+                response: Response<GetOtaSourceData?>
+            ) {
+                if (response.isSuccessful){
+                    val data = response.body()!!.data
+                    data.forEach {
+                        otaList.add(it.otaName)
+                    }
+                    Toast.makeText(requireContext(), data.toString(), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "successFull", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    Toast.makeText(requireContext(), "failed", Toast.LENGTH_SHORT).show()
+                    Log.e("error",response.message().toString())
+
+                }
+            }
+
+            override fun onFailure(call: Call<GetOtaSourceData?>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+        })
+    }
+
+    private fun getRoomType() {
+        val retrofit = OAuthClient<DropDownApis>(requireContext()).create(DropDownApis::class.java).getRoomList( "4OCGYRmP","cVDoB8BP")
+        retrofit.enqueue(object : Callback<GetRoomTypeData?> {
+            override fun onResponse(
+                call: Call<GetRoomTypeData?>,
+                response: Response<GetRoomTypeData?>
+            ) {
+                if (response.isSuccessful){
+                    Toast.makeText(requireContext(), "Room Mission SuccessFull", Toast.LENGTH_SHORT).show()
+                    val data = response.body()!!.data
+                    data.forEach{
+                        val roomType = it.roomTypeName
+                        roomTypeList.add(roomType)
+                    }
+
+                }
+                else{
+                    Toast.makeText(requireContext(), response.code().toString(), Toast.LENGTH_SHORT).show()
+                    Log.e("error",response.message().toString())
+                    Log.e("error",response.body().toString())
+                }
+            }
+
+            override fun onFailure(call: Call<GetRoomTypeData?>, t: Throwable) {
+                Toast.makeText(requireContext(), "Mission failed SuccessFully", Toast.LENGTH_SHORT).show()
+            }
+        })
 
 
     }
