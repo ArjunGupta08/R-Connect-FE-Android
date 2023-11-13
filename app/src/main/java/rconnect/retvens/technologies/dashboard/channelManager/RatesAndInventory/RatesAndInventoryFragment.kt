@@ -592,8 +592,9 @@ class RatesAndInventoryFragment : Fragment() {
     private fun setInventory(userId:String?,propertyId:String?,startDate:String?,endDate:String?) {
 
 
+        Log.e("token",UserSessionManager(requireContext()).getToken().toString())
 
-        val inventoryApi = OAuthClient<RatesAndInventoryInterface>(requireContext()).create(RatesAndInventoryInterface::class.java).getInventory("cVDoB8BP","4OCGYRmP",startDate!!,endDate!!)
+        val inventoryApi = OAuthClient<RatesAndInventoryInterface>(requireContext()).create(RatesAndInventoryInterface::class.java).getInventory("cVDoB8BP","4OCGYRmP","2023-11-09","2023-11-20")
 
        inventoryApi.enqueue(object : Callback<ResponseData?> {
            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
