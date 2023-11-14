@@ -22,6 +22,7 @@ import rconnect.retvens.technologies.dashboard.configuration.others.transportati
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.UpdateTransportationTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.AmenityDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.GetAmenityIcon
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.PostAmenityData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.AddInclusionsDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.UpdateInclusionDataClass
@@ -214,5 +215,10 @@ interface GeneralsAPI {
 
     @GET("getAmenityIcon")
     fun getAmenityIconApi (): Call<GetAmenityIcon>
+
+    @POST("postAmenity")
+    fun postAmenityApi(
+        @Body postAmenityData: PostAmenityData
+    ): Call<ResponseData>
 
 }

@@ -20,11 +20,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.RetrofitObject
+import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AmenitiesIconAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AmenitiesIconDataClass
 import rconnect.retvens.technologies.databinding.FragmentAmenitiesBinding
+import rconnect.retvens.technologies.onboarding.ResponseData
+import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.shakeAnimation
 import retrofit2.Call
 import retrofit2.Callback
@@ -156,7 +160,22 @@ class AmenitiesFragment : Fragment(), AmenitiesIconAdapter.OnIconClick {
     }
 
     private fun saveData(amenityName: String, shortCode: String, amenityType: String, amenityIconCheck: Boolean, dialog: Dialog) {
-//        Toast.makeText(requireContext(), "$amenityIconCheck", Toast.LENGTH_SHORT).show()
+        val send = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).postAmenityApi(
+            PostAmenityData(UserSessionManager(requireContext()).getUserId().toString(), shortCode, amenityName, UserSessionManager(requireContext()).getPropertyId().toString(), amenityType, "$amenityIconCheck", amenityIconLink)
+        )
+        send.enqueue(object : Callback<ResponseData?> {
+            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                if (response.isSuccessful){
+                            Toast.makeText(requireContext(), "$amenityIconCheck", Toast.LENGTH_SHORT).show()
+                    Log.d("response", response.body()!!.message)
+                    dialog.dismiss()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
     }
 
     private fun showDropdownMenu(adapter: ArrayAdapter<String>, anchorView: View, et : TextInputEditText) {
