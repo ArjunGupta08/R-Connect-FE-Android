@@ -13,17 +13,20 @@
         android:layout_weight="1"
         android:hint="Bed 2 Type">
 
-        <AutoCompleteTextView
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textInputEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fontFamily="@font/roboto"
             android:inputType="text"
             android:paddingStart="15dp"
-            android:hint="King Size"
             android:textColor="@color/secondary"
             android:textColorHint="@drawable/hint_selector"
-            android:textSize="@dimen/H5" />
+            android:textSize="@dimen/H5"
+            android:editable="false"
+            android:focusable="false"
+            android:cursorVisible="false"
+            android:clickable="true"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

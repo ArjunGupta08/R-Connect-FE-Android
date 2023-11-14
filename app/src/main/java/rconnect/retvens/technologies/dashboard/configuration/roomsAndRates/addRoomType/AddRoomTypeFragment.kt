@@ -37,12 +37,9 @@ import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AddAmenitiesAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AmenitiesIconAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AmenitiesIconDataClass
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectBathroomImagesAdapter
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectBedImagesAdapter
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectImagesDataClass
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectRoomImagesAdapter
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectViewImagesAdapter
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.SelectedAmenitiesAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.AmenityDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.GetAmenityData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.GetAmenityIcon
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.PostAmenityData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.roomType.RoomTypeFragment
@@ -57,43 +54,28 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class AddRoomTypeFragment : Fragment(),
-    SelectRoomImagesAdapter.OnItemClickListener,
-    SelectViewImagesAdapter.OnItemClickListener,
-    SelectBathroomImagesAdapter.OnItemClickListener,
-    SelectBedImagesAdapter.OnItemClickListener,
     AddBedTypeAdapter.BedTypeIdInterface,
-    AmenitiesIconAdapter.OnIconClick {
+    AmenitiesIconAdapter.OnIconClick, AddAmenitiesAdapter.OnItemClick{
 
     private lateinit var binding:FragmentAddRoomTypeBinding
 
-    val bedSuggestionList = ArrayList<GetBedTypeDataClass>()
+    private var bedTypeIds = ArrayList<String>()
+    val bedTypeList = ArrayList<GetBedTypeDataClass>()
+    val bedSuggestionList = ArrayList<String>()
+
+    val amenityIdsList = ArrayList<String>()
 
     val amenities = ArrayList<AmenitiesIconDataClass>()
     val amenitiesType = ArrayList<String>()
     var amenityIconLink = ""
 
-    private lateinit var imageUri: Uri
-    private var PICK_IMAGE_REQUEST_CODE : Int = 0
-
-    private var recyclerType = 1
-    private lateinit var selectRoomImagesAdapter: SelectRoomImagesAdapter
-    private lateinit var selectViewImagesAdapter: SelectViewImagesAdapter
-    private lateinit var selectBathroomImagesAdapter: SelectBathroomImagesAdapter
-    private lateinit var selectBedImagesAdapter: SelectBedImagesAdapter
-
     private var page = 1
     private var bedCount = 1
     private var bedCountList = ArrayList<String>()
-    private var bedTypeIds = ArrayList<String>()
     private lateinit var addBedTypeAdapter: AddBedTypeAdapter
 
     private lateinit var roboto : Typeface
     private lateinit var robotoMedium : Typeface
-
-    private var selectedRoomImagesList = ArrayList<SelectImagesDataClass>()
-    private var selectedViewImagesList = ArrayList<SelectImagesDataClass>()
-    private var selectedBathroomImagesList = ArrayList<SelectImagesDataClass>()
-    private var selectedBedImagesList = ArrayList<SelectImagesDataClass>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -172,6 +154,10 @@ class AddRoomTypeFragment : Fragment(),
             }
         }
 
+        binding.bed1TypeET.setOnClickListener {
+            val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, bedSuggestionList)
+            showDropdownBedTypeMenu(adapter, it, binding.bed1TypeET)
+        }
         binding.bedTypeRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
 
         binding.add.setOnClickListener { openAddAmenitiesDialog() }
@@ -193,8 +179,8 @@ class AddRoomTypeFragment : Fragment(),
                 binding.maxChildText.text.toString(),
                 binding.maxOccupancyText.text.toString(),
                 binding.bedCount.text.toString(),
-                binding.bedCount.text.toString(),
-                "Android",
+                bedTypeIds.toString(),
+                amenityIdsList.toString(),
                 "Android"
                 )
         )
@@ -241,10 +227,15 @@ class AddRoomTypeFragment : Fragment(),
 
     private fun bedType(){
         binding.addBeds.setOnClickListener {
-            bedCount++
-            binding.bedCount.setText("$bedCount")
-            bedCountList.add("$bedCount")
-            addBedTypeAdapter.notifyDataSetChanged()
+            if (!binding.bed1TypeET.text!!.isEmpty()) {
+                bedCount++
+                binding.bedCount.setText("$bedCount")
+                bedCountList.add("$bedCount")
+                addBedTypeAdapter.notifyDataSetChanged()
+                Toast.makeText(requireContext(), bedTypeIds.size.toString(), Toast.LENGTH_SHORT).show()
+            } else {
+                shakeAnimation(binding.bed1TypeLayout, requireContext())
+            }
         }
         binding.removeBeds.setOnClickListener {
             if (bedCount>1) {
@@ -267,8 +258,11 @@ class AddRoomTypeFragment : Fragment(),
                 response: Response<GetBedTypeData?>
             ) {
                 if (response.isSuccessful){
-                    val data = response.body()!!
-                    bedSuggestionList.addAll(data.data)
+                    val data = response.body()!!.data
+                    bedTypeList.addAll(data)
+                    data.forEach {
+                        bedSuggestionList.add(it.bedType)
+                    }
                     bedType()
                 } else {
                     Toast.makeText(requireContext(), response.body()!!.copy().toString(), Toast.LENGTH_SHORT).show()
@@ -309,6 +303,7 @@ class AddRoomTypeFragment : Fragment(),
                     val addAmenitiesAdapter = AddAmenitiesAdapter(requireContext(), response.body()!!.data)
                     amenitiesRecycler.adapter = addAmenitiesAdapter
                     addAmenitiesAdapter.notifyDataSetChanged()
+                    addAmenitiesAdapter.setOnClickListener(this@AddRoomTypeFragment)
                 }
             }
 
@@ -316,6 +311,11 @@ class AddRoomTypeFragment : Fragment(),
                 Log.d("error" , t.localizedMessage)
             }
         })
+
+        val saveBtn = dialog.findViewById<CardView>(R.id.saveBtn)
+        saveBtn.setOnClickListener {
+            dialog.dismiss()
+        }
 
         dialog.show()
         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
@@ -520,111 +520,53 @@ class AddRoomTypeFragment : Fragment(),
         }
 
     }
-    fun setUpRecycler(){
 
-        binding.roomsRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
-
-        binding.viewRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
-
-        binding.bathroomRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
-
-        binding.bedRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
-
-//        selectRoomImagesAdapter = SelectRoomImagesAdapter(requireContext(), selectedRoomImagesList)
-//        selectRoomImagesAdapter.setOnItemClickListener(this)
-//        binding.roomsRecycler.adapter = selectRoomImagesAdapter
-
-        selectViewImagesAdapter = SelectViewImagesAdapter(requireContext(), selectedViewImagesList)
-        selectViewImagesAdapter.setOnItemClickListener(this)
-        binding.viewRecycler.adapter = selectViewImagesAdapter
-
-        selectBathroomImagesAdapter = SelectBathroomImagesAdapter(requireContext(), selectedBathroomImagesList)
-        selectBathroomImagesAdapter.setOnItemClickListener(this)
-        binding.bathroomRecycler.adapter = selectBathroomImagesAdapter
-
-        selectBedImagesAdapter = SelectBedImagesAdapter(requireContext(), selectedBedImagesList)
-        selectBedImagesAdapter.setOnItemClickListener(this)
-        binding.bedRecycler.adapter = selectBedImagesAdapter
-
-    }
-    private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent,PICK_IMAGE_REQUEST_CODE)
-    }
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == AppCompatActivity.RESULT_OK && data != null){
-            imageUri = data.data!!
-            if (imageUri != null) {
-
-                try {
-
-                    when (recyclerType) {
-                        1 -> {
-                            selectedRoomImagesList.add(SelectImagesDataClass(imageUri))
-//                            selectRoomImagesAdapter = SelectRoomImagesAdapter(requireContext(), selectedRoomImagesList)
-//                            selectRoomImagesAdapter.setOnItemClickListener(this)
-//                            binding.roomsRecycler.adapter = selectRoomImagesAdapter
-                        }
-                        2 -> {
-                            selectedViewImagesList.add(SelectImagesDataClass(imageUri))
-                            selectViewImagesAdapter = SelectViewImagesAdapter(requireContext(), selectedViewImagesList)
-                            selectViewImagesAdapter.setOnItemClickListener(this)
-                            binding.viewRecycler.adapter = selectViewImagesAdapter
-                        }
-                        3 -> {
-                            selectedBathroomImagesList.add(SelectImagesDataClass(imageUri))
-                            selectBathroomImagesAdapter = SelectBathroomImagesAdapter(requireContext(), selectedBathroomImagesList)
-                            selectBathroomImagesAdapter.setOnItemClickListener(this)
-                            binding.bathroomRecycler.adapter = selectBathroomImagesAdapter
-                        }
-                        4 -> {
-                            selectedBedImagesList.add(SelectImagesDataClass(imageUri))
-                            selectBedImagesAdapter = SelectBedImagesAdapter(requireContext(), selectedBedImagesList)
-                            selectBedImagesAdapter.setOnItemClickListener(this)
-                            binding.bedRecycler.adapter = selectBedImagesAdapter
-                        }
+    override fun bedSelected(bedTypeNameList: ArrayList<String>) {
+        bedTypeList.forEach {bedType->
+            bedTypeNameList.forEach {
+                if (bedType.bedType.toString() == it.toString()) {
+                    if (!bedTypeIds.contains(bedType.bedTypeId)) {
+//                        Toast.makeText(requireContext(), bedType.bedTypeId, Toast.LENGTH_SHORT).show()
+                        bedTypeIds.add(bedType.bedTypeId)
                     }
-                }catch(e:RuntimeException){
-                    Log.d("cropperOnPersonal", e.toString())
-                }catch(e:ClassCastException){
-                    Log.d("cropperOnPersonal", e.toString())
                 }
             }
-
         }
     }
 
-    override fun onAddViewImage() {
-        recyclerType = 2
-        openGallery()
-    }
+    override fun onItemListUpdate(selectedAmenitiesList: ArrayList<GetAmenityData>) {
+        binding.selectedAmenitiesRecycler.layoutManager = GridLayoutManager(requireContext(), 4)
+        val selectedAmenitiesAdapter = SelectedAmenitiesAdapter(requireContext(), selectedAmenitiesList)
+        binding.selectedAmenitiesRecycler.adapter = selectedAmenitiesAdapter
+        selectedAmenitiesAdapter.notifyDataSetChanged()
 
-    override fun onAddBathroomImage() {
-        recyclerType = 3
-        openGallery()
-    }
-
-    override fun onAddBedImage() {
-        recyclerType = 4
-        openGallery()
-    }
-
-
-
-    override fun onAddRoomImage() {
-        recyclerType = 1
-        openGallery()
-
-    }
-
-    override fun bedSelected(bedIdList: ArrayList<String>) {
-        bedIdList.forEach {
-            if (!bedTypeIds.contains(it)){
-                bedTypeIds.add(it)
+        selectedAmenitiesList.forEach {
+            if (!amenityIdsList.contains(it.amenityId)) {
+                amenityIdsList.add(it.amenityId)
+            } else {
+                amenityIdsList.remove(it.amenityId)
             }
         }
+    }
+
+    private fun showDropdownBedTypeMenu(adapter: ArrayAdapter<String>, anchorView: View, et : TextInputEditText) {
+        val listPopupWindow = ListPopupWindow(requireContext())
+        listPopupWindow.setAdapter(adapter)
+        listPopupWindow.anchorView = anchorView
+        listPopupWindow.setOnItemClickListener { _, _, position, _ ->
+            val selectedItem = adapter.getItem(position)
+            et.setText(selectedItem)
+            bedTypeList.forEach {
+                Log.d("bedTypeForE", it.bedTypeId)
+                Log.d("bedTypeForE", it.bedType)
+                if (it.bedType.toString() == selectedItem.toString()) {
+                    Log.d("cond", it.bedTypeId)
+                    bedTypeIds.add(it.bedTypeId)
+                }
+            }
+            listPopupWindow.dismiss()
+        }
+        listPopupWindow.show()
     }
 
 }
