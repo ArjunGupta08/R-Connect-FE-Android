@@ -3,3 +3,12 @@ package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addR
 data class AddBedTypeData(
     val bedTypeId : String
 )
+
+data class GetBedTypeData(
+    val `data` : ArrayList<GetBedTypeDataClass>
+)
+
+data class GetBedTypeDataClass(
+    val bedTypeId : String,
+    val bedType : String
+)

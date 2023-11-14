@@ -22,9 +22,18 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AddBedTypeAdapter(val context: Context, private val itemList: List<String>) : RecyclerView.Adapter<AddBedTypeAdapter.ViewHolder>() {
+class AddBedTypeAdapter(val context: Context, private val itemList: List<String>, private val bedSuggestionList: List<GetBedTypeDataClass>) : RecyclerView.Adapter<AddBedTypeAdapter.ViewHolder>() {
 
-    val bedIdList = ArrayList<AddBedTypeData>()
+    val bedIdList = ArrayList<String>()
+
+    var mListioner : BedTypeIdInterface ?= null
+    fun setOnBedSelection(listener : BedTypeIdInterface){
+        mListioner = listener
+    }
+    interface BedTypeIdInterface {
+        fun bedSelected(bedIdList : ArrayList<String>)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_text_input_layout, parent, false)
         return ViewHolder(view)
@@ -57,22 +66,22 @@ class AddBedTypeAdapter(val context: Context, private val itemList: List<String>
 
     private fun selectBedType(context: Context, textV : AutoCompleteTextView) {
 
-        val suggestionList = ArrayList<String>()
-        suggestionList.add("King")
-        suggestionList.add("Queen")
-        suggestionList.add("Single")
-        suggestionList.add("Double")
-
         // Initialize the AutoCompleteTextView and adapter
         val autoCompleteTextView = textV
-        val adapter = ArrayAdapter<String>(context, R.layout.simple_dropdown_item_1line)
+        val adapter = ArrayAdapter<GetBedTypeDataClass>(context, R.layout.simple_dropdown_item_1line)
         autoCompleteTextView.setAdapter(adapter)
 
         // Set up the Autocomplete request
         autoCompleteTextView.threshold = 1  // Minimum characters to start autocomplete
         autoCompleteTextView.setOnItemClickListener { _, _, position, _ ->
-            val selectedText = adapter.getItem(position).toString()
-            bedIdList.add(AddBedTypeData(selectedText))
+            val selectedText = adapter.getItem(position)!!.bedType.toString()
+            val selectedId = adapter.getItem(position)!!.bedType.toString()
+
+            if (!bedIdList.contains(selectedId)){
+                bedIdList.add(selectedId)
+            }
+
+            mListioner?.bedSelected(bedIdList)
             // Handle the selected address as needed
             autoCompleteTextView.setText(selectedText)
         }
@@ -82,10 +91,14 @@ class AddBedTypeAdapter(val context: Context, private val itemList: List<String>
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 // Perform the autocomplete request
+                val input = s.toString().toLowerCase()
 
                 // Update the adapter with the new suggestions
+                val filteredList = bedSuggestionList.filter {
+                    it.bedType.toLowerCase().contains(input)
+                }
                 adapter.clear()
-                adapter.addAll(suggestionList)
+                adapter.addAll(filteredList)
                 autoCompleteTextView.setAdapter(adapter)
                 adapter.notifyDataSetChanged()
 

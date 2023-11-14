@@ -4,6 +4,7 @@ import rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory.
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.GetPropertyTypeData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.GetPropertyTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.GetPropertyTypeRatingData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.GetBedTypeData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.GetAmenityType
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomType
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomTypeData
@@ -19,6 +20,9 @@ interface DropDownApis {
 
     @GET("getPropertyType")
     fun getPropertyType(): Call<GetPropertyTypeData>
+
+    @GET("getBedType")
+    fun getBedType(): Call<GetBedTypeData>
 
     @GET("getRating")
     fun getPropertyTypeRating(): Call<GetPropertyTypeRatingData>
