@@ -67,6 +67,8 @@ class RatesAndInventoryFragment : Fragment() {
     lateinit var txt_all_days:TextView
     lateinit var txt_week_days:TextView
     lateinit var txt_weekends:TextView
+    lateinit var room_typeText:TextInputEditText
+    lateinit var rate_planText:TextInputEditText
 
     lateinit var txt_custom:TextView
     lateinit var startDatePickerDialog:DatePickerDialog
@@ -162,6 +164,36 @@ class RatesAndInventoryFragment : Fragment() {
              txt_week_days = dialog.findViewById<TextView>(R.id.txt_week_days)
              txt_custom = dialog.findViewById<TextView>(R.id.txt_custom)
              sat = dialog.findViewById<TextView>(R.id.saturday)
+
+            room_typeText = dialog.findViewById(R.id.room_typeText)
+            rate_planText = dialog.findViewById(R.id.rate_planText)
+
+            val roomAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, roomTypeList)
+            // Set a click listener for the end icon
+            room_typeText.setOnClickListener {
+                // Show dropdown menu
+                showDialogRoomDropdownMenu(roomAdapter,it)
+            }
+
+            val rateOptions = arrayOf("Rates", "Stop sell", "COA","COD","Min Night","Extra Adult Rates","Extra Child Rates")
+
+            val rateAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, rateOptions)
+
+            // Set a click listener for the end icon
+            rate_planText.setOnClickListener {
+                // Show dropdown menu
+                showDialogRateDropdownMenu(rateAdapter,it)
+            }
+
+
+
+
+
+
+
+
+
+
             unSelectAllDays()
             txt_all_days.setBackgroundResource(R.drawable.rounded_border_light_black)
             txt_weekends.setBackgroundResource(R.drawable.rounded_border_light_black)
@@ -488,6 +520,19 @@ class RatesAndInventoryFragment : Fragment() {
 
         listPopupWindow.show()
     }
+    private fun showDialogRoomDropdownMenu(adapter: ArrayAdapter<String>, anchorView: View) {
+        val listPopupWindow = ListPopupWindow(requireContext())
+        listPopupWindow.setAdapter(adapter)
+        listPopupWindow.anchorView = anchorView
+        listPopupWindow.setOnItemClickListener { _, _, position, _ ->
+            val selectedItem = adapter.getItem(position)
+            room_typeText!!.setText(selectedItem)
+            listPopupWindow.dismiss()
+        }
+
+
+        listPopupWindow.show()
+    }
     private fun showRateDropdownMenu(adapter: ArrayAdapter<String>, anchorView: View) {
         val listPopupWindow = ListPopupWindow(requireContext())
         listPopupWindow.setAdapter(adapter)
@@ -495,6 +540,19 @@ class RatesAndInventoryFragment : Fragment() {
         listPopupWindow.setOnItemClickListener { _, _, position, _ ->
             val selectedItem = adapter.getItem(position)
             bindingTab.ratesText.setText(selectedItem)
+            listPopupWindow.dismiss()
+        }
+
+
+        listPopupWindow.show()
+    }
+    private fun showDialogRateDropdownMenu(adapter: ArrayAdapter<String>, anchorView: View) {
+        val listPopupWindow = ListPopupWindow(requireContext())
+        listPopupWindow.setAdapter(adapter)
+        listPopupWindow.anchorView = anchorView
+        listPopupWindow.setOnItemClickListener { _, _, position, _ ->
+            val selectedItem = adapter.getItem(position)
+            rate_planText.setText(selectedItem)
             listPopupWindow.dismiss()
         }
 

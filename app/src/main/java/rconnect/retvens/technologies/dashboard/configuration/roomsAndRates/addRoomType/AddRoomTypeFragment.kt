@@ -463,9 +463,12 @@ class AddRoomTypeFragment : Fragment(),
         openGallery()
     }
 
-    override fun onAddRoomImage(position: Int) {
+
+
+    override fun onAddRoomImage() {
         recyclerType = 1
         openGallery()
+
     }
 
 }

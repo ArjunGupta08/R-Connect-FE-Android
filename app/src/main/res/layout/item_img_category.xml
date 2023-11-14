@@ -50,12 +50,27 @@
                 app:layout_constraintTop_toTopOf="parent"/>
 
             <ImageView
+                android:id="@+id/edit_category"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_margin="5dp"
                 android:src="@drawable/svg_edit"
                 app:layout_constraintEnd_toStartOf="@id/delete"
                 app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/addImages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Images"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toStartOf="@+id/edit_category"
+                app:layout_constraintTop_toTopOf="@+id/edit_category"
+                app:layout_constraintBottom_toBottomOf="@+id/edit_category"
+                android:layout_marginEnd="10dp"
+                android:textSize="@dimen/H4"
+                android:fontFamily="@font/roboto_medium"
+                />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/imagesRecycler"

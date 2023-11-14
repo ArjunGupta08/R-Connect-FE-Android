@@ -24,8 +24,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRo
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectRoomImagesAdapter
 import rconnect.retvens.technologies.databinding.FragmentAddImagesBinding
 
-class
-AddImagesFragment : Fragment(),
+class AddImagesFragment : Fragment(),
     ImagesCategoryAdapter.OnItemClickListener {
     private lateinit var binding : FragmentAddImagesBinding
 
@@ -33,7 +32,7 @@ AddImagesFragment : Fragment(),
     private var PICK_IMAGE_REQUEST_CODE : Int = 0
     private var selectedImagesList:ArrayList<ImageCategoryDataClass> = ArrayList()
     var isImgCategoryLayoutVisible = true
-    private  var position: Int = 0
+    private  var positions: Int = 0
 
     lateinit var imagesCategoryAdapter: ImagesCategoryAdapter
     lateinit var selectRoomImagesAdapter: SelectRoomImagesAdapter
@@ -56,18 +55,14 @@ AddImagesFragment : Fragment(),
 
 
         binding.addImgCategory.setOnClickListener {
-
-            imagesCategoryAdapter.addEmptyItem("Room")
-            imagesCategoryAdapter.notifyDataSetChanged()
+            // Create a new category item with a unique identifier (you can adjust this based on your requirements)
+           imagesCategoryAdapter.addEmptyItem("room")
         }
 
-        binding.addImageCard.setOnClickListener {
-            openGallery()
-        }
+
 
         imagesCategoryAdapter = ImagesCategoryAdapter(requireContext(), selectedImagesList)
         binding.imagesRecycler.adapter = imagesCategoryAdapter
-        imagesCategoryAdapter.notifyDataSetChanged()
 
         imagesCategoryAdapter.setOnItemClickListener(this)
     }
@@ -83,18 +78,27 @@ AddImagesFragment : Fragment(),
             imageUri = data.data!!
             if (imageUri != null) {
                 try {
-                        uriList.add(imageUri!!)
+                    // Check if there is an existing item at the specified position
+                    if (positions < selectedImagesList.size) {
+                        // Update the existing item at the specified position
+                        val existingItem = selectedImagesList[positions]
+                        existingItem.imageList.add(imageUri!!)
+                    } else {
+                        // Add a new item to the list
+                        val newImageCategory = ImageCategoryDataClass("room", arrayListOf(imageUri!!))
+                        selectedImagesList.add(newImageCategory)
+                    }
 
-                    selectedImagesList.add(ImageCategoryDataClass("1",uriList))
-                    imagesCategoryAdapter.updateData(selectedImagesList)
+                    // Log the contents of selectedImagesList
+                    Log.e("list", selectedImagesList.toString())
 
-                    // Notify the adapter that the data has changed
-                    imagesCategoryAdapter.notifyItemChanged(position)
+                    // Notify the adapter that the data at the specified position has changed
+                    imagesCategoryAdapter.notifyItemChanged(positions)
                     isImgCategoryLayoutVisible = !isImgCategoryLayoutVisible
-                    binding.imgCategoryLayout.visibility = View.GONE
-                }catch(e:RuntimeException){
+
+                } catch (e: RuntimeException) {
                     Log.d("cropperOnPersonal", e.toString())
-                }catch(e:ClassCastException){
+                } catch (e: ClassCastException) {
                     Log.d("cropperOnPersonal", e.toString())
                 }
             }
@@ -102,10 +106,12 @@ AddImagesFragment : Fragment(),
     }
 
 
+
+
     override fun onAddRoomImage(position: Int) {
         openGallery()
-        Toast.makeText(requireContext(), position.toString(), Toast.LENGTH_SHORT).show()
-
+        positions = position
+        Log.e("postion",position.toString())
     }
 
 
