@@ -10,7 +10,6 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import rconnect.retvens.technologies.R
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AddAmenitiesDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddRoomTypeFragment
 
 class ChannelManagementAdapter(val context: FragmentActivity, private val itemList: List<String>) : RecyclerView.Adapter<ChannelManagementAdapter.ViewHolder>() {

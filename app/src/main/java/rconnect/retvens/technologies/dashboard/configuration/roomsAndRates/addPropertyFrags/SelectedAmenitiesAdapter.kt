@@ -14,18 +14,7 @@ import com.google.android.material.card.MaterialCardView
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.GetAmenityData
 
-class AddAmenitiesAdapter(val context: Context, private val itemList: ArrayList<GetAmenityData>) : RecyclerView.Adapter<AddAmenitiesAdapter.ViewHolder>() {
-
-    val selectedAmenitiesList = ArrayList<GetAmenityData>()
-
-    var clickListener : OnItemClick ?= null
-
-    fun setOnClickListener (listener : OnItemClick){
-        clickListener = listener
-    }
-    interface OnItemClick{
-        fun onItemListUpdate(selectedAmenitiesList : ArrayList<GetAmenityData>)
-    }
+class SelectedAmenitiesAdapter(val context: Context, private val itemList: ArrayList<GetAmenityData>) : RecyclerView.Adapter<SelectedAmenitiesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_amenities, parent, false)
@@ -39,18 +28,10 @@ class AddAmenitiesAdapter(val context: Context, private val itemList: ArrayList<
         Glide.with(context).load(item.amenityIconLink).into(holder.amenityIcon)
 //            .onLoadStarted(ContextCompat.getDrawable(context, R.drawable.image_loader))
 
-        holder.card.setOnClickListener {
-            if (!selectedAmenitiesList.contains(item)){
-                holder.card.strokeWidth = 3
-                selectedAmenitiesList.add(item)
-            } else {
-                selectedAmenitiesList.remove(item)
-                holder.card.strokeWidth = 0
-            }
-            clickListener?.onItemListUpdate(selectedAmenitiesList)
+        holder.remove.setOnClickListener {
+            itemList.remove(item)
+            notifyDataSetChanged()
         }
-
-        holder.remove.visibility = View.GONE
     }
 
     override fun getItemCount(): Int {
