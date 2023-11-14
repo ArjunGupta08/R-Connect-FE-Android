@@ -77,6 +77,13 @@ class AddRoomTypeFragment : Fragment(),
     private lateinit var roboto : Typeface
     private lateinit var robotoMedium : Typeface
 
+    // Occupancy
+    private var baseAdultCount = 1
+    private var baseChildCount = 0
+    private var maxAdultCount = 1
+    private var maxChildCount = 1
+    private var maxOccupancyCount = 1
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -96,13 +103,23 @@ class AddRoomTypeFragment : Fragment(),
 
             if (page == 1){
 
-                sendData()
+                if (binding.roomTypeNameEt.text!!.isEmpty()){
+                    shakeAnimation(binding.roomTypeNameLayout, requireContext())
+                } else if (binding.shortCodeET.text!!.isEmpty()){
+                    shakeAnimation(binding.shortCodeLayout, requireContext())
+                } else if (binding.bed1TypeET.text!!.isEmpty()){
+                    shakeAnimation(binding.bed1TypeLayout, requireContext())
+                } else if (amenityIdsList.isEmpty()){
+                    shakeAnimation(binding.add, requireContext())
+                } else {
+                    sendData()
+                }
 
             } else if (page == 2){
 
                 page = 3
 
-                binding.chargePlans.textSize = 20.0f
+                binding.chargePlans.textSize = 18.0f
                 binding.chargePlans.typeface = robotoMedium
                 binding.chargePlans.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
 
@@ -154,6 +171,8 @@ class AddRoomTypeFragment : Fragment(),
             }
         }
 
+        handleCounts()
+
         binding.bed1TypeET.setOnClickListener {
             val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, bedSuggestionList)
             showDropdownBedTypeMenu(adapter, it, binding.bed1TypeET)
@@ -193,7 +212,7 @@ class AddRoomTypeFragment : Fragment(),
 
                     page = 2
 
-                    binding.roomImages.textSize = 20.0f
+                    binding.roomImages.textSize = 18.0f
                     binding.roomImages.typeface = robotoMedium
                     binding.roomImages.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
 
@@ -272,6 +291,70 @@ class AddRoomTypeFragment : Fragment(),
                 Log.d("error", t.localizedMessage)
             }
         })
+    }
+
+
+    private fun handleCounts(){
+        /* --------------- Handle Base Adult -------------------*/
+        binding.addBaseAdult.setOnClickListener {
+            baseAdultCount++
+            binding.baseAdultText.text = ("$baseAdultCount")
+        }
+        binding.removeBaseAdult.setOnClickListener {
+            if (baseAdultCount>1) {
+                baseAdultCount--
+                binding.baseAdultText.text = ("$baseAdultCount")
+            }
+        }
+
+        /* --------------- Handle Base Child -------------------*/
+        binding.addBaseChild.setOnClickListener {
+            baseChildCount++
+            binding.baseChildText.text = ("$baseChildCount")
+        }
+        binding.removeBaseChild.setOnClickListener {
+            if (baseChildCount>1) {
+                baseChildCount--
+                binding.baseChildText.text = ("$baseChildCount")
+            }
+        }
+
+        /* --------------- Handle Max Adult -------------------*/
+        binding.addMaxAdult.setOnClickListener {
+            maxAdultCount++
+            binding.maxAdultText.text = ("$maxAdultCount")
+        }
+        binding.removeMaxAdult.setOnClickListener {
+            if (maxAdultCount>1) {
+                maxAdultCount--
+                binding.maxAdultText.text = ("$maxAdultCount")
+            }
+        }
+
+        /* --------------- Handle Max Child -------------------*/
+        binding.addMaxChild.setOnClickListener {
+            maxChildCount++
+            binding.maxChildText.text = ("$maxChildCount")
+        }
+        binding.removeMaxChild.setOnClickListener {
+            if (maxChildCount>1) {
+                maxChildCount--
+                binding.maxChildText.text = ("$maxChildCount")
+            }
+        }
+
+        /* --------------- Handle Max Occupancy -------------------*/
+        binding.addBaseOccupancy.setOnClickListener {
+            maxOccupancyCount++
+            binding.maxOccupancyText.text = ("$maxOccupancyCount")
+        }
+        binding.removeBaseOccupancy.setOnClickListener {
+            if (maxOccupancyCount>1) {
+                maxOccupancyCount--
+                binding.maxOccupancyText.text = ("$maxOccupancyCount")
+            }
+        }
+
     }
 
     private fun openAddAmenitiesDialog() {

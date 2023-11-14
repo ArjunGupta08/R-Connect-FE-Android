@@ -182,6 +182,7 @@
                             android:orientation="horizontal">
 
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/roomTypeNameLayout"
                                 android:layout_width="0dp"
                                 android:layout_height="@dimen/textInputLayoutHeight"
                                 android:hint="Room Type Name"
@@ -203,6 +204,7 @@
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/shortCodeLayout"
                                 android:layout_width="0dp"
                                 android:layout_height="@dimen/textInputLayoutHeight"
                                 android:hint="Short Code"
@@ -471,7 +473,6 @@
                                         app:layout_constraintTop_toTopOf="parent">
 
                                         <TextView
-                                            android:id="@+id/baseChildText"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:text="Base Childs"
@@ -480,6 +481,7 @@
                                             android:textColor="@color/subtitle"
                                             android:fontFamily="@font/roboto"/>
                                         <TextView
+                                            android:id="@+id/baseChildText"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:text="0"
