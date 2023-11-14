@@ -20,10 +20,12 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.ListPopupWindow
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
@@ -44,8 +46,10 @@ import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FetchPlaceResponse
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.material.textfield.TextInputEditText
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
+import okhttp3.internal.notify
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.Api.configurationApi.ChainConfiguration
@@ -55,6 +59,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRo
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectRoomImagesAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectImagesDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.AmenityDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.GetAmenityData
 import rconnect.retvens.technologies.databinding.FragmentAddPropertyBinding
 import rconnect.retvens.technologies.utils.Const
 import rconnect.retvens.technologies.utils.UserSessionManager
@@ -63,13 +68,14 @@ import rconnect.retvens.technologies.utils.fadeInAnimation
 import rconnect.retvens.technologies.utils.leftInAnimation
 import rconnect.retvens.technologies.utils.prepareFilePart
 import rconnect.retvens.technologies.utils.rightInAnimation
+import rconnect.retvens.technologies.utils.shakeAnimation
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.IndexOutOfBoundsException
 import java.lang.NullPointerException
 
-class AddPropertyFragment : Fragment(), OnMapReadyCallback {
+class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.OnItemClick {
 
     private lateinit var binding : FragmentAddPropertyBinding
     private lateinit var roboto : Typeface
@@ -83,6 +89,8 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
 
     private var isImageSelected = false
     private var isImageEdited = false
+
+    val amenityIdsList = ArrayList<String>()
 
     val itemsPropertyType = ArrayList<String>()
     var propertyType = "Property Type"
@@ -115,52 +123,80 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
         getPropertyTypeRating()
 
 
-
         binding.continueBtn.setOnClickListener {
 
             if (page == 1){
 
-                page = 2
+                if (binding.propertyNameET.text!!.isEmpty()) {
+                    shakeAnimation(binding.propertyNameLayout, requireContext())
+                } else if (binding.propertyTypeET.text!!.isEmpty()) {
+                    shakeAnimation(binding.propertyTypeLayout, requireContext())
+                } else if (binding.propertyRatingET.text!!.isEmpty()) {
+                    shakeAnimation(binding.propertyRatingLayout, requireContext())
+                } else if (amenityIdsList.isEmpty()) {
+                    shakeAnimation(binding.add, requireContext())
+                } else {
+                    page = 2
 
-                binding.addressAndContacts.textSize = 20.0f
-                binding.addressAndContacts.typeface = robotoMedium
-                binding.addressAndContacts.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+                    binding.addressAndContacts.textSize = 18.0f
+                    binding.addressAndContacts.typeface = robotoMedium
+                    binding.addressAndContacts.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.secondary
+                        )
+                    )
 
-                binding.propertyProfile.textSize = 16.0f
-                binding.propertyProfile.typeface = roboto
+                    binding.propertyProfile.textSize = 16.0f
+                    binding.propertyProfile.typeface = roboto
 
-                binding.propertyImages.textSize = 16.0f
-                binding.propertyImages.typeface = roboto
+                    binding.propertyImages.textSize = 16.0f
+                    binding.propertyImages.typeface = roboto
 
-                binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-                binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
-                binding.propertyImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+                    binding.propertyProfile.setBackgroundDrawable(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.corner_top_grey_background
+                        )
+                    )
+                    binding.addressAndContacts.setBackgroundDrawable(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.corner_top_white_background
+                        )
+                    )
+                    binding.propertyImages.setBackgroundDrawable(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.corner_top_grey_background
+                        )
+                    )
 
-                binding.propertyProfileLayout.visibility = View.GONE
-                binding.propertyImagesFrameLayout.visibility = View.GONE
-                binding.addressLayout.visibility = View.VISIBLE
-                rightInAnimation(binding.addressLayout, requireContext())
-
+                    binding.propertyProfileLayout.visibility = View.GONE
+                    binding.propertyImagesFrameLayout.visibility = View.GONE
+                    binding.addressLayout.visibility = View.VISIBLE
+                    rightInAnimation(binding.addressLayout, requireContext())
+                }
             } else if (page == 2){
-
-                page = 3
-
-                binding.propertyImages.textSize = 20.0f
-                binding.propertyImages.typeface = robotoMedium
-                binding.propertyImages.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
-
-                binding.propertyProfile.textSize = 16.0f
-                binding.propertyProfile.typeface = roboto
-
-                binding.addressAndContacts.textSize = 16.0f
-                binding.addressAndContacts.typeface = roboto
-
-                binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-                binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-                binding.propertyImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
-
-                sendData()
-
+                if (binding.addressLine1ET.text!!.isEmpty()) {
+                    shakeAnimation(binding.addressLine1Layout, requireContext())
+                } else if (binding.countryText.text!!.isEmpty()) {
+                    shakeAnimation(binding.countryLayout, requireContext())
+                } else if (binding.stateText.text!!.isEmpty()) {
+                    shakeAnimation(binding.stateLayout, requireContext())
+                }  else if (binding.cityText.text!!.isEmpty()) {
+                    shakeAnimation(binding.cityLayout, requireContext())
+                } else if (binding.pincodeText.text!!.isEmpty()) {
+                    shakeAnimation(binding.pincodeLayout, requireContext())
+                } else if (binding.phoneText.text!!.isEmpty()) {
+                    shakeAnimation(binding.phoneLayout, requireContext())
+                } else if (binding.reservationPhoneText.text!!.isEmpty()) {
+                    shakeAnimation(binding.reservationPhoneLayout, requireContext())
+                }  else if (binding.emailText.text!!.isEmpty()) {
+                    shakeAnimation(binding.emailLayout, requireContext())
+                }  else {
+                    sendData()
+                }
             } else {
                 // Call Send Photos API from Another Fragment
             }
@@ -186,121 +222,12 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
             }
         }
 
-        binding.propertyProfile.setOnClickListener {
-            page = 1
-
-            binding.propertyProfile.textSize = 20.0f
-            binding.propertyProfile.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
-            binding.propertyProfile.typeface = robotoMedium
-
-            binding.addressAndContacts.textSize = 16.0f
-            binding.addressAndContacts.typeface = roboto
-
-            binding.propertyImages.textSize = 16.0f
-            binding.propertyImages.typeface = roboto
-
-            binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
-            binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-            binding.propertyImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-            binding.propertyProfileLayout.visibility = View.VISIBLE
-            binding.addressLayout.visibility = View.GONE
-            binding.propertyImagesFrameLayout.visibility = View.GONE
-            leftInAnimation(binding.propertyProfileLayout, requireContext())
-
-        }
-
-        binding.addressAndContacts.setOnClickListener {
-            page = 2
-
-            binding.addressAndContacts.textSize = 20.0f
-            binding.addressAndContacts.typeface = robotoMedium
-            binding.addressAndContacts.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
-
-            binding.propertyProfile.textSize = 16.0f
-            binding.propertyProfile.typeface = roboto
-
-            binding.propertyImages.textSize = 16.0f
-            binding.propertyImages.typeface = roboto
-
-            binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-            binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
-            binding.propertyImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-
-            binding.propertyProfileLayout.visibility = View.GONE
-            binding.propertyImagesFrameLayout.visibility = View.GONE
-            binding.addressLayout.visibility = View.VISIBLE
-            rightInAnimation(binding.addressLayout, requireContext())
-        }
-
-        binding.propertyImages.setOnClickListener {
-            page = 3
-
-            binding.propertyImages.textSize = 20.0f
-            binding.propertyImages.typeface = robotoMedium
-            binding.propertyImages.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
-
-            binding.propertyProfile.textSize = 16.0f
-            binding.propertyProfile.typeface = roboto
-
-            binding.addressAndContacts.textSize = 16.0f
-            binding.addressAndContacts.typeface = roboto
-
-            binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-            binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-            binding.propertyImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
-
-            val childFragment: Fragment = AddImagesFragment()
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.propertyImagesFrameLayout,childFragment)
-            transaction.commit()
-
-            binding.propertyProfileLayout.visibility = View.GONE
-            binding.propertyImagesFrameLayout.visibility = View.VISIBLE
-            binding.addressLayout.visibility = View.GONE
-            rightInAnimation(binding.addressLayout, requireContext())
-        }
-
         binding.add.setOnClickListener { openAddAmenitiesDialog() }
 
-        binding.replaceImage.setOnClickListener {
-            openGallery()
-            fadeOutAnimation(binding.imageEditLayout, requireContext())
-            isImageEdited = false
-            binding.imageEditLayout.isVisible = false
-        }
-
-        binding.removeImage.setOnClickListener {
-            imageUri = null
-            isImageSelected = false
-            binding.propertyLogoImage.setImageURI(imageUri)
-            binding.propertyLogoImage.isVisible = false
-            binding.propertyLogoLayout.isVisible = true
-            fadeOutAnimation(binding.imageEditLayout, requireContext())
-            isImageEdited = false
-            binding.imageEditLayout.isVisible = false
-        }
-
-        binding.propertyLogoCard.setOnClickListener {
-            if (!isImageSelected){
-                isPropertyLogo = true
-                openGallery()
-            } else {
-                if (!isImageEdited) {
-                    binding.imageEditLayout.isVisible = true
-                    // load the animation
-                    fadeInAnimation(binding.imageEditLayout, requireContext())
-                    isImageEdited = true
-                } else {
-                    fadeOutAnimation(binding.imageEditLayout, requireContext())
-                    binding.imageEditLayout.isVisible = false
-                    isImageEdited = false
-                }
-            }
-        }
+        pickImageWork()
     }
 
     private fun getPropertyType() {
-        itemsPropertyType.add(0,"Property Type")
         val getPropType = RetrofitObject.dropDownApis.getPropertyType()
         getPropType.enqueue(object : Callback<GetPropertyTypeData?> {
             override fun onResponse(
@@ -308,47 +235,15 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
                 response: Response<GetPropertyTypeData?>
             ) {
                 if (isAdded) {
-//                    Toast.makeText(requireContext(), response.code().toString(), Toast.LENGTH_SHORT).show()
                     if (response.isSuccessful) {
-
-                        val data = response.body()!!
-                        data.data.forEach{
+                        val data = response.body()!!.data
+                        data.forEach{
                             itemsPropertyType.add(it.propertyType)
                         }
-                        val spinner: Spinner = binding.spinner
-                        val adapter = ArrayAdapter(
-                            requireContext(),
-                            android.R.layout.simple_spinner_dropdown_item,
-                            itemsPropertyType
-                        )
-                        adapter.setDropDownViewResource(R.layout.simple_dropdown_item_1line)
-                        spinner.adapter = adapter
-                        spinner.setSelection(0) // Set the default selection to the first item
-                        spinner.onItemSelectedListener =
-                            object : AdapterView.OnItemSelectedListener {
-                                override fun onItemSelected(
-                                    parent: AdapterView<*>?,
-                                    view: View?,
-                                    position: Int,
-                                    id: Long
-                                ) {
-                                    val selectedItem = itemsPropertyType[position]
-                                    // Handle the selected item here
-                                    if (selectedItem == "Property Type") {
-
-                                    } else {
-                                        propertyType = selectedItem.toString()
-                                        Toast.makeText(
-                                            requireContext(),
-                                            "Selected: $selectedItem",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
-                                }
-                                override fun onNothingSelected(parent: AdapterView<*>?) {
-                                    // Handle the case when nothing is selected (optional)
-                                }
-                            }
+                        binding.propertyTypeET.setOnClickListener {
+                            val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, itemsPropertyType)
+                            showDropdownMenu(adapter, it, binding.propertyTypeET)
+                        }
                     }
                 }
             }
@@ -359,7 +254,6 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun getPropertyTypeRating() {
-        itemsPropertyTypeRating.add(0,"Property Ratting")
         val getPropType = RetrofitObject.dropDownApis.getPropertyTypeRating()
         getPropType.enqueue(object : Callback<GetPropertyTypeRatingData?> {
             override fun onResponse(
@@ -370,39 +264,14 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
 //                    Toast.makeText(requireContext(), response.code().toString(), Toast.LENGTH_SHORT).show()
                     if (response.isSuccessful) {
 
-                        val data = response.body()!!
-                        data.data.forEach{
+                        val data = response.body()!!.data
+                        data.forEach{
                             itemsPropertyTypeRating.add(it.propertyRating)
                         }
-                        val spinner: Spinner = binding.propertyRattingSpinner
-                        val adapter = ArrayAdapter(
-                            requireContext(),
-                            android.R.layout.simple_spinner_dropdown_item,
-                            itemsPropertyTypeRating
-                        )
-                        adapter.setDropDownViewResource(R.layout.simple_dropdown_item_1line)
-                        spinner.adapter = adapter
-                        spinner.setSelection(0) // Set the default selection to the first item
-                        spinner.onItemSelectedListener =
-                            object : AdapterView.OnItemSelectedListener {
-                                override fun onItemSelected(
-                                    parent: AdapterView<*>?,
-                                    view: View?,
-                                    position: Int,
-                                    id: Long
-                                ) {
-                                    val selectedItem = itemsPropertyTypeRating[position]
-                                    // Handle the selected item here
-                                    if (selectedItem == "Property Type") {
-
-                                    } else {
-                                        propertyTypeRating = selectedItem.toString()
-                                    }
-                                }
-                                override fun onNothingSelected(parent: AdapterView<*>?) {
-                                    // Handle the case when nothing is selected (optional)
-                                }
-                            }
+                        binding.propertyRatingET.setOnClickListener {
+                            val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, itemsPropertyTypeRating)
+                            showDropdownMenu(adapter, it, binding.propertyRatingET)
+                        }
                     }
                 }
             }
@@ -419,7 +288,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
         val propertyRating = propertyTypeRating
         val websiteUrl = binding.websiteText.text.toString()
         val description = binding.descriptionET.text.toString()
-        val amenityIds = "igig,ihinm"
+        val amenityIds = amenityIdsList.toString()
         val address1 = binding.addressLine1ET.text.toString()
         val address2 = binding.addressLine2ET.text.toString()
         val postCode = binding.pincodeText.text.toString()
@@ -472,6 +341,22 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
                             respons.message.toString(),
                             Toast.LENGTH_SHORT
                         ).show()
+
+                        page = 3
+
+                        binding.propertyImages.textSize = 18.0f
+                        binding.propertyImages.typeface = robotoMedium
+                        binding.propertyImages.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+
+                        binding.propertyProfile.textSize = 16.0f
+                        binding.propertyProfile.typeface = roboto
+
+                        binding.addressAndContacts.textSize = 16.0f
+                        binding.addressAndContacts.typeface = roboto
+
+                        binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+                        binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+                        binding.propertyImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
 
                         val childFragment: Fragment = AddImagesFragment()
                         val transaction = requireActivity().supportFragmentManager.beginTransaction()
@@ -529,6 +414,22 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
                             Toast.LENGTH_SHORT
                         ).show()
 
+                        page = 3
+
+                        binding.propertyImages.textSize = 18.0f
+                        binding.propertyImages.typeface = robotoMedium
+                        binding.propertyImages.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+
+                        binding.propertyProfile.textSize = 16.0f
+                        binding.propertyProfile.typeface = roboto
+
+                        binding.addressAndContacts.textSize = 16.0f
+                        binding.addressAndContacts.typeface = roboto
+
+                        binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+                        binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+                        binding.propertyImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+
                         val childFragment: Fragment = AddImagesFragment()
                         val transaction = requireActivity().supportFragmentManager.beginTransaction()
                         transaction.replace(R.id.propertyImagesFrameLayout,childFragment)
@@ -564,6 +465,45 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
         startActivityForResult(intent,PICK_IMAGE_REQUEST_CODE)
     }
 
+    private fun pickImageWork(){
+
+        binding.replaceImage.setOnClickListener {
+            openGallery()
+            fadeOutAnimation(binding.imageEditLayout, requireContext())
+            isImageEdited = false
+            binding.imageEditLayout.isVisible = false
+        }
+
+        binding.removeImage.setOnClickListener {
+            imageUri = null
+            isImageSelected = false
+            binding.propertyLogoImage.setImageURI(imageUri)
+            binding.propertyLogoImage.isVisible = false
+            binding.propertyLogoLayout.isVisible = true
+            fadeOutAnimation(binding.imageEditLayout, requireContext())
+            isImageEdited = false
+            binding.imageEditLayout.isVisible = false
+        }
+
+        binding.propertyLogoCard.setOnClickListener {
+            if (!isImageSelected){
+                isPropertyLogo = true
+                openGallery()
+            } else {
+                if (!isImageEdited) {
+                    binding.imageEditLayout.isVisible = true
+                    // load the animation
+                    fadeInAnimation(binding.imageEditLayout, requireContext())
+                    isImageEdited = true
+                } else {
+                    fadeOutAnimation(binding.imageEditLayout, requireContext())
+                    binding.imageEditLayout.isVisible = false
+                    isImageEdited = false
+                }
+            }
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -593,18 +533,22 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
         dialog.setContentView(R.layout.dialog_add_amenities)
 
         val createNewAmenityBtn = dialog.findViewById<TextView>(R.id.createNewAmenityBtn)
+        createNewAmenityBtn.visibility = View.GONE
         createNewAmenityBtn.setOnClickListener {
-            openCreateNewAmenityDialog()
+//            openCreateNewAmenityDialog()
         }
         val cancel = dialog.findViewById<TextView>(R.id.cancel)
         cancel.setOnClickListener {
             dialog.dismiss()
         }
 
+        val saveBtn = dialog.findViewById<CardView>(R.id.saveBtn)
+        saveBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+
         val amenitiesRecycler = dialog.findViewById<RecyclerView>(R.id.amenitiesRecycler)
         amenitiesRecycler.layoutManager = GridLayoutManager(requireContext(), 8)
-
-        val amenities = ArrayList<AddAmenitiesDataClass>()
 
         val getAmenity = RetrofitObject.getGeneralsAPI.getAmenityApi()
         getAmenity.enqueue(object : Callback<AmenityDataClass?> {
@@ -612,11 +556,11 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
                 call: Call<AmenityDataClass?>,
                 response: Response<AmenityDataClass?>
             ) {
-
                 if (response.isSuccessful) {
                     val addAmenitiesAdapter = AddAmenitiesAdapter(requireContext(), response.body()!!.data)
                     amenitiesRecycler.adapter = addAmenitiesAdapter
                     addAmenitiesAdapter.notifyDataSetChanged()
+                    addAmenitiesAdapter.setOnClickListener(this@AddPropertyFragment)
                 }
             }
 
@@ -630,52 +574,6 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
 //        dialog.window?.setGravity(Gravity.BOTTOM)
-    }
-    private fun openCreateNewAmenityDialog() {
-        val dialog = Dialog(requireContext())
-        dialog.setCancelable(true)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.dialog_create_amenities)
-
-        val cancel = dialog.findViewById<TextView>(R.id.cancel)
-        cancel.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        val amenitiesIconRecycler = dialog.findViewById<RecyclerView>(R.id.amenitiesIconRecycler)
-        amenitiesIconRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
-
-        val amenities = ArrayList<AmenitiesIconDataClass>()
-
-        amenities.add(AmenitiesIconDataClass(R.drawable.check))
-        amenities.add(AmenitiesIconDataClass(R.drawable.check))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_keys))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_keys))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_add))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_add))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-
-        val amenitiesIconAdapter = AmenitiesIconAdapter(requireContext(), amenities)
-        amenitiesIconRecycler.adapter = amenitiesIconAdapter
-
-        dialog.show()
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-
-
     }
 
     private fun placesAPI() {
@@ -812,5 +710,108 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    override fun onItemListUpdate(selectedAmenitiesList: ArrayList<GetAmenityData>) {
+        binding.selectedAmenitiesRecycler.layoutManager = GridLayoutManager(requireContext(), 4)
+        val selectedAmenitiesAdapter = SelectedAmenitiesAdapter(requireContext(), selectedAmenitiesList)
+        binding.selectedAmenitiesRecycler.adapter = selectedAmenitiesAdapter
+        selectedAmenitiesAdapter.notifyDataSetChanged()
+
+        selectedAmenitiesList.forEach {
+            if (!amenityIdsList.contains(it.amenityId)) {
+                amenityIdsList.add(it.amenityId)
+            } else {
+                amenityIdsList.remove(it.amenityId)
+            }
+        }
+    }
+
+    fun onTabsClick() {
+
+        binding.propertyProfile.setOnClickListener {
+            page = 1
+
+            binding.propertyProfile.textSize = 18.0f
+            binding.propertyProfile.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+            binding.propertyProfile.typeface = robotoMedium
+
+            binding.addressAndContacts.textSize = 16.0f
+            binding.addressAndContacts.typeface = roboto
+
+            binding.propertyImages.textSize = 16.0f
+            binding.propertyImages.typeface = roboto
+
+            binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+            binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+            binding.propertyImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+            binding.propertyProfileLayout.visibility = View.VISIBLE
+            binding.addressLayout.visibility = View.GONE
+            binding.propertyImagesFrameLayout.visibility = View.GONE
+            leftInAnimation(binding.propertyProfileLayout, requireContext())
+
+        }
+
+        binding.addressAndContacts.setOnClickListener {
+            page = 2
+
+            binding.addressAndContacts.textSize = 20.0f
+            binding.addressAndContacts.typeface = robotoMedium
+            binding.addressAndContacts.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+
+            binding.propertyProfile.textSize = 16.0f
+            binding.propertyProfile.typeface = roboto
+
+            binding.propertyImages.textSize = 16.0f
+            binding.propertyImages.typeface = roboto
+
+            binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+            binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+            binding.propertyImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+
+            binding.propertyProfileLayout.visibility = View.GONE
+            binding.propertyImagesFrameLayout.visibility = View.GONE
+            binding.addressLayout.visibility = View.VISIBLE
+            rightInAnimation(binding.addressLayout, requireContext())
+        }
+
+        binding.propertyImages.setOnClickListener {
+            page = 3
+
+            binding.propertyImages.textSize = 20.0f
+            binding.propertyImages.typeface = robotoMedium
+            binding.propertyImages.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+
+            binding.propertyProfile.textSize = 16.0f
+            binding.propertyProfile.typeface = roboto
+
+            binding.addressAndContacts.textSize = 16.0f
+            binding.addressAndContacts.typeface = roboto
+
+            binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+            binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+            binding.propertyImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+
+            val childFragment: Fragment = AddImagesFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.propertyImagesFrameLayout,childFragment)
+            transaction.commit()
+
+            binding.propertyProfileLayout.visibility = View.GONE
+            binding.propertyImagesFrameLayout.visibility = View.VISIBLE
+            binding.addressLayout.visibility = View.GONE
+            rightInAnimation(binding.addressLayout, requireContext())
+        }
+    }
+
+    private fun showDropdownMenu(adapter: ArrayAdapter<String>, anchorView: View, et : TextInputEditText) {
+        val listPopupWindow = ListPopupWindow(requireContext())
+        listPopupWindow.setAdapter(adapter)
+        listPopupWindow.anchorView = anchorView
+        listPopupWindow.setOnItemClickListener { _, _, position, _ ->
+            val selectedItem = adapter.getItem(position)
+            et.setText(selectedItem)
+            listPopupWindow.dismiss()
+        }
+        listPopupWindow.show()
+    }
 
 }

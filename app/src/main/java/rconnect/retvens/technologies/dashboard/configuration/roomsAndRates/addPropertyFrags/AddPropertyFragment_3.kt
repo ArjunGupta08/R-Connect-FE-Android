@@ -66,8 +66,6 @@ class AddPropertyFragment_3 : Fragment() {
         val amenitiesRecycler = dialog.findViewById<RecyclerView>(R.id.amenitiesRecycler)
         amenitiesRecycler.layoutManager = GridLayoutManager(requireContext(), 8)
 
-        val amenities = ArrayList<AddAmenitiesDataClass>()
-
         val getAmenity = RetrofitObject.getGeneralsAPI.getAmenityApi()
         getAmenity.enqueue(object : Callback<AmenityDataClass?> {
             override fun onResponse(
@@ -130,8 +128,8 @@ class AddPropertyFragment_3 : Fragment() {
         amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
         amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
 
-        val amenitiesIconAdapter = AmenitiesIconAdapter(requireContext(), amenities)
-        amenitiesIconRecycler.adapter = amenitiesIconAdapter
+//        val amenitiesIconAdapter = AmenitiesIconAdapter(requireContext(), amenities)
+//        amenitiesIconRecycler.adapter = amenitiesIconAdapter
 
         dialog.show()
         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
