@@ -7,9 +7,23 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.google.android.material.card.MaterialCardView
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.GetAmenityIconData
 
-class AmenitiesIconAdapter(val context: Context, private val itemList: List<AmenitiesIconDataClass>) : RecyclerView.Adapter<AmenitiesIconAdapter.ViewHolder>() {
+class AmenitiesIconAdapter(val context: Context, private val itemList: List<GetAmenityIconData>) : RecyclerView.Adapter<AmenitiesIconAdapter.ViewHolder>() {
+
+    var clickListener : OnIconClick ?= null
+    fun setOnIconClick(listener : OnIconClick){
+        clickListener = listener
+    }
+    interface OnIconClick{
+        fun getIconLinkOnClick(amenityIconLinkUrl : String)
+    }
+
+    var selectedItemPos = -1
+    var lastItemSelectedPos = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_icon, parent, false)
@@ -19,8 +33,25 @@ class AmenitiesIconAdapter(val context: Context, private val itemList: List<Amen
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = itemList[position]
 
-        holder.amenityIcon.setImageResource(item.amenityIcon)
+        Glide.with(context).load(item.amenityIconLink).into(holder.amenityIcon)
 
+        if (position == selectedItemPos) {
+            holder.card.strokeWidth = 3
+        } else {
+            holder.card.strokeWidth = 0
+        }
+
+        holder.card.setOnClickListener {
+            selectedItemPos = position
+            if(lastItemSelectedPos == -1) {
+                lastItemSelectedPos = selectedItemPos
+            } else {
+                notifyItemChanged(lastItemSelectedPos)
+                lastItemSelectedPos = selectedItemPos
+            }
+            notifyItemChanged(selectedItemPos)
+            clickListener?.getIconLinkOnClick(item.amenityIconLink)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -30,6 +61,7 @@ class AmenitiesIconAdapter(val context: Context, private val itemList: List<Amen
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val amenityIcon = itemView.findViewById<ImageView>(R.id.icon)
+        val card = itemView.findViewById<MaterialCardView>(R.id.card)
 
     }
 }

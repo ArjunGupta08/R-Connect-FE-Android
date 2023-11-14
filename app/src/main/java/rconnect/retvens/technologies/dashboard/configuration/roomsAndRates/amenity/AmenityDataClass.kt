@@ -19,3 +19,13 @@ data class GetAmenityTypeData (
     val amenityTypeId : String,
     val amenityType : String
 )
+
+        /* Get Amenity Icon */
+data class GetAmenityIcon (
+    val `data` : ArrayList<GetAmenityIconData>
+)
+data class GetAmenityIconData (
+    val amenityIconId : String,
+    val amenityIconLink : String,
+    val amenityIconTags : ArrayList<String>,
+)

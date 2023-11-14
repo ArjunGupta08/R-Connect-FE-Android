@@ -46,6 +46,7 @@
             app:layout_constraintTop_toBottomOf="@id/aA">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/amenityNameLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
@@ -64,16 +65,18 @@
                 app:endIconTint="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/amenityNameET"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/roboto"
-                    android:inputType="number"
+                    android:inputType="text"
                     android:textColorHint="@color/secondary"
                     android:textColor="@color/secondary" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/shortCodeLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
@@ -90,6 +93,7 @@
                 app:boxCornerRadiusTopEnd="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/shortCodeET"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/roboto"
@@ -100,6 +104,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/amenityTypeLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
