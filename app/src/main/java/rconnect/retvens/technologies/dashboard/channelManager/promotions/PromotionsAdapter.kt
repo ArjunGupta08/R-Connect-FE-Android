@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import rconnect.retvens.technologies.R
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AddAmenitiesDataClass
 
 class PromotionsAdapter(val context: Context, private val itemList: List<PromotionsDataClass>) : RecyclerView.Adapter<PromotionsAdapter.ViewHolder>() {
 
