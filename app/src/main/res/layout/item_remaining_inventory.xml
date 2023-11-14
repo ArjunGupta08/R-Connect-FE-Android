@@ -95,12 +95,12 @@
 <!--                android:orientation="vertical"-->
 <!--                app:layout_constraintGuide_percent=".845"/>-->
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/g100"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent=".97"/>
+<!--            <androidx.constraintlayout.widget.Guideline-->
+<!--                android:id="@+id/g100"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical"-->
+<!--                app:layout_constraintGuide_percent=".97"/>-->
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/inventory_1"
@@ -345,7 +345,7 @@
                 android:layout_gravity="center"
                 android:maxLength="3"
                 app:layout_constraintStart_toEndOf="@id/inventory_9"
-                app:layout_constraintEnd_toEndOf="@id/g100"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:cardCornerRadius="0dp"
                 android:elevation="0dp"

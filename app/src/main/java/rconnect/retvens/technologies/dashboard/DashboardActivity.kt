@@ -44,6 +44,7 @@ import rconnect.retvens.technologies.dashboard.configuration.others.seasons.Seas
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.TransportationTypesFragment
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.identityType.IdentityDocumentsFragment
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.ReservationTypeFragment
+import rconnect.retvens.technologies.dashboard.configuration.others.Business_sourcesFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.AmenitiesFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.InclusionPlansFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.RatePlan.RatePlanFragment
@@ -433,6 +434,10 @@ class DashboardActivity : AppCompatActivity() {
                 }
                 binding.transportationTypesLayout.setOnClickListener {
                     replaceFragment(TransportationTypesFragment())
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                }
+                binding.businessSourceLayout.setOnClickListener {
+                    replaceFragment(Business_sourcesFragment())
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
                 }
             }

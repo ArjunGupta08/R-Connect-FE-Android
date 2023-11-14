@@ -1503,6 +1503,31 @@
                                             android:textSize="@dimen/H5" />
                                     </LinearLayout>
                                     <LinearLayout
+                                        android:id="@+id/businessSourceLayout"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        android:background="@color/black"
+                                        android:layout_marginStart="20dp"
+                                        android:layout_marginTop="12dp"
+                                        android:paddingStart="20dp"
+                                        android:orientation="horizontal"
+                                        android:gravity="center_vertical">
+                                        <ImageView
+                                            android:layout_width="28dp"
+                                            android:layout_height="28dp"
+                                            android:src="@drawable/svg_chart"
+                                            app:tint="@color/white"/>
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Business Source"
+                                            android:fontFamily="@font/roboto"
+                                            android:textColor="@color/white"
+                                            android:layout_marginStart="10dp"
+                                            android:textSize="@dimen/H5" />
+                                    </LinearLayout>
+                                    <LinearLayout
                                         android:id="@+id/seasons_ll"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
