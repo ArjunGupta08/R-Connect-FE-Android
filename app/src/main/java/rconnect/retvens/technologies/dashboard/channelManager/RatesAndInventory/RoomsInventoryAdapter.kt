@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import rconnect.retvens.technologies.R
 
 class RoomsInventoryAdapter(val context: Context, private val inventory:ResponseData) :
@@ -22,16 +23,27 @@ class RoomsInventoryAdapter(val context: Context, private val inventory:Response
 
     class InventoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val roomType:TextView = itemView.findViewById(R.id.roomType)
-        val inventory1: TextView = itemView.findViewById(R.id.inventory_1)
-        val inventory2: TextView = itemView.findViewById(R.id.inventory_2)
-        val inventory3: TextView = itemView.findViewById(R.id.inventory_3)
-        val inventory4: TextView = itemView.findViewById(R.id.inventory_4)
-        val inventory5: TextView = itemView.findViewById(R.id.inventory_5)
-        val inventory6: TextView = itemView.findViewById(R.id.inventory_6)
-        val inventory7: TextView = itemView.findViewById(R.id.inventory_7)
-        val inventory8: TextView = itemView.findViewById(R.id.inventory_8)
-        val inventory9: TextView = itemView.findViewById(R.id.inventory_9)
-        val inventory10: TextView = itemView.findViewById(R.id.inventory_10)
+        val inventory1: TextView = itemView.findViewById(R.id.inventory_)
+        val inventory2: TextView = itemView.findViewById(R.id.inventory_20)
+        val inventory3: TextView = itemView.findViewById(R.id.inventory_30)
+        val inventory4: TextView = itemView.findViewById(R.id.inventory_40)
+        val inventory5: TextView = itemView.findViewById(R.id.inventory_50)
+        val inventory6: TextView = itemView.findViewById(R.id.inventory_60)
+        val inventory7: TextView = itemView.findViewById(R.id.inventory_70)
+        val inventory8: TextView = itemView.findViewById(R.id.inventory_80)
+        val inventory9: TextView = itemView.findViewById(R.id.inventory_90)
+        val inventory10: TextView = itemView.findViewById(R.id.inventory_100)
+
+//        val inventory: TextView = itemView.findViewById(R.id.inventory_1)
+//        val inventory20: TextView = itemView.findViewById(R.id.inventory_2)
+//        val inventory30: TextView = itemView.findViewById(R.id.inventory_3)
+//        val inventory40: TextView = itemView.findViewById(R.id.inventory_4)
+//        val inventory50: TextView = itemView.findViewById(R.id.inventory_5)
+//        val inventory60: TextView = itemView.findViewById(R.id.inventory_6)
+//        val inventory70: TextView = itemView.findViewById(R.id.inventory_7)
+//        val inventory80: TextView = itemView.findViewById(R.id.inventory_8)
+//        val inventory90: TextView = itemView.findViewById(R.id.inventory_9)
+//        val inventory100: TextView = itemView.findViewById(R.id.inventory_10)
         val recyclerView = itemView.findViewById<RecyclerView>(R.id.roomPlan_recycler)
 
 
