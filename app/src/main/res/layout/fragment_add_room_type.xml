@@ -189,6 +189,7 @@
                         app:endIconTint="@color/black">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/roomTypeNameEt"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
@@ -210,6 +211,7 @@
                         app:endIconTint="@color/black">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/shortCodeET"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:textSize="@dimen/H5"
@@ -397,6 +399,7 @@
                                     android:textColor="@color/subtitle"
                                     android:fontFamily="@font/roboto"/>
                                 <TextView
+                                    android:id="@+id/baseAdultText"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="1"
@@ -460,6 +463,7 @@
                                 app:layout_constraintTop_toTopOf="parent">
 
                                 <TextView
+                                    android:id="@+id/baseChildText"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Base Childs"
@@ -546,6 +550,7 @@
                                     android:textColor="@color/subtitle"
                                     android:fontFamily="@font/roboto"/>
                                 <TextView
+                                    android:id="@+id/maxAdultText"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="1"
@@ -616,6 +621,7 @@
                                     android:textColor="@color/subtitle"
                                     android:fontFamily="@font/roboto"/>
                                 <TextView
+                                    android:id="@+id/maxChildText"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="1"
@@ -695,6 +701,7 @@
                                     android:textColor="@color/subtitle"
                                     android:fontFamily="@font/roboto"/>
                                 <TextView
+                                    android:id="@+id/maxOccupancyText"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="1"
@@ -753,6 +760,7 @@
                         app:cardElevation="2dp">
 
                         <EditText
+                            android:id="@+id/roomDescriptionEt"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/TextAppearance.AppCompat.Body1"

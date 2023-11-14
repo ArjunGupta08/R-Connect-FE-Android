@@ -14,18 +14,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.ArrayAdapter
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.ListPopupWindow
+import android.widget.Switch
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
+import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.RetrofitObject
+import rconnect.retvens.technologies.Api.configurationApi.SingleConfiguration
+import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AddAmenitiesAdapter
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AddAmenitiesDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AmenitiesIconAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AmenitiesIconDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectBathroomImagesAdapter
@@ -34,10 +43,15 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRo
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectRoomImagesAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectViewImagesAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.AmenityDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.GetAmenityIcon
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.PostAmenityData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.FragmentAddRoomTypeBinding
+import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.Const
+import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.rightInAnimation
+import rconnect.retvens.technologies.utils.shakeAnimation
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -46,9 +60,17 @@ class AddRoomTypeFragment : Fragment(),
     SelectRoomImagesAdapter.OnItemClickListener,
     SelectViewImagesAdapter.OnItemClickListener,
     SelectBathroomImagesAdapter.OnItemClickListener,
-    SelectBedImagesAdapter.OnItemClickListener {
+    SelectBedImagesAdapter.OnItemClickListener,
+    AddBedTypeAdapter.BedTypeIdInterface,
+    AmenitiesIconAdapter.OnIconClick {
 
     private lateinit var binding:FragmentAddRoomTypeBinding
+
+    val bedSuggestionList = ArrayList<GetBedTypeDataClass>()
+
+    val amenities = ArrayList<AmenitiesIconDataClass>()
+    val amenitiesType = ArrayList<String>()
+    var amenityIconLink = ""
 
     private lateinit var imageUri: Uri
     private var PICK_IMAGE_REQUEST_CODE : Int = 0
@@ -61,7 +83,8 @@ class AddRoomTypeFragment : Fragment(),
 
     private var page = 1
     private var bedCount = 1
-    private var bedTypeList = ArrayList<String>()
+    private var bedCountList = ArrayList<String>()
+    private var bedTypeIds = ArrayList<String>()
     private lateinit var addBedTypeAdapter: AddBedTypeAdapter
 
     private lateinit var roboto : Typeface
@@ -91,31 +114,7 @@ class AddRoomTypeFragment : Fragment(),
 
             if (page == 1){
 
-                page = 2
-
-                binding.roomImages.textSize = 20.0f
-                binding.roomImages.typeface = robotoMedium
-                binding.roomImages.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
-
-                binding.roomProfile.textSize = 16.0f
-                binding.roomProfile.typeface = roboto
-
-                binding.chargePlans.textSize = 16.0f
-                binding.chargePlans.typeface = roboto
-
-                binding.roomImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
-                binding.roomProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-                binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-
-                val childFragment: Fragment = AddImagesFragment()
-                val transaction = requireActivity().supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.createRoomFragContainer,childFragment)
-                transaction.commit()
-
-                binding.frame.visibility = View.GONE
-                binding.createRoomFragContainer.visibility = View.VISIBLE
-                rightInAnimation(binding.createRoomFragContainer, requireContext())
-
+                sendData()
 
             } else if (page == 2){
 
@@ -172,6 +171,273 @@ class AddRoomTypeFragment : Fragment(),
                 dashboardFragmentContainer.visibility = View.GONE
             }
         }
+
+        binding.bedTypeRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
+
+        binding.add.setOnClickListener { openAddAmenitiesDialog() }
+
+        getBedType()
+    }
+
+    fun sendData(){
+        val send = OAuthClient<SingleConfiguration>(requireContext()).create(SingleConfiguration::class.java).createRoomApi(
+            CreateRoomData(
+                UserSessionManager(requireContext()).getUserId().toString(),
+                UserSessionManager(requireContext()).getPropertyId().toString(),
+                binding.baseAdultText.text.toString(),
+                binding.baseChildText.text.toString(),
+                binding.shortCodeET.text.toString(),
+                binding.roomDescriptionEt.text.toString(),
+                binding.roomTypeNameEt.text.toString(),
+                binding.maxAdultText.text.toString(),
+                binding.maxChildText.text.toString(),
+                binding.maxOccupancyText.text.toString(),
+                binding.bedCount.text.toString(),
+                binding.bedCount.text.toString(),
+                "Android",
+                "Android"
+                )
+        )
+        send.enqueue(object : Callback<ResponseData?> {
+            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+
+                Log.d("sent", response.message())
+
+                if (response.isSuccessful){
+
+                    page = 2
+
+                    binding.roomImages.textSize = 20.0f
+                    binding.roomImages.typeface = robotoMedium
+                    binding.roomImages.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+
+                    binding.roomProfile.textSize = 16.0f
+                    binding.roomProfile.typeface = roboto
+
+                    binding.chargePlans.textSize = 16.0f
+                    binding.chargePlans.typeface = roboto
+
+                    binding.roomImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+                    binding.roomProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+                    binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+
+                    val childFragment: Fragment = AddImagesFragment()
+                    val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.createRoomFragContainer,childFragment)
+                    transaction.commit()
+
+                    binding.frame.visibility = View.GONE
+                    binding.createRoomFragContainer.visibility = View.VISIBLE
+                    rightInAnimation(binding.createRoomFragContainer, requireContext())
+
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
+    }
+
+    private fun bedType(){
+        binding.addBeds.setOnClickListener {
+            bedCount++
+            binding.bedCount.setText("$bedCount")
+            bedCountList.add("$bedCount")
+            addBedTypeAdapter.notifyDataSetChanged()
+        }
+        binding.removeBeds.setOnClickListener {
+            if (bedCount>1) {
+                bedCountList.remove("$bedCount")
+                bedCount--
+                binding.bedCount.setText("$bedCount")
+                addBedTypeAdapter.notifyDataSetChanged()
+            }
+        }
+
+        addBedTypeAdapter = AddBedTypeAdapter(requireContext(), bedCountList, bedSuggestionList)
+        addBedTypeAdapter.setOnBedSelection(this@AddRoomTypeFragment)
+        binding.bedTypeRecycler.adapter = addBedTypeAdapter
+    }
+    private fun getBedType() {
+        val getBed = RetrofitObject.dropDownApis.getBedType()
+        getBed.enqueue(object : Callback<GetBedTypeData?> {
+            override fun onResponse(
+                call: Call<GetBedTypeData?>,
+                response: Response<GetBedTypeData?>
+            ) {
+                if (response.isSuccessful){
+                    val data = response.body()!!
+                    bedSuggestionList.addAll(data.data)
+                    bedType()
+                } else {
+                    Toast.makeText(requireContext(), response.body()!!.copy().toString(), Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onFailure(call: Call<GetBedTypeData?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
+    }
+
+    private fun openAddAmenitiesDialog() {
+        val dialog = Dialog(requireContext())
+        dialog.setCancelable(true)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_add_amenities)
+
+        val createNewAmenityBtn = dialog.findViewById<TextView>(R.id.createNewAmenityBtn)
+        createNewAmenityBtn.setOnClickListener {
+            openCreateNewAmenityDialog()
+        }
+        val cancel = dialog.findViewById<TextView>(R.id.cancel)
+        cancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        val amenitiesRecycler = dialog.findViewById<RecyclerView>(R.id.amenitiesRecycler)
+        amenitiesRecycler.layoutManager = GridLayoutManager(requireContext(), 8)
+
+        val getAmenity = RetrofitObject.getGeneralsAPI.getAmenityApi()
+        getAmenity.enqueue(object : Callback<AmenityDataClass?> {
+            override fun onResponse(
+                call: Call<AmenityDataClass?>,
+                response: Response<AmenityDataClass?>
+            ) {
+
+                if (response.isSuccessful) {
+                    val addAmenitiesAdapter = AddAmenitiesAdapter(requireContext(), response.body()!!.data)
+                    amenitiesRecycler.adapter = addAmenitiesAdapter
+                    addAmenitiesAdapter.notifyDataSetChanged()
+                }
+            }
+
+            override fun onFailure(call: Call<AmenityDataClass?>, t: Throwable) {
+                Log.d("error" , t.localizedMessage)
+            }
+        })
+
+        dialog.show()
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+//        dialog.window?.setGravity(Gravity.BOTTOM)
+    }
+    private fun openCreateNewAmenityDialog() {
+        val dialog = Dialog(requireContext())
+        dialog.setCancelable(true)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_create_amenities)
+
+        val amenityNameLayout = dialog.findViewById<TextInputLayout>(R.id.amenityNameLayout)
+        val shortCodeLayout = dialog.findViewById<TextInputLayout>(R.id.shortCodeLayout)
+        val amenityTypeLayout = dialog.findViewById<TextInputLayout>(R.id.amenityTypeLayout)
+
+        val amenityNameET = dialog.findViewById<TextInputEditText>(R.id.amenityNameET)
+        val shortCodeET = dialog.findViewById<TextInputEditText>(R.id.shortCodeET)
+        val amenityTypeET = dialog.findViewById<TextInputEditText>(R.id.amenityTypeET)
+        val switchBtn = dialog.findViewById<Switch>(R.id.switchBtn)
+
+        val amenitiesIconRecycler = dialog.findViewById<RecyclerView>(R.id.amenitiesIconRecycler)
+        amenitiesIconRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
+
+        val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, amenitiesType)
+        // Set a click listener for the end icon
+        amenityTypeET.setOnClickListener {
+            showDropdownMenu(adapter, it, amenityTypeET)
+        }
+
+        val amenityI = RetrofitObject.getGeneralsAPI.getAmenityIconApi()
+        amenityI.enqueue(object : Callback<GetAmenityIcon?> {
+            override fun onResponse(
+                call: Call<GetAmenityIcon?>,
+                response: Response<GetAmenityIcon?>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d(requireContext().javaClass.name, response.message())
+                    Log.d(this@AddRoomTypeFragment.activity?.localClassName, response.message())
+                    val amenitiesIconAdapter = AmenitiesIconAdapter(requireContext(), response.body()!!.data)
+                    amenitiesIconRecycler.adapter = amenitiesIconAdapter
+                    amenitiesIconAdapter.setOnIconClick(this@AddRoomTypeFragment)
+                } else {
+                    Log.d("error", response.code().toString())
+                }
+            }
+
+            override fun onFailure(call: Call<GetAmenityIcon?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
+
+        val saveBtn = dialog.findViewById<CardView>(R.id.saveBtn)
+        saveBtn.setOnClickListener {
+            if (amenityNameET.text!!.isEmpty()) {
+                shakeAnimation(amenityNameLayout, requireContext())
+            } else if (shortCodeET.text!!.isEmpty()) {
+                shakeAnimation(shortCodeLayout, requireContext())
+            } else if (amenityTypeET.text!!.isEmpty()) {
+                shakeAnimation(amenityTypeLayout, requireContext())
+            } else if (amenityIconLink == "") {
+                Toast.makeText(requireContext(), "Please Select Icon", Toast.LENGTH_SHORT).show()
+            } else {
+                saveData(
+                    amenityNameET.text.toString(),
+                    shortCodeET.text.toString(),
+                    amenityTypeET.text.toString(),
+                    switchBtn.isChecked,
+                    dialog
+                )
+            }
+        }
+
+        val cancel = dialog.findViewById<TextView>(R.id.cancel)
+        cancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+    }
+
+    private fun saveData(amenityName: String, shortCode: String, amenityType: String, amenityIconCheck: Boolean, dialog: Dialog) {
+        val send = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).postAmenityApi(
+            PostAmenityData(UserSessionManager(requireContext()).getUserId().toString(), shortCode, amenityName, UserSessionManager(requireContext()).getPropertyId().toString(), amenityType, "$amenityIconCheck", amenityIconLink)
+        )
+        send.enqueue(object : Callback<ResponseData?> {
+            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                if (response.isSuccessful){
+                    Toast.makeText(requireContext(), "$amenityIconCheck", Toast.LENGTH_SHORT).show()
+                    Log.d("response", response.body()!!.message)
+                    dialog.dismiss()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
+    }
+
+    private fun showDropdownMenu(adapter: ArrayAdapter<String>, anchorView: View, et : TextInputEditText) {
+        val listPopupWindow = ListPopupWindow(requireContext())
+        listPopupWindow.setAdapter(adapter)
+        listPopupWindow.anchorView = anchorView
+        listPopupWindow.setOnItemClickListener { _, _, position, _ ->
+            val selectedItem = adapter.getItem(position)
+            et.setText(selectedItem)
+            listPopupWindow.dismiss()
+        }
+
+        listPopupWindow.show()
+    }
+
+    override fun getIconLinkOnClick(amenityIconLinkUrl: String) {
+        amenityIconLink = amenityIconLinkUrl
+    }
+
+    fun onTabClick(){
 
         binding.roomProfile.setOnClickListener {
 
@@ -253,8 +519,8 @@ class AddRoomTypeFragment : Fragment(),
 
         }
 
-        binding.bedTypeRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
-
+    }
+    fun setUpRecycler(){
 
         binding.roomsRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
 
@@ -280,123 +546,7 @@ class AddRoomTypeFragment : Fragment(),
         selectBedImagesAdapter.setOnItemClickListener(this)
         binding.bedRecycler.adapter = selectBedImagesAdapter
 
-
-        binding.add.setOnClickListener { openAddAmenitiesDialog() }
-
-        bedType()
     }
-
-    private fun bedType(){
-        binding.addBeds.setOnClickListener {
-            bedCount++
-            binding.bedCount.setText("$bedCount")
-            bedTypeList.add("$bedCount")
-            addBedTypeAdapter = AddBedTypeAdapter(requireContext(), bedTypeList)
-            binding.bedTypeRecycler.adapter = addBedTypeAdapter
-            addBedTypeAdapter.notifyDataSetChanged()
-        }
-        binding.removeBeds.setOnClickListener {
-            if (bedCount>1) {
-                bedTypeList.remove("$bedCount")
-                bedCount--
-                binding.bedCount.setText("$bedCount")
-                addBedTypeAdapter = AddBedTypeAdapter(requireContext(), bedTypeList)
-                binding.bedTypeRecycler.adapter = addBedTypeAdapter
-                addBedTypeAdapter.notifyDataSetChanged()
-            }
-        }
-    }
-
-    private fun openAddAmenitiesDialog() {
-        val dialog = Dialog(requireContext())
-        dialog.setCancelable(true)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.dialog_add_amenities)
-
-        val createNewAmenityBtn = dialog.findViewById<TextView>(R.id.createNewAmenityBtn)
-        createNewAmenityBtn.setOnClickListener {
-            openCreateNewAmenityDialog()
-        }
-        val cancel = dialog.findViewById<TextView>(R.id.cancel)
-        cancel.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        val amenitiesRecycler = dialog.findViewById<RecyclerView>(R.id.amenitiesRecycler)
-        amenitiesRecycler.layoutManager = GridLayoutManager(requireContext(), 8)
-
-        val amenities = ArrayList<AddAmenitiesDataClass>()
-
-        val getAmenity = RetrofitObject.getGeneralsAPI.getAmenityApi()
-        getAmenity.enqueue(object : Callback<AmenityDataClass?> {
-            override fun onResponse(
-                call: Call<AmenityDataClass?>,
-                response: Response<AmenityDataClass?>
-            ) {
-
-                if (response.isSuccessful) {
-                    val addAmenitiesAdapter = AddAmenitiesAdapter(requireContext(), response.body()!!.data)
-                    amenitiesRecycler.adapter = addAmenitiesAdapter
-                    addAmenitiesAdapter.notifyDataSetChanged()
-                }
-            }
-
-            override fun onFailure(call: Call<AmenityDataClass?>, t: Throwable) {
-                Log.d("error" , t.localizedMessage)
-            }
-        })
-
-        dialog.show()
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-//        dialog.window?.setGravity(Gravity.BOTTOM)
-    }
-    private fun openCreateNewAmenityDialog() {
-        val dialog = Dialog(requireContext())
-        dialog.setCancelable(true)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.dialog_create_amenities)
-
-        val cancel = dialog.findViewById<TextView>(R.id.cancel)
-        cancel.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        val amenitiesIconRecycler = dialog.findViewById<RecyclerView>(R.id.amenitiesIconRecycler)
-        amenitiesIconRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
-
-        val amenities = ArrayList<AmenitiesIconDataClass>()
-
-        amenities.add(AmenitiesIconDataClass(R.drawable.check))
-        amenities.add(AmenitiesIconDataClass(R.drawable.check))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_keys))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_keys))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_add))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_add))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-
-        val amenitiesIconAdapter = AmenitiesIconAdapter(requireContext(), amenities)
-        amenitiesIconRecycler.adapter = amenitiesIconAdapter
-
-        dialog.show()
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-    }
-
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent,PICK_IMAGE_REQUEST_CODE)
@@ -446,8 +596,6 @@ class AddRoomTypeFragment : Fragment(),
         }
     }
 
-
-
     override fun onAddViewImage() {
         recyclerType = 2
         openGallery()
@@ -469,6 +617,14 @@ class AddRoomTypeFragment : Fragment(),
         recyclerType = 1
         openGallery()
 
+    }
+
+    override fun bedSelected(bedIdList: ArrayList<String>) {
+        bedIdList.forEach {
+            if (!bedTypeIds.contains(it)){
+                bedTypeIds.add(it)
+            }
+        }
     }
 
 }

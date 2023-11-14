@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import rconnect.retvens.technologies.Api.configurationApi.ChainConfiguration
+import rconnect.retvens.technologies.Api.configurationApi.SingleConfiguration
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomType
 import retrofit2.Retrofit
@@ -22,6 +23,7 @@ object RetrofitObject {
 
     val authentication: AuthenticationInterface = retrofit.create(AuthenticationInterface::class.java)
     val chainConfiguration: ChainConfiguration = retrofit.create(ChainConfiguration::class.java)
+    val singleConfiguration: SingleConfiguration = retrofit.create(SingleConfiguration::class.java)
     val inventoryInterface:RatesAndInventoryInterface = retrofit.create(RatesAndInventoryInterface::class.java)
     val dropDownApis: DropDownApis = retrofit.create(DropDownApis::class.java)
     val getGeneralsAPI: GeneralsAPI = retrofit.create(GeneralsAPI::class.java)
