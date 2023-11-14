@@ -14,7 +14,7 @@ data class AmenityDataClass (
     val `data` : ArrayList<GetAmenityData>
 )
 data class GetAmenityData (
-    val getAmenity : String,
+    val amenityId : String,
     val amenityName : String,
     val amenityType : String,
     val amenityIconLink : String
