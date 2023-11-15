@@ -10,6 +10,9 @@ import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservatio
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.GetReservationTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.identityType.UpdateIdentityTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.UpdateReservationTypeDataClass
+import rconnect.retvens.technologies.dashboard.configuration.others.businessSource.AddBusinessSourceDataClass
+import rconnect.retvens.technologies.dashboard.configuration.others.businessSource.GetBusinessSourceDataClass
+import rconnect.retvens.technologies.dashboard.configuration.others.businessSource.UpdateBusinessSourceDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.holiday.AddHolidayDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.holiday.GetHotelDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.holiday.UpdateHolidayDataClass
@@ -110,8 +113,26 @@ interface GeneralsAPI {
         @Query("userId") userId : String,
         @Query("transportationId") transportationId : String,
         @Body updateTransportationTypeDataClass: UpdateTransportationTypeDataClass
-    ): Call<GetReservationTypeDataClass>
+    ): Call<ResponseData>
 
+//    business sources
+
+    @POST("addBusinessSources")
+    fun addBusinessSourceApi(
+    @Body addBusinessSourceDataClass: AddBusinessSourceDataClass
+    ): Call<ResponseData>
+    @GET("getBusinessSources ")
+    fun getBusinessSourceApi (
+        @Query("userId") userId : String,
+        @Query("propertyId") propertyId : String,
+        @Query("targetTimeZone") targetTimeZone : String? = "Asia/Kolkata"
+    ): Call<GetBusinessSourceDataClass>
+    @PATCH("updateBusinessSources")
+    fun updateBusinessSourceApi (
+        @Query("userId") userId : String,
+        @Query("sourceId") sourceId : String,
+        @Body updateBusinessSourceDataClass: UpdateBusinessSourceDataClass
+    ): Call<ResponseData>
 
     /*--------------------------------------- Booking Source Type-----------------------------------------*/
 //    @POST("addTransportation")
@@ -123,6 +144,7 @@ interface GeneralsAPI {
     fun getBookingSourceTypeApi (
         @Query("userId") userId : String,
         @Query("propertyId") propertyId : String,
+        @Query("propertyId") targetTimeZone: String
     ): Call<GetTransportationTypeDataClass>
 //    @PATCH("updateTransportation")
 //    fun updateBookingSourceTypeApi (

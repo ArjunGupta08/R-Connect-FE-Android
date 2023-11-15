@@ -103,21 +103,21 @@
             app:layout_constraintTop_toTopOf="@id/shortCode0">
 
             <ImageView
-                android:id="@+id/edit"
+                android:id="@+id/edit0"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:src="@drawable/svg_pen" />
 
             <ImageView
-                android:id="@+id/delete"
+                android:id="@+id/delete0"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:src="@drawable/svg_delete_lite" />
 
             <ImageView
-                android:id="@+id/info"
+                android:id="@+id/info0"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
