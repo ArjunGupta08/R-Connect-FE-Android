@@ -75,7 +75,7 @@ class ChargesAndRatesFragment : Fragment(),
 
         setUpRecycler()
 
-        val continueBtn = requireParentFragment().view?.findViewById<CardView>(R.id.continueBtn)
+        val continueBtn = requireActivity().findViewById<CardView>(R.id.continueBtnRoom)
         continueBtn?.setOnClickListener {
             Toast.makeText(requireContext(), "Clicked", Toast.LENGTH_SHORT).show()
         }

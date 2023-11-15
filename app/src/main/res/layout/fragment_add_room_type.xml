@@ -36,12 +36,12 @@
             android:padding="15dp"
             android:layout_marginEnd="20dp"
             android:textColor="@color/black"
-            app:layout_constraintEnd_toStartOf="@id/continueBtn"
-            app:layout_constraintBottom_toBottomOf="@id/continueBtn"
-            app:layout_constraintTop_toTopOf="@id/continueBtn"/>
+            app:layout_constraintEnd_toStartOf="@id/continueBtnRoom"
+            app:layout_constraintBottom_toBottomOf="@id/continueBtnRoom"
+            app:layout_constraintTop_toTopOf="@id/continueBtnRoom"/>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/continueBtn"
+            android:id="@+id/continueBtnRoom"
             android:layout_width="110dp"
             android:layout_height="45dp"
             android:layout_marginEnd="20dp"
