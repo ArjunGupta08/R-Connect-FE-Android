@@ -83,6 +83,8 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
     override fun onBindViewHolder(holder: ViewHolder, position: Int){
         val currentData = rateTypeList[position]
 
+        var isRateCardEdit = true
+
         holder.ratePlanText.text = currentData.ratePlan
         holder.rateCode.text = currentData.rateCode
         if (currentData.selectedInclusionsList.size == 0) {
@@ -100,7 +102,13 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
         }
 
         holder.edit.setOnClickListener {
-            holder.editCard.isVisible = true
+            if (isRateCardEdit) {
+                holder.editCard.isVisible = true
+                isRateCardEdit = false
+            } else {
+                holder.editCard.isVisible = false
+                isRateCardEdit = true
+            }
         }
 
         holder.ratePlanEText.setText(currentData.ratePlan)
