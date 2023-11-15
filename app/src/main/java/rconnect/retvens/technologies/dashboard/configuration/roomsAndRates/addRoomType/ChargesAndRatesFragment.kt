@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.RetrofitObject
+import rconnect.retvens.technologies.Api.configurationApi.SingleConfiguration
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AddAmenitiesAdapter
@@ -41,16 +42,20 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class ChargesAndRatesFragment : Fragment(), AddMealPlanAdapter.OnUpdate {
+class ChargesAndRatesFragment : Fragment(),
+    AddMealPlanAdapter.OnUpdate,
+    RatePlanDetailsAdapter.OnRateTypeListChangeListener {
+
     private lateinit var binding : FragmentChargesAndRatesBinding
 
     private lateinit var ratePlanDetailsAdapter : RatePlanDetailsAdapter
-    private val ratePlanDetailsList = ArrayList<RatePlanDataClass>()
-
-    var cpCheckBox = false
-    var epCheckBox = false
-    var apCheckBox = false
-    var mapCheckBox = false
+    private var ratePlanDetailsList = ArrayList<RatePlanDataClass>()
+//    private val rateTypeList = ArrayList<RatePlanDataClass>()
+    var minRate = 1000.00
+    var maxRate = 5000.00
+    var baseRate = 2500.00
+    var adultRate = 1500.00
+    var childRate = 600.00
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,70 +71,49 @@ class ChargesAndRatesFragment : Fragment(), AddMealPlanAdapter.OnUpdate {
 
         setUpRecycler()
 
-
-        var minRate = 1000.00
-        var maxRate = 5000.00
-        var baseRate = 2500.00
-        var adultRate = 1500.00
-        var childRate = 600.00
-
-        binding.removeMinimumRate.setOnClickListener {
-            if (minRate>0){
-                minRate -= 100
-                binding.countMinimumRate.text = "₹ ${minRate}"
-            }
-            }
-        binding.addMinimumRate.setOnClickListener {
-            minRate += 100
-            binding.countMinimumRate.text = "₹ ${minRate}"
-        }
-
-        binding.addMaximumCharges.setOnClickListener {
-            maxRate += 100
-            binding.countMaximumCharges.text = "₹ ${maxRate}" }
-        binding.removeMaximumCharges.setOnClickListener {
-            if (maxRate>0){
-                maxRate -= 100
-                binding.countMaximumCharges.text = "₹ ${maxRate}"
-            }
-        }
-
-        binding.addBaseRate.setOnClickListener {
-            baseRate+=100
-            binding.countBaseRate.text = "₹ ${baseRate}"
-        }
-        binding.removeBaseRate.setOnClickListener {
-            if (baseRate>0){
-                baseRate-=100
-                binding.countBaseRate.text = "₹ ${baseRate}"
-            }
-        }
-        binding.addExtraAdultRate.setOnClickListener {
-            adultRate+=100
-            binding.countExtraAdultRate.text = "₹ ${adultRate}"
-        }
-        binding.removeExtraAdultRate.setOnClickListener {
-            if (adultRate>0){
-                adultRate-=100
-                binding.countExtraAdultRate.text = "₹ ${adultRate}"
-            }
-        }
-        binding.addMaxChildRate.setOnClickListener {
-            childRate+=100
-            binding.countMaxChildRate.text = "₹ ${childRate}"
-        }
-        binding.removeMaxChildRate.setOnClickListener {
-            if (childRate>0){
-                childRate-=100
-                binding.countMaxChildRate.text = "₹ ${childRate}"
-            }
-        }
+        handlePlusMinus()
 
         setUpRecycler()
 
+        val continueBtn = requireParentFragment().view?.findViewById<CardView>(R.id.continueBtn)
+        continueBtn?.setOnClickListener {
+            Toast.makeText(requireContext(), "Clicked", Toast.LENGTH_SHORT).show()
+        }
         binding.addMealPlanCard.setOnClickListener {
             openAddMealDialog()
         }
+
+    }
+    private fun updateRoomAndSendRatePlaneData() {
+        val update = OAuthClient<SingleConfiguration>(requireContext()).create(SingleConfiguration::class.java).updateRoomApi(
+            UserSessionManager(requireContext()).getRoomTypeId().toString(),
+            UpdateRoomData(
+                UserSessionManager(requireContext()).getUserId().toString(),
+                UserSessionManager(requireContext()).getPropertyId().toString(),
+                binding.countBaseRate.toString(),
+                binding.countExtraAdultRate.toString(),
+                binding.countMaxChildRate.toString(),
+                binding.countMinimumRate.toString(),
+                binding.countMaximumCharges.toString()
+            )
+        )
+        update.enqueue(object : Callback<ResponseData?> {
+            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                if (isAdded){
+                    Log.e("error", response.code().toString())
+                    if (response.isSuccessful) {
+                        sendRatePlanData()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                Log.e("error", t.localizedMessage)
+            }
+        })
+    }
+
+    private fun sendRatePlanData() {
 
     }
 
@@ -259,7 +243,62 @@ class ChargesAndRatesFragment : Fragment(), AddMealPlanAdapter.OnUpdate {
         ratePlanDetailsAdapter = RatePlanDetailsAdapter(requireContext(),ratePlanDetailsList)
         binding.recyclerView.adapter = ratePlanDetailsAdapter
         ratePlanDetailsAdapter.notifyDataSetChanged()
+        ratePlanDetailsAdapter.setOnListUpdateListener(this)
 
+    }
+
+    private fun handlePlusMinus() {
+        binding.removeMinimumRate.setOnClickListener {
+            if (minRate>0){
+                minRate -= 100
+                binding.countMinimumRate.text = "₹ ${minRate}"
+            }
+        }
+        binding.addMinimumRate.setOnClickListener {
+            minRate += 100
+            binding.countMinimumRate.text = "₹ ${minRate}"
+        }
+
+        binding.addMaximumCharges.setOnClickListener {
+            maxRate += 100
+            binding.countMaximumCharges.text = "₹ ${maxRate}" }
+        binding.removeMaximumCharges.setOnClickListener {
+            if (maxRate>0){
+                maxRate -= 100
+                binding.countMaximumCharges.text = "₹ ${maxRate}"
+            }
+        }
+
+        binding.addBaseRate.setOnClickListener {
+            baseRate+=100
+            binding.countBaseRate.text = "₹ ${baseRate}"
+        }
+        binding.removeBaseRate.setOnClickListener {
+            if (baseRate>0){
+                baseRate-=100
+                binding.countBaseRate.text = "₹ ${baseRate}"
+            }
+        }
+        binding.addExtraAdultRate.setOnClickListener {
+            adultRate+=100
+            binding.countExtraAdultRate.text = "₹ ${adultRate}"
+        }
+        binding.removeExtraAdultRate.setOnClickListener {
+            if (adultRate>0){
+                adultRate-=100
+                binding.countExtraAdultRate.text = "₹ ${adultRate}"
+            }
+        }
+        binding.addMaxChildRate.setOnClickListener {
+            childRate+=100
+            binding.countMaxChildRate.text = "₹ ${childRate}"
+        }
+        binding.removeMaxChildRate.setOnClickListener {
+            if (childRate>0){
+                childRate-=100
+                binding.countMaxChildRate.text = "₹ ${childRate}"
+            }
+        }
     }
 
     override fun onUpdateMealPlan(selectedList: ArrayList<GetMealPlanData>) {
@@ -277,6 +316,9 @@ class ChargesAndRatesFragment : Fragment(), AddMealPlanAdapter.OnUpdate {
             )
             ratePlanDetailsAdapter.notifyDataSetChanged()
         }
+    }
+    override fun onRateTypeListChanged(updatedRateTypeList: ArrayList<RatePlanDataClass>) {
+        ratePlanDetailsList = updatedRateTypeList
     }
 
 }

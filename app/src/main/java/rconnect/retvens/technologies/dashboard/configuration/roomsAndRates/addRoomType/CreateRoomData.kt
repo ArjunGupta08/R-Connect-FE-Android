@@ -16,8 +16,13 @@ data class CreateRoomData(
     val amenityIds : String,
     val deviceType : String,
 )
-//val baseRate : String,
-//val extraAdultRate : String,
-//val extraChildRate : String,
-//val minimumRate : String,
-//val maximumRate : String,
+
+data class UpdateRoomData(
+    val userId: String,
+    val propertyId: String,
+    val baseRate: String,
+    val extraAdultRate: String,
+    val extraChildRate: String,
+    val minimumRate: String,
+    val maximumRate: String,
+)

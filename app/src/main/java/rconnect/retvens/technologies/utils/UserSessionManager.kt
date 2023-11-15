@@ -8,6 +8,7 @@ class UserSessionManager(context: Context) {
     private val userIdKey = "userId"
     private val tokenKey = "token"
 
+    private val roomTypeIdKey = "roomTypeIdKey"
     private val propertyIdKey = "propertyId"
 
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(prefName, Context.MODE_PRIVATE)
@@ -24,8 +25,17 @@ class UserSessionManager(context: Context) {
         editor.apply()
     }
 
+    fun saveRoomTypeId(roomTypeId: String) {
+        editor.putString(roomTypeIdKey, roomTypeId)
+        editor.apply()
+    }
+
     fun getPropertyId(): String? {
         return sharedPreferences.getString(propertyIdKey, null)
+    }
+
+    fun getRoomTypeId(): String? {
+        return sharedPreferences.getString(roomTypeIdKey, null)
     }
 
     fun getUserId(): String? {
