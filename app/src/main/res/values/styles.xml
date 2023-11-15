@@ -199,6 +199,15 @@
 
     </style>
 
+    <style name="RoundedDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@color/primaryBackground</item>
+        <item name="android:windowBackground">@drawable/rounded_background</item>
+<!--        <item name="windowBac"-->
+
+    </style>
+
     <style name="GhraphsHeading">
         <item name="android:textSize">@dimen/H4</item>
         <item name="fontFamily">@font/roboto_bold</item>

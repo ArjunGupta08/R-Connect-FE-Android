@@ -96,6 +96,8 @@ class AddRoomTypeFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        onTabClick()
+
         roboto = ResourcesCompat.getFont(requireContext(), R.font.roboto)!!
         robotoMedium = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)!!
 
@@ -113,6 +115,8 @@ class AddRoomTypeFragment : Fragment(),
                     shakeAnimation(binding.add, requireContext())
                 } else {
                     sendData()
+                    Const.addedRoomTypeName = binding.roomTypeNameEt.text.toString()
+                    Const.addedRoomTypeShortCode = binding.shortCodeET.text.toString()
                 }
 
             } else if (page == 2){

@@ -113,13 +113,9 @@ class LoginFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<LoginResponse?>, t: Throwable) {
-                Toast.makeText(requireContext(), "Mission Failed successFully", Toast.LENGTH_SHORT).show()
+                Log.d("error", t.localizedMessage)
             }
         })
     }
 
-    private fun showSnackBarMessage(message:String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-//        Snackbar.make(applicationContext,parentLayout,message,Snackbar.LENGTH_SHORT).show()
-    }
 }

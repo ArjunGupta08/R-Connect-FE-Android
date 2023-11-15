@@ -2,7 +2,7 @@ package rconnect.retvens.technologies
 
 data class LoginRequest(
     val username: String,
-    val hotelRcode: String,
+    val hotelCode: String,
     val password: String,
     val deviceType: String
 )
