@@ -101,7 +101,7 @@ class AddRoomTypeFragment : Fragment(),
         roboto = ResourcesCompat.getFont(requireContext(), R.font.roboto)!!
         robotoMedium = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)!!
 
-        binding.continueBtn.setOnClickListener {
+        binding.continueBtnRoom.setOnClickListener {
 
             if (page == 1){
 

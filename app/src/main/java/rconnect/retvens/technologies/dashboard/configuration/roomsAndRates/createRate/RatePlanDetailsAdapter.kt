@@ -36,6 +36,14 @@ import retrofit2.Response
 
 class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:ArrayList<RatePlanDataClass>):RecyclerView.Adapter<RatePlanDetailsAdapter.ViewHolder>(){
 
+    private var onRateTypeListChangeListener : OnRateTypeListChangeListener ?= null
+
+    fun setOnListUpdateListener (listener : OnRateTypeListChangeListener) {
+        onRateTypeListChangeListener = listener
+    }
+    interface OnRateTypeListChangeListener {
+        fun onRateTypeListChanged(updatedRateTypeList: ArrayList<RatePlanDataClass>)
+    }
     class ViewHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
 
         val ratePlanText = itemView.findViewById<TextView>(R.id.ratePlanText)
@@ -47,6 +55,8 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
 
         val delete = itemView.findViewById<ImageView>(R.id.delete)
         val edit = itemView.findViewById<ImageView>(R.id.edit)
+        val saveIC = itemView.findViewById<CardView>(R.id.saveIC)
+        val cancel = itemView.findViewById<TextView>(R.id.cancel)
 
         val editCard = itemView.findViewById<CardView>(R.id.editCard)
         val addInclusions = itemView.findViewById<CardView>(R.id.addInclusions)
@@ -99,6 +109,7 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
         holder.delete.setOnClickListener {
             rateTypeList.remove(currentData)
             notifyDataSetChanged()
+            onRateTypeListChangeListener?.onRateTypeListChanged(rateTypeList)
         }
 
         holder.edit.setOnClickListener {
@@ -109,6 +120,10 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
                 holder.editCard.isVisible = false
                 isRateCardEdit = true
             }
+        }
+        holder.cancel.setOnClickListener {
+                holder.editCard.isVisible = false
+                isRateCardEdit = true
         }
 
         holder.ratePlanEText.setText(currentData.ratePlan)
@@ -229,6 +244,12 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
             if (holder.ratePlanTotalTxtCalculated.text.isNotEmpty() && holder.ratePlanTotalTxtCalculated.text.toString() != "."){
                 holder.ratePlanTotalTxt.text = holder.ratePlanTotalTxtCalculated.text.toString()
             }
+        }
+
+        holder.saveIC.setOnClickListener {
+            holder.editCard.isVisible = false
+            isRateCardEdit = true
+            onRateTypeListChangeListener?.onRateTypeListChanged(rateTypeList)
         }
     }
 

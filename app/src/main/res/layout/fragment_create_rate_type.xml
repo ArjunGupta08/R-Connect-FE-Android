@@ -268,17 +268,17 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/mealPlanLayout"
+                android:id="@+id/masterRatePlanLayout"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/textInputLayoutHeight"
                 android:layout_weight="1"
+                style="@style/ClickableTextInputLayoutStyle"
+                android:visibility="gone"
                 android:background="@color/secondaryBackground"
                 android:layout_marginStart="10dp"
-                android:hint="Master Rate Plan"
-                style="@style/ClickableTextInputLayoutStyle"
-                app:endIconMode="custom"
-                app:endIconTint="@color/black">
+                android:hint="Master Rate Plan">
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/masterRatePlanET"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/roboto"
@@ -290,18 +290,17 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/masterRatePlanLayout"
+                android:id="@+id/mealPlanLayout"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/textInputLayoutHeight"
-                android:visibility="gone"
                 android:layout_weight="1"
                 android:background="@color/secondaryBackground"
                 android:layout_marginStart="10dp"
-                android:hint="Master Rate Plan"
-                style="@style/TextInputLayoutStyle"
-                app:endIconMode="clear_text"
-                app:endIconTint="@color/black">
+                android:hint="Meal Plan"
+                android:visibility="gone"
+                style="@style/ClickableTextInputLayoutStyle">
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/mealPlanET"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/roboto"
@@ -309,7 +308,8 @@
                     android:hint="Room Type"
                     android:inputType="text"
                     android:textColorHint="@drawable/hint_selector"
-                    android:textColor="@color/secondary" />
+                    android:textColor="@color/secondary"
+                    android:clickable="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
