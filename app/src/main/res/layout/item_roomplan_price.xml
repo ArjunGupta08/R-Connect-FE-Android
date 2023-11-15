@@ -50,135 +50,234 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.205"/>
+            app:layout_constraintGuide_percent="0.19"/>
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/g2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent=".285"/>
+<!--        <androidx.constraintlayout.widget.Guideline-->
+<!--            android:id="@+id/g2"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            app:layout_constraintGuide_percent=".285"/>-->
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/g3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent=".365"/>
+<!--        <androidx.constraintlayout.widget.Guideline-->
+<!--            android:id="@+id/g3"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            app:layout_constraintGuide_percent=".365"/>-->
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/g4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent=".445"/>
+<!--        <androidx.constraintlayout.widget.Guideline-->
+<!--            android:id="@+id/g4"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            app:layout_constraintGuide_percent=".445"/>-->
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/g5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent=".525"/>
+<!--        <androidx.constraintlayout.widget.Guideline-->
+<!--            android:id="@+id/g5"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            app:layout_constraintGuide_percent=".525"/>-->
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/g6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent=".605"/>
+<!--        <androidx.constraintlayout.widget.Guideline-->
+<!--            android:id="@+id/g6"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            app:layout_constraintGuide_percent=".605"/>-->
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/g7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent=".68"/>
+<!--        <androidx.constraintlayout.widget.Guideline-->
+<!--            android:id="@+id/g7"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            app:layout_constraintGuide_percent=".68"/>-->
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/g8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent=".75"/>
+<!--        <androidx.constraintlayout.widget.Guideline-->
+<!--            android:id="@+id/g8"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            app:layout_constraintGuide_percent=".75"/>-->
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/g9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent=".84"/>
+<!--        <androidx.constraintlayout.widget.Guideline-->
+<!--            android:id="@+id/g9"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            app:layout_constraintGuide_percent=".84"/>-->
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/g10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent=".92"/>
+<!--        <androidx.constraintlayout.widget.Guideline-->
+<!--            android:id="@+id/g10"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            app:layout_constraintGuide_percent=".92"/>-->
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/c1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="@id/g1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeWidth="0.5dp"
+            app:cardCornerRadius="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/c2">
             <TextView
 
                 style="@style/rateText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                app:layout_constraintStart_toStartOf="@id/g1"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_weight="0.2"
+                android:background="@drawable/inventory_edit_background"
+                android:text="2000" />
+    </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/c2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toEndOf="@id/c1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:cardCornerRadius="0dp"
+            app:strokeWidth="0.5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/c3">
+            <TextView
+
+                style="@style/rateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="0.2"
                 android:background="@drawable/inventory_edit_background"
                 android:text="2000" />
 
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/c3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toEndOf="@id/c2"
+            app:cardCornerRadius="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeWidth="0.5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/c4">
             <TextView
 
                 style="@style/rateText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                app:layout_constraintStart_toStartOf="@id/g2"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_weight="0.2"
                 android:background="@drawable/inventory_edit_background"
                 android:text="2000" />
 
+    </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/c4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toEndOf="@id/c3"
+            app:cardCornerRadius="0dp"
+            app:strokeWidth="0.5dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/c5">
+
             <TextView
 
                 style="@style/rateText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                app:layout_constraintStart_toStartOf="@id/g3"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_weight="0.2"
+                android:background="@drawable/inventory_edit_background"
+                android:text="2000" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/c5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toEndOf="@id/c4"
+            app:cardCornerRadius="0dp"
+            app:strokeWidth="0.5dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/c6">
+
+            <TextView
+
+                style="@style/rateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="0.2"
                 android:background="@drawable/inventory_edit_background"
                 android:text="2000" />
 
+    </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/c6"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toEndOf="@id/c5"
+            app:cardCornerRadius="0dp"
+            app:strokeWidth="0.5dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/c7">
             <TextView
 
                 style="@style/rateText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                app:layout_constraintStart_toStartOf="@id/g4"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_weight="0.2"
                 android:background="@drawable/inventory_edit_background"
                 android:text="2000" />
 
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/c7"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toEndOf="@id/c6"
+            app:cardCornerRadius="0dp"
+            app:strokeWidth="0.5dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/c8">
+
             <TextView
 
                 style="@style/rateText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                app:layout_constraintStart_toStartOf="@id/g5"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_weight="0.2"
                 android:background="@drawable/inventory_edit_background"
                 android:text="2000" />
+    </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/c8"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toEndOf="@id/c7"
+            app:cardCornerRadius="0dp"
+            app:strokeWidth="0.5dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/c9">
 
             <TextView
 
@@ -186,63 +285,52 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                app:layout_constraintStart_toStartOf="@id/g6"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_weight="0.2"
                 android:background="@drawable/inventory_edit_background"
                 android:text="2000" />
+    </com.google.android.material.card.MaterialCardView>
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/c9"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toEndOf="@id/c8"
+            app:layout_constraintTop_toTopOf="parent"
+            app:cardCornerRadius="0dp"
+            app:strokeWidth="0.5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/c100">
             <TextView
 
                 style="@style/rateText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                app:layout_constraintStart_toStartOf="@id/g7"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_weight="0.2"
                 android:background="@drawable/inventory_edit_background"
                 android:text="2000" />
 
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/c100"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toEndOf="@id/c9"
+            app:cardCornerRadius="0dp"
+            app:strokeWidth="0.5dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
             <TextView
 
                 style="@style/rateText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                app:layout_constraintStart_toStartOf="@id/g8"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_weight="0.2"
                 android:background="@drawable/inventory_edit_background"
                 android:text="2000" />
 
-            <TextView
-
-                style="@style/rateText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:layout_constraintStart_toStartOf="@id/g9"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:background="@drawable/inventory_edit_background"
-                android:text="2000" />
-
-            <TextView
-
-                style="@style/rateText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:layout_constraintStart_toStartOf="@id/g10"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:background="@drawable/inventory_edit_background"
-                android:text="2000" />
-
+        </com.google.android.material.card.MaterialCardView>
 
 
 

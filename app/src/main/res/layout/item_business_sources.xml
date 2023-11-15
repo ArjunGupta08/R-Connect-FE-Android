@@ -38,43 +38,35 @@
             app:layout_constraintGuide_percent="0.87"/>
 
 
-        <CheckBox
-            android:id="@+id/switch_all"
-            android:layout_width="19dp"
-            android:layout_height="19dp"
-            app:layout_constraintEnd_toStartOf="@id/shortCode"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
 
 
         <TextView
-            android:id="@+id/shortCode"
+            android:id="@+id/shortCode0"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="Cell Data"
             style="@style/listText"
             android:singleLine="true"
-            app:layout_constraintEnd_toStartOf="@id/propertyName"
+            app:layout_constraintEnd_toStartOf="@id/propertyName0"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/switch_all"/>
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
-            android:id="@+id/propertyName"
+            android:id="@+id/propertyName0"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Cell Data"
             style="@style/listText"
             android:singleLine="true"
             app:layout_constraintStart_toStartOf="@id/guide1"
-            app:layout_constraintBottom_toBottomOf="@id/shortCode"
-            app:layout_constraintTop_toTopOf="@id/shortCode"/>
+            app:layout_constraintBottom_toBottomOf="@id/shortCode0"
+            app:layout_constraintTop_toTopOf="@id/shortCode0"/>
 
 
         <TextView
-            android:id="@+id/bedType"
+            android:id="@+id/bedType0"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             style="@style/listText"
@@ -82,11 +74,11 @@
             android:text="By Karan on 11:12, 12/12/2023"
             android:layout_marginStart="5dp"
             app:layout_constraintStart_toStartOf="@id/guide2"
-            app:layout_constraintBottom_toBottomOf="@id/shortCode"
-            app:layout_constraintTop_toTopOf="@id/shortCode"/>
+            app:layout_constraintBottom_toBottomOf="@id/shortCode0"
+            app:layout_constraintTop_toTopOf="@id/shortCode0"/>
 
         <TextView
-            android:id="@+id/adultChild"
+            android:id="@+id/adultChild0"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="By Karan on 11:12, 12/12/2023"
@@ -94,12 +86,12 @@
             android:singleLine="true"
             android:layout_marginStart="5dp"
             app:layout_constraintStart_toStartOf="@id/guide3"
-            app:layout_constraintBottom_toBottomOf="@id/shortCode"
-            app:layout_constraintTop_toTopOf="@id/shortCode"/>
+            app:layout_constraintBottom_toBottomOf="@id/shortCode0"
+            app:layout_constraintTop_toTopOf="@id/shortCode0"/>
 
 
         <LinearLayout
-            android:id="@+id/actions"
+            android:id="@+id/actions0"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -107,8 +99,8 @@
             android:weightSum="3"
             android:layout_marginStart="4dp"
             app:layout_constraintStart_toStartOf="@id/guide4"
-            app:layout_constraintBottom_toBottomOf="@id/shortCode"
-            app:layout_constraintTop_toTopOf="@id/shortCode">
+            app:layout_constraintBottom_toBottomOf="@id/shortCode0"
+            app:layout_constraintTop_toTopOf="@id/shortCode0">
 
             <ImageView
                 android:id="@+id/edit"
@@ -137,7 +129,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/grey5"
-            app:layout_constraintTop_toBottomOf="@id/propertyName"
+            app:layout_constraintTop_toBottomOf="@id/propertyName0"
             android:layout_marginTop="9dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

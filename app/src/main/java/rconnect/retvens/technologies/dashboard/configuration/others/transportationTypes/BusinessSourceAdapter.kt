@@ -41,7 +41,7 @@ class BusinessSourceAdapter(val list:ArrayList<String>, val applicationContext: 
 
     class NotificationHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
 
-        val x:TextView = itemView.findViewById(R.id.propertyName)
+        val x:TextView = itemView.findViewById(R.id.propertyName0)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationHolder {
