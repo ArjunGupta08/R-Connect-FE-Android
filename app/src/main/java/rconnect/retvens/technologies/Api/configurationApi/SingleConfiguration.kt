@@ -7,6 +7,7 @@ import org.json.JSONObject
 import rconnect.retvens.technologies.dashboard.configuration.properties.FetchPropertyData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.CreateRoomData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.UpdateRoomData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanPackage.AddPackageDataClass
 import rconnect.retvens.technologies.onboarding.ResponseData
 import retrofit2.Call
 import retrofit2.Response
@@ -37,7 +38,7 @@ interface SingleConfiguration {
     /*---------------------------------------Add Rate Plan Package-----------------------------------------*/
     @POST("addPackage")
     fun addPackage (
-        @Body updateRoomData: UpdateRoomData
+        @Body addPackageDataClass: AddPackageDataClass
     ): Call<ResponseData>
 
 }

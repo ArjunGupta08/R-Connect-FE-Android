@@ -11,17 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/item_rate_plan_details"
-        tools:itemCount="3"
-        android:layout_marginHorizontal="15dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"/>
-
     <androidx.cardview.widget.CardView
         android:id="@+id/card1"
         android:layout_width="0dp"
@@ -36,7 +25,7 @@
         app:layout_constraintVertical_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recyclerView">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -71,12 +60,13 @@
                     android:layout_height="wrap_content"
                     android:weightSum="4"
                     android:layout_marginTop="15dp"
+                    android:layout_marginEnd="20dp"
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/room_type_layout"
+                        android:id="@+id/ratePlanNameLayout"
                         style="@style/TextInputLayoutStyle"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/textInputLayoutHeight"
@@ -86,7 +76,7 @@
                         app:endIconTint="@color/black">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/room_type_text"
+                            android:id="@+id/ratePlanNameET"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
@@ -140,7 +130,7 @@
                                 app:layout_constraintTop_toTopOf="@id/rate">
 
                                 <ImageView
-                                    android:id="@+id/removeBaseAdult"
+                                    android:id="@+id/removeMinNights"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:src="@drawable/svg_remove"
@@ -154,12 +144,13 @@
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
                                     android:orientation="vertical"
-                                    app:layout_constraintEnd_toStartOf="@id/addBaseAdult"
-                                    app:layout_constraintStart_toEndOf="@id/removeBaseAdult"
+                                    app:layout_constraintEnd_toStartOf="@id/addMinNights"
+                                    app:layout_constraintStart_toEndOf="@id/removeMinNights"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintTop_toTopOf="parent">
 
                                     <TextView
+                                        android:id="@+id/minNightsTextView"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Min Nights"
@@ -168,6 +159,7 @@
                                         android:textColor="@color/subtitle"
                                         android:fontFamily="@font/roboto"/>
                                     <TextView
+                                        android:id="@+id/addMinNightsTextView"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:text="1"
@@ -178,7 +170,7 @@
                                 </LinearLayout>
 
                                 <ImageView
-                                    android:id="@+id/addBaseAdult"
+                                    android:id="@+id/addMinNights"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:src="@drawable/svg_add"
@@ -212,7 +204,7 @@
                                 app:layout_constraintTop_toTopOf="@id/rate">
 
                                 <ImageView
-                                    android:id="@+id/removeBaseChild"
+                                    android:id="@+id/removeMaxNights"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:src="@drawable/svg_remove"
@@ -226,8 +218,8 @@
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
                                     android:orientation="vertical"
-                                    app:layout_constraintEnd_toStartOf="@id/addBaseChild"
-                                    app:layout_constraintStart_toEndOf="@id/removeBaseChild"
+                                    app:layout_constraintEnd_toStartOf="@id/addMaxNights"
+                                    app:layout_constraintStart_toEndOf="@id/removeMaxNights"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintTop_toTopOf="parent">
 
@@ -240,9 +232,10 @@
                                         android:textColor="@color/subtitle"
                                         android:fontFamily="@font/roboto"/>
                                     <TextView
+                                        android:id="@+id/maxNightsTextView"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:text="10"
+                                        android:text="1"
                                         android:textAlignment="center"
                                         android:textSize="16sp"
                                         android:textColor="@color/black"
@@ -250,7 +243,7 @@
                                 </LinearLayout>
 
                                 <ImageView
-                                    android:id="@+id/addBaseChild"
+                                    android:id="@+id/addMaxNights"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:src="@drawable/svg_add"
@@ -283,7 +276,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/add_name"
+                        android:id="@+id/addInclusions"
                         style="@style/CardViewTheme"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
@@ -320,10 +313,10 @@
                         android:layout_marginTop="9dp"
                         app:cardBackgroundColor="@color/secondaryBackground"
                         app:cardCornerRadius="9dp"
-                        app:cardElevation="2dp"
-                        app:layout_constraintEnd_toEndOf="@id/add_name"
+                        app:cardElevation="4dp"
+                        app:layout_constraintEnd_toEndOf="@id/addInclusions"
                         app:layout_constraintStart_toStartOf="@id/charges_head"
-                        app:layout_constraintTop_toBottomOf="@id/add_name">
+                        app:layout_constraintTop_toBottomOf="@id/addInclusions">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
@@ -342,7 +335,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/roboto_medium"
-                                    android:layout_marginHorizontal="10dp"
+                                    android:layout_marginStart="15dp"
                                     android:text="Inclusion"
                                     android:textSize="@dimen/H5"
                                     app:layout_constraintEnd_toStartOf="@id/inclusionType"
@@ -356,6 +349,7 @@
                                     android:fontFamily="@font/roboto_medium"
                                     android:text="Inclusion Type"
                                     android:textSize="@dimen/H5"
+                                    android:visibility="gone"
                                     app:layout_constraintEnd_toStartOf="@id/posting"
                                     app:layout_constraintStart_toEndOf="@id/inclusion"
                                     app:layout_constraintTop_toTopOf="parent" />
@@ -367,7 +361,7 @@
                                     android:fontFamily="@font/roboto_medium"
                                     android:text="Posting Rule"
                                     android:textSize="@dimen/H5"
-                                    android:layout_marginHorizontal="10dp"
+                                    android:layout_marginHorizontal="5dp"
                                     app:layout_constraintEnd_toStartOf="@id/charge"
                                     app:layout_constraintStart_toEndOf="@id/inclusionType"
                                     app:layout_constraintTop_toTopOf="parent" />
@@ -378,7 +372,6 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/roboto_medium"
                                     android:text="Charge Rule"
-                                    android:layout_marginStart="10dp"
                                     android:textSize="@dimen/H5"
                                     app:layout_constraintEnd_toStartOf="@id/guide"
                                     app:layout_constraintStart_toEndOf="@id/posting"
@@ -389,7 +382,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical"
-                                    app:layout_constraintGuide_percent="0.88" />
+                                    app:layout_constraintGuide_percent="0.87" />
 
                                 <TextView
                                     android:id="@+id/rate"
@@ -428,6 +421,7 @@
                                     android:layout_height="wrap_content"
                                     android:background="@color/unselectedBackground"
                                     android:gravity="center"
+                                    android:visibility="gone"
                                     android:orientation="horizontal"
                                     android:padding="6dp"
                                     android:weightSum="3"
@@ -571,10 +565,12 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/percentageCard"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 app:cardBackgroundColor="@color/white"
                                 app:strokeColor="@color/secondary"
+                                app:strokeWidth="0dp"
                                 android:layout_marginTop="2dp"
                                 android:layout_weight="1">
 
@@ -591,12 +587,14 @@
                             </com.google.android.material.card.MaterialCardView>
 
                             <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/amountCard"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 app:cardBackgroundColor="@color/white"
                                 android:layout_marginHorizontal="10dp"
                                 android:layout_marginTop="2dp"
-                                app:strokeColor="@color/textInputStrokeColor"
+                                app:strokeColor="@color/secondary"
+                                app:strokeWidth="0dp"
                                 android:layout_weight="1">
 
                                 <TextView
@@ -612,20 +610,22 @@
                             </com.google.android.material.card.MaterialCardView>
 
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/adjistmentLayout"
                                 android:layout_width="60dp"
                                 android:layout_height="@dimen/textInputLayoutHeight"
-                                android:hint="Adjustment"
+                                android:hint="Adjustment ₹"
                                 style="@style/TextInputLayoutStyle"
                                 android:layout_weight="2"
                                 app:endIconMode="clear_text"
                                 app:endIconTint="@color/black">
                                 <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/adjustmentET"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:fontFamily="@font/roboto"
                                     android:textSize="@dimen/H5"
-                                    android:hint="adjustment"
-                                    android:inputType="text"
+                                    android:hint="₹"
+                                    android:inputType="numberDecimal"
                                     android:textColorHint="@drawable/hint_selector"
                                     android:textColor="@color/secondary" />
                             </com.google.android.material.textfield.TextInputLayout>
@@ -668,6 +668,7 @@
                             app:layout_constraintBottom_toBottomOf="parent">
 
                             <TextView
+                                android:id="@+id/packageTotalText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -735,6 +736,7 @@
         style="@style/CardViewTheme"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
+        android:visibility="gone"
         app:cardBackgroundColor="@color/white"
         app:layout_constraintVertical_bias="0"
         android:layout_marginVertical="15dp"

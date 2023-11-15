@@ -125,7 +125,7 @@ class CreateRateTypeFragment : Fragment() {
             binding.rateTypeET.setText("Company")
             binding.companyNameLayout.isVisible = true
             binding.roomTypeLayout.isVisible = true
-            binding.mealPlanLayout.isVisible = true
+            binding.mealPlanLayout.isVisible = false
             binding.masterRatePlanLayout.isVisible = false
         }
 
@@ -133,7 +133,7 @@ class CreateRateTypeFragment : Fragment() {
             replaceChildFrag(RatePlanBarFragment())
             binding.rateTypeET.setText("Bar")
             binding.roomTypeLayout.isVisible = true
-            binding.mealPlanLayout.isVisible = true
+            binding.mealPlanLayout.isVisible = false
             binding.companyNameLayout.isVisible = false
             binding.masterRatePlanLayout.isVisible = false
         }
