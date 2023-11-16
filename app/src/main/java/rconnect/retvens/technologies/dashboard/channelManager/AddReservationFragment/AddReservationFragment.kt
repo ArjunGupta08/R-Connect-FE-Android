@@ -24,6 +24,7 @@ import rconnect.retvens.technologies.utils.utilCreateDatePickerDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.ref.SoftReference
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -38,14 +39,23 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
     lateinit var endDatePickerDialog: DatePickerDialog
     lateinit var checkInDate:String
     lateinit var checkOutDate:String
+    var rateTypeId:String = ""
+    var bookingTypeId:String = ""
+    var bookingSourceId:String = ""
     var nights = ""
     private var rateTypeList:ArrayList<RateType> = ArrayList()
     private var reservationList:ArrayList<ReservationItem> = ArrayList()
     private var bookingSource:ArrayList<BookingItem> = ArrayList()
-    private var roomDetailsList:ArrayList<RoomDetails> = ArrayList()
+    private var roomDetailsList:ArrayList<RoomDetail> = ArrayList()
     private lateinit var addReservationAdapter:AddReservationAdapter
     private  var userId = ""
     private var propertyId = ""
+    private  var  listRoom:ArrayList<RoomDetail> = ArrayList()
+    private var availableList:ArrayList<AvailableRoomType> = ArrayList()
+    private var apiCheckInDate:String = ""
+    private var apiCheckOutDate:String = ""
+    private var barRateReservation:ArrayList<BarRateReservation> = ArrayList()
+    private var reservationSummary:ArrayList<ReservationSummary> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,19 +78,21 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
 
 
         binding.recyclerRoomDetails.layoutManager = LinearLayoutManager(requireContext())
-        addReservationAdapter = AddReservationAdapter(requireContext(), roomDetailsList)
+        addReservationAdapter = AddReservationAdapter(requireContext(), roomDetailsList,availableList)
         binding.recyclerRoomDetails.adapter = addReservationAdapter
 
         addReservationAdapter.setOnClickListener(this)
 
         addReservationAdapter.addItem()
+        listRoom = addReservationAdapter.reservationList
 
         binding.roomCount.text = "1 Room Added"
 
         binding.llAddRoom.setOnClickListener {
             addReservationAdapter.addItem()
-            val count = addReservationAdapter.reservationList
-            binding.roomCount.text = "(${count.size} Rooms Added)"
+
+            binding.roomCount.text = "(${listRoom.size} Rooms Added)"
+
         }
 
         startDatePickerDialog =
@@ -88,6 +100,8 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
                 startDate = date
                 checkInDate = formatDate(date.toString())
                 binding.dateFrom.text = checkInDate
+                apiCheckInDate = ApiformatDate(date.toString())
+                getAvailableRoom()
             }
         endDatePickerDialog =
             utilCreateDatePickerDialog(requireContext(), binding.checkOut) { date ->
@@ -97,6 +111,9 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
                 binding.dateTo.text = checkOutDate
                 binding.countNight.text = nights.toString()
                 binding.countNight2.text = nights.toString()
+                apiCheckOutDate = ApiformatDate(date.toString())
+                getAvailableRoom()
+
             }
 
         binding.CheckInLayout.setEndIconOnClickListener {
@@ -146,6 +163,79 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
             showBookingTypeDropDown(bookingTypeAdapter,it)
         }
 
+        binding.submitCard.setOnClickListener {
+            generateBooking()
+        }
+
+    }
+
+    private fun generateBooking() {
+
+
+
+        barRateReservation.add(BarRateReservation(bookingTypeId,bookingSourceId))
+
+        val booking = ReservationDataClass(
+            userId,
+            propertyId,
+            apiCheckInDate,
+            apiCheckOutDate,
+            nights,
+            rateTypeId,
+            guestInfo = emptyList(),
+            barRateReservation,
+            roomDetailsList,
+            emptyList(),
+            reservationSummary,
+            "",
+            emptyList(),
+            emptyList(),
+            emptyList(),
+        )
+
+        val generateBooking = OAuthClient<AddReservationApis>(requireContext()).create(AddReservationApis::class.java).generateBooking(booking)
+
+        generateBooking.enqueue(object : Callback<BookingResponse?> {
+            override fun onResponse(
+                call: Call<BookingResponse?>,
+                response: Response<BookingResponse?>
+            ) {
+                if(response.isSuccessful){
+                    val response = response.body()!!
+                    Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show()
+                }else{
+                    Log.e("error",response.code().toString())
+                }
+            }
+
+            override fun onFailure(call: Call<BookingResponse?>, t: Throwable) {
+                Log.e("error",t.message.toString())
+            }
+        })
+    }
+
+    private fun getAvailableRoom() {
+        Log.e("apiCheckInDate",apiCheckInDate)
+        Log.e("apiCheckOutDate",apiCheckOutDate)
+        val getAvailableRoom = OAuthClient<AddReservationApis>(requireContext()).create(AddReservationApis::class.java).getAvailableRoom(userId,propertyId,apiCheckInDate,apiCheckOutDate)
+        getAvailableRoom.enqueue(object : Callback<AvailableRoomDataClass?> {
+            override fun onResponse(
+                call: Call<AvailableRoomDataClass?>,
+                response: Response<AvailableRoomDataClass?>
+            ) {
+                if (response.isSuccessful){
+                    val responses = response.body()!!
+                    availableList.addAll(responses.data)
+                    addReservationAdapter.notifyDataSetChanged()
+                }else{
+                    Log.e("error",response.code().toString())
+                }
+            }
+
+            override fun onFailure(call: Call<AvailableRoomDataClass?>, t: Throwable) {
+                Log.e("error",t.message.toString())
+            }
+        })
     }
 
 
@@ -175,6 +265,7 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
         listPopupWindow.setOnItemClickListener { _, _, position, _ ->
             val selectedItem = customAdapter.getItem(position)
             binding.rateTypeLayout.editText?.setText(selectedItem?.rateType)
+            rateTypeId = selectedItem?.rateTypeId.toString()
             listPopupWindow.dismiss()
         }
 
@@ -207,6 +298,7 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
         listPopupWindow.setOnItemClickListener { _, _, position, _ ->
             val selectedItem = customAdapter.getItem(position)
             binding.bookingTypeLayout.editText?.setText(selectedItem?.reservationName)
+            bookingTypeId = selectedItem?.reservationTypeId.toString()
             listPopupWindow.dismiss()
         }
 
@@ -240,6 +332,7 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
         listPopupWindow.setOnItemClickListener { _, _, position, _ ->
             val selectedItem = customAdapter.getItem(position)
             binding.bookingSourceLayout.editText?.setText(selectedItem?.bookingSource)
+            bookingSourceId = selectedItem?.bookingSourceId.toString()
             listPopupWindow.dismiss()
         }
 
@@ -271,7 +364,6 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
             }
         })
     }
-
 
     fun getBookingSource(){
         val getBookingSource =  OAuthClient<AddReservationApis>(requireContext()).create(AddReservationApis::class.java).getBookingSource(userId,propertyId)
@@ -336,7 +428,45 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
         return inputDate // Return the original date if parsing fails
     }
 
+
+    fun ApiformatDate(inputDate: String): String {
+        val inputFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH)
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+
+        try {
+            val date = inputFormat.parse(inputDate)
+            return outputFormat.format(date)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return inputDate // Return the original date if parsing fails
+    }
+
     override fun onItemDelete(count: String) {
         binding.roomCount.text = "(${count} Rooms Added)"
+    }
+
+    override fun updateRates() {
+
+        val totalCharge = listRoom.sumBy { it.charge.toIntOrNull() ?: 0 }
+
+        val grandTotal = listRoom.sumBy {
+            val charge = it.charge.toIntOrNull() ?: 0
+            val extras = it.extraInclusion.toIntOrNull() ?: 0
+            val totalWithoutGST = charge + extras
+            val gst = 0.16 // 16% GST
+
+            // Calculate the total amount with GST
+            val totalWithGST = totalWithoutGST + (totalWithoutGST * gst).toInt()
+
+            totalWithGST
+        }
+        binding.txtRoomCharges.text = "₹ ${totalCharge.toString()}"
+        Log.e("listRoom",listRoom.toString())
+
+        binding.txtGrandTotal.text = "₹ ${grandTotal.toString()}"
+
+        reservationSummary.add(ReservationSummary(totalCharge.toString(),"","",apiCheckInDate,apiCheckOutDate,grandTotal.toString()))
     }
 }
