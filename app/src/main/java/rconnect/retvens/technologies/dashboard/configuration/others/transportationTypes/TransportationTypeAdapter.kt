@@ -113,19 +113,30 @@ class TransportationTypeAdapter(val list:ArrayList<GetTransportationTypeData>, v
 
     private fun saveIdentity(context: Context, dialog: Dialog, shortCodeTxt:String , transportationModeTxt:String , transportationModeIdTxt : String) {
         val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).updateTransportationModeTypeApi(UserSessionManager(context).getUserId().toString(), transportationModeIdTxt, UpdateTransportationTypeDataClass(shortCodeTxt, transportationModeTxt))
-        create.enqueue(object : Callback<GetReservationTypeDataClass?> {
-            override fun onResponse(
-                call: Call<GetReservationTypeDataClass?>,
-                response: Response<GetReservationTypeDataClass?>
-            ) {
+        create.enqueue(object : Callback<ResponseData?> {
+            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
                     Log.d( "reservation", "${response.code()} ${response.message()}")
                     mListener?.onUpdateTransportationType()
                     dialog.dismiss()
             }
 
-            override fun onFailure(call: Call<GetReservationTypeDataClass?>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
                 Log.d("error", t.localizedMessage)
             }
         })
+//        create.enqueue(object : Callback<GetReservationTypeDataClass?> {
+//            override fun onResponse(
+//                call: Call<GetReservationTypeDataClass?>,
+//                response: Response<GetReservationTypeDataClass?>
+//            ) {
+//                    Log.d( "reservation", "${response.code()} ${response.message()}")
+//                    mListener?.onUpdateTransportationType()
+//                    dialog.dismiss()
+//            }
+//
+//            override fun onFailure(call: Call<GetReservationTypeDataClass?>, t: Throwable) {
+//                Log.d("error", t.localizedMessage)
+//            }
+//        })
     }
 }
