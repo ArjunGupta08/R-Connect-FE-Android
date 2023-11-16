@@ -25,24 +25,27 @@ import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddInclusionsAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.RatePlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.AddInclusionsDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsDataClass
 import rconnect.retvens.technologies.onboarding.ResponseData
+import rconnect.retvens.technologies.utils.Const
 import rconnect.retvens.technologies.utils.UserSessionManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:ArrayList<RatePlanDataClass>):RecyclerView.Adapter<RatePlanDetailsAdapter.ViewHolder>(){
+class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:ArrayList<AddCompanyRatePlanDataClass>):RecyclerView.Adapter<RatePlanDetailsAdapter.ViewHolder>(){
+
+    private var updatedRateTypeList = ArrayList<AddCompanyRatePlanDataClass>()
 
     private var onRateTypeListChangeListener : OnRateTypeListChangeListener ?= null
-
     fun setOnListUpdateListener (listener : OnRateTypeListChangeListener) {
         onRateTypeListChangeListener = listener
     }
     interface OnRateTypeListChangeListener {
-        fun onRateTypeListChanged(updatedRateTypeList: ArrayList<RatePlanDataClass>)
+        fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddCompanyRatePlanDataClass>)
     }
     class ViewHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
 
@@ -75,6 +78,7 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
         val totalInclusionChargesET = itemView.findViewById<TextInputEditText>(R.id.totalInclusionChargesET)
         val extraChildMealRateLayout = itemView.findViewById<TextInputLayout>(R.id.extraChildMealRateLayout)
         val extraChildMealRateET = itemView.findViewById<TextInputEditText>(R.id.extraChildMealRateET)
+        val roundUpET = itemView.findViewById<TextInputEditText>(R.id.roundUpET)
         val extraAdultMealRateLayout = itemView.findViewById<TextInputLayout>(R.id.extraAdultMealRateLayout)
         val extraAdultMealRateET = itemView.findViewById<TextInputEditText>(R.id.extraAdultMealRateET)
 
@@ -95,12 +99,12 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
 
         var isRateCardEdit = true
 
-        holder.ratePlanText.text = currentData.ratePlan
-        holder.rateCode.text = currentData.rateCode
-        if (currentData.selectedInclusionsList.size == 0) {
+        holder.ratePlanText.text = currentData.ratePlanName
+        holder.rateCode.text = currentData.shortCode
+        if (currentData.ratePlanInclusion.size == 0) {
             holder.totalInclusions.text = "No Inclusions"
         } else {
-            holder.totalInclusions.text = "${currentData.selectedInclusionsList.size} Inclusions"
+            holder.totalInclusions.text = "${currentData.ratePlanInclusion.size} Inclusions"
         }
         holder.extraAdultRateTxt.text = currentData.extraAdultRate
         holder.extraChildRateTxt.text = currentData.extraChildRate
@@ -126,14 +130,17 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
                 isRateCardEdit = true
         }
 
-        holder.ratePlanEText.setText(currentData.ratePlan)
-        holder.rate_codeEText.setText(currentData.rateCode)
-        holder.mealPlanETxt.setText(currentData.mealPlan)
+        holder.ratePlanEText.setText(currentData.ratePlanName)
+        holder.rate_codeEText.setText(currentData.shortCode)
+        holder.mealPlanETxt.setText(currentData.mealPlanName)
 
         var totalInclusionCharges = 0.00
 
+        var selectedInclusions = ArrayList<GetInclusionsData>()
+
         val myInterfaceImplementation = object : AddInclusionsAdapter.OnUpdate {
             override fun onUpdateList(selectedList: ArrayList<GetInclusionsData>) {
+                selectedInclusions = selectedList
                 holder.recycler_inclusion.layoutManager = LinearLayoutManager(applicationContext)
                 val createRateTypeAdapter = CreateRateTypeAdapter(applicationContext, selectedList)
                 holder.recycler_inclusion.adapter = createRateTypeAdapter
@@ -249,7 +256,31 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
         holder.saveIC.setOnClickListener {
             holder.editCard.isVisible = false
             isRateCardEdit = true
-            onRateTypeListChangeListener?.onRateTypeListChanged(rateTypeList)
+
+            val ratePlanDataClass =  AddCompanyRatePlanDataClass(
+                "${currentData.userId}",
+                "${currentData.propertyId}",
+                "Bar",
+                "",
+                "",
+                "${currentData.ratePlanName}",
+                "${currentData.mealPlanId}",
+                "${currentData.shortCode}",
+                selectedInclusions,
+                "${holder.barRoomBaseRateET.toString()}",
+                "${holder.mealChargesET.toString()}",
+                "${holder.totalInclusionChargesET.text.toString()}",
+                "${holder.roundUpET.text.toString()}",
+                "${holder.extraAdultRateTxt.text.toString()}",
+                "${holder.extraChildRateTxt.text.toString()}",
+                "${holder.ratePlanTotalTxt.text.toString()}",
+                "${holder.mealPlanETxt.text.toString()}",
+            )
+            if (!updatedRateTypeList.contains(ratePlanDataClass)) {
+                updatedRateTypeList.add(ratePlanDataClass)
+            }
+
+            onRateTypeListChangeListener?.onRateTypeListChanged(updatedRateTypeList)
         }
     }
 

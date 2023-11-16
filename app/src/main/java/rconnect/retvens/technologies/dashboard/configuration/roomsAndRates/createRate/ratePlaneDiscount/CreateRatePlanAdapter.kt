@@ -29,16 +29,16 @@ class CreateRatePlanAdapter(val applicationContext:Context, val rateTypeList:Arr
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentData = rateTypeList[position]
-        holder.roomType.text = currentData.roomType
-        holder.selectedCount.text = currentData.selectedCount.toString()
+//        holder.roomType.text = currentData.
+//        holder.selectedCount.text = currentData.selectedCount.toString()
 
         holder.roomType.setOnClickListener{
             holder.recycler.visibility = View.VISIBLE
         }
 
         holder.recycler.layoutManager=LinearLayoutManager(applicationContext)
-        val adapter = RoomTypeCategoryAdapter(applicationContext, currentData.list)
-        holder.recycler.adapter = adapter
-        adapter.notifyDataSetChanged()
+//        val adapter = RoomTypeCategoryAdapter(applicationContext, currentData.list)
+//        holder.recycler.adapter = adapter
+//        adapter.notifyDataSetChanged()
     }
 }
