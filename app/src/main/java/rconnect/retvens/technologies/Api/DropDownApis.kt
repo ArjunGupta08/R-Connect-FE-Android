@@ -8,6 +8,8 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRo
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.GetAmenityType
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomType
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomTypeData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetChargeRuleArray
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetPostingRuleArray
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -26,6 +28,12 @@ interface DropDownApis {
 
     @GET("getRating")
     fun getPropertyTypeRating(): Call<GetPropertyTypeRatingData>
+
+    @GET("postingRulesModels")
+    fun getPostingRulesModels(): Call<GetPostingRuleArray>
+
+    @GET("getchargeRule")
+    fun getChargeRulesModels(): Call<GetChargeRuleArray>
 
     @GET("getRoomList")
     fun getRoomList(

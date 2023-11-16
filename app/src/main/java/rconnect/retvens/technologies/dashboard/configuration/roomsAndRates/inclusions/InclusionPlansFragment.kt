@@ -13,10 +13,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.Api.OAuthClient
+import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.others.holiday.AddHolidayDataClass
@@ -25,12 +28,16 @@ import rconnect.retvens.technologies.dashboard.configuration.others.holiday.Holi
 import rconnect.retvens.technologies.databinding.FragmentInclusionPlansBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.showDropdownMenu
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
     private lateinit var binding : FragmentInclusionPlansBinding
+
+    private  var postingRuleArray = ArrayList<String>()
+    private  var chargeRuleArray = ArrayList<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,10 +53,38 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
 
         setUpRecycler()
 
+        getPostingRule()
+
         binding.createNewBtn.setOnClickListener {
             openCreateNewDialog()
         }
 
+    }
+
+    private fun getPostingRule() {
+        val get = RetrofitObject.dropDownApis.getPostingRulesModels()
+        get.enqueue(object : Callback<GetPostingRuleArray?> {
+            override fun onResponse(
+                call: Call<GetPostingRuleArray?>,
+                response: Response<GetPostingRuleArray?>
+            ) {
+                Log.d("error", response.code().toString())
+                if (response.isSuccessful) {
+                    try {
+                        val data = response.body()!!.data
+                        data.forEach {
+                            postingRuleArray.add(it.postingRule)
+                        }
+                    } catch (e : Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GetPostingRuleArray?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
     }
 
     private fun openCreateNewDialog() {
@@ -75,6 +110,18 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
 
         val cancel = dialog.findViewById<TextView>(R.id.cancel)
         val save = dialog.findViewById<CardView>(R.id.saveBtn)
+
+        val postingRuleLayout = dialog.findViewById<TextInputLayout>(R.id.postingRuleLayout)
+        val chargeRuleLayout = dialog.findViewById<TextInputLayout>(R.id.chargeRuleLayout)
+
+        postingRule.setOnClickListener {
+            Toast.makeText(requireContext(), "4", Toast.LENGTH_SHORT).show()
+            showDropdownMenu(requireContext(), postingRule, it, postingRuleArray)
+        }
+
+        chargeRule.setOnClickListener {
+            showDropdownMenu(requireContext(), chargeRule, it, chargeRuleArray)
+        }
 
         cancel.setOnClickListener {
             dialog.dismiss()

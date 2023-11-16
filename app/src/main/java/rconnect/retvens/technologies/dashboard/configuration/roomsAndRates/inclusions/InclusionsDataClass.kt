@@ -38,3 +38,19 @@ data class GetInclusionsData(
     val chargeRule : String,
     val postingRule : String,
 )
+
+data class GetPostingRuleArray (
+    val `data` : ArrayList<GetPostingRuleData>
+)
+data class GetPostingRuleData (
+    val postingRuleId : String,
+    val postingRule : String,
+)
+
+data class GetChargeRuleArray (
+    val `data` : ArrayList<GetChargeRuleData>
+)
+data class GetChargeRuleData (
+    val chargeRuleId : String,
+    val chargeRule : String,
+)

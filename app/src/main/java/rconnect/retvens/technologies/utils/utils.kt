@@ -2,8 +2,11 @@ package rconnect.retvens.technologies.utils
 
 import android.content.Context
 import android.util.Log
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.ListPopupWindow
+import com.google.android.material.textfield.TextInputEditText
 import rconnect.retvens.technologies.R
 import java.util.TimeZone
 
@@ -93,4 +96,20 @@ private fun getCountryForTimeZone(timeZoneId: String): String {
 
     // Return the country if found, or "Unknown" if not found
     return country ?: "Unknown"
+}
+
+
+fun showDropdownMenu(context: Context, et : TextInputEditText, anchorView: View, arr : ArrayList<String>) {
+
+    val adapter = ArrayAdapter(context, R.layout.simple_spinner_item1, arr)
+
+    val listPopupWindow = ListPopupWindow(context)
+    listPopupWindow.setAdapter(adapter)
+    listPopupWindow.anchorView = anchorView
+    listPopupWindow.setOnItemClickListener { _, _, position, _ ->
+        val selectedItem = adapter.getItem(position)
+        et.setText(selectedItem)
+        listPopupWindow.dismiss()
+    }
+    listPopupWindow.show()
 }
