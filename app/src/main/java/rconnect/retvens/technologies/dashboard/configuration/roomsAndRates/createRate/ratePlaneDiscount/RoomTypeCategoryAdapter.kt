@@ -9,8 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
 
-class RoomTypeCategoryAdapter(val applicationContext:Context, val rateTypeList:ArrayList<RatePlanRoomType>):RecyclerView.Adapter<RoomTypeCategoryAdapter.ViewHolder>() {
+class RoomTypeCategoryAdapter(val applicationContext:Context, val rateTypeList:ArrayList<AddCompanyRatePlanDataClass>):RecyclerView.Adapter<RoomTypeCategoryAdapter.ViewHolder>() {
     class ViewHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
         val roomType:TextView = itemView.findViewById(R.id.roomType)
     }
@@ -27,6 +28,6 @@ class RoomTypeCategoryAdapter(val applicationContext:Context, val rateTypeList:A
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentData = rateTypeList[position]
-        holder.roomType.text = currentData.roomType
+        holder.roomType.text = currentData.rateType
     }
 }

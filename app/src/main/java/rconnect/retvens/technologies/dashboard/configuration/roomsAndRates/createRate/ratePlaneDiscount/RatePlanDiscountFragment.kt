@@ -19,8 +19,6 @@ import java.util.Date
 class RatePlanDiscountFragment : Fragment() {
     private lateinit var binding : FragmentRatePlanDiscountBinding
 
-    private val planList = ArrayList<RatePlanDiscountData>()
-    private val roomList = ArrayList<RatePlanRoomType>()
     var startDate: Date?= null
     var endDate: Date? = null
     lateinit var startDatePickerDialog: DatePickerDialog
@@ -38,18 +36,13 @@ class RatePlanDiscountFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        roomList.add(RatePlanRoomType("Every Day"))
-        roomList.add(RatePlanRoomType("Every Day"))
-        roomList.add(RatePlanRoomType("Every Day"))
-        planList.add(RatePlanDiscountData(1,"Every Day", roomList))
-        planList.add(RatePlanDiscountData(1,"Every Day", arrayListOf()))
-        planList.add(RatePlanDiscountData(1,"Every Day", roomList))
-        planList.add(RatePlanDiscountData(1,"Every Day", arrayListOf()))
+//    private val discountDta = RatePlanDiscountData()
 
         binding.recycler.layoutManager = LinearLayoutManager(requireContext())
-        val createRatePlanAdapter = CreateRatePlanAdapter(requireContext(),planList)
-        binding.recycler.adapter = createRatePlanAdapter
-        createRatePlanAdapter.notifyDataSetChanged()
+
+//        val createRatePlanAdapter = CreateRatePlanAdapter(requireContext(),planList)
+//        binding.recycler.adapter = createRatePlanAdapter
+//        createRatePlanAdapter.notifyDataSetChanged()
 
         binding.amountCard.setOnClickListener {
             binding.discountTextLayout.hint = "Discount ₹"
@@ -82,6 +75,7 @@ class RatePlanDiscountFragment : Fragment() {
             }
         }
     }
+
     private fun cardSelected(card : MaterialCardView, text : TextView){
         binding.amountCard.strokeColor = ContextCompat.getColor(requireContext(), R.color.textInputStrokeColor)
         binding.percentCard.strokeColor = ContextCompat.getColor(requireContext(), R.color.textInputStrokeColor)
