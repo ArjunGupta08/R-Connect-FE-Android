@@ -36,12 +36,12 @@
         android:padding="15dp"
         android:layout_marginEnd="20dp"
         android:textColor="@color/black"
-        app:layout_constraintEnd_toStartOf="@id/continueBtn"
-        app:layout_constraintBottom_toBottomOf="@id/continueBtn"
-        app:layout_constraintTop_toTopOf="@id/continueBtn"/>
+        app:layout_constraintEnd_toStartOf="@id/continueBtnRate"
+        app:layout_constraintBottom_toBottomOf="@id/continueBtnRate"
+        app:layout_constraintTop_toTopOf="@id/continueBtnRate"/>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/continueBtn"
+        android:id="@+id/continueBtnRate"
         android:layout_width="110dp"
         android:layout_height="45dp"
         android:layout_marginEnd="20dp"
@@ -195,9 +195,9 @@
             android:weightSum="4"
             android:layout_marginTop="10dp"
             android:gravity="center_vertical"
-            app:layout_constraintEnd_toEndOf="@id/continueBtn"
+            app:layout_constraintEnd_toEndOf="@id/continueBtnRate"
             app:layout_constraintStart_toStartOf="@id/heading"
-            app:layout_constraintTop_toBottomOf="@id/continueBtn">
+            app:layout_constraintTop_toBottomOf="@id/continueBtnRate">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/rateTypeLayout"
@@ -261,8 +261,11 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/roboto"
                     android:editable="false"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:cursorVisible="false"
                     android:textSize="@dimen/H5"
-                    android:hint="Room Type"
+                    android:text="Select Room Type"
                     android:textColorHint="@drawable/hint_selector"
                     android:textColor="@color/secondary" />
             </com.google.android.material.textfield.TextInputLayout>
