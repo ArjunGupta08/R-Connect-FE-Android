@@ -20,7 +20,6 @@ data class ReservationDataClass(
 )
 
 data class GuestInfo(
-    val guestId: String,
     val guestName: String,
     val phoneNumber: String,
     val emailAddress: String,

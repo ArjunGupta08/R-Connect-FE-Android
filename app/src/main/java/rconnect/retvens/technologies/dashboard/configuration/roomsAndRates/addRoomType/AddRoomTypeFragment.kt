@@ -202,8 +202,8 @@ class AddRoomTypeFragment : Fragment(),
                 binding.maxChildText.text.toString(),
                 binding.maxOccupancyText.text.toString(),
                 binding.bedCount.text.toString(),
-                bedTypeIds.toString(),
-                amenityIdsList.toString(),
+                bedTypeIds.joinToString(", ").removeSurrounding("[", "]"),
+               amenityIdsList.joinToString(", ").removeSurrounding("[", "]"),
                 "Android"
                 )
         )

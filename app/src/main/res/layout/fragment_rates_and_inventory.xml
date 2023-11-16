@@ -141,6 +141,7 @@
         app:endIconMode="custom"
         app:endIconTint="@color/black"
         app:boxStrokeWidth="0dp"
+        android:hint="Room Type"
         app:endIconDrawable="@drawable/svg_arrow_down"
         >
 
@@ -150,8 +151,7 @@
             android:layout_height="match_parent"
             android:fontFamily="@font/roboto_medium"
             android:textSize="@dimen/H5"
-            android:inputType="text"
-            android:text="Room Type"
+            android:inputType="none"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:editable="false"

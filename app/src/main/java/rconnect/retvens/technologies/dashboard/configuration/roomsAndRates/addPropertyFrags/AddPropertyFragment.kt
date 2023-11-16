@@ -288,7 +288,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.
         val propertyRating = propertyTypeRating
         val websiteUrl = binding.websiteText.text.toString()
         val description = binding.descriptionET.text.toString()
-        val amenityIds = amenityIdsList.toString()
+        val amenityIds = amenityIdsList.joinToString(", ").removeSurrounding("[", "]")
         val address1 = binding.addressLine1ET.text.toString()
         val address2 = binding.addressLine2ET.text.toString()
         val postCode = binding.pincodeText.text.toString()

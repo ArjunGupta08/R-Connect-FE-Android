@@ -34,6 +34,7 @@ import rconnect.retvens.technologies.Api.RatesAndInventoryInterface
 import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.Api.configurationApi.ChainConfiguration
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.channelManager.AddReservationFragment.RateType
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomType
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomTypeData
 import rconnect.retvens.technologies.databinding.FragmentRatesAndInventoryBinding
@@ -119,15 +120,17 @@ class RatesAndInventoryFragment : Fragment() {
             // Show dropdown menu
             showDropdownMenu(bindingTab.ratesText,rateAdapter,it)
         }
+
+        val roomAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, temporaryRoomType)
        // Set a click listener for the end icon
         bindingTab.roomTypeText.setOnClickListener {
             Log.e("roomTypeText button","clicked")
             Log.e("roomList",temporaryRoomType.toString())
             // Show dropdown menu
 
-            val roomAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, temporaryRoomType)
 
-            showRoomDropdownMenu(bindingTab.roomTypeText,roomAdapter,it)
+
+            showRoomDropdownMenu(roomAdapter,it)
         }
 
 
@@ -180,7 +183,7 @@ class RatesAndInventoryFragment : Fragment() {
             // Set a click listener for the end icon
             room_typeText.setOnClickListener {
                 // Show dropdown menu
-                showRoomDropdownMenu(room_typeText,roomAdapter,it)
+                showRoomDropdownMenu(roomAdapter,it)
             }
 
             val rateOptions = arrayOf("Rates", "Stop sell", "COA","COD","Min Night","Extra Adult Rates","Extra Child Rates")
@@ -572,44 +575,38 @@ class RatesAndInventoryFragment : Fragment() {
         listPopupWindow.show()
     }
 
-private fun showRoomDropdownMenu(et:TextInputEditText,roomTypeAdapter: ArrayAdapter<GetRoomType>, it: View?) {
-    val listPopupWindow = ListPopupWindow(requireContext())
+    private fun showRoomDropdownMenu(adapter: ArrayAdapter<GetRoomType>, it: View?) {
+        val listPopupWindow = ListPopupWindow(requireContext())
 
-    Log.e("roomList",temporaryRoomType.toString())
-    // Create a custom adapter to display only the rateType property
-    val customAdapter = object : ArrayAdapter<GetRoomType>(
-        requireContext(),
-        R.layout.simple_dropdown_item_1line,
-        temporaryRoomType
-    ) {
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-            val view = super.getView(position, convertView, parent)
-            val roomType = getItem(position)?.roomTypeName
-            (view as TextView).text = roomType
-            return view
+        // Create a custom adapter to display only the rateType property
+        val customAdapter = object : ArrayAdapter<GetRoomType>(requireContext(), R.layout.simple_dropdown_item_1line, temporaryRoomType) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getView(position, convertView, parent)
+                val rateType = getItem(position)?.roomTypeName
+                (view as TextView).text = rateType
+                return view
+            }
+
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                val rateType = getItem(position)?.roomTypeName
+                (view as TextView).text = rateType
+                return view
+            }
         }
 
-        override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-            val view = super.getDropDownView(position, convertView, parent)
-            val roomType = getItem(position)?.roomTypeName
-            (view as TextView).text = roomType
-            return view
+        listPopupWindow.setAdapter(customAdapter)
+
+        listPopupWindow.anchorView = it
+        listPopupWindow.setOnItemClickListener { _, _, position, _ ->
+            val selectedItem = customAdapter.getItem(position)
+            bindingTab.roomTypeLayout.editText?.setText(selectedItem?.roomTypeName)
+            roomTypeId = selectedItem?.roomTypeId.toString()
+            listPopupWindow.dismiss()
         }
+
+        listPopupWindow.show()
     }
-
-    listPopupWindow.setAdapter(customAdapter)
-
-    listPopupWindow.anchorView = it
-    listPopupWindow.setOnItemClickListener { _, _, position, _ ->
-        val selectedItem = customAdapter.getItem(position)
-        et.setText(selectedItem?.roomTypeName)
-        roomTypeId = selectedItem?.roomTypeId.toString()
-
-
-        listPopupWindow.dismiss()
-        getRatePlans()
-    }
-}
 
 
     private fun getOta() {

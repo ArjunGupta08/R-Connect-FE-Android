@@ -56,6 +56,7 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
     private var apiCheckOutDate:String = ""
     private var barRateReservation:ArrayList<BarRateReservation> = ArrayList()
     private var reservationSummary:ArrayList<ReservationSummary> = ArrayList()
+    private var guestInfo:ArrayList<GuestInfo> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,6 +77,7 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
         getBookingSource()
         getReservationType()
 
+        guestInfo.add(GuestInfo("Shubham Singh","88464","shub@gmail.com","kujqwhdukbs","kujqhubd","India","MP","INdore","501401"))
 
         binding.recyclerRoomDetails.layoutManager = LinearLayoutManager(requireContext())
         addReservationAdapter = AddReservationAdapter(requireContext(), roomDetailsList,availableList)
@@ -182,7 +184,7 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
             apiCheckOutDate,
             nights,
             rateTypeId,
-            guestInfo = emptyList(),
+            guestInfo,
             barRateReservation,
             roomDetailsList,
             emptyList(),
@@ -195,6 +197,8 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
 
         val generateBooking = OAuthClient<AddReservationApis>(requireContext()).create(AddReservationApis::class.java).generateBooking(booking)
 
+        Log.e("generateBooking",booking.toString())
+
         generateBooking.enqueue(object : Callback<BookingResponse?> {
             override fun onResponse(
                 call: Call<BookingResponse?>,
@@ -203,6 +207,7 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
                 if(response.isSuccessful){
                     val response = response.body()!!
                     Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show()
+                    Log.e("response",response.message.toString())
                 }else{
                     Log.e("error",response.code().toString())
                 }
@@ -466,6 +471,8 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
         Log.e("listRoom",listRoom.toString())
 
         binding.txtGrandTotal.text = "₹ ${grandTotal.toString()}"
+
+        reservationSummary.clear()
 
         reservationSummary.add(ReservationSummary(totalCharge.toString(),"","",apiCheckInDate,apiCheckOutDate,grandTotal.toString()))
     }

@@ -19,7 +19,15 @@ object RetrofitObject {
     private val retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create(gson))
         .baseUrl(baseUrl)
+        .client(createOkHttpClient())
         .build()
+
+    private fun createOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .connectTimeout(60, TimeUnit.SECONDS) // Set connection timeout to 30 seconds
+            .readTimeout(60, TimeUnit.SECONDS)    // Set read timeout to 30 seconds
+            .build()
+    }
 
     val authentication: AuthenticationInterface = retrofit.create(AuthenticationInterface::class.java)
     val chainConfiguration: ChainConfiguration = retrofit.create(ChainConfiguration::class.java)
