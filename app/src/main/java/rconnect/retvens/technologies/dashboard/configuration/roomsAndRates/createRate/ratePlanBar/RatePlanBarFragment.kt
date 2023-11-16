@@ -6,39 +6,54 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import rconnect.retvens.technologies.Api.OAuthClient
+import rconnect.retvens.technologies.Api.configurationApi.SingleConfiguration
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddInclusionsAdapter
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.AddMealPlanAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateTypeAdapter
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.RatePlanDetailsAdapter
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.AddInclusionsDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.GetMealPlanData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.GetMealPlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.MealPlanDataClass
 import rconnect.retvens.technologies.databinding.FragmentRatePlanBarBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
+import rconnect.retvens.technologies.utils.Const
 import rconnect.retvens.technologies.utils.UserSessionManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class RatePlanBarFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
+class RatePlanBarFragment : Fragment(),
+    AddMealPlanAdapter.OnUpdate,
+    RatePlanDetailsAdapter.OnRateTypeListChangeListener  {
+
     private lateinit var binding : FragmentRatePlanBarBinding
 
     val rateList = ArrayList<CreateRateData>()
-    val ratePlanDetailsList = ArrayList<String>()
+
+    private lateinit var ratePlanDetailsAdapter : RatePlanDetailsAdapter
+    private var ratePlanDetailsList = ArrayList<AddCompanyRatePlanDataClass>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,35 +68,52 @@ class RatePlanBarFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
         super.onViewCreated(view, savedInstanceState)
         setUpRecycler()
 
+        val continueBtn = requireActivity().findViewById<CardView>(R.id.continueBtnRate)
+        continueBtn?.setOnClickListener {
+            sendRatePlanData()
+        }
 
-        binding.addName.setOnClickListener {
-            openAddInclusionDialog()
+        binding.addMealPlanCard.setOnClickListener {
+            openAddMealDialog()
         }
     }
 
-    private fun setUpRecycler() {
+    private fun sendRatePlanData() {
+        ratePlanDetailsList.forEach {
+            val send = OAuthClient<SingleConfiguration>(requireContext()).create(SingleConfiguration::class.java).barRatePlanApi(it)
+            send.enqueue(object : Callback<ResponseData?> {
+                override fun onResponse(
+                    call: Call<ResponseData?>,
+                    response: Response<ResponseData?>
+                ) {
+                    if (response.isSuccessful) {
 
-        ratePlanDetailsList.add("5")
-        ratePlanDetailsList.add("5")
+                    } else {
+                        Log.d("error", response.message())
+                    }
+                    Toast.makeText(requireContext(), response.code().toString(), Toast.LENGTH_SHORT).show()
+                }
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-//        val ratePlanDetailsAdapter = RatePlanDetailsAdapter(requireContext(),ratePlanDetailsList)
-//        binding.recyclerView.adapter = ratePlanDetailsAdapter
-//        binding.recyclerView2.adapter = ratePlanDetailsAdapter
-//        ratePlanDetailsAdapter.notifyDataSetChanged()
-
+                override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                    Log.d("error", t.localizedMessage)
+                }
+            })
+        }
     }
+    private fun openAddMealDialog() {
 
-    private fun openAddInclusionDialog() {
         val dialog = Dialog(requireContext())
         dialog.setCancelable(true)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-//        dialog.setContentView(R.layout.dialog_add_inclusion)
-//
-//        val createNewInclusionBtn = dialog.findViewById<TextView>(R.id.createNewInclusionBtn)
-//        createNewInclusionBtn.setOnClickListener {
-//            openCreateInclusionDialog(dialog)
-//        }
+        dialog.setContentView(R.layout.dialog_add_inclusion)
+
+        val aA = dialog.findViewById<TextView>(R.id.aA)
+        aA.text = "Add Meal Plan"
+        val create = dialog.findViewById<TextView>(R.id.createNewInclusionBtn)
+
+        create.setOnClickListener {
+            openCreateNewDialog()
+        }
 
         val cancel = dialog.findViewById<TextView>(R.id.cancel)
         cancel.setOnClickListener {
@@ -91,97 +123,144 @@ class RatePlanBarFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
         val recyclerView = dialog.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        val identity = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).getInclusionApi(
-            UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString())
-        identity.enqueue(object : Callback<GetInclusionsDataClass?> {
+        val mp = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).getMealPlanApi(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString())
+        mp.enqueue(object : Callback<GetMealPlanDataClass?> {
             override fun onResponse(
-                call: Call<GetInclusionsDataClass?>,
-                response: Response<GetInclusionsDataClass?>
+                call: Call<GetMealPlanDataClass?>,
+                response: Response<GetMealPlanDataClass?>
             ) {
 
                 if (isAdded) {
                     if (response.isSuccessful) {
-                        val adapter = AddInclusionsAdapter(response.body()!!.data, requireContext())
-                        recyclerView.adapter = adapter
-                        adapter.setOnUpdateListener(this@RatePlanBarFragment)
-                        adapter.notifyDataSetChanged()
+                        try {
+                            val adapter = AddMealPlanAdapter(response.body()!!.data, requireContext())
+                            recyclerView.adapter = adapter
+                            adapter.setOnUpdateListener(this@RatePlanBarFragment)
+                            adapter.notifyDataSetChanged()
+                        } catch (e : NullPointerException){
+                            print(e)
+                        }
                     } else {
                         Log.d("error", "${response.code()} ${response.message()}")
                     }
                 }
             }
 
-            override fun onFailure(call: Call<GetInclusionsDataClass?>, t: Throwable) {
+            override fun onFailure(call: Call<GetMealPlanDataClass?>, t: Throwable) {
                 Log.d("error", t.localizedMessage)
             }
         })
 
-
-        dialog.show()
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-
-    }
-
-    private fun openCreateInclusionDialog(pDialog: Dialog) {
-        val dialog = Dialog(requireContext())
-        dialog.setCancelable(true)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.dialog_create_inclusion)
-
-        val cancel = dialog.findViewById<TextView>(R.id.cancel)
-        cancel.setOnClickListener {
+        val saveBtn = dialog.findViewById<CardView>(R.id.saveBtn)
+        saveBtn.setOnClickListener {
             dialog.dismiss()
         }
 
-        val inclusionName = dialog.findViewById<TextInputEditText>(R.id.inclusionName)
-        val inclusionType = dialog.findViewById<TextInputEditText>(R.id.inclusionType)
-        val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCode)
-        val charge = dialog.findViewById<TextInputEditText>(R.id.charge)
-        val chargeRule = dialog.findViewById<TextInputEditText>(R.id.chargeRule)
-        val postingRule = dialog.findViewById<TextInputEditText>(R.id.postingRule)
-
-        val save = dialog.findViewById<CardView>(R.id.saveBtn)
-
-        save.setOnClickListener {
-            saveInclusion(requireContext(), dialog, shortCode.text.toString(), charge.text.toString(), inclusionName.text.toString(), inclusionType.text.toString(), chargeRule.text.toString(), postingRule.text.toString())
-            pDialog.dismiss()
-            openAddInclusionDialog()
-        }
-
         dialog.show()
         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+    }
+    private fun openCreateNewDialog() {
+        val dialog = Dialog(requireContext()) // Use 'this' as the context, assuming this code is within an Activity
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.setContentView(R.layout.dialog_create_meal_plan)
+        dialog.window?.apply {
+            setBackgroundDrawableResource(android.R.color.transparent) // Makes the background transparent
+            setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        }
+
+        val mealPlanName = dialog.findViewById<TextInputEditText>(R.id.mealPlanName)
+        val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCode)
+        val chargesPerOccupancy = dialog.findViewById<TextInputEditText>(R.id.chargesPerOccupancy)
+
+        val cancel = dialog.findViewById<TextView>(R.id.cancel)
+        val save = dialog.findViewById<CardView>(R.id.saveBtn)
+
+        cancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        save.setOnClickListener {
+            saveMealPlan(requireContext(), dialog, mealPlanName.text.toString(), shortCode.text.toString(), chargesPerOccupancy.text.toString())
+        }
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        dialog.window?.setGravity(Gravity.END)
+
+        dialog.show()
 
     }
-
-    private fun saveInclusion(context: Context, dialog: Dialog, shortCodeTxt : String, charge:String, inclusionName:String, inclusionType:String, chargeRule:String, postingRule:String) {
-        val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).addInclusionsApi(
-            AddInclusionsDataClass(UserSessionManager(context).getUserId().toString(), UserSessionManager(context).getPropertyId().toString(), shortCodeTxt, charge, inclusionName, inclusionType, chargeRule, postingRule)
+    private fun saveMealPlan(context: Context, dialog: Dialog, mealPlanName: String, shortCode: String, chargesPerOccupancy: String) {
+        val mP = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).postMealPlanApi(
+            MealPlanDataClass(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString(), mealPlanName, shortCode, chargesPerOccupancy)
         )
 
-        create.enqueue(object : Callback<ResponseData?> {
+        mP.enqueue(object : Callback<ResponseData?> {
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
-                Log.d( "inclusion", "${response.code()} ${response.message()}")
-                setUpRecycler()
-                dialog.dismiss()
+                if (isAdded){
+                    if (response.isSuccessful) {
+                        dialog.dismiss()
+                        Toast.makeText(context, response.body()!!.message, Toast.LENGTH_SHORT).show()
+                    } else {
+                        Log.d("error", "${response.code()} ${response.message()}")
+                    }
+                }
             }
 
             override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
                 Log.d("error", t.localizedMessage)
             }
         })
+
+    }
+    private fun setUpRecycler() {
+
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        ratePlanDetailsAdapter = RatePlanDetailsAdapter(requireContext(),ratePlanDetailsList)
+        binding.recyclerView.adapter = ratePlanDetailsAdapter
+        ratePlanDetailsAdapter.notifyDataSetChanged()
+        ratePlanDetailsAdapter.setOnListUpdateListener(this)
+
     }
 
-    override fun onUpdateList(selectedList: ArrayList<GetInclusionsData>) {
+    override fun onUpdateMealPlan(selectedList: ArrayList<GetMealPlanData>) {
+        selectedList.forEach {
+            val selectedInclusionList: ArrayList<GetInclusionsData> = arrayListOf()
 
-        binding.recyclerInclusion.layoutManager = LinearLayoutManager(requireContext())
-        val createRateTypeAdapter = CreateRateTypeAdapter(requireContext(), selectedList)
-        binding.recyclerInclusion.adapter = createRateTypeAdapter
-        createRateTypeAdapter.notifyDataSetChanged()
-
+            val ratePlanDataClass =  AddCompanyRatePlanDataClass(
+                UserSessionManager(requireContext()).getUserId().toString(),
+                UserSessionManager(requireContext()).getPropertyId().toString(),
+                "Bar",
+                "",
+                "",
+                "${Const.addedRoomTypeName} ${it.shortCode}",
+                "${it.mealPlanId}",
+                "${Const.addedRoomTypeShortCode}${it.shortCode}",
+                selectedInclusionList,
+                "",
+                "${it.chargesPerOccupancy}",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "${it.mealPlanName}"
+            )
+            if (!ratePlanDetailsList.contains(ratePlanDataClass)) {
+                ratePlanDetailsList.add(ratePlanDataClass)
+                ratePlanDetailsAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+    override fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddCompanyRatePlanDataClass>) {
+        ratePlanDetailsList = updatedRateTypeList
+        ratePlanDetailsAdapter.notifyDataSetChanged()
     }
 
 }
