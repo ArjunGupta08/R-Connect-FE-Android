@@ -49,9 +49,6 @@ interface DropDownApis {
         @Query("propertyId") propertyId:String
     ):Call<GetOtaSourceData>
 
-    @GET("postingRulesModels")
-    fun getPostingRule():Call<GetPostingRuleData>
-
     @GET("getRatePlansList")
     fun getRatePlans(
         @Query("userId") userId: String,
