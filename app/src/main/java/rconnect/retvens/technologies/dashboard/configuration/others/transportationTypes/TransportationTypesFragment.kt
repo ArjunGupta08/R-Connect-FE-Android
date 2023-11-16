@@ -60,10 +60,15 @@ class TransportationTypesFragment : Fragment(), TransportationTypeAdapter.OnUpda
                 response: Response<GetTransportationTypeDataClass?>
             ) {
                 if (response.isSuccessful) {
-                    val adapter = TransportationTypeAdapter(response.body()!!.data, requireContext())
-                    binding.reservationTypeRecycler.adapter = adapter
-                    adapter.setOnUpdateListener(this@TransportationTypesFragment)
-                    adapter.notifyDataSetChanged()
+                    try {
+                        val adapter =
+                            TransportationTypeAdapter(response.body()!!.data, requireContext())
+                        binding.reservationTypeRecycler.adapter = adapter
+                        adapter.setOnUpdateListener(this@TransportationTypesFragment)
+                        adapter.notifyDataSetChanged()
+                    } catch (e:NullPointerException){
+                        e.printStackTrace()
+                    }
                 } else {
                     openCreateNewDialog()
                     Log.d("respons", "${response.code()} ${response.message()}")
