@@ -150,7 +150,6 @@
                                     app:layout_constraintTop_toTopOf="parent">
 
                                     <TextView
-                                        android:id="@+id/minNightsTextView"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Min Nights"
@@ -159,7 +158,7 @@
                                         android:textColor="@color/subtitle"
                                         android:fontFamily="@font/roboto"/>
                                     <TextView
-                                        android:id="@+id/addMinNightsTextView"
+                                        android:id="@+id/minNightsTextView"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:text="1"
@@ -690,6 +689,7 @@
                         android:fontFamily="@font/roboto_bold"
                         android:padding="15dp"
                         android:text="Cancel"
+                        android:visibility="gone"
                         android:textColor="@color/black"
                         android:textSize="@dimen/H5"
                         app:layout_constraintBottom_toBottomOf="@id/saveIC"
