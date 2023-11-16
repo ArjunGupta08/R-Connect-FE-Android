@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
@@ -36,6 +37,7 @@ import retrofit2.Response
 
 class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
     private lateinit var binding : FragmentInclusionPlansBinding
+    var postingList = ArrayList<String>()
 
     private  var postingRuleArray = ArrayList<String>()
     private  var chargeRuleArray = ArrayList<String>()
@@ -196,6 +198,13 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
                 )
             }
         }
+
+        val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, postingList)
+        // Set a click listener for the end icon
+//        binding.sourceText.setOnClickListener {
+//            // Show dropdown menu
+//            showDropdownMenu(adapter,it)
+//        }
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation

@@ -34,6 +34,7 @@ import rconnect.retvens.technologies.Api.RatesAndInventoryInterface
 import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.Api.configurationApi.ChainConfiguration
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomType
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomTypeData
 import rconnect.retvens.technologies.databinding.FragmentRatesAndInventoryBinding
 import rconnect.retvens.technologies.utils.UserSessionManager
@@ -80,9 +81,13 @@ class RatesAndInventoryFragment : Fragment() {
 
 
     var otaList = ArrayList<String>()
+    var otaDialogList = ArrayList<String>()
 
     var roomTypeList = ArrayList<String>()
-
+    var roomTypeDialogList = ArrayList<String>()
+    var roomTypeId = ""
+    var temporaryRoomType = ArrayList<GetRoomType>()
+    var ratePlansList = ArrayList<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -104,22 +109,25 @@ class RatesAndInventoryFragment : Fragment() {
         getOta()
         getRoomType()
 
+
         val rateOptions = arrayOf("Rates", "Stop sell", "COA","COD","Min Night","Extra Adult Rates","Extra Child Rates")
 
-        val rateAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, rateOptions)
+        val rateAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, ratePlansList)
 
         // Set a click listener for the end icon
         bindingTab.ratesText.setOnClickListener {
             // Show dropdown menu
-            showRateDropdownMenu(rateAdapter,it)
+            showDropdownMenu(bindingTab.ratesText,rateAdapter,it)
         }
-
-
-        val roomAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, roomTypeList)
-        // Set a click listener for the end icon
+       // Set a click listener for the end icon
         bindingTab.roomTypeText.setOnClickListener {
+            Log.e("roomTypeText button","clicked")
+            Log.e("roomList",temporaryRoomType.toString())
             // Show dropdown menu
-            showRoomDropdownMenu(roomAdapter,it)
+
+            val roomAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, temporaryRoomType)
+
+            showRoomDropdownMenu(bindingTab.roomTypeText,roomAdapter,it)
         }
 
 
@@ -127,7 +135,7 @@ class RatesAndInventoryFragment : Fragment() {
         // Set a click listener for the end icon
         bindingTab.sourceText.setOnClickListener {
             // Show dropdown menu
-            showDropdownMenu(adapter,it)
+            showDropdownMenu(bindingTab.sourceText,adapter,it)
         }
 
         bindingTab.calenderRecycler.layoutManager = LinearLayoutManager(requireContext(),
@@ -168,21 +176,21 @@ class RatesAndInventoryFragment : Fragment() {
             room_typeText = dialog.findViewById(R.id.room_typeText)
             rate_planText = dialog.findViewById(R.id.rate_planText)
 
-            val roomAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, roomTypeList)
+            val roomAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, temporaryRoomType)
             // Set a click listener for the end icon
             room_typeText.setOnClickListener {
                 // Show dropdown menu
-                showDialogRoomDropdownMenu(roomAdapter,it)
+                showRoomDropdownMenu(room_typeText,roomAdapter,it)
             }
 
             val rateOptions = arrayOf("Rates", "Stop sell", "COA","COD","Min Night","Extra Adult Rates","Extra Child Rates")
 
-            val rateAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, rateOptions)
+            val rateAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, ratePlansList)
 
             // Set a click listener for the end icon
             rate_planText.setOnClickListener {
                 // Show dropdown menu
-                showDialogRateDropdownMenu(rateAdapter,it)
+                showDropdownMenu(rate_planText,rateAdapter,it)
             }
 
 
@@ -422,6 +430,31 @@ class RatesAndInventoryFragment : Fragment() {
                 val add_inventory = dialog.findViewById<ImageView>(R.id.add_inventory)
                 val blockRoomCard = dialog.findViewById<MaterialCardView>(R.id.block_room)
                 val addRoomCard = dialog.findViewById<MaterialCardView>(R.id.add_room_card)
+            val sourceText = dialog.findViewById<TextInputEditText>(R.id.sourceText)
+            val room_typeText = dialog.findViewById<TextInputEditText>(R.id.room_typeText)
+            val rate_planText = dialog.findViewById<TextInputEditText>(R.id.rate_planText)
+
+
+            val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, otaDialogList)
+            // Set a click listener for the end icon
+            sourceText.setOnClickListener {
+                // Show dropdown menu
+                showDropdownMenu(sourceText,adapter,it)
+            }
+
+            val adapter2 = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, roomTypeDialogList)
+            // Set a click listener for the end icon
+            room_typeText.setOnClickListener {
+                // Show dropdown menu
+                showDropdownMenu(room_typeText,adapter2,it)
+            }
+            val adapter3 = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, ratePlansList)
+            // Set a click listener for the end icon
+            rate_planText.setOnClickListener {
+                // Show dropdown menu
+                showDropdownMenu(rate_planText,adapter3,it)
+            }
+
                 var isInventoryOpen = false
                 add_inventory.setOnClickListener {
                     if (!isInventoryOpen) {
@@ -494,74 +527,93 @@ class RatesAndInventoryFragment : Fragment() {
 
     }
 
-    private fun showDropdownMenu(adapter: ArrayAdapter<String>, anchorView: View) {
+    private fun getRatePlans() {
+        val retrofit = OAuthClient<DropDownApis>(requireContext()).create(DropDownApis::class.java).getRatePlans(UserSessionManager(requireContext()).getUserId().toString(),roomTypeId)
+        retrofit.enqueue(object : Callback<GetRatePlansData?> {
+            override fun onResponse(
+                call: Call<GetRatePlansData?>,
+                response: Response<GetRatePlansData?>
+            ) {
+                if (response.isSuccessful){
+                    Toast.makeText(requireContext(), "rate plan succeed", Toast.LENGTH_SHORT).show()
+                    try {
+                    val data = response.body()!!.data
+                    data.forEach {
+                        ratePlansList.add(it.ratePlanName)
+                    }
+                } catch (e: NullPointerException){
+                    e.printStackTrace()
+                }
+                }
+                else{
+                    Log.e("ratePlans",response.message().toString())
+                    Toast.makeText(requireContext(), "rate plan failing", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<GetRatePlansData?>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+        })
+
+    }
+
+    private fun showDropdownMenu(et:TextInputEditText,adapter: ArrayAdapter<String>, anchorView: View) {
         val listPopupWindow = ListPopupWindow(requireContext())
         listPopupWindow.setAdapter(adapter)
         listPopupWindow.anchorView = anchorView
         listPopupWindow.setOnItemClickListener { _, _, position, _ ->
             val selectedItem = adapter.getItem(position)
-            bindingTab.sourceText.setText(selectedItem)
+            et.setText(selectedItem)
             listPopupWindow.dismiss()
         }
 
 
         listPopupWindow.show()
     }
-    private fun showRoomDropdownMenu(adapter: ArrayAdapter<String>, anchorView: View) {
-        val listPopupWindow = ListPopupWindow(requireContext())
-        listPopupWindow.setAdapter(adapter)
-        listPopupWindow.anchorView = anchorView
-        listPopupWindow.setOnItemClickListener { _, _, position, _ ->
-            val selectedItem = adapter.getItem(position)
-            bindingTab.roomTypeText.setText(selectedItem)
-            listPopupWindow.dismiss()
+
+private fun showRoomDropdownMenu(et:TextInputEditText,roomTypeAdapter: ArrayAdapter<GetRoomType>, it: View?) {
+    val listPopupWindow = ListPopupWindow(requireContext())
+
+    Log.e("roomList",temporaryRoomType.toString())
+    // Create a custom adapter to display only the rateType property
+    val customAdapter = object : ArrayAdapter<GetRoomType>(
+        requireContext(),
+        R.layout.simple_dropdown_item_1line,
+        temporaryRoomType
+    ) {
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+            val view = super.getView(position, convertView, parent)
+            val roomType = getItem(position)?.roomTypeName
+            (view as TextView).text = roomType
+            return view
         }
 
-
-        listPopupWindow.show()
-    }
-    private fun showDialogRoomDropdownMenu(adapter: ArrayAdapter<String>, anchorView: View) {
-        val listPopupWindow = ListPopupWindow(requireContext())
-        listPopupWindow.setAdapter(adapter)
-        listPopupWindow.anchorView = anchorView
-        listPopupWindow.setOnItemClickListener { _, _, position, _ ->
-            val selectedItem = adapter.getItem(position)
-            room_typeText!!.setText(selectedItem)
-            listPopupWindow.dismiss()
+        override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+            val view = super.getDropDownView(position, convertView, parent)
+            val roomType = getItem(position)?.roomTypeName
+            (view as TextView).text = roomType
+            return view
         }
-
-
-        listPopupWindow.show()
     }
-    private fun showRateDropdownMenu(adapter: ArrayAdapter<String>, anchorView: View) {
-        val listPopupWindow = ListPopupWindow(requireContext())
-        listPopupWindow.setAdapter(adapter)
-        listPopupWindow.anchorView = anchorView
-        listPopupWindow.setOnItemClickListener { _, _, position, _ ->
-            val selectedItem = adapter.getItem(position)
-            bindingTab.ratesText.setText(selectedItem)
-            listPopupWindow.dismiss()
-        }
+
+    listPopupWindow.setAdapter(customAdapter)
+
+    listPopupWindow.anchorView = it
+    listPopupWindow.setOnItemClickListener { _, _, position, _ ->
+        val selectedItem = customAdapter.getItem(position)
+        et.setText(selectedItem?.roomTypeName)
+        roomTypeId = selectedItem?.roomTypeId.toString()
 
 
-        listPopupWindow.show()
+        listPopupWindow.dismiss()
+        getRatePlans()
     }
-    private fun showDialogRateDropdownMenu(adapter: ArrayAdapter<String>, anchorView: View) {
-        val listPopupWindow = ListPopupWindow(requireContext())
-        listPopupWindow.setAdapter(adapter)
-        listPopupWindow.anchorView = anchorView
-        listPopupWindow.setOnItemClickListener { _, _, position, _ ->
-            val selectedItem = adapter.getItem(position)
-            rate_planText.setText(selectedItem)
-            listPopupWindow.dismiss()
-        }
+}
 
-
-        listPopupWindow.show()
-    }
 
     private fun getOta() {
-        val retrofit = OAuthClient<DropDownApis>(requireContext()).create(DropDownApis::class.java).getOtaList( "cVDoB8BP","4OCGYRmP")
+        val retrofit = OAuthClient<DropDownApis>(requireContext()).create(DropDownApis::class.java).getOtaList( UserSessionManager(requireContext()).getUserId().toString(),UserSessionManager(requireContext()).getPropertyId().toString())
         retrofit.enqueue(object : Callback<GetOtaSourceData?> {
             override fun onResponse(
                 call: Call<GetOtaSourceData?>,
@@ -571,6 +623,7 @@ class RatesAndInventoryFragment : Fragment() {
                     val data = response.body()!!.data
                     data.forEach {
                         otaList.add(it.otaName)
+                        otaDialogList.add(it.otaName)
                     }
                     Toast.makeText(requireContext(), data.toString(), Toast.LENGTH_SHORT).show()
                     Toast.makeText(requireContext(), "successFull", Toast.LENGTH_SHORT).show()
@@ -583,29 +636,34 @@ class RatesAndInventoryFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<GetOtaSourceData?>, t: Throwable) {
-                TODO("Not yet implemented")
+                Log.e("failure",t.message.toString())
             }
         })
     }
 
     private fun getRoomType() {
-        val retrofit = OAuthClient<DropDownApis>(requireContext()).create(DropDownApis::class.java).getRoomList( "4OCGYRmP","cVDoB8BP")
+        val retrofit = OAuthClient<DropDownApis>(requireContext()).create(DropDownApis::class.java).getRoomList( UserSessionManager(requireContext()).getPropertyId().toString(),UserSessionManager(requireContext()).getUserId().toString())
         retrofit.enqueue(object : Callback<GetRoomTypeData?> {
             override fun onResponse(
                 call: Call<GetRoomTypeData?>,
                 response: Response<GetRoomTypeData?>
             ) {
                 if (response.isSuccessful){
-                    Toast.makeText(requireContext(), "Room Mission SuccessFull", Toast.LENGTH_SHORT).show()
+
+                    Log.e("response",response.body().toString())
                     val data = response.body()!!.data
+                    temporaryRoomType.addAll(data)
                     data.forEach{
+                        temporaryRoomType.add(it)
                         val roomType = it.roomTypeName
                         roomTypeList.add(roomType)
+                        roomTypeDialogList.add(it.roomTypeName)
+                        roomTypeId = it.roomTypeId
                     }
 
                 }
                 else{
-                    Toast.makeText(requireContext(), response.code().toString(), Toast.LENGTH_SHORT).show()
+
                     Log.e("error",response.message().toString())
                     Log.e("error",response.body().toString())
                 }
@@ -662,7 +720,6 @@ class RatesAndInventoryFragment : Fragment() {
                    inventoryAdapter = RoomsInventoryAdapter(requireContext(),response)
                    bindingTab.inventoryRecycler.adapter = inventoryAdapter
                    inventoryAdapter.notifyDataSetChanged()
-                   Toast.makeText(requireContext(), "success", Toast.LENGTH_SHORT).show()
                }else{
                    Log.e("error",response.code().toString())
                    Log.e("message",response.message().toString())
