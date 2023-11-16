@@ -31,12 +31,12 @@
         android:padding="15dp"
         android:layout_marginEnd="20dp"
         android:textColor="@color/black"
-        app:layout_constraintEnd_toStartOf="@id/continueBtn"
-        app:layout_constraintBottom_toBottomOf="@id/continueBtn"
-        app:layout_constraintTop_toTopOf="@id/continueBtn"/>
+        app:layout_constraintEnd_toStartOf="@id/submitCard"
+        app:layout_constraintBottom_toBottomOf="@id/submitCard"
+        app:layout_constraintTop_toTopOf="@id/submitCard"/>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/continueBtn"
+        android:id="@+id/submitCard"
         android:layout_width="110dp"
         android:layout_height="45dp"
         android:layout_marginEnd="20dp"
@@ -532,7 +532,7 @@
                                 app:layout_constraintStart_toStartOf="@id/guest_heading"
                                 app:layout_constraintTop_toBottomOf="@id/guest_heading">
                                 <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/sourceText"
+                                    android:id="@+id/salutationText"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:fontFamily="@font/roboto"

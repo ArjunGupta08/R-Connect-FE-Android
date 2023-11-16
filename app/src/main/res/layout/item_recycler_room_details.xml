@@ -85,6 +85,7 @@
                 android:focusable="false"
                 android:clickable="true"
                 android:inputType="none"
+                android:singleLine="true"
                 android:textColor="@color/secondary"
                 android:textColorHint="@drawable/hint_selector"
                 android:textSize="@dimen/H5" />

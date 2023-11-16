@@ -52,7 +52,7 @@ class CreateRateTypeFragment : Fragment() {
 
         val options = arrayOf("Deluxe", "Premium", "Elite")
 
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, roomTypeList)
+        val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, roomTypeList)
         // Set a click listener for the end icon
         binding.dropRoom.setOnClickListener {
             // Show dropdown menu
@@ -84,7 +84,7 @@ class CreateRateTypeFragment : Fragment() {
                 response: Response<GetRoomTypeData?>
             ) {
                 if (response.isSuccessful){
-                    Toast.makeText(requireContext(), "Mission SuccessFull", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(requireContext(), "Mission SuccessFull", Toast.LENGTH_SHORT).show()
                     val data = response.body()!!.data
                     data.forEach{
                         val roomType = it.roomTypeName

@@ -66,13 +66,6 @@ interface ChainConfiguration {
         @Part("userId") userId: RequestBody,
     ): Call<AddPropertyResponseDataClass>
 
-    @GET("fetchAmenity")
-    fun getAmenities(
-        @Query("propertyId") propertyId: String,
-        @Query("propertyType") propertyType: String,
-        @Query("userId") userId: String
-    )
-
     @GET("fetchProperty")
     fun fetchProperty(
         @Query("userId") userId: String

@@ -319,9 +319,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
-                    android:hint="Meal Plan"
-                    app:endIconMode="clear_text"
-                    app:endIconTint="@color/black">
+                    android:hint="Meal Plan">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/mealPlanETxt"
@@ -332,11 +330,7 @@
                         android:inputType="text"
                         android:textColor="@color/secondary"
                         android:textColorHint="@drawable/hint_selector"
-                        android:textSize="@dimen/H5"
-                        android:editable="false"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:cursorVisible="false"/>
+                        android:textSize="@dimen/H5"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>

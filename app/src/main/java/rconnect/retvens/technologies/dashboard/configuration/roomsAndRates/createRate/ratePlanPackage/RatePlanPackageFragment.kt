@@ -94,6 +94,8 @@ class RatePlanPackageFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
                 shakeAnimation(binding.ratePlanNameET, requireContext())
             } else if (binding.shortCodeText.text!!.isEmpty()) {
                 shakeAnimation(binding.shortCodeLayout, requireContext())
+            } else if (selectedInclusionsList.isEmpty()) {
+                shakeAnimation(binding.addInclusions, requireContext())
             } else {
                 if (isPercentageType) {
                     percentage = binding.adjustmentET.text.toString()
@@ -166,7 +168,7 @@ class RatePlanPackageFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
             minimumNights++
             binding.minNightsTextView.text = "$minimumNights"
         }
-        binding.removeMaxNights.setOnClickListener {
+        binding.removeMinNights.setOnClickListener {
             if (minimumNights > 1) {
                 minimumNights--
                 binding.minNightsTextView.text = "$minimumNights"
@@ -187,6 +189,11 @@ class RatePlanPackageFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
 
         val cancel = dialog.findViewById<TextView>(R.id.cancel)
         cancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        val saveBtn = dialog.findViewById<CardView>(R.id.saveBtn)
+        saveBtn.setOnClickListener {
             dialog.dismiss()
         }
 

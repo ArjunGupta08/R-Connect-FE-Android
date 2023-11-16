@@ -6,6 +6,7 @@ data class RatePlanDataClass(
     val ratePlan : String,
     val rateCode : String,
     val mealPlan : String,
+    val mealPlanId : String,
     val selectedInclusionsList: ArrayList<GetInclusionsData>,
     val extraAdultRate : String,
     val extraChildRate : String,

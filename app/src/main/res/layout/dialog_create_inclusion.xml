@@ -46,6 +46,7 @@
                     android:weightSum="2">
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/inclusionNameLayout"
                         style="@style/TextInputLayoutStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -71,23 +72,83 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        style="@style/ClickableTextInputLayoutStyle"
+                        android:id="@+id/shortCodeLayout"
+                        style="@style/TextInputLayoutStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
                         android:layout_marginEnd="20dp"
+                        android:layout_marginTop="20dp"
                         android:layout_weight="1"
-                        android:hint="Inclusion Type"
+                        android:hint="Short Code"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/black"
                         app:layout_constraintEnd_toStartOf="@id/cardImg"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/inclusionType"
+                            android:id="@+id/shortCode"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
-                            android:hint="Transportation Mode"
+                            android:inputType="text"
+                            android:textColor="@color/secondary"
+                            android:textColorHint="@drawable/hint_selector" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="5dp"
+                    android:weightSum="2">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/chargeRuleLayout"
+                        style="@style/ClickableTextInputLayoutStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:hint="Charge Rule"
+                        app:layout_constraintEnd_toStartOf="@id/cardImg"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/chargeRule"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
+                            android:textColor="@color/secondary"
+                            android:textColorHint="@drawable/hint_selector"
+                            android:cursorVisible="false"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:clickable="true"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/postingRuleLayout"
+                        style="@style/ClickableTextInputLayoutStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:layout_weight="1"
+                        android:hint="Posting Rule"
+                        app:layout_constraintEnd_toStartOf="@id/cardImg"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/postingRule"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto"
                             android:inputType="text"
                             android:textColor="@color/secondary"
                             android:textColorHint="@drawable/hint_selector"
@@ -108,30 +169,7 @@
                     android:weightSum="2">
 
                     <com.google.android.material.textfield.TextInputLayout
-                        style="@style/TextInputLayoutStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_weight="1"
-                        android:hint="Short Code"
-                        app:endIconMode="clear_text"
-                        app:endIconTint="@color/black"
-                        app:layout_constraintEnd_toStartOf="@id/cardImg"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/shortCode"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:fontFamily="@font/roboto"
-                            android:inputType="text"
-                            android:textColor="@color/secondary"
-                            android:textColorHint="@drawable/hint_selector" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/chargeLayout"
                         style="@style/TextInputLayoutStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -155,57 +193,24 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="5dp"
-                    android:weightSum="2">
-
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/ClickableTextInputLayoutStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
                         android:layout_weight="1"
-                        android:hint="Charge Rule"
+                        android:visibility="invisible"
+                        android:hint="Inclusion Type"
                         app:layout_constraintEnd_toStartOf="@id/cardImg"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/chargeRule"
+                            android:id="@+id/inclusionType"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
-                            android:inputType="text"
-                            android:textColor="@color/secondary"
-                            android:textColorHint="@drawable/hint_selector"
-                            android:cursorVisible="false"
-                            android:editable="false"
-                            android:focusable="false"
-                            android:clickable="true"/>
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/ClickableTextInputLayoutStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="20dp"
-                        android:layout_weight="1"
-                        android:hint="Posting Rule"
-                        app:layout_constraintEnd_toStartOf="@id/cardImg"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/postingRule"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:fontFamily="@font/roboto"
+                            android:hint="Transportation Mode"
                             android:inputType="text"
                             android:textColor="@color/secondary"
                             android:textColorHint="@drawable/hint_selector"
