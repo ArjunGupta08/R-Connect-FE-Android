@@ -54,6 +54,7 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
         setUpRecycler()
 
         getPostingRule()
+        getChargeRule()
 
         binding.createNewBtn.setOnClickListener {
             openCreateNewDialog()
@@ -82,6 +83,31 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
             }
 
             override fun onFailure(call: Call<GetPostingRuleArray?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
+    }
+
+    private fun getChargeRule() {
+        val get = RetrofitObject.dropDownApis.getChargeRulesModels()
+        get.enqueue(object : Callback<GetChargeRuleArray?> {
+            override fun onResponse(
+                call: Call<GetChargeRuleArray?>,
+                response: Response<GetChargeRuleArray?>
+            ) {
+                if (response.isSuccessful) {
+                    try {
+                        val data = response.body()!!.data
+                        data.forEach {
+                            chargeRuleArray.add(it.chargeRule)
+                        }
+                    } catch (e : Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GetChargeRuleArray?>, t: Throwable) {
                 Log.d("error", t.localizedMessage)
             }
         })
