@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,6 +32,7 @@ import retrofit2.Response
 
 class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
     private lateinit var binding : FragmentInclusionPlansBinding
+    var postingList = ArrayList<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -82,6 +84,13 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
         save.setOnClickListener {
             saveInclusion(requireContext(), dialog, shortCode.text.toString(), charge.text.toString(), inclusionName.text.toString(), inclusionType.text.toString(), chargeRule.text.toString(), postingRule.text.toString())
         }
+
+        val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, postingList)
+        // Set a click listener for the end icon
+//        binding.sourceText.setOnClickListener {
+//            // Show dropdown menu
+//            showDropdownMenu(adapter,it)
+//        }
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation

@@ -58,7 +58,7 @@
                         android:textColor="@color/secondary"
                         android:clickable="true"
                         android:editable="false"
-                        android:focusable="true"/>
+                        android:focusable="false"/>
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_inventory"

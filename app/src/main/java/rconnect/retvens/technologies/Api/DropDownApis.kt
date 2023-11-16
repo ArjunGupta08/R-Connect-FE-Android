@@ -1,6 +1,7 @@
 package rconnect.retvens.technologies.Api
 
 import rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory.GetOtaSourceData
+import rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory.GetRatePlansData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.GetPropertyTypeData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.GetPropertyTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.GetPropertyTypeRatingData
@@ -8,6 +9,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRo
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.GetAmenityType
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomType
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomTypeData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetPostingRuleData
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -33,9 +35,20 @@ interface DropDownApis {
         @Query("userId") userId :String
     ):Call<GetRoomTypeData>
 
-    @GET("base_url")
+    @GET("fetchSource")
     fun getOtaList(
         @Query("userId") userId:String,
         @Query("propertyId") propertyId:String
     ):Call<GetOtaSourceData>
+
+    @GET("postingRulesModels")
+    fun getPostingRule():Call<GetPostingRuleData>
+
+    @GET("getRatePlansList")
+    fun getRatePlans(
+        @Query("userId") userId: String,
+        @Query("roomTypeId") roomTypeId:String
+    ):Call<GetRatePlansData>
+
+
 }
