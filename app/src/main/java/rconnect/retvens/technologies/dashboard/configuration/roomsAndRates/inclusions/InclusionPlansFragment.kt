@@ -28,6 +28,7 @@ import rconnect.retvens.technologies.dashboard.configuration.others.holiday.Holi
 import rconnect.retvens.technologies.databinding.FragmentInclusionPlansBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.shakeAnimation
 import rconnect.retvens.technologies.utils.showDropdownMenu
 import retrofit2.Call
 import retrofit2.Callback
@@ -127,6 +128,10 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
             )
         }
 
+        val inclusionNameLayout = dialog.findViewById<TextInputLayout>(R.id.inclusionNameLayout)
+        val shortCodeLayout = dialog.findViewById<TextInputLayout>(R.id.shortCodeLayout)
+        val chargeLayout = dialog.findViewById<TextInputLayout>(R.id.chargeLayout)
+
         val inclusionName = dialog.findViewById<TextInputEditText>(R.id.inclusionName)
         val inclusionType = dialog.findViewById<TextInputEditText>(R.id.inclusionType)
         val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCode)
@@ -153,7 +158,43 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
             dialog.dismiss()
         }
         save.setOnClickListener {
-            saveInclusion(requireContext(), dialog, shortCode.text.toString(), charge.text.toString(), inclusionName.text.toString(), inclusionType.text.toString(), chargeRule.text.toString(), postingRule.text.toString())
+            if (inclusionName.text!!.isEmpty()) {
+                inclusionNameLayout.isErrorEnabled = true
+                shakeAnimation(inclusionNameLayout, requireContext())
+            } else if (shortCode.text!!.isEmpty()) {
+                inclusionNameLayout.isErrorEnabled = false
+                shortCodeLayout.isErrorEnabled = true
+                shakeAnimation(shortCodeLayout, requireContext())
+            } else if (chargeRule.text!!.isEmpty()) {
+                inclusionNameLayout.isErrorEnabled = false
+                shortCodeLayout.isErrorEnabled = false
+                chargeRuleLayout.isErrorEnabled = true
+                shakeAnimation(chargeRuleLayout, requireContext())
+            } else if (postingRule.text!!.isEmpty()) {
+                inclusionNameLayout.isErrorEnabled = false
+                shortCodeLayout.isErrorEnabled = false
+                chargeRuleLayout.isErrorEnabled = false
+                postingRuleLayout.isErrorEnabled = true
+                shakeAnimation(postingRuleLayout, requireContext())
+            } else if (charge.text!!.isEmpty()) {
+                inclusionNameLayout.isErrorEnabled = false
+                shortCodeLayout.isErrorEnabled = false
+                chargeRuleLayout.isErrorEnabled = false
+                postingRuleLayout.isErrorEnabled = false
+                chargeLayout.isErrorEnabled = true
+                shakeAnimation(chargeLayout, requireContext())
+            } else {
+                saveInclusion(
+                    requireContext(),
+                    dialog,
+                    shortCode.text.toString(),
+                    charge.text.toString(),
+                    inclusionName.text.toString(),
+                    inclusionType.text.toString(),
+                    chargeRule.text.toString(),
+                    postingRule.text.toString()
+                )
+            }
         }
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
