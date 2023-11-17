@@ -1,25 +1,39 @@
 package rconnect.retvens.technologies.dashboard.channelManager.AddReservationFragment
 
 import android.app.DatePickerDialog
+import android.app.Dialog
+import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.ArrayAdapter
 import android.widget.ListPopupWindow
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.Api.AddReservationApis
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.RatesAndInventoryInterface
 import rconnect.retvens.technologies.Api.RetrofitObject
+import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.AddInclusionsDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetPostingRuleArray
 import rconnect.retvens.technologies.databinding.FragmentAddReservationBinding
+import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.shakeAnimation
+import rconnect.retvens.technologies.utils.showDropdownMenu
 import rconnect.retvens.technologies.utils.utilCreateDatePickerDialog
 import retrofit2.Call
 import retrofit2.Callback
@@ -81,6 +95,8 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
 
         binding.recyclerRoomDetails.layoutManager = LinearLayoutManager(requireContext())
         addReservationAdapter = AddReservationAdapter(requireContext(), roomDetailsList,availableList)
+        addReservationAdapter.getRatePlan()
+
         binding.recyclerRoomDetails.adapter = addReservationAdapter
 
         addReservationAdapter.setOnClickListener(this)

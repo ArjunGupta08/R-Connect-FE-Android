@@ -29,7 +29,7 @@ import retrofit2.Response
 
 class Business_sourcesFragment : Fragment(),BusinessSourceAdapter.OnUpdate {
 
-    val list = ArrayList<String>()
+    var list = ArrayList<GetBusinessSourceData>()
     lateinit var binding:FragmentBusinessSourcesBinding
     lateinit var shortCode :TextInputEditText
     lateinit var sourceName :TextInputEditText
@@ -44,23 +44,14 @@ class Business_sourcesFragment : Fragment(),BusinessSourceAdapter.OnUpdate {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        list.add("")
-        list.add("")
-        list.add("")
-        list.add("")
-        list.add("")
-        list.add("")
-        list.add("")
-        list.add("")
-
 
 
 
 
         binding.reservationTypeRecycler.layoutManager = LinearLayoutManager(requireContext())
-//        val businessSourceAdapter = BusinessSourceAdapter(list,requireContext())
-//        binding.reservationTypeRecycler.adapter = businessSourceAdapter
-//        businessSourceAdapter.notifyDataSetChanged()
+        val businessSourceAdapter = BusinessSourceAdapter(list,requireContext())
+        binding.reservationTypeRecycler.adapter = businessSourceAdapter
+        businessSourceAdapter.notifyDataSetChanged()
         binding.createNewBtn.setOnClickListener {
             openCreateNewDialog()
         }
@@ -120,6 +111,11 @@ class Business_sourcesFragment : Fragment(),BusinessSourceAdapter.OnUpdate {
                 response: Response<GetBusinessSourceDataClass?>
             ) {
                 if (response.isSuccessful){
+                    list = response.body()!!.data
+                    Log.e("response recycler",list.toString())
+                    Toast.makeText(requireContext(),list.size.toString(),Toast.LENGTH_SHORT)
+                    Log.e("List size",list.toString())
+                    Log.e("List size",list.size.toString())
                     Toast.makeText(requireContext(), "succeed", Toast.LENGTH_SHORT).show()
                     binding.reservationTypeRecycler.layoutManager = LinearLayoutManager(requireContext())
                     val adapter = BusinessSourceAdapter(response.body()!!.data, requireContext())
@@ -170,7 +166,7 @@ class Business_sourcesFragment : Fragment(),BusinessSourceAdapter.OnUpdate {
         createBusinessSource.enqueue(object : Callback<ResponseData?> {
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
                 if (response.isSuccessful){
-                    Toast.makeText(requireContext(), "succeed", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(requireContext(), "succeed", Toast.LENGTH_SHORT).show()
                     Log.d( "transport", "${response.code()} ${response.message()}")
                     dialog.dismiss()
                     setUpRecycler()
