@@ -49,6 +49,7 @@ import rconnect.retvens.technologies.utils.Const
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.rightInAnimation
 import rconnect.retvens.technologies.utils.shakeAnimation
+import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -70,6 +71,8 @@ class AddRoomTypeFragment : Fragment(),
     var amenityIconLink = ""
 
     private var page = 1
+
+    private var roomTypeInventoryCount = 1
     private var bedCount = 1
     private var bedCountList = ArrayList<String>()
     private lateinit var addBedTypeAdapter: AddBedTypeAdapter
@@ -83,6 +86,8 @@ class AddRoomTypeFragment : Fragment(),
     private var maxAdultCount = 1
     private var maxChildCount = 1
     private var maxOccupancyCount = 1
+
+    private lateinit var progressDialog : Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -109,11 +114,12 @@ class AddRoomTypeFragment : Fragment(),
                     shakeAnimation(binding.roomTypeNameLayout, requireContext())
                 } else if (binding.shortCodeET.text!!.isEmpty()){
                     shakeAnimation(binding.shortCodeLayout, requireContext())
-                } else if (binding.bed1TypeET.text!!.isEmpty()){
-                    shakeAnimation(binding.bed1TypeLayout, requireContext())
+//                } else if (binding.bed1TypeET.text!!.isEmpty()){
+//                    shakeAnimation(binding.bed1TypeLayout, requireContext())
                 } else if (amenityIdsList.isEmpty()){
                     shakeAnimation(binding.add, requireContext())
                 } else {
+                    progressDialog = showProgressDialog(requireContext())
                     sendData()
                     Const.addedRoomTypeName = binding.roomTypeNameEt.text.toString()
                     Const.addedRoomTypeShortCode = binding.shortCodeET.text.toString()
@@ -177,10 +183,10 @@ class AddRoomTypeFragment : Fragment(),
 
         handleCounts()
 
-        binding.bed1TypeET.setOnClickListener {
-            val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, bedSuggestionList)
-            showDropdownBedTypeMenu(adapter, it, binding.bed1TypeET)
-        }
+//        binding.bed1TypeET.setOnClickListener {
+//            val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, bedSuggestionList)
+//            showDropdownBedTypeMenu(adapter, it, binding.bed1TypeET)
+//        }
         binding.bedTypeRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
 
         binding.add.setOnClickListener { openAddAmenitiesDialog() }
@@ -201,6 +207,7 @@ class AddRoomTypeFragment : Fragment(),
                 binding.maxAdultText.text.toString(),
                 binding.maxChildText.text.toString(),
                 binding.maxOccupancyText.text.toString(),
+                roomTypeInventoryCount,
                 binding.bedCount.text.toString(),
                 bedTypeIds.joinToString(", ").removeSurrounding("[", "]"),
                amenityIdsList.joinToString(", ").removeSurrounding("[", "]"),
@@ -211,6 +218,8 @@ class AddRoomTypeFragment : Fragment(),
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
 
                 Log.d("sent", response.message())
+
+                progressDialog.dismiss()
 
                 if (response.isSuccessful){
 
@@ -243,22 +252,20 @@ class AddRoomTypeFragment : Fragment(),
             }
 
             override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                progressDialog.dismiss()
                 Log.d("error", t.localizedMessage)
             }
         })
     }
 
     private fun bedType(){
+        bedCountList.add("$bedCount")
         binding.addBeds.setOnClickListener {
-            if (!binding.bed1TypeET.text!!.isEmpty()) {
                 bedCount++
                 binding.bedCount.setText("$bedCount")
                 bedCountList.add("$bedCount")
                 addBedTypeAdapter.notifyDataSetChanged()
                 Toast.makeText(requireContext(), bedTypeIds.size.toString(), Toast.LENGTH_SHORT).show()
-            } else {
-                shakeAnimation(binding.bed1TypeLayout, requireContext())
-            }
         }
         binding.removeBeds.setOnClickListener {
             if (bedCount>1) {
@@ -281,10 +288,14 @@ class AddRoomTypeFragment : Fragment(),
                 response: Response<GetBedTypeData?>
             ) {
                 if (response.isSuccessful){
-                    val data = response.body()!!.data
-                    bedTypeList.addAll(data)
-                    data.forEach {
-                        bedSuggestionList.add(it.bedType)
+                    try {
+                        val data = response.body()!!.data
+                        bedTypeList.addAll(data)
+                        data.forEach {
+                            bedSuggestionList.add(it.bedType)
+                        }
+                    } catch (e : Exception){
+                        e.printStackTrace()
                     }
                     bedType()
                 } else {
@@ -299,6 +310,19 @@ class AddRoomTypeFragment : Fragment(),
 
 
     private fun handleCounts(){
+
+        /* --------------- Handle Room Type Inventory -------------------*/
+        binding.addRoomTypeInventory.setOnClickListener {
+            roomTypeInventoryCount++
+            binding.roomTypeInventoryCountText.text = ("$roomTypeInventoryCount")
+        }
+        binding.removeRoomTypeInventory.setOnClickListener {
+            if (roomTypeInventoryCount>1) {
+                roomTypeInventoryCount--
+                binding.roomTypeInventoryCountText.text = ("$roomTypeInventoryCount")
+            }
+        }
+
         /* --------------- Handle Base Adult -------------------*/
         binding.addBaseAdult.setOnClickListener {
             baseAdultCount++
@@ -634,26 +658,6 @@ class AddRoomTypeFragment : Fragment(),
                 amenityIdsList.remove(it.amenityId)
             }
         }
-    }
-
-    private fun showDropdownBedTypeMenu(adapter: ArrayAdapter<String>, anchorView: View, et : TextInputEditText) {
-        val listPopupWindow = ListPopupWindow(requireContext())
-        listPopupWindow.setAdapter(adapter)
-        listPopupWindow.anchorView = anchorView
-        listPopupWindow.setOnItemClickListener { _, _, position, _ ->
-            val selectedItem = adapter.getItem(position)
-            et.setText(selectedItem)
-            bedTypeList.forEach {
-                Log.d("bedTypeForE", it.bedTypeId)
-                Log.d("bedTypeForE", it.bedType)
-                if (it.bedType.toString() == selectedItem.toString()) {
-                    Log.d("cond", it.bedTypeId)
-                    bedTypeIds.add(it.bedTypeId)
-                }
-            }
-            listPopupWindow.dismiss()
-        }
-        listPopupWindow.show()
     }
 
 }

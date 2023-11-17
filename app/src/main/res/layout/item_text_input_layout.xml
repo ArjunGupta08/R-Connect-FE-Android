@@ -20,6 +20,7 @@
             android:fontFamily="@font/roboto"
             android:inputType="text"
             android:paddingStart="15dp"
+            android:text="Single Bed"
             android:textColor="@color/secondary"
             android:textColorHint="@drawable/hint_selector"
             android:textSize="@dimen/H5"
