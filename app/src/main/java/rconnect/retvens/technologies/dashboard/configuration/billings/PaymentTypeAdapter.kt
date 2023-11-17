@@ -13,19 +13,25 @@ import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.GetReservationTypeDataClass
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.generateShortCode
+import rconnect.retvens.technologies.utils.shakeAnimation
+import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PaymentTypeAdapter(val list:ArrayList<GetPaymentTypeData>, val applicationContext: Context):RecyclerView.Adapter<PaymentTypeAdapter.NotificationHolder>() {
+class PaymentTypeAdapter(var list:ArrayList<GetPaymentTypeData>, val applicationContext: Context):RecyclerView.Adapter<PaymentTypeAdapter.NotificationHolder>() {
 
+    private lateinit var progressBar : Dialog
 
     class NotificationHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
 
@@ -59,6 +65,11 @@ class PaymentTypeAdapter(val list:ArrayList<GetPaymentTypeData>, val application
         holder.createdBy.text = "${item.createdBy} ${item.createdOn}"
         holder.lastModified.text = "${item.modifiedBy} ${item.modifiedOn}"
 
+        holder.delete.setOnClickListener {
+            list.remove(item)
+            notifyDataSetChanged()
+        }
+
         holder.edit.setOnClickListener {
             openCreateNewDialog(applicationContext, item.paymentTypeId, item.paymentMethodName, item.shortCode, item.receivedTo)
         }
@@ -78,6 +89,10 @@ class PaymentTypeAdapter(val list:ArrayList<GetPaymentTypeData>, val application
             )
         }
 
+        val paymentMethodNameLayout = dialog.findViewById<TextInputLayout>(R.id.paymentMethodNameLayout)
+        val shortCodeLayout = dialog.findViewById<TextInputLayout>(R.id.shortCodeLayout)
+        val receivedToLayout = dialog.findViewById<TextInputLayout>(R.id.receivedToLayout)
+
         val paymentMethodName = dialog.findViewById<TextInputEditText>(R.id.paymentMethodName)
         val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCode)
         val receivedTo = dialog.findViewById<TextInputEditText>(R.id.receivedTo)
@@ -86,6 +101,12 @@ class PaymentTypeAdapter(val list:ArrayList<GetPaymentTypeData>, val application
         shortCode.setText(shortCodeTxt)
         receivedTo.setText(receivedToTxt)
 
+        paymentMethodName.doAfterTextChanged {
+            if (paymentMethodName.text!!.length > 2){
+                shortCode.setText(generateShortCode(paymentMethodName.text.toString()))
+            }
+        }
+
         val cancel = dialog.findViewById<TextView>(R.id.cancel)
         val save = dialog.findViewById<CardView>(R.id.saveBtn)
 
@@ -93,9 +114,24 @@ class PaymentTypeAdapter(val list:ArrayList<GetPaymentTypeData>, val application
             dialog.dismiss()
         }
         save.setOnClickListener {
-            updatePayment(context, dialog, paymentTypeId, shortCode.text.toString(), paymentMethodName.text.toString(), receivedTo.text.toString())
+            if (paymentMethodName.text!!.isEmpty()) {
+                shakeAnimation(paymentMethodNameLayout, applicationContext)
+            } else if (shortCode.text!!.isEmpty()) {
+                shakeAnimation(shortCodeLayout, applicationContext)
+            } else if (receivedTo.text!!.isEmpty()) {
+                shakeAnimation(receivedToLayout, applicationContext)
+            } else {
+                progressBar = showProgressDialog(applicationContext)
+                updatePayment(
+                    context,
+                    dialog,
+                    paymentTypeId,
+                    shortCode.text.toString(),
+                    paymentMethodName.text.toString(),
+                    receivedTo.text.toString()
+                )
+            }
         }
-
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
         dialog.window?.setGravity(Gravity.END)
@@ -114,14 +150,21 @@ class PaymentTypeAdapter(val list:ArrayList<GetPaymentTypeData>, val application
                 call: Call<GetReservationTypeDataClass?>,
                 response: Response<GetReservationTypeDataClass?>
             ) {
+                progressBar.dismiss()
                 Log.d( "reservation", "${response.code()} ${response.message()}")
                 dialog.dismiss()
             }
 
             override fun onFailure(call: Call<GetReservationTypeDataClass?>, t: Throwable) {
+                progressBar.dismiss()
                 Log.d("saveReservationError", "${t.localizedMessage}")
             }
         })
+    }
+
+    fun filterList(searchText: ArrayList<GetPaymentTypeData>){
+        list = searchText
+        notifyDataSetChanged()
     }
 
 }

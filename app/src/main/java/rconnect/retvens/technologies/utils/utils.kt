@@ -131,3 +131,14 @@ fun showProgressDialog (context: Context) : Dialog {
     progressDialog.show()
     return progressDialog
 }
+
+fun generateShortCode(inputString: String): String {
+    val uppercaseLetters = inputString.uppercase()
+    return if (uppercaseLetters.length >= 2) {
+        uppercaseLetters.substring(0, 2)
+    } else {
+        // Handle the case where there are fewer than two capital letters in the string.
+        // You can choose to return a default code or handle it according to your requirements.
+        "NA"
+    }
+}

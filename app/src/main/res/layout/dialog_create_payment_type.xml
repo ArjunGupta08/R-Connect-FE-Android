@@ -40,7 +40,7 @@
                     android:textSize="@dimen/H2"/>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/propertyChainLayout"
+                    android:id="@+id/paymentMethodNameLayout"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -58,7 +58,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/roboto"
-                        android:hint="Awaiting Payment"
                         android:inputType="text"
                         android:textColor="@color/secondary"
                         android:textColorHint="@drawable/hint_selector" />
@@ -66,6 +65,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/shortCodeLayout"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -83,13 +83,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/roboto"
-                        android:inputType="text"
+                        android:inputType="textShortMessage"
+                        android:maxLength="4"
                         android:textColor="@color/secondary"
                         android:textColorHint="@color/secondary" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/receivedToLayout"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

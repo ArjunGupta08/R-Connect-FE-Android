@@ -40,6 +40,7 @@
             android:id="@+id/switch_all"
             android:layout_width="19dp"
             android:layout_height="19dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@id/shortCode"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -64,6 +65,7 @@
             android:layout_height="wrap_content"
             style="@style/listText"
             android:text="Payment Type"
+            app:layout_constraintEnd_toStartOf="@id/guide2"
             app:layout_constraintStart_toStartOf="@id/guide1"
             app:layout_constraintBottom_toBottomOf="@id/shortCode"
             app:layout_constraintTop_toTopOf="@id/shortCode"/>
@@ -76,6 +78,7 @@
             style="@style/listText"
             android:text="Received to"
             android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/adultChild"
             app:layout_constraintStart_toStartOf="@id/guide2"
             app:layout_constraintBottom_toBottomOf="@id/shortCode"
             app:layout_constraintTop_toTopOf="@id/shortCode"/>
