@@ -16,15 +16,18 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.shakeAnimation
+import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ReservationTypeAdapter(val list:ArrayList<GetReservationTypeData>, val applicationContext: Context):RecyclerView.Adapter<ReservationTypeAdapter.NotificationHolder>() {
+class ReservationTypeAdapter(var list:ArrayList<GetReservationTypeData>, val applicationContext: Context):RecyclerView.Adapter<ReservationTypeAdapter.NotificationHolder>() {
 
     var mListener : OnUpdate?= null
 
@@ -35,6 +38,8 @@ class ReservationTypeAdapter(val list:ArrayList<GetReservationTypeData>, val app
     interface OnUpdate {
         fun onUpdateReservationType()
     }
+
+    private lateinit var progressDialog : Dialog
 
     class NotificationHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
 
@@ -67,6 +72,11 @@ class ReservationTypeAdapter(val list:ArrayList<GetReservationTypeData>, val app
         holder.craetedBy.text = "${item.createdBy} ${item.createdOn}"
         holder.lastModified.text = "${item.modifiedBy} ${item.modifiedOn}"
 
+        holder.delete.setOnClickListener {
+            list.remove(item)
+            notifyDataSetChanged()
+        }
+
         holder.edit.setOnClickListener {
             openCreateNewDialog(applicationContext, item.reservationName, item.status, item.reservationTypeId)
         }
@@ -86,6 +96,7 @@ class ReservationTypeAdapter(val list:ArrayList<GetReservationTypeData>, val app
             )
         }
 
+        val reservationNameLayout = dialog.findViewById<TextInputLayout>(R.id.reservationNameLayout)
         val reservationNameET = dialog.findViewById<TextInputEditText>(R.id.reservationNameET)
         val isConfirmedSwitch = dialog.findViewById<Switch>(R.id.isConfirmedSwitch)
 
@@ -100,13 +111,23 @@ class ReservationTypeAdapter(val list:ArrayList<GetReservationTypeData>, val app
             dialog.dismiss()
         }
         save.setOnClickListener {
-            saveReservation(context, dialog,reservationNameET.text.toString(), if (isConfirmedSwitch.isChecked){
-                "Confirmed"
+            if (reservationNameET.text!!.isEmpty()) {
+                shakeAnimation(reservationNameLayout, applicationContext)
             } else {
-                "Unconfirmed"
-            }, rId)
+                progressDialog = showProgressDialog(applicationContext)
+                saveReservation(
+                    context,
+                    dialog,
+                    reservationNameET.text.toString(),
+                    if (isConfirmedSwitch.isChecked) {
+                        "Confirmed"
+                    } else {
+                        "Unconfirmed"
+                    },
+                    rId
+                )
+            }
         }
-
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
         dialog.window?.setGravity(Gravity.END)
@@ -123,12 +144,19 @@ class ReservationTypeAdapter(val list:ArrayList<GetReservationTypeData>, val app
             ) {
                 Log.d( "reservation", "${response.code()} ${response.message()}")
                 mListener?.onUpdateReservationType()
+                progressDialog.dismiss()
                 dialog.dismiss()
             }
 
             override fun onFailure(call: Call<GetReservationTypeDataClass?>, t: Throwable) {
+                progressDialog.dismiss()
                 Log.d("error", t.localizedMessage)
             }
         })
+    }
+
+    fun filterList(inputText: ArrayList<GetReservationTypeData>) {
+        list = inputText
+        notifyDataSetChanged()
     }
 }

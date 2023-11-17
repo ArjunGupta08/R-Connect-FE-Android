@@ -58,7 +58,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/roboto"
-                        android:hint="Awaiting Payment"
                         android:inputType="text"
                         android:textColor="@color/secondary"
                         android:textColorHint="@drawable/hint_selector" />

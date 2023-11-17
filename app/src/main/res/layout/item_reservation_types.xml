@@ -42,6 +42,7 @@
             android:id="@+id/switch_all"
             android:layout_width="19dp"
             android:layout_height="19dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@id/shortCode"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -81,6 +82,7 @@
             android:singleLine="true"
             android:text="By Karan on 11:12, 12/12/2023"
             android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/guide3"
             app:layout_constraintStart_toStartOf="@id/guide2"
             app:layout_constraintBottom_toBottomOf="@id/shortCode"
             app:layout_constraintTop_toTopOf="@id/shortCode"/>
@@ -93,6 +95,7 @@
             style="@style/listText"
             android:singleLine="true"
             android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/guide4"
             app:layout_constraintStart_toStartOf="@id/guide3"
             app:layout_constraintBottom_toBottomOf="@id/shortCode"
             app:layout_constraintTop_toTopOf="@id/shortCode"/>

@@ -4,6 +4,8 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -16,12 +18,15 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.FragmentReservationTypeBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.shakeAnimation
+import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,6 +38,7 @@ class ReservationTypeFragment : Fragment(), ReservationTypeAdapter.OnUpdate {
 
     private lateinit var reservationTypeAdapter: ReservationTypeAdapter
 
+    private lateinit var progressDialog : Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,6 +75,7 @@ class ReservationTypeFragment : Fragment(), ReservationTypeAdapter.OnUpdate {
             )
         }
 
+        val reservationNameLayout = dialog.findViewById<TextInputLayout>(R.id.reservationNameLayout)
         val reservationNameET = dialog.findViewById<TextInputEditText>(R.id.reservationNameET)
         val isConfirmedSwitch = dialog.findViewById<Switch>(R.id.isConfirmedSwitch)
 
@@ -79,13 +86,19 @@ class ReservationTypeFragment : Fragment(), ReservationTypeAdapter.OnUpdate {
             dialog.dismiss()
         }
         save.setOnClickListener {
-            saveReservation(  dialog,reservationNameET.text.toString(), if (isConfirmedSwitch.isChecked){
-                "Confirmed"
+            if (reservationNameET.text!!.isEmpty()) {
+                shakeAnimation(reservationNameLayout, requireContext())
             } else {
-                "Unconfirmed"
-            })
+                progressDialog.show()
+                saveReservation(
+                    dialog, reservationNameET.text.toString(), if (isConfirmedSwitch.isChecked) {
+                        "Confirmed"
+                    } else {
+                        "Unconfirmed"
+                    }
+                )
+            }
         }
-
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
         dialog.window?.setGravity(Gravity.END)
@@ -101,16 +114,20 @@ class ReservationTypeFragment : Fragment(), ReservationTypeAdapter.OnUpdate {
         create.enqueue(object : Callback<ResponseData?> {
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
                 Log.d( "reservation", "${response.code()} ${response.message()}")
+                progressDialog.dismiss()
                 dialog.dismiss()
                 reservationTypeRecycler()
             }
             override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                progressDialog.dismiss()
                 Log.d("saveReservationError", "${t.localizedMessage}")
             }
         })
     }
 
     private fun reservationTypeRecycler() {
+        progressDialog = showProgressDialog(requireContext())
+
         binding.reservationTypeRecycler.layoutManager = LinearLayoutManager(requireContext())
 
         val reservation = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).getReservationApi(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString())
@@ -119,18 +136,51 @@ class ReservationTypeFragment : Fragment(), ReservationTypeAdapter.OnUpdate {
                 call: Call<GetReservationTypeDataClass?>,
                 response: Response<GetReservationTypeDataClass?>
             ) {
+                progressDialog.dismiss()
                 if (response.isSuccessful) {
-                    reservationTypeAdapter = ReservationTypeAdapter(response.body()!!.data, requireContext())
-                    binding.reservationTypeRecycler.adapter = reservationTypeAdapter
-                    reservationTypeAdapter.setOnUpdateListener(this@ReservationTypeFragment)
-                    reservationTypeAdapter.notifyDataSetChanged()
+                    try {
+                        val data = response.body()!!.data
+                        reservationTypeAdapter = ReservationTypeAdapter(data, requireContext())
+                        binding.reservationTypeRecycler.adapter = reservationTypeAdapter
+                        reservationTypeAdapter.setOnUpdateListener(this@ReservationTypeFragment)
+                        reservationTypeAdapter.notifyDataSetChanged()
+
+                        binding.search.addTextChangedListener(object : TextWatcher {
+                            override fun beforeTextChanged(
+                                s: CharSequence?,
+                                start: Int,
+                                count: Int,
+                                after: Int
+                            ) {
+
+                            }
+
+                            override fun onTextChanged(
+                                s: CharSequence?,
+                                start: Int,
+                                before: Int,
+                                count: Int
+                            ) {
+                                val filterData = data.filter { filtered ->
+                                    filtered.reservationName.contains(s.toString(), true)
+                                }
+                                reservationTypeAdapter.filterList(filterData as ArrayList<GetReservationTypeData>)
+                            }
+
+                            override fun afterTextChanged(s: Editable?) {
+
+                            }
+                        })
+                    } catch ( e : Exception) {
+                        e.printStackTrace()
+                    }
                 } else {
-                    openCreateNewDialog()
                     Log.d("respons", "${response.code()} ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<GetReservationTypeDataClass?>, t: Throwable) {
+                progressDialog.dismiss()
                 Log.d("error", t.localizedMessage)
             }
         })
