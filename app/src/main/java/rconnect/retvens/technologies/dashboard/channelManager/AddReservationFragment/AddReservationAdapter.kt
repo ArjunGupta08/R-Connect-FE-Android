@@ -1,16 +1,22 @@
 package rconnect.retvens.technologies.dashboard.channelManager.AddReservationFragment
 
+import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.TestLooperManager
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.ListPopupWindow
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -19,8 +25,16 @@ import com.google.android.material.textfield.TextInputLayout
 import org.w3c.dom.Text
 import rconnect.retvens.technologies.Api.AddReservationApis
 import rconnect.retvens.technologies.Api.OAuthClient
+import rconnect.retvens.technologies.Api.RetrofitObject
+import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.AddInclusionsDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetChargeRuleArray
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetPostingRuleArray
+import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.shakeAnimation
+import rconnect.retvens.technologies.utils.showDropdownMenu
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -37,6 +51,9 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
     var userId:String = ""
     var propertyId:String = ""
     var clickListener : OnItemClick ?= null
+    private  var chargeRuleArray = ArrayList<String>()
+    var postingList = ArrayList<String>()
+    private  var postingRuleArray = ArrayList<String>()
 
 
     fun setOnClickListener (listener : OnItemClick){
@@ -75,6 +92,10 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
         val extraAdultCharges:TextView = itemView.findViewById(R.id.ex_ad_charge)
         val extraChildCharges:TextView = itemView.findViewById(R.id.ex_cc_charge)
         val extraInclusionCharges:TextView = itemView.findViewById(R.id.ex_in_charge)
+        val add_extra:CardView = itemView.findViewById(R.id.add_extra)
+        val txt_remark:TextView = itemView.findViewById(R.id.txt_remark)
+        val txt_task:TextView = itemView.findViewById(R.id.txt_task)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReservationHolder {
@@ -130,6 +151,14 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
 
             }
         }
+        holder.add_extra.setOnClickListener {
+            openCreateNewDialog()
+        }
+
+        holder.txt_remark.setOnClickListener {
+            openCreateRemarkDialog()
+        }
+
 
         if (roomDetails.charge != ""){
             var totalCharges = roomDetailPrices.totalCharges
@@ -388,5 +417,211 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
         })
 
     }
+
+    private fun openCreateRemarkDialog() {
+        val dialog = Dialog(applicationContext) // Use 'this' as the context, assuming this code is within an Activity
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.setContentView(R.layout.dialog_remarks)
+        dialog.window?.apply {
+            setBackgroundDrawableResource(android.R.color.transparent) // Makes the background transparent
+            setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        }
+
+//        val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCode)
+//        val transportationModeText = dialog.findViewById<TextInputEditText>(R.id.transportationModeText)
+
+        val cancel = dialog.findViewById<TextView>(R.id.cancel)
+        val save = dialog.findViewById<CardView>(R.id.saveBtn)
+
+
+
+        cancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        save.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        dialog.window?.setGravity(Gravity.END)
+
+        dialog.show()
+
+    }
+
+    private fun openCreateNewDialog() {
+        val dialog = Dialog(applicationContext) // Use 'this' as the context, assuming this code is within an Activity
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.setContentView(R.layout.dialog_create_inclusion)
+        dialog.window?.apply {
+            setBackgroundDrawableResource(android.R.color.transparent) // Makes the background transparent
+            setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        }
+        getPostingRule()
+        getChargeRule()
+
+        val inclusionNameLayout = dialog.findViewById<TextInputLayout>(R.id.inclusionNameLayout)
+        val shortCodeLayout = dialog.findViewById<TextInputLayout>(R.id.shortCodeLayout)
+        val chargeLayout = dialog.findViewById<TextInputLayout>(R.id.chargeLayout)
+
+        val inclusionName = dialog.findViewById<TextInputEditText>(R.id.inclusionName)
+        val inclusionType = dialog.findViewById<TextInputEditText>(R.id.inclusionType)
+        val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCode)
+        val charge = dialog.findViewById<TextInputEditText>(R.id.charge)
+        val chargeRule = dialog.findViewById<TextInputEditText>(R.id.chargeRule)
+        val postingRule = dialog.findViewById<TextInputEditText>(R.id.postingRule)
+
+        val cancel = dialog.findViewById<TextView>(R.id.cancel)
+        val save = dialog.findViewById<CardView>(R.id.saveBtn)
+
+        val postingRuleLayout = dialog.findViewById<TextInputLayout>(R.id.postingRuleLayout)
+        val chargeRuleLayout = dialog.findViewById<TextInputLayout>(R.id.chargeRuleLayout)
+
+        postingRule.setOnClickListener {
+            Toast.makeText(applicationContext, "4", Toast.LENGTH_SHORT).show()
+            showDropdownMenu(applicationContext, postingRule, it, postingRuleArray)
+        }
+
+        chargeRule.setOnClickListener {
+            showDropdownMenu(applicationContext, chargeRule, it, chargeRuleArray)
+        }
+
+        cancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        save.setOnClickListener {
+            if (inclusionName.text!!.isEmpty()) {
+                inclusionNameLayout.isErrorEnabled = true
+                shakeAnimation(inclusionNameLayout, applicationContext)
+            } else if (shortCode.text!!.isEmpty()) {
+                inclusionNameLayout.isErrorEnabled = false
+                shortCodeLayout.isErrorEnabled = true
+                shakeAnimation(shortCodeLayout, applicationContext)
+            } else if (chargeRule.text!!.isEmpty()) {
+                inclusionNameLayout.isErrorEnabled = false
+                shortCodeLayout.isErrorEnabled = false
+                chargeRuleLayout.isErrorEnabled = true
+                shakeAnimation(chargeRuleLayout, applicationContext)
+            } else if (postingRule.text!!.isEmpty()) {
+                inclusionNameLayout.isErrorEnabled = false
+                shortCodeLayout.isErrorEnabled = false
+                chargeRuleLayout.isErrorEnabled = false
+                postingRuleLayout.isErrorEnabled = true
+                shakeAnimation(postingRuleLayout, applicationContext)
+            } else if (charge.text!!.isEmpty()) {
+                inclusionNameLayout.isErrorEnabled = false
+                shortCodeLayout.isErrorEnabled = false
+                chargeRuleLayout.isErrorEnabled = false
+                postingRuleLayout.isErrorEnabled = false
+                chargeLayout.isErrorEnabled = true
+                shakeAnimation(chargeLayout, applicationContext)
+            } else {
+                saveInclusion(
+                    applicationContext,
+                    dialog,
+                    shortCode.text.toString(),
+                    charge.text.toString(),
+                    inclusionName.text.toString(),
+                    inclusionType.text.toString(),
+                    chargeRule.text.toString(),
+                    postingRule.text.toString()
+                )
+            }
+        }
+
+        val adapter = ArrayAdapter(applicationContext, R.layout.simple_spinner_item1, postingList)
+        // Set a click listener for the end icon
+//        binding.sourceText.setOnClickListener {
+//            // Show dropdown menu
+//            showDropdownMenu(adapter,it)
+//        }
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        dialog.window?.setGravity(Gravity.END)
+
+        dialog.show()
+
+    }
+
+    private fun saveInclusion(context: Context, dialog: Dialog, shortCodeTxt : String, charge:String, inclusionName:String, inclusionType:String, chargeRule:String, postingRule:String) {
+        val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).addInclusionsApi(
+            AddInclusionsDataClass(UserSessionManager(context).getUserId().toString(), UserSessionManager(context).getPropertyId().toString(), shortCodeTxt, charge, inclusionName, inclusionType, chargeRule, postingRule)
+        )
+
+        create.enqueue(object : Callback<ResponseData?> {
+            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                Log.d( "inclusion", "${response.code()} ${response.message()}")
+                dialog.dismiss()
+            }
+
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
+    }
+
+    private fun getPostingRule() {
+        val get = RetrofitObject.dropDownApis.getPostingRulesModels()
+        get.enqueue(object : Callback<GetPostingRuleArray?> {
+            override fun onResponse(
+                call: Call<GetPostingRuleArray?>,
+                response: Response<GetPostingRuleArray?>
+            ) {
+                Log.d("error", response.code().toString())
+                if (response.isSuccessful) {
+                    try {
+                        val data = response.body()!!.data
+                        data.forEach {
+                            postingRuleArray.add(it.postingRule)
+                        }
+                    } catch (e : Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GetPostingRuleArray?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
+    }
+
+    private fun getChargeRule() {
+        val get = RetrofitObject.dropDownApis.getChargeRulesModels()
+        get.enqueue(object : Callback<GetChargeRuleArray?> {
+            override fun onResponse(
+                call: Call<GetChargeRuleArray?>,
+                response: Response<GetChargeRuleArray?>
+            ) {
+                if (response.isSuccessful) {
+                    try {
+                        val data = response.body()!!.data
+                        data.forEach {
+                            chargeRuleArray.add(it.chargeRule)
+                        }
+                    } catch (e : Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GetChargeRuleArray?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
+    }
+
 
 }

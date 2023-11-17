@@ -1,11 +1,13 @@
 package rconnect.retvens.technologies.onboarding.authentication
 
 import android.app.ActivityOptions
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +22,7 @@ import rconnect.retvens.technologies.onboarding.FirstOnBoardingScreen
 import rconnect.retvens.technologies.utils.SharedPrefOnboardingFlags
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.shakeAnimation
+import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,6 +30,7 @@ import retrofit2.Response
 class SignUpFragment : Fragment() {
 
     lateinit var binding : FragmentSignUpBinding
+    lateinit var loader:Dialog
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,7 +60,13 @@ class SignUpFragment : Fragment() {
             } else if (binding .passwordText.text!!.isEmpty()){
                 shakeAnimation(binding.passwordLayout, requireContext())
                 binding.passwordLayout.error = ("Please enter your password")
-            } else{
+            }
+            else if (!isEmailValid(binding.emailText.text.toString())){
+                shakeAnimation(binding.emailLayout,requireContext())
+                binding.emailLayout.error = "Invalid Email Id"
+            }
+            else{
+                loader = showProgressDialog(requireContext())
                 signUp()
             }
         }
@@ -65,7 +75,10 @@ class SignUpFragment : Fragment() {
 
     }
 
-
+    // Function to validate email format
+    fun isEmailValid(email: String): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
     private fun selectDesignation() {
 
         // Initialize Places API
@@ -154,6 +167,7 @@ class SignUpFragment : Fragment() {
                 call: Call<SignUpResponse?>,
                 response: Response<SignUpResponse?>
             ) {
+                loader.dismiss()
                 if (response.isSuccessful){
                     val response = response.body()!!
 
