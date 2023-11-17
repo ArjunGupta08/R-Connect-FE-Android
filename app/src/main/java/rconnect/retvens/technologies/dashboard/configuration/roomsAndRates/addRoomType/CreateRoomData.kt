@@ -11,6 +11,7 @@ data class CreateRoomData(
     val maxAdult : String,
     val maxChild : String,
     val maxOccupancy : String,
+    val numberOfRooms : Int,
     val noOfBeds : String,
     val bedTypeIds : String,
     val amenityIds : String,
