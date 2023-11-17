@@ -217,7 +217,7 @@ class RatePlanCompanyFragment : Fragment(), AddMealPlanAdapter.OnUpdate, RatePla
         ratePlanDetailsAdapter = RatePlanDetailsAdapter(requireContext(),ratePlanDetailsList)
         binding.recyclerView.adapter = ratePlanDetailsAdapter
         ratePlanDetailsAdapter.notifyDataSetChanged()
-        ratePlanDetailsAdapter.setOnListUpdateListener(this)
+        ratePlanDetailsAdapter.setOnListUpdateListener(this@RatePlanCompanyFragment)
 
     }
 
@@ -228,7 +228,7 @@ class RatePlanCompanyFragment : Fragment(), AddMealPlanAdapter.OnUpdate, RatePla
             val ratePlanDataClass =  AddCompanyRatePlanDataClass(
                 UserSessionManager(requireContext()).getUserId().toString(),
                 UserSessionManager(requireContext()).getPropertyId().toString(),
-                "Bar",
+                "Company",
                 "",
                 "",
                 "${Const.addedRoomTypeName} ${it.shortCode}",
@@ -247,14 +247,12 @@ class RatePlanCompanyFragment : Fragment(), AddMealPlanAdapter.OnUpdate, RatePla
             if (!ratePlanDetailsList.contains(ratePlanDataClass)) {
                 ratePlanDetailsList.add(ratePlanDataClass)
                 ratePlanDetailsAdapter.notifyDataSetChanged()
-            } else {
-                ratePlanDetailsList.remove(ratePlanDataClass)
-                ratePlanDetailsAdapter.notifyDataSetChanged()
             }
         }
     }
     override fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddCompanyRatePlanDataClass>) {
-        ratePlanDetailsList = updatedRateTypeList
+        ratePlanDetailsList.clear()
+        ratePlanDetailsList.addAll(updatedRateTypeList)
         setUpRecycler()
 //        ratePlanDetailsAdapter.notifyDataSetChanged()
     }

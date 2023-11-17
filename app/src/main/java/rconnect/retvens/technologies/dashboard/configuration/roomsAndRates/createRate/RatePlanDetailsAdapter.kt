@@ -12,6 +12,7 @@ import android.view.Window
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
@@ -21,17 +22,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.Api.OAuthClient
+import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddInclusionsAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.RatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.AddInclusionsDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetChargeRuleArray
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetPostingRuleArray
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.Const
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.shakeAnimation
+import rconnect.retvens.technologies.utils.showDropdownMenu
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -61,7 +67,9 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
         val saveIC = itemView.findViewById<CardView>(R.id.saveIC)
         val cancel = itemView.findViewById<TextView>(R.id.cancel)
 
+        val detailCard = itemView.findViewById<CardView>(R.id.detailCard)
         val editCard = itemView.findViewById<CardView>(R.id.editCard)
+
         val addInclusions = itemView.findViewById<CardView>(R.id.addInclusions)
         val recycler_inclusion = itemView.findViewById<RecyclerView>(R.id.recycler_inclusion)
         val ratePlanEText = itemView.findViewById<TextInputEditText>(R.id.ratePlan_text)
@@ -119,14 +127,17 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
         holder.edit.setOnClickListener {
             if (isRateCardEdit) {
                 holder.editCard.isVisible = true
+                holder.detailCard.isVisible = false
                 isRateCardEdit = false
             } else {
                 holder.editCard.isVisible = false
+                holder.detailCard.isVisible = true
                 isRateCardEdit = true
             }
         }
         holder.cancel.setOnClickListener {
                 holder.editCard.isVisible = false
+                holder.detailCard.isVisible = true
                 isRateCardEdit = true
         }
 
@@ -134,15 +145,30 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
         holder.rate_codeEText.setText(currentData.shortCode)
         holder.mealPlanETxt.setText(currentData.mealPlanName)
 
+        holder.barRoomBaseRateET.setText(currentData.roomBaseRate)
+        holder.mealChargesET.setText(currentData.mealCharge)
+        holder.totalInclusionChargesET.setText(currentData.inclusionCharge)
+        holder.extraChildMealRateET.setText(currentData.extraChildRate)
+        holder.extraAdultMealRateET.setText(currentData.extraAdultRate)
+        holder.roundUpET.setText(currentData.roundUp)
+        holder.ratePlanTotalTxtCalculated.setText(currentData.ratePlanTotal)
+
         var totalInclusionCharges = 0.00
 
-        var selectedInclusions = ArrayList<GetInclusionsData>()
+        getPostingRule()
+        getChargeRule()
+
+        var selectedInclusions = currentData.ratePlanInclusion
+        holder.recycler_inclusion.layoutManager = LinearLayoutManager(applicationContext)
+        val createRateTypeAdapter = CreateRateTypeAdapter(applicationContext, selectedInclusions, postingRuleArray, chargeRuleArray)
+        holder.recycler_inclusion.adapter = createRateTypeAdapter
+        createRateTypeAdapter.notifyDataSetChanged()
 
         val myInterfaceImplementation = object : AddInclusionsAdapter.OnUpdate {
             override fun onUpdateList(selectedList: ArrayList<GetInclusionsData>) {
                 selectedInclusions = selectedList
                 holder.recycler_inclusion.layoutManager = LinearLayoutManager(applicationContext)
-                val createRateTypeAdapter = CreateRateTypeAdapter(applicationContext, selectedList)
+                val createRateTypeAdapter = CreateRateTypeAdapter(applicationContext, selectedInclusions, postingRuleArray, chargeRuleArray)
                 holder.recycler_inclusion.adapter = createRateTypeAdapter
                 createRateTypeAdapter.notifyDataSetChanged()
 
@@ -164,6 +190,7 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
         var mealCharges = 0.00
         var extraAdultMealRate = 0.00
         var extraChildMealRate = 0.00
+
 
         holder.barRoomBaseRateET.doAfterTextChanged {
             if (holder.barRoomBaseRateET.text!!.isNotEmpty()) {
@@ -254,35 +281,44 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
         }
 
         holder.saveIC.setOnClickListener {
-            holder.editCard.isVisible = false
-            isRateCardEdit = true
+            if (selectedInclusions.isEmpty()) {
+                shakeAnimation(holder.addInclusions, applicationContext)
+            } else {
+                holder.editCard.isVisible = false
+                holder.detailCard.isVisible = true
+                isRateCardEdit = true
 
-            val ratePlanDataClass =  AddCompanyRatePlanDataClass(
-                "${currentData.userId}",
-                "${currentData.propertyId}",
-                "Bar",
-                "",
-                "",
-                "${currentData.ratePlanName}",
-                "${currentData.mealPlanId}",
-                "${currentData.shortCode}",
-                selectedInclusions,
-                "${holder.barRoomBaseRateET.toString()}",
-                "${holder.mealChargesET.toString()}",
-                "${holder.totalInclusionChargesET.text.toString()}",
-                "${holder.roundUpET.text.toString()}",
-                "${holder.extraAdultRateTxt.text.toString()}",
-                "${holder.extraChildRateTxt.text.toString()}",
-                "${holder.ratePlanTotalTxt.text.toString()}",
-                "${holder.mealPlanETxt.text.toString()}",
-            )
-            if (!updatedRateTypeList.contains(ratePlanDataClass)) {
-                updatedRateTypeList.add(ratePlanDataClass)
+                val ratePlanDataClass = AddCompanyRatePlanDataClass(
+                    "${currentData.userId}",
+                    "${currentData.propertyId}",
+                    "${currentData.rateType}",
+                    "${currentData.rateTypeId}",
+                    "",
+                    "${currentData.ratePlanName}",
+                    "${currentData.mealPlanId}",
+                    "${currentData.shortCode}",
+                    selectedInclusions,
+                    "${holder.barRoomBaseRateET.text.toString()}",
+                    "${holder.mealChargesET.text.toString()}",
+                    "${holder.totalInclusionChargesET.text.toString()}",
+                    "${holder.roundUpET.text.toString()}",
+                    "${holder.extraAdultMealRateET.text.toString()}",
+                    "${holder.extraChildMealRateET.text.toString()}",
+                    "${holder.ratePlanTotalTxtCalculated.text.toString()}",
+                    "${holder.mealPlanETxt.text.toString()}",
+                )
+                Log.d("ratePlanData", ratePlanDataClass.toString())
+                if (!updatedRateTypeList.contains(ratePlanDataClass)) {
+                    updatedRateTypeList.add(ratePlanDataClass)
+                }
+
+                onRateTypeListChangeListener?.onRateTypeListChanged(updatedRateTypeList)
             }
-
-            onRateTypeListChangeListener?.onRateTypeListChanged(updatedRateTypeList)
         }
     }
+
+    private  var postingRuleArray = ArrayList<String>()
+    private  var chargeRuleArray = ArrayList<String>()
 
     private fun openAddInclusionDialog(myInterfaceImplementation: AddInclusionsAdapter.OnUpdate) {
         val dialog = Dialog(applicationContext)
@@ -297,6 +333,11 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
 
         val cancel = dialog.findViewById<TextView>(R.id.cancel)
         cancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        val saveBtn = dialog.findViewById<CardView>(R.id.saveBtn)
+        saveBtn.setOnClickListener {
             dialog.dismiss()
         }
 
@@ -338,10 +379,17 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_create_inclusion)
 
+//        getPostingRule()
+//        getChargeRule()
+
         val cancel = dialog.findViewById<TextView>(R.id.cancel)
         cancel.setOnClickListener {
             dialog.dismiss()
         }
+
+        val inclusionNameLayout = dialog.findViewById<TextInputLayout>(R.id.inclusionNameLayout)
+        val shortCodeLayout = dialog.findViewById<TextInputLayout>(R.id.shortCodeLayout)
+        val chargeLayout = dialog.findViewById<TextInputLayout>(R.id.chargeLayout)
 
         val inclusionName = dialog.findViewById<TextInputEditText>(R.id.inclusionName)
         val inclusionType = dialog.findViewById<TextInputEditText>(R.id.inclusionType)
@@ -352,8 +400,55 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
 
         val save = dialog.findViewById<CardView>(R.id.saveBtn)
 
+        val postingRuleLayout = dialog.findViewById<TextInputLayout>(R.id.postingRuleLayout)
+        val chargeRuleLayout = dialog.findViewById<TextInputLayout>(R.id.chargeRuleLayout)
+
+        postingRule.setOnClickListener {
+            showDropdownMenu(applicationContext, postingRule, it, postingRuleArray)
+        }
+
+        chargeRule.setOnClickListener {
+            showDropdownMenu(applicationContext, chargeRule, it, chargeRuleArray)
+        }
+
         save.setOnClickListener {
-            saveInclusion(applicationContext, dialog, shortCode.text.toString(), charge.text.toString(), inclusionName.text.toString(), inclusionType.text.toString(), chargeRule.text.toString(), postingRule.text.toString())
+            if (inclusionName.text!!.isEmpty()) {
+                inclusionNameLayout.isErrorEnabled = true
+                shakeAnimation(inclusionNameLayout, applicationContext)
+            } else if (shortCode.text!!.isEmpty()) {
+                inclusionNameLayout.isErrorEnabled = false
+                shortCodeLayout.isErrorEnabled = true
+                shakeAnimation(shortCodeLayout, applicationContext)
+            } else if (chargeRule.text!!.isEmpty()) {
+                inclusionNameLayout.isErrorEnabled = false
+                shortCodeLayout.isErrorEnabled = false
+                chargeRuleLayout.isErrorEnabled = true
+                shakeAnimation(chargeRuleLayout, applicationContext)
+            } else if (postingRule.text!!.isEmpty()) {
+                inclusionNameLayout.isErrorEnabled = false
+                shortCodeLayout.isErrorEnabled = false
+                chargeRuleLayout.isErrorEnabled = false
+                postingRuleLayout.isErrorEnabled = true
+                shakeAnimation(postingRuleLayout, applicationContext)
+            } else if (charge.text!!.isEmpty()) {
+                inclusionNameLayout.isErrorEnabled = false
+                shortCodeLayout.isErrorEnabled = false
+                chargeRuleLayout.isErrorEnabled = false
+                postingRuleLayout.isErrorEnabled = false
+                chargeLayout.isErrorEnabled = true
+                shakeAnimation(chargeLayout, applicationContext)
+            } else {
+                saveInclusion(
+                    applicationContext,
+                    dialog,
+                    shortCode.text.toString(),
+                    charge.text.toString(),
+                    inclusionName.text.toString(),
+                    inclusionType.text.toString(),
+                    chargeRule.text.toString(),
+                    postingRule.text.toString()
+                )
+            }
         }
 
         dialog.show()
@@ -375,6 +470,57 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
             }
 
             override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
+    }
+
+    private fun getPostingRule() {
+        val get = RetrofitObject.dropDownApis.getPostingRulesModels()
+        get.enqueue(object : Callback<GetPostingRuleArray?> {
+            override fun onResponse(
+                call: Call<GetPostingRuleArray?>,
+                response: Response<GetPostingRuleArray?>
+            ) {
+                Log.d("error", response.code().toString())
+                if (response.isSuccessful) {
+                    try {
+                        val data = response.body()!!.data
+                        data.forEach {
+                            postingRuleArray.add(it.postingRule)
+                        }
+                    } catch (e : Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GetPostingRuleArray?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
+    }
+
+    private fun getChargeRule() {
+        val get = RetrofitObject.dropDownApis.getChargeRulesModels()
+        get.enqueue(object : Callback<GetChargeRuleArray?> {
+            override fun onResponse(
+                call: Call<GetChargeRuleArray?>,
+                response: Response<GetChargeRuleArray?>
+            ) {
+                if (response.isSuccessful) {
+                    try {
+                        val data = response.body()!!.data
+                        data.forEach {
+                            chargeRuleArray.add(it.chargeRule)
+                        }
+                    } catch (e : Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GetChargeRuleArray?>, t: Throwable) {
                 Log.d("error", t.localizedMessage)
             }
         })
