@@ -17,6 +17,7 @@ data class UpdateMealPlanData(
 data class GetMealPlanDataClass(
     val `data` : ArrayList<GetMealPlanData>,
     val message : String
+
 )
 data class GetMealPlanData(
     val propertyId : String,
@@ -28,4 +29,5 @@ data class GetMealPlanData(
     val modifiedOn : String,
     val mealPlanName : String,
     val chargesPerOccupancy : String,
-)
+
+    )
