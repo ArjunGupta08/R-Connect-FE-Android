@@ -1,11 +1,17 @@
 package rconnect.retvens.technologies.utils
 
+import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.View
+import android.view.Window
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.ImageView
 import android.widget.ListPopupWindow
+import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
 import rconnect.retvens.technologies.R
 import java.util.TimeZone
@@ -112,4 +118,16 @@ fun showDropdownMenu(context: Context, et : TextInputEditText, anchorView: View,
         listPopupWindow.dismiss()
     }
     listPopupWindow.show()
+}
+
+fun showProgressDialog (context: Context) : Dialog {
+    val progressDialog = Dialog(context)
+    progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+    progressDialog.setCancelable(false)
+    progressDialog.setContentView(R.layout.progress_dialog)
+    progressDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    val image = progressDialog.findViewById<ImageView>(R.id.imageview)
+    Glide.with(context).load(R.drawable.animated_three_dot).into(image)
+    progressDialog.show()
+    return progressDialog
 }

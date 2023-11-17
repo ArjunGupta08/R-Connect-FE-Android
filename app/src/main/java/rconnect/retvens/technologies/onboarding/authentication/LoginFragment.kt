@@ -1,6 +1,7 @@
 package rconnect.retvens.technologies.onboarding.authentication
 
 import android.app.ActivityOptions
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -18,6 +19,7 @@ import rconnect.retvens.technologies.databinding.FragmentLoginBinding
 import rconnect.retvens.technologies.utils.SharedPrefOnboardingFlags
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.shakeAnimation
+import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,6 +32,8 @@ class LoginFragment : Fragment() {
      var userName = ""
      var authCode = ""
      var password = ""
+
+    private lateinit var progressDialog : Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,6 +82,7 @@ class LoginFragment : Fragment() {
                 binding.authCodeLayout.isErrorEnabled = false
                 binding.passwordLayout.isErrorEnabled = false
                 try {
+                    progressDialog = showProgressDialog(requireContext())
                     getLogin()
                 }
                 catch (e:Exception){
@@ -99,7 +104,10 @@ class LoginFragment : Fragment() {
                 call: Call<LoginResponse?>,
                 response: Response<LoginResponse?>
             ) {
+
+                progressDialog.dismiss()
                 if (response.isSuccessful){
+
                     Toast.makeText(requireContext(), "Login SuccessFull", Toast.LENGTH_SHORT).show()
 
                     SharedPrefOnboardingFlags(requireContext()).saveLoginFlagValue(true)
@@ -116,6 +124,7 @@ class LoginFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<LoginResponse?>, t: Throwable) {
+                progressDialog.dismiss()
                 Log.d("error", t.localizedMessage)
             }
         })
