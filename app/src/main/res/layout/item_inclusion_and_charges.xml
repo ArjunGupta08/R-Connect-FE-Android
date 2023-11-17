@@ -54,7 +54,11 @@
                 android:id="@+id/posting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/H5" />
+                android:textSize="@dimen/H5"
+                android:editable="false"
+                android:focusable="false"
+                android:clickable="true"
+                android:cursorVisible="false"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -75,7 +79,11 @@
                 android:id="@+id/charge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/H5" />
+                android:textSize="@dimen/H5"
+                android:editable="false"
+                android:focusable="false"
+                android:clickable="true"
+                android:cursorVisible="false"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 

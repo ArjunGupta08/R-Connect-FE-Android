@@ -10,8 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsData
+import rconnect.retvens.technologies.utils.showDropdownMenu
 
-class CreateRateTypeAdapter(val applicationContext:Context,val rateTypeList:ArrayList<GetInclusionsData>):RecyclerView.Adapter<CreateRateTypeAdapter.ViewHolder>() {
+class CreateRateTypeAdapter(val applicationContext:Context,val rateTypeList:ArrayList<GetInclusionsData>,val postingRuleArray:ArrayList<String>,val chargeRuleArray:ArrayList<String>):RecyclerView.Adapter<CreateRateTypeAdapter.ViewHolder>() {
     class ViewHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
         val inclusion:TextInputEditText = itemView.findViewById(R.id.inclusion)
         val posting:TextInputEditText = itemView.findViewById(R.id.posting)
@@ -37,6 +38,14 @@ class CreateRateTypeAdapter(val applicationContext:Context,val rateTypeList:Arra
         holder.charge.setText(currentData.chargeRule)
         holder.inclusion.setText(currentData.inclusionName)
         holder.posting.setText(currentData.postingRule)
+
+        holder.posting.setOnClickListener {
+            showDropdownMenu(applicationContext, holder.posting, it, postingRuleArray)
+        }
+
+        holder.charge.setOnClickListener {
+            showDropdownMenu(applicationContext, holder.charge, it, chargeRuleArray)
+        }
 
         holder.img_del.setOnClickListener {
             rateTypeList.remove(currentData)

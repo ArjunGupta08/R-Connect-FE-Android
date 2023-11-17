@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import rconnect.retvens.technologies.Api.OAuthClient
+import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.Api.configurationApi.SingleConfiguration
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
@@ -26,8 +27,10 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.creat
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateTypeAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.RatePlanDetailsAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.AddInclusionsDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetChargeRuleArray
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetPostingRuleArray
 import rconnect.retvens.technologies.databinding.FragmentRatePlanPackageBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
@@ -52,6 +55,9 @@ class RatePlanPackageFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
     var amount = ""
 
     var isPercentageType = true
+
+    private  var postingRuleArray = ArrayList<String>()
+    private  var chargeRuleArray = ArrayList<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -84,6 +90,9 @@ class RatePlanPackageFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
             binding.adjistmentLayout.hint = "Discount ₹"
             isPercentageType = false
         }
+
+        getPostingRule()
+        getChargeRule()
 
         binding.addInclusions.setOnClickListener {
             openAddInclusionDialog()
@@ -280,7 +289,7 @@ class RatePlanPackageFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
 
         selectedInclusionsList = selectedList
         binding.recyclerInclusion.layoutManager = LinearLayoutManager(requireContext())
-        val createRateTypeAdapter = CreateRateTypeAdapter(requireContext(), selectedList)
+        val createRateTypeAdapter = CreateRateTypeAdapter(requireContext(), selectedList, postingRuleArray, chargeRuleArray)
         binding.recyclerInclusion.adapter = createRateTypeAdapter
         createRateTypeAdapter.notifyDataSetChanged()
 
@@ -288,6 +297,57 @@ class RatePlanPackageFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
             totalInclusionCharges += it.charge.toDouble()
         }
 
+    }
+
+    private fun getPostingRule() {
+        val get = RetrofitObject.dropDownApis.getPostingRulesModels()
+        get.enqueue(object : Callback<GetPostingRuleArray?> {
+            override fun onResponse(
+                call: Call<GetPostingRuleArray?>,
+                response: Response<GetPostingRuleArray?>
+            ) {
+                Log.d("error", response.code().toString())
+                if (response.isSuccessful) {
+                    try {
+                        val data = response.body()!!.data
+                        data.forEach {
+                            postingRuleArray.add(it.postingRule)
+                        }
+                    } catch (e : Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GetPostingRuleArray?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
+    }
+
+    private fun getChargeRule() {
+        val get = RetrofitObject.dropDownApis.getChargeRulesModels()
+        get.enqueue(object : Callback<GetChargeRuleArray?> {
+            override fun onResponse(
+                call: Call<GetChargeRuleArray?>,
+                response: Response<GetChargeRuleArray?>
+            ) {
+                if (response.isSuccessful) {
+                    try {
+                        val data = response.body()!!.data
+                        data.forEach {
+                            chargeRuleArray.add(it.chargeRule)
+                        }
+                    } catch (e : Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GetChargeRuleArray?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
     }
 
 }
