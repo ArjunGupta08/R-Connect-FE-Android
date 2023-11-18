@@ -34,7 +34,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class PaymentTypesFragment : Fragment() {
+class PaymentTypesFragment : Fragment(), PaymentTypeAdapter.MealUpdatedListener {
     private lateinit var binding : FragmentPaymentTypesBinding
 
     private lateinit var payTypeAdapter: PaymentTypeAdapter
@@ -129,8 +129,8 @@ class PaymentTypesFragment : Fragment() {
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
                 Log.d( "reservation", "${response.code()} ${response.message()}")
                 progressDialog.dismiss()
-                dialog.dismiss()
                 setUpRecycler()
+                dialog.dismiss()
             }
             override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
                 progressDialog.dismiss()
@@ -154,6 +154,7 @@ class PaymentTypesFragment : Fragment() {
                         val data = response.body()!!.data
                         payTypeAdapter = PaymentTypeAdapter(data, requireContext())
                         binding.paymentTypeRecycler.adapter = payTypeAdapter
+                        payTypeAdapter.setOnMealUpdateListener(this@PaymentTypesFragment)
                         payTypeAdapter.notifyDataSetChanged()
 
                         binding.search.addTextChangedListener(object : TextWatcher {
@@ -200,4 +201,7 @@ class PaymentTypesFragment : Fragment() {
 
     }
 
+    override fun onMealUpdated() {
+        setUpRecycler()
+    }
 }

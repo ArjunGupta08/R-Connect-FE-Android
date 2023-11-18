@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/items_linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="10dp"
+        android:paddingVertical="10dp">
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.08"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.26"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.45"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.87"/>
+
+
+        <TextView
+            android:id="@+id/shortCode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/listText"
+            android:text="Short Code"
+            app:layout_constraintEnd_toStartOf="@id/text2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/text2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/listText"
+            android:text="Holiday Name"
+            app:layout_constraintEnd_toEndOf="@id/guide2"
+            app:layout_constraintStart_toStartOf="@id/guide1"
+            app:layout_constraintBottom_toBottomOf="@id/shortCode"
+            app:layout_constraintTop_toTopOf="@id/shortCode"/>
+
+
+        <TextView
+            android:id="@+id/text3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/listText"
+            android:text="Start Date"
+            android:visibility="gone"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/text4"
+            app:layout_constraintStart_toStartOf="@id/guide2"
+            app:layout_constraintBottom_toBottomOf="@id/shortCode"
+            app:layout_constraintTop_toTopOf="@id/shortCode"/>
+
+        <TextView
+            android:id="@+id/text4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/listText"
+            android:text="End Date"
+            android:layout_marginStart="5dp"
+            app:layout_constraintStart_toEndOf="@id/text3"
+            app:layout_constraintEnd_toStartOf="@id/guide3"
+            app:layout_constraintBottom_toBottomOf="@id/shortCode"
+            app:layout_constraintTop_toTopOf="@id/shortCode"/>
+
+        <TextView
+            android:id="@+id/text5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/listText"
+            android:text="By Arjun on 11:12, 12/12/2023"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/text6"
+            app:layout_constraintStart_toStartOf="@id/guide3"
+            app:layout_constraintBottom_toBottomOf="@id/shortCode"
+            app:layout_constraintTop_toTopOf="@id/shortCode"/>
+
+        <TextView
+            android:id="@+id/text6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/listText"
+            android:text="By Arjun on 11:12, 12/12/2023"
+            android:layout_marginStart="5dp"
+            app:layout_constraintStart_toEndOf="@id/text5"
+            app:layout_constraintEnd_toStartOf="@id/actions"
+            app:layout_constraintBottom_toBottomOf="@id/shortCode"
+            app:layout_constraintTop_toTopOf="@id/shortCode"/>
+
+        <LinearLayout
+            android:id="@+id/actions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guide4"
+            app:layout_constraintBottom_toBottomOf="@id/shortCode"
+            app:layout_constraintTop_toTopOf="@id/shortCode">
+
+            <ImageView
+                android:id="@+id/edit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/svg_pen" />
+
+            <ImageView
+                android:id="@+id/delete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/svg_delete_lite" />
+
+            <ImageView
+                android:id="@+id/info"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/svg_info" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey5"
+        app:layout_constraintTop_toBottomOf="@id/propertyName"
+        android:layout_marginTop="9dp"/>
+
+</LinearLayout>

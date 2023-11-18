@@ -14,18 +14,23 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.generateShortCode
+import rconnect.retvens.technologies.utils.shakeAnimation
+import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class InclusionsAdapter(val list:ArrayList<GetInclusionsData>, val applicationContext: Context):RecyclerView.Adapter<InclusionsAdapter.NotificationHolder>() {
+class InclusionsAdapter(var list:ArrayList<GetInclusionsData>, val applicationContext: Context):RecyclerView.Adapter<InclusionsAdapter.NotificationHolder>() {
 
     var mListener : OnUpdate?= null
 
@@ -37,6 +42,7 @@ class InclusionsAdapter(val list:ArrayList<GetInclusionsData>, val applicationCo
         fun onUpdateIdentityType()
     }
 
+    lateinit var progressDialog: Dialog
     class NotificationHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
 
         val shortCode = itemView.findViewById<TextView>(R.id.shortCode)
@@ -54,7 +60,7 @@ class InclusionsAdapter(val list:ArrayList<GetInclusionsData>, val applicationCo
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationHolder {
         val inflater = LayoutInflater.from(applicationContext)
-        val view = inflater.inflate(R.layout.item_holidays,parent,false)
+        val view = inflater.inflate(R.layout.item_inclusion,parent,false)
         return NotificationHolder(view)
     }
 
@@ -73,6 +79,10 @@ class InclusionsAdapter(val list:ArrayList<GetInclusionsData>, val applicationCo
         holder.lastModified.text = "${item.createdBy} ${item.createdOn}"
 //        holder.lastModified.text = "${item.modifiedBy} ${item.modifiedOn}"
 
+        holder.delete.setOnClickListener {
+            list.remove(item)
+            notifyDataSetChanged()
+        }
         holder.edit.setOnClickListener {
             openCreateNewDialog(item.shortCode, item.inclusionName, item.inclusionType, item.charge, item.chargeRule, item.postingRule, item.inclusionId)
         }
@@ -92,6 +102,13 @@ class InclusionsAdapter(val list:ArrayList<GetInclusionsData>, val applicationCo
             )
         }
 
+        val inclusionNameLayout = dialog.findViewById<TextInputLayout>(R.id.inclusionNameLayout)
+        val shortCodeLayout = dialog.findViewById<TextInputLayout>(R.id.shortCodeLayout)
+        val chargeLayout = dialog.findViewById<TextInputLayout>(R.id.chargeLayout)
+        val postingRuleLayout = dialog.findViewById<TextInputLayout>(R.id.postingRuleLayout)
+        val chargeRuleLayout = dialog.findViewById<TextInputLayout>(R.id.chargeRuleLayout)
+
+
         val inclusionName = dialog.findViewById<TextInputEditText>(R.id.inclusionName)
         val inclusionType = dialog.findViewById<TextInputEditText>(R.id.inclusionType)
         val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCode)
@@ -106,6 +123,12 @@ class InclusionsAdapter(val list:ArrayList<GetInclusionsData>, val applicationCo
         chargeRule.setText(chargeRuleTxt)
         postingRule.setText(postingRuleTxt)
 
+        inclusionName.doAfterTextChanged {
+            if (inclusionName.text!!.length > 3)
+                shortCode.setText(generateShortCode(inclusionName.text.toString()))
+        }
+
+
         val cancel = dialog.findViewById<TextView>(R.id.cancel)
         val save = dialog.findViewById<CardView>(R.id.saveBtn)
 
@@ -113,7 +136,31 @@ class InclusionsAdapter(val list:ArrayList<GetInclusionsData>, val applicationCo
             dialog.dismiss()
         }
         save.setOnClickListener {
-            saveInclusion(applicationContext, dialog, shortCode.text.toString(), charge.text.toString(), inclusionName.text.toString(), inclusionType.text.toString(), chargeRule.text.toString(), postingRule.text.toString(), inclusionId)
+
+            if (inclusionName.text!!.isEmpty()) {
+                shakeAnimation(inclusionNameLayout, applicationContext)
+            } else if (shortCode.text!!.isEmpty()) {
+                shakeAnimation(shortCodeLayout, applicationContext)
+            } else if (chargeRule.text!!.isEmpty()) {
+                shakeAnimation(chargeRuleLayout, applicationContext)
+            } else if (postingRule.text!!.isEmpty()) {
+                shakeAnimation(postingRuleLayout, applicationContext)
+            } else if (charge.text!!.isEmpty()) {
+                shakeAnimation(chargeLayout, applicationContext)
+            } else {
+                progressDialog = showProgressDialog(applicationContext)
+                saveInclusion(
+                    applicationContext,
+                    dialog,
+                    shortCode.text.toString(),
+                    charge.text.toString(),
+                    inclusionName.text.toString(),
+                    inclusionType.text.toString(),
+                    chargeRule.text.toString(),
+                    postingRule.text.toString(),
+                    inclusionId
+                )
+            }
         }
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -130,15 +177,21 @@ class InclusionsAdapter(val list:ArrayList<GetInclusionsData>, val applicationCo
 
         create.enqueue(object : Callback<ResponseData?> {
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                progressDialog.dismiss()
                 Log.d( "inclusion", "${response.code()} ${response.message()}")
                 mListener?.onUpdateIdentityType()
                 dialog.dismiss()
             }
 
             override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                progressDialog.dismiss()
                 Log.d("error", t.localizedMessage)
             }
         })
     }
 
+    fun filterList(inputString : ArrayList<GetInclusionsData>) {
+        list = inputString
+        notifyDataSetChanged()
+    }
 }

@@ -33,6 +33,14 @@ class PaymentTypeAdapter(var list:ArrayList<GetPaymentTypeData>, val application
 
     private lateinit var progressBar : Dialog
 
+    private var mListener : MealUpdatedListener ?= null
+    fun setOnMealUpdateListener(listener : MealUpdatedListener){
+        mListener = listener
+    }
+    interface MealUpdatedListener {
+        fun onMealUpdated()
+    }
+
     class NotificationHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
 
          val shortCode = itemView.findViewById<TextView>(R.id.shortCode)
@@ -152,6 +160,7 @@ class PaymentTypeAdapter(var list:ArrayList<GetPaymentTypeData>, val application
             ) {
                 progressBar.dismiss()
                 Log.d( "reservation", "${response.code()} ${response.message()}")
+                mListener?.onMealUpdated()
                 dialog.dismiss()
             }
 

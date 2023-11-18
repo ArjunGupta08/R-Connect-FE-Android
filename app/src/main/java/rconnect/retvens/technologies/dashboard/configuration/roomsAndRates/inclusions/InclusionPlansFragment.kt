@@ -5,6 +5,8 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -16,6 +18,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -29,8 +32,10 @@ import rconnect.retvens.technologies.dashboard.configuration.others.holiday.Holi
 import rconnect.retvens.technologies.databinding.FragmentInclusionPlansBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.generateShortCode
 import rconnect.retvens.technologies.utils.shakeAnimation
 import rconnect.retvens.technologies.utils.showDropdownMenu
+import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -41,6 +46,8 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
 
     private  var postingRuleArray = ArrayList<String>()
     private  var chargeRuleArray = ArrayList<String>()
+
+    private lateinit var progressDialog: Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -141,6 +148,11 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
         val chargeRule = dialog.findViewById<TextInputEditText>(R.id.chargeRule)
         val postingRule = dialog.findViewById<TextInputEditText>(R.id.postingRule)
 
+        inclusionName.doAfterTextChanged {
+            if (inclusionName.text!!.length > 3)
+            shortCode.setText(generateShortCode(inclusionName.text.toString()))
+        }
+
         val cancel = dialog.findViewById<TextView>(R.id.cancel)
         val save = dialog.findViewById<CardView>(R.id.saveBtn)
 
@@ -148,7 +160,6 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
         val chargeRuleLayout = dialog.findViewById<TextInputLayout>(R.id.chargeRuleLayout)
 
         postingRule.setOnClickListener {
-            Toast.makeText(requireContext(), "4", Toast.LENGTH_SHORT).show()
             showDropdownMenu(requireContext(), postingRule, it, postingRuleArray)
         }
 
@@ -161,31 +172,17 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
         }
         save.setOnClickListener {
             if (inclusionName.text!!.isEmpty()) {
-                inclusionNameLayout.isErrorEnabled = true
                 shakeAnimation(inclusionNameLayout, requireContext())
             } else if (shortCode.text!!.isEmpty()) {
-                inclusionNameLayout.isErrorEnabled = false
-                shortCodeLayout.isErrorEnabled = true
                 shakeAnimation(shortCodeLayout, requireContext())
             } else if (chargeRule.text!!.isEmpty()) {
-                inclusionNameLayout.isErrorEnabled = false
-                shortCodeLayout.isErrorEnabled = false
-                chargeRuleLayout.isErrorEnabled = true
                 shakeAnimation(chargeRuleLayout, requireContext())
             } else if (postingRule.text!!.isEmpty()) {
-                inclusionNameLayout.isErrorEnabled = false
-                shortCodeLayout.isErrorEnabled = false
-                chargeRuleLayout.isErrorEnabled = false
-                postingRuleLayout.isErrorEnabled = true
                 shakeAnimation(postingRuleLayout, requireContext())
             } else if (charge.text!!.isEmpty()) {
-                inclusionNameLayout.isErrorEnabled = false
-                shortCodeLayout.isErrorEnabled = false
-                chargeRuleLayout.isErrorEnabled = false
-                postingRuleLayout.isErrorEnabled = false
-                chargeLayout.isErrorEnabled = true
                 shakeAnimation(chargeLayout, requireContext())
             } else {
+                progressDialog.show()
                 saveInclusion(
                     requireContext(),
                     dialog,
@@ -199,13 +196,6 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
             }
         }
 
-        val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, postingList)
-        // Set a click listener for the end icon
-//        binding.sourceText.setOnClickListener {
-//            // Show dropdown menu
-//            showDropdownMenu(adapter,it)
-//        }
-
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
         dialog.window?.setGravity(Gravity.END)
@@ -215,6 +205,7 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
     }
 
     private fun setUpRecycler() {
+        progressDialog = showProgressDialog(requireContext())
 
         binding.paymentTypeRecycler.layoutManager = LinearLayoutManager(requireContext())
 
@@ -224,13 +215,46 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
                 call: Call<GetInclusionsDataClass?>,
                 response: Response<GetInclusionsDataClass?>
             ) {
-
+                progressDialog.dismiss()
                 if (isAdded) {
                     if (response.isSuccessful) {
-                        val adapter = InclusionsAdapter(response.body()!!.data, requireContext())
-                        binding.paymentTypeRecycler.adapter = adapter
-                        adapter.setOnUpdateListener(this@InclusionPlansFragment)
-                        adapter.notifyDataSetChanged()
+                        try {
+                            val data = response.body()!!.data
+                            val adapter = InclusionsAdapter(data, requireContext())
+                            binding.paymentTypeRecycler.adapter = adapter
+                            adapter.setOnUpdateListener(this@InclusionPlansFragment)
+                            adapter.notifyDataSetChanged()
+
+                            binding.search.addTextChangedListener(object : TextWatcher {
+                                override fun beforeTextChanged(
+                                    s: CharSequence?,
+                                    start: Int,
+                                    count: Int,
+                                    after: Int
+                                ) {
+
+                                }
+
+                                override fun onTextChanged(
+                                    s: CharSequence?,
+                                    start: Int,
+                                    before: Int,
+                                    count: Int
+                                ) {
+                                    val filterData = data.filter {
+                                        it.inclusionName.contains(s.toString(), false)
+                                    }
+                                    adapter.filterList(filterData as ArrayList<GetInclusionsData>)
+                                }
+
+                                override fun afterTextChanged(s: Editable?) {
+
+                                }
+                            })
+
+                        } catch (e : Exception) {
+                            e.printStackTrace()
+                        }
                     } else {
 //                        openCreateNewDialog()
                         Log.d("error", "${response.code()} ${response.message()}")
@@ -239,6 +263,7 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
             }
 
             override fun onFailure(call: Call<GetInclusionsDataClass?>, t: Throwable) {
+                progressDialog.dismiss()
                 Log.d("error", t.localizedMessage)
             }
         })
@@ -252,8 +277,9 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
         create.enqueue(object : Callback<ResponseData?> {
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
                 Log.d( "inclusion", "${response.code()} ${response.message()}")
-                setUpRecycler()
+                progressDialog.dismiss()
                 dialog.dismiss()
+                setUpRecycler()
             }
 
             override fun onFailure(call: Call<ResponseData?>, t: Throwable) {

@@ -168,19 +168,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.12"/>
+                        app:layout_constraintGuide_percent="0.08"/>
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guide2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.31"/>
+                        app:layout_constraintGuide_percent="0.26"/>
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guide3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.50"/>
+                        app:layout_constraintGuide_percent="0.45"/>
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guide4"
                         android:layout_width="wrap_content"
@@ -218,6 +218,7 @@
                         android:layout_height="wrap_content"
                         style="@style/listTextHeading"
                         android:text="Inclusion Type"
+                        android:visibility="gone"
                         android:layout_marginStart="5dp"
                         app:layout_constraintEnd_toStartOf="@id/text4"
                         app:layout_constraintStart_toStartOf="@id/guide2"
@@ -286,7 +287,7 @@
                     android:id="@+id/paymentTypeRecycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:listitem="@layout/item_holidays"/>
+                    tools:listitem="@layout/item_inclusion"/>
 
             </LinearLayout>
 
