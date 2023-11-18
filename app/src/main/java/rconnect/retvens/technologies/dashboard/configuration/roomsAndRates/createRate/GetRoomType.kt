@@ -3,7 +3,9 @@ package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.crea
 data class GetRoomType(
     val propertyId:String,
     val roomTypeId:String,
-    val roomTypeName:String
+    val roomTypeName:String,
+    val extraAdultRate:String,
+    val extraChildRate:String
 )
 data class GetRoomTypeData(
     val `data`:ArrayList<GetRoomType>

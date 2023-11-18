@@ -26,6 +26,7 @@ import rconnect.retvens.technologies.dashboard.configuration.others.transportati
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.AmenityDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.GetAmenityIcon
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.PostAmenityData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.GetMealData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.AddInclusionsDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.UpdateInclusionDataClass
@@ -224,6 +225,14 @@ interface GeneralsAPI {
         @Query("propertyId") propertyId : String,
         @Query("targetTimeZone") targetTimeZone : String? = "Asia/Kolkata"
     ): Call<GetMealPlanDataClass>
+
+    @GET("getMealPlan")
+    fun getMealPlanApi2 (
+        @Query("userId") userId : String,
+        @Query("propertyId") propertyId : String,
+        @Query("targetTimeZone") targetTimeZone : String? = "Asia/Kolkata"
+    ): Call<GetMealData>
+
     @PATCH("patchMeal")
     fun updateMealPlanApi (
         @Query("userId") userId : String,

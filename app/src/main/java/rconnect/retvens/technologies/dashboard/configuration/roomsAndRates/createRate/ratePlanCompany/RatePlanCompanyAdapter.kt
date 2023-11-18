@@ -1,4 +1,4 @@
-package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate
+package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany
 
 import android.app.Dialog
 import android.content.Context
@@ -27,6 +27,7 @@ import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddInclusionsAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.RatePlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateTypeAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.AddInclusionsDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetChargeRuleArray
@@ -42,14 +43,15 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:ArrayList<AddCompanyRatePlanDataClass>):RecyclerView.Adapter<RatePlanDetailsAdapter.ViewHolder>(){
+class RatePlanCompanyAdapter(val applicationContext:Context, val rateTypeList:ArrayList<AddCompanyRatePlanDataClass>):RecyclerView.Adapter<RatePlanCompanyAdapter.ViewHolder>(){
 
     private var updatedRateTypeList = ArrayList<AddCompanyRatePlanDataClass>()
-
+    val selectedInclusionList: ArrayList<GetInclusionsData> = arrayListOf()
     private var onRateTypeListChangeListener : OnRateTypeListChangeListener ?= null
     fun setOnListUpdateListener (listener : OnRateTypeListChangeListener) {
         onRateTypeListChangeListener = listener
     }
+
     interface OnRateTypeListChangeListener {
         fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddCompanyRatePlanDataClass>)
     }
@@ -90,6 +92,7 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
         val extraAdultMealRateLayout = itemView.findViewById<TextInputLayout>(R.id.extraAdultMealRateLayout)
         val extraAdultMealRateET = itemView.findViewById<TextInputEditText>(R.id.extraAdultMealRateET)
 
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -102,8 +105,12 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
         return rateTypeList.size
     }
 
+
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int){
         val currentData = rateTypeList[position]
+
+        currentData.rateType = "Company"
 
         var isRateCardEdit = true
 
