@@ -124,8 +124,9 @@ class InclusionsAdapter(var list:ArrayList<GetInclusionsData>, val applicationCo
         postingRule.setText(postingRuleTxt)
 
         inclusionName.doAfterTextChanged {
-            if (inclusionName.text!!.length > 3)
+            if (inclusionName.text!!.length > 3) {
                 shortCode.setText(generateShortCode(inclusionName.text.toString()))
+            }
         }
 
 

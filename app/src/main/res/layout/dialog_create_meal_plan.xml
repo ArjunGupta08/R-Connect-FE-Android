@@ -47,6 +47,7 @@
                     android:weightSum="2">
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/mealPlanNameLayout"
                         style="@style/TextInputLayoutStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -71,6 +72,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/shortCodeLayout"
                         style="@style/TextInputLayoutStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -104,6 +106,7 @@
                     android:weightSum="2">
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/chargesPerOccupancyLayout"
                         style="@style/TextInputLayoutStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -121,7 +124,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
-                            android:inputType="text"
+                            android:inputType="number"
                             android:textColor="@color/secondary"
                             android:textColorHint="@drawable/hint_selector" />
 

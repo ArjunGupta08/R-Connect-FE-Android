@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
 import rconnect.retvens.technologies.R
 import java.util.TimeZone
+import kotlin.random.Random
 
 
 // ------------ Display the Location Suggestions ---------
@@ -133,12 +134,21 @@ fun showProgressDialog (context: Context) : Dialog {
 }
 
 fun generateShortCode(inputString: String): String {
-    val uppercaseLetters = inputString.uppercase()
-    return if (uppercaseLetters.length >= 2) {
-        uppercaseLetters.substring(0, 2)
-    } else {
-        // Handle the case where there are fewer than two capital letters in the string.
-        // You can choose to return a default code or handle it according to your requirements.
-        "NA"
-    }
+    val uC = inputString.uppercase()
+        val uppercaseLetters = inputString.filter { it.isUpperCase() }
+        return if (uppercaseLetters.length >= 2) {
+            val random = Random.Default
+            val firstIndex = random.nextInt(uppercaseLetters.length)
+            var secondIndex = random.nextInt(uppercaseLetters.length)
+
+            // Make sure the second index is different from the first one
+            while (secondIndex == firstIndex) {
+                secondIndex = random.nextInt(uppercaseLetters.length)
+            }
+            uppercaseLetters[firstIndex].toString() + uppercaseLetters[secondIndex]
+        } else {
+            // Handle the case where there are fewer than two capital letters in the string.
+            // You can choose to return a default code or handle it according to your requirements.
+            uC.substring(0, 2)
+        }
 }

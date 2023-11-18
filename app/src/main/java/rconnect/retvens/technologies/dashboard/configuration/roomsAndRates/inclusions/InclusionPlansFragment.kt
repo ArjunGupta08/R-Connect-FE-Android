@@ -149,8 +149,9 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
         val postingRule = dialog.findViewById<TextInputEditText>(R.id.postingRule)
 
         inclusionName.doAfterTextChanged {
-            if (inclusionName.text!!.length > 3)
-            shortCode.setText(generateShortCode(inclusionName.text.toString()))
+            if (inclusionName.text!!.length > 3) {
+                shortCode.setText(generateShortCode(inclusionName.text.toString()))
+            }
         }
 
         val cancel = dialog.findViewById<TextView>(R.id.cancel)
@@ -242,7 +243,7 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
                                     count: Int
                                 ) {
                                     val filterData = data.filter {
-                                        it.inclusionName.contains(s.toString(), false)
+                                        it.inclusionName.contains(s.toString(), true)
                                     }
                                     adapter.filterList(filterData as ArrayList<GetInclusionsData>)
                                 }

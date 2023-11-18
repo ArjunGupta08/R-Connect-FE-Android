@@ -14,18 +14,23 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.generateShortCode
+import rconnect.retvens.technologies.utils.shakeAnimation
+import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MealPlanAdapter(val list:ArrayList<GetMealPlanData>, val applicationContext: Context):RecyclerView.Adapter<MealPlanAdapter.NotificationHolder>() {
+class MealPlanAdapter(var list:ArrayList<GetMealPlanData>, val applicationContext: Context):RecyclerView.Adapter<MealPlanAdapter.NotificationHolder>() {
 
     var mListener : OnUpdate?= null
 
@@ -37,6 +42,7 @@ class MealPlanAdapter(val list:ArrayList<GetMealPlanData>, val applicationContex
         fun onUpdateMealPlan()
     }
 
+    private lateinit var progressDialog: Dialog
     class NotificationHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
 
         val shortCode = itemView.findViewById<TextView>(R.id.shortCode)
@@ -70,6 +76,11 @@ class MealPlanAdapter(val list:ArrayList<GetMealPlanData>, val applicationContex
         holder.text5.text = "${item.createdBy} ${item.createdOn}"
         holder.lastModified.text = "${item.modifiedBy} ${item.modifiedOn}"
 
+        holder.delete.setOnClickListener {
+            list.remove(item)
+            notifyDataSetChanged()
+        }
+
         holder.edit.setOnClickListener {
             openCreateNewDialog(item.shortCode, item.mealPlanName, item.chargesPerOccupancy, item.mealPlanId)
         }
@@ -88,6 +99,9 @@ class MealPlanAdapter(val list:ArrayList<GetMealPlanData>, val applicationContex
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
         }
+        val mealPlanNameLayout = dialog.findViewById<TextInputLayout>(R.id.mealPlanNameLayout)
+        val shortCodeLayout = dialog.findViewById<TextInputLayout>(R.id.shortCodeLayout)
+        val chargesPerOccupancyLayout = dialog.findViewById<TextInputLayout>(R.id.chargesPerOccupancyLayout)
 
         val mealPlanName = dialog.findViewById<TextInputEditText>(R.id.mealPlanName)
         val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCode)
@@ -103,8 +117,31 @@ class MealPlanAdapter(val list:ArrayList<GetMealPlanData>, val applicationContex
         cancel.setOnClickListener {
             dialog.dismiss()
         }
+
+        mealPlanName.doAfterTextChanged {
+            if (mealPlanName.text!!.length > 3) {
+                shortCode.setText(generateShortCode(mealPlanName.text.toString()))
+            }
+        }
+
         save.setOnClickListener {
-            saveMealPlan(applicationContext, dialog, shortCode.text.toString(), mealPlanName.text.toString(), chargesPerOccupancy.text.toString(), mealPlanId)
+            if (mealPlanName.text!!.isEmpty()){
+                shakeAnimation(mealPlanNameLayout, applicationContext)
+            } else if (shortCode.text!!.isEmpty()){
+                shakeAnimation(shortCodeLayout, applicationContext)
+            } else if (chargesPerOccupancy.text!!.isEmpty()){
+                shakeAnimation(chargesPerOccupancyLayout, applicationContext)
+            } else {
+                progressDialog = showProgressDialog(applicationContext)
+                saveMealPlan(
+                    applicationContext,
+                    dialog,
+                    shortCode.text.toString(),
+                    mealPlanName.text.toString(),
+                    chargesPerOccupancy.text.toString(),
+                    mealPlanId
+                )
+            }
         }
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -120,14 +157,15 @@ class MealPlanAdapter(val list:ArrayList<GetMealPlanData>, val applicationContex
                 UserSessionManager(context).getUserId().toString(),
                 mealPlanId,
                 UpdateMealPlanData(
-                    mealPlanName,
                     shortCode,
+                    mealPlanName,
                     chargesPerOccupancy
                 )
             )
 
         mP.enqueue(object : Callback<ResponseData?> {
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                progressDialog.dismiss()
                 if (response.isSuccessful) {
                     dialog.dismiss()
                     mListener?.onUpdateMealPlan()
@@ -137,8 +175,14 @@ class MealPlanAdapter(val list:ArrayList<GetMealPlanData>, val applicationContex
             }
 
             override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                progressDialog.dismiss()
                 Log.d("error", t.localizedMessage)
             }
         })
+    }
+
+    fun filterList(inputString : ArrayList<GetMealPlanData>) {
+        list = inputString
+        notifyDataSetChanged()
     }
 }

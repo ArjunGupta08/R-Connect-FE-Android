@@ -97,7 +97,7 @@ class IdentityDocumentsFragment : Fragment(), IdentityTypeAdapter.OnUpdate {
                                     count: Int
                                 ) {
                                     val filterData = data.filter { t ->
-                                        t.identityType.contains(s.toString(), false)
+                                        t.identityType.contains(s.toString(), true)
                                     }
                                     identityTypeAdapter.filterData(filterData as ArrayList<GetIdentityTypeData>)
                                 }

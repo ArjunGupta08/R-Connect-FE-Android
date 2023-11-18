@@ -5,6 +5,8 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -15,8 +17,10 @@ import android.view.Window
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
@@ -25,6 +29,9 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclu
 import rconnect.retvens.technologies.databinding.FragmentMealPlanBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.generateShortCode
+import rconnect.retvens.technologies.utils.shakeAnimation
+import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,6 +39,8 @@ import retrofit2.Response
 
 class MealPlanFragment : Fragment(), MealPlanAdapter.OnUpdate {
     private lateinit var binding : FragmentMealPlanBinding
+
+    private lateinit var progressDialog: Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,6 +62,7 @@ class MealPlanFragment : Fragment(), MealPlanAdapter.OnUpdate {
 
     }
     private fun setUpRecycler() {
+        progressDialog = showProgressDialog(requireContext())
 
         binding.paymentTypeRecycler.layoutManager = LinearLayoutManager(requireContext())
 
@@ -63,19 +73,55 @@ class MealPlanFragment : Fragment(), MealPlanAdapter.OnUpdate {
                 response: Response<GetMealPlanDataClass?>
             ) {
 
-                if (isAdded) {
-                    if (response.isSuccessful) {
-                        val adapter = MealPlanAdapter(response.body()!!.data, requireContext())
-                        binding.paymentTypeRecycler.adapter = adapter
-                        adapter.setOnUpdateListener(this@MealPlanFragment)
-                        adapter.notifyDataSetChanged()
-                    } else {
+                progressDialog.dismiss()
+                if (response.isSuccessful) {
+                    if (isAdded) {
+                        try {
+                            val data = response.body()!!.data
+                            val adapter = MealPlanAdapter(data, requireContext())
+                            binding.paymentTypeRecycler.adapter = adapter
+                            adapter.setOnUpdateListener(this@MealPlanFragment)
+                            adapter.notifyDataSetChanged()
+
+                            binding.search.addTextChangedListener(object : TextWatcher {
+                                override fun beforeTextChanged(
+                                    s: CharSequence?,
+                                    start: Int,
+                                    count: Int,
+                                    after: Int
+                                ) {
+
+                                }
+
+                                override fun onTextChanged(
+                                    s: CharSequence?,
+                                    start: Int,
+                                    before: Int,
+                                    count: Int
+                                ) {
+
+                                    val filterData = data.filter {
+                                        it.mealPlanName.contains(s.toString(), true)
+                                    }
+                                    adapter.filterList(filterData as ArrayList<GetMealPlanData>)
+                                }
+
+                                override fun afterTextChanged(s: Editable?) {
+
+                                }
+                            })
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+                } else {
                         Log.d("error", "${response.code()} ${response.message()}")
                     }
-                }
             }
 
             override fun onFailure(call: Call<GetMealPlanDataClass?>, t: Throwable) {
+                progressDialog.dismiss()
                 Log.d("error", t.localizedMessage)
             }
         })
@@ -96,6 +142,10 @@ class MealPlanFragment : Fragment(), MealPlanAdapter.OnUpdate {
             )
         }
 
+        val mealPlanNameLayout = dialog.findViewById<TextInputLayout>(R.id.mealPlanNameLayout)
+        val shortCodeLayout = dialog.findViewById<TextInputLayout>(R.id.shortCodeLayout)
+        val chargesPerOccupancyLayout = dialog.findViewById<TextInputLayout>(R.id.chargesPerOccupancyLayout)
+
         val mealPlanName = dialog.findViewById<TextInputEditText>(R.id.mealPlanName)
         val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCode)
         val chargesPerOccupancy = dialog.findViewById<TextInputEditText>(R.id.chargesPerOccupancy)
@@ -106,8 +156,30 @@ class MealPlanFragment : Fragment(), MealPlanAdapter.OnUpdate {
         cancel.setOnClickListener {
             dialog.dismiss()
         }
+
+        mealPlanName.doAfterTextChanged {
+            if (mealPlanName.text!!.length > 3) {
+                shortCode.setText(generateShortCode(mealPlanName.text.toString()))
+            }
+        }
+
         save.setOnClickListener {
-            saveMealPlan(requireContext(), dialog, mealPlanName.text.toString(), shortCode.text.toString(), chargesPerOccupancy.text.toString())
+            if (mealPlanName.text!!.isEmpty()){
+                shakeAnimation(mealPlanNameLayout, requireContext())
+            } else if (shortCode.text!!.isEmpty()){
+                shakeAnimation(shortCodeLayout, requireContext())
+            } else if (chargesPerOccupancy.text!!.isEmpty()){
+                shakeAnimation(chargesPerOccupancyLayout, requireContext())
+            } else {
+                progressDialog.show()
+                saveMealPlan(
+                    requireContext(),
+                    dialog,
+                    mealPlanName.text.toString(),
+                    shortCode.text.toString(),
+                    chargesPerOccupancy.text.toString()
+                )
+            }
         }
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -119,13 +191,19 @@ class MealPlanFragment : Fragment(), MealPlanAdapter.OnUpdate {
     }
     private fun saveMealPlan(context: Context, dialog: Dialog, mealPlanName: String, shortCode: String, chargesPerOccupancy: String) {
         val mP = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).postMealPlanApi(
-            MealPlanDataClass(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString(), mealPlanName, shortCode, chargesPerOccupancy))
+            MealPlanDataClass(
+                UserSessionManager(requireContext()).getUserId().toString(),
+                UserSessionManager(requireContext()).getPropertyId().toString(),
+                shortCode,
+                mealPlanName,
+                chargesPerOccupancy))
 
         mP.enqueue(object : Callback<ResponseData?> {
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                progressDialog.dismiss()
+                dialog.dismiss()
                 if (isAdded){
                     if (response.isSuccessful) {
-                        dialog.dismiss()
                         Toast.makeText(context, response.body()!!.message, Toast.LENGTH_SHORT).show()
                     } else {
                         Log.d("error", "${response.code()} ${response.message()}")
@@ -134,6 +212,8 @@ class MealPlanFragment : Fragment(), MealPlanAdapter.OnUpdate {
             }
 
             override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                dialog.dismiss()
+                progressDialog.dismiss()
                 Log.d("error", t.localizedMessage)
             }
         })
