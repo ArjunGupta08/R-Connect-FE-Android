@@ -124,7 +124,8 @@
                 android:layout_height="match_parent"
                 app:layout_constraintStart_toStartOf="@id/g1"
                 app:layout_constraintTop_toTopOf="parent"
-                app:strokeWidth="0.5dp"
+                app:strokeWidth="0dp"
+                android:backgroundTint="@color/primaryBackground"
                 app:cardCornerRadius="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/c2">
@@ -146,8 +147,8 @@
                 app:layout_constraintStart_toEndOf="@id/c1"
                 app:layout_constraintTop_toTopOf="parent"
                 app:cardCornerRadius="0dp"
-                app:strokeWidth="0.5dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:strokeWidth="0dp"
+                android:backgroundTint="@color/primaryBackground"                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/c3">
                 <TextView
 
@@ -168,8 +169,8 @@
                 app:layout_constraintStart_toEndOf="@id/c2"
                 app:cardCornerRadius="0dp"
                 app:layout_constraintTop_toTopOf="parent"
-                app:strokeWidth="0.5dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:strokeWidth="0dp"
+                android:backgroundTint="@color/primaryBackground"                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/c4">
                 <TextView
 
@@ -189,8 +190,8 @@
                 android:layout_height="match_parent"
                 app:layout_constraintStart_toEndOf="@id/c3"
                 app:cardCornerRadius="0dp"
-                app:strokeWidth="0.5dp"
-                app:layout_constraintTop_toTopOf="parent"
+                app:strokeWidth="0dp"
+                android:backgroundTint="@color/primaryBackground"                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/c5">
 
@@ -211,8 +212,8 @@
                 android:layout_height="match_parent"
                 app:layout_constraintStart_toEndOf="@id/c4"
                 app:cardCornerRadius="0dp"
-                app:strokeWidth="0.5dp"
-                app:layout_constraintTop_toTopOf="parent"
+                app:strokeWidth="0dp"
+                android:backgroundTint="@color/primaryBackground"                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/c6">
 
@@ -233,8 +234,8 @@
                 android:layout_height="match_parent"
                 app:layout_constraintStart_toEndOf="@id/c5"
                 app:cardCornerRadius="0dp"
-                app:strokeWidth="0.5dp"
-                app:layout_constraintTop_toTopOf="parent"
+                app:strokeWidth="0dp"
+                android:backgroundTint="@color/primaryBackground"                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/c7">
                 <TextView
@@ -255,8 +256,8 @@
                 android:layout_height="match_parent"
                 app:layout_constraintStart_toEndOf="@id/c6"
                 app:cardCornerRadius="0dp"
-                app:strokeWidth="0.5dp"
-                app:layout_constraintTop_toTopOf="parent"
+                app:strokeWidth="0dp"
+                android:backgroundTint="@color/primaryBackground"                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/c8">
 
@@ -277,8 +278,8 @@
                 android:layout_height="match_parent"
                 app:layout_constraintStart_toEndOf="@id/c7"
                 app:cardCornerRadius="0dp"
-                app:strokeWidth="0.5dp"
-                app:layout_constraintTop_toTopOf="parent"
+                app:strokeWidth="0dp"
+                android:backgroundTint="@color/primaryBackground"                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/c9">
 
@@ -300,8 +301,8 @@
                 app:layout_constraintStart_toEndOf="@id/c8"
                 app:layout_constraintTop_toTopOf="parent"
                 app:cardCornerRadius="0dp"
-                app:strokeWidth="0.5dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:strokeWidth="0dp"
+                android:backgroundTint="@color/primaryBackground"                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/c100">
                 <TextView
 
@@ -320,8 +321,8 @@
                 android:layout_height="match_parent"
                 app:layout_constraintStart_toEndOf="@id/c9"
                 app:cardCornerRadius="0dp"
-                app:strokeWidth="0.5dp"
-                app:layout_constraintTop_toTopOf="parent"
+                app:strokeWidth="0dp"
+                android:backgroundTint="@color/primaryBackground"                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
                 <TextView

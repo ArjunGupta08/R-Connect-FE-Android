@@ -27,7 +27,11 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRo
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.AddMealPlanAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateTypeAdapter
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomType
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.RatePlanDetailsAdapter
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.GetMealPlanItem
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.RoomTypePlanAdapter
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.RoomTypePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.GetMealPlanData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.GetMealPlanDataClass
@@ -41,12 +45,14 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class RatePlanCompanyFragment : Fragment(), AddMealPlanAdapter.OnUpdate, RatePlanDetailsAdapter.OnRateTypeListChangeListener{
+class RatePlanCompanyFragment(val roomList:ArrayList<GetRoomType>, val mealList:ArrayList<GetMealPlanItem>,val isSend:Boolean) : Fragment(), AddMealPlanAdapter.OnUpdate, RatePlanDetailsAdapter.OnRateTypeListChangeListener,
+    RatePlanCompanyAdapter.OnRateTypeListChangeListener,
+    RoomTypeCompanyPlanAdapter.OnRateTypeListChangeListener {
     private lateinit var binding : FragmentRatePlanCompanyBinding
 
     val rateList = ArrayList<CreateRateData>()
-
-    private lateinit var ratePlanDetailsAdapter : RatePlanDetailsAdapter
+    private  var roomTypePlanList:ArrayList<RoomTypePlanDataClass> = ArrayList()
+    private lateinit var ratePlanDetailsAdapter : RoomTypeCompanyPlanAdapter
     private var ratePlanDetailsList = ArrayList<AddCompanyRatePlanDataClass>()
 
     override fun onCreateView(
@@ -65,13 +71,9 @@ class RatePlanCompanyFragment : Fragment(), AddMealPlanAdapter.OnUpdate, RatePla
 
         val continueBtn = requireActivity().findViewById<CardView>(R.id.continueBtnRate)
         continueBtn?.setOnClickListener {
-            Toast.makeText(requireContext(), "Clicked", Toast.LENGTH_SHORT).show()
             sendData()
         }
 
-        binding.addMealPlanCard.setOnClickListener {
-            openAddMealDialog()
-        }
 
     }
 
@@ -83,7 +85,12 @@ class RatePlanCompanyFragment : Fragment(), AddMealPlanAdapter.OnUpdate, RatePla
                     call: Call<ResponseData?>,
                     response: Response<ResponseData?>
                 ) {
-                    Toast.makeText(requireContext(), response.code().toString(), Toast.LENGTH_SHORT).show()
+                    if (response.isSuccessful){
+                        val response = response.body()!!
+                        Toast.makeText(requireContext(),response.message,Toast.LENGTH_SHORT).show()
+                    }else{
+                        Log.e("error",response.code().toString())
+                    }
                 }
 
                 override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
@@ -201,7 +208,7 @@ class RatePlanCompanyFragment : Fragment(), AddMealPlanAdapter.OnUpdate, RatePla
                         dialog.dismiss()
                         Toast.makeText(context, response.body()!!.message, Toast.LENGTH_SHORT).show()
                     } else {
-                        Log.d("error", "${response.code()} ${response.message()}")
+                        Log.e("error", "${response.code()} ${response.message()}")
                     }
                 }
             }
@@ -213,11 +220,17 @@ class RatePlanCompanyFragment : Fragment(), AddMealPlanAdapter.OnUpdate, RatePla
     }
     private fun setUpRecycler() {
 
+        roomList.forEach {
+            roomTypePlanList.add(RoomTypePlanDataClass(it.propertyId,it.roomTypeId,it.roomTypeName,it.extraAdultRate,it.extraChildRate,mealList))
+        }
+
+
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        ratePlanDetailsAdapter = RatePlanDetailsAdapter(requireContext(),ratePlanDetailsList)
+        ratePlanDetailsAdapter = RoomTypeCompanyPlanAdapter(requireContext(),roomTypePlanList)
         binding.recyclerView.adapter = ratePlanDetailsAdapter
         ratePlanDetailsAdapter.notifyDataSetChanged()
-        ratePlanDetailsAdapter.setOnListUpdateListener(this@RatePlanCompanyFragment)
+
+        ratePlanDetailsAdapter.setOnListUpdateListener(this)
 
     }
 
@@ -228,6 +241,7 @@ class RatePlanCompanyFragment : Fragment(), AddMealPlanAdapter.OnUpdate, RatePla
             val ratePlanDataClass =  AddCompanyRatePlanDataClass(
                 UserSessionManager(requireContext()).getUserId().toString(),
                 UserSessionManager(requireContext()).getPropertyId().toString(),
+                "",
                 "Company",
                 "",
                 "",

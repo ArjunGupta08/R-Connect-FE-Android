@@ -5,7 +5,8 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclu
 data class AddCompanyRatePlanDataClass(
     val userId : String,
     val propertyId : String,
-    val rateType : String,
+    val roomTypeId:String,
+    var rateType : String,
     val rateTypeId : String,
     val companyId : String,
     val ratePlanName : String,

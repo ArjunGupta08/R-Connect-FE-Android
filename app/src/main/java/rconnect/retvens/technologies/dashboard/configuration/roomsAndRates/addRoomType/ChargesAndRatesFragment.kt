@@ -350,6 +350,7 @@ class ChargesAndRatesFragment : Fragment(),
             val ratePlanDataClass =  AddCompanyRatePlanDataClass(
                  UserSessionManager(requireContext()).getUserId().toString(),
                  UserSessionManager(requireContext()).getPropertyId().toString(),
+                "",
                 "Bar",
                 "",
                 "",

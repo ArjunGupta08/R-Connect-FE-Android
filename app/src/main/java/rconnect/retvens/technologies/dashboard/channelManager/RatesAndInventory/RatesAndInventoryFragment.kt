@@ -538,7 +538,6 @@ class RatesAndInventoryFragment : Fragment() {
                 response: Response<GetRatePlansData?>
             ) {
                 if (response.isSuccessful){
-                    Toast.makeText(requireContext(), "rate plan succeed", Toast.LENGTH_SHORT).show()
                     try {
                     val data = response.body()!!.data
                     data.forEach {
@@ -707,7 +706,7 @@ class RatesAndInventoryFragment : Fragment() {
 
         Log.e("token",UserSessionManager(requireContext()).getToken().toString())
 
-        val inventoryApi = OAuthClient<RatesAndInventoryInterface>(requireContext()).create(RatesAndInventoryInterface::class.java).getInventory("cVDoB8BP","4OCGYRmP","2023-11-09","2023-11-20")
+        val inventoryApi = OAuthClient<RatesAndInventoryInterface>(requireContext()).create(RatesAndInventoryInterface::class.java).getInventory(userId.toString(),propertyId.toString(),startDate.toString(),endDate.toString())
 
        inventoryApi.enqueue(object : Callback<ResponseData?> {
            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
