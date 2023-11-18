@@ -5,6 +5,8 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -14,14 +16,19 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.FragmentIdentityDocumentsBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.generateShortCode
+import rconnect.retvens.technologies.utils.shakeAnimation
+import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,6 +36,8 @@ import retrofit2.Response
 
 class IdentityDocumentsFragment : Fragment(), IdentityTypeAdapter.OnUpdate {
     private lateinit var binding:FragmentIdentityDocumentsBinding
+
+    private lateinit var progressDialog : Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +60,7 @@ class IdentityDocumentsFragment : Fragment(), IdentityTypeAdapter.OnUpdate {
     }
 
     private fun setUpRecycler() {
+        progressDialog = showProgressDialog(requireContext())
         binding.reservationTypeRecycler.layoutManager = LinearLayoutManager(requireContext())
 
         val identity = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).getIdentityTypeApi(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString())
@@ -60,20 +70,53 @@ class IdentityDocumentsFragment : Fragment(), IdentityTypeAdapter.OnUpdate {
                 response: Response<GetIdentityTypeDataClass?>
             ) {
                 if (isAdded){
+                    progressDialog.dismiss()
                     if (response.isSuccessful){
-                        val identityTypeAdapter = IdentityTypeAdapter(response.body()!!.data, requireContext())
-                        binding.reservationTypeRecycler.adapter = identityTypeAdapter
-                        identityTypeAdapter.setOnUpdateListener(this@IdentityDocumentsFragment)
-                        identityTypeAdapter.notifyDataSetChanged()
+                        try {
+                            val data = response.body()!!.data
+                            val identityTypeAdapter = IdentityTypeAdapter(data, requireContext())
+                            binding.reservationTypeRecycler.adapter = identityTypeAdapter
+                            identityTypeAdapter.setOnUpdateListener(this@IdentityDocumentsFragment)
+                            identityTypeAdapter.notifyDataSetChanged()
+
+                            Log.d("identity", data.toString())
+                            binding.search.addTextChangedListener(object : TextWatcher {
+                                override fun beforeTextChanged(
+                                    s: CharSequence?,
+                                    start: Int,
+                                    count: Int,
+                                    after: Int
+                                ) {
+
+                                }
+
+                                override fun onTextChanged(
+                                    s: CharSequence?,
+                                    start: Int,
+                                    before: Int,
+                                    count: Int
+                                ) {
+                                    val filterData = data.filter { t ->
+                                        t.identityType.contains(s.toString(), false)
+                                    }
+                                    identityTypeAdapter.filterData(filterData as ArrayList<GetIdentityTypeData>)
+                                }
+
+                                override fun afterTextChanged(s: Editable?) {
+
+                                }
+                            })
+                        } catch (e : Exception) {
+                            e.printStackTrace()
+                        }
                     } else {
-                        openCreateNewDialog()
                         Log.d("error" , "${response.code()} ${response.message()}")
                     }
                 }
             }
 
             override fun onFailure(call: Call<GetIdentityTypeDataClass?>, t: Throwable) {
-
+                progressDialog.dismiss()
             }
         })
     }
@@ -92,19 +135,39 @@ class IdentityDocumentsFragment : Fragment(), IdentityTypeAdapter.OnUpdate {
             )
         }
 
+        val identityTypeLayout = dialog.findViewById<TextInputLayout>(R.id.identityTypeLayout)
+        val shortCodeLayout = dialog.findViewById<TextInputLayout>(R.id.shortCodeLayout)
+
         val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCode)
         val identityTypeName = dialog.findViewById<TextInputEditText>(R.id.identityTypeName)
 
         val cancel = dialog.findViewById<TextView>(R.id.cancel)
         val save = dialog.findViewById<CardView>(R.id.saveBtn)
 
+        identityTypeName.doAfterTextChanged{
+            if (identityTypeName.text!!.length >= 2) {
+                shortCode.setText(generateShortCode(identityTypeName.text.toString()))
+            }
+        }
+
         cancel.setOnClickListener {
             dialog.dismiss()
         }
         save.setOnClickListener {
-            saveIdentity(requireContext(), dialog, shortCode.text.toString(), identityTypeName.text.toString())
+            if (identityTypeName.text!!.isEmpty()) {
+                shakeAnimation(identityTypeLayout, requireContext())
+            } else if (shortCode.text!!.isEmpty()) {
+                shakeAnimation(shortCodeLayout, requireContext())
+            } else {
+                progressDialog.show()
+                saveIdentity(
+                    requireContext(),
+                    dialog,
+                    shortCode.text.toString(),
+                    identityTypeName.text.toString()
+                )
+            }
         }
-
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
         dialog.window?.setGravity(Gravity.END)
@@ -120,10 +183,13 @@ class IdentityDocumentsFragment : Fragment(), IdentityTypeAdapter.OnUpdate {
         create.enqueue(object : Callback<ResponseData?> {
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
                 Log.d( "reservation", "${response.code()} ${response.message()}")
+                progressDialog.dismiss()
                 dialog.dismiss()
+                setUpRecycler()
             }
 
             override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                progressDialog.dismiss()
                 Log.d("error", t.localizedMessage)
             }
         })

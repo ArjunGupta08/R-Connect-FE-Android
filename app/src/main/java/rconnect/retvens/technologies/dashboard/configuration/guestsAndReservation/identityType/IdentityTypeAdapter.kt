@@ -14,18 +14,25 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
+import okhttp3.internal.notify
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.GetReservationTypeDataClass
+import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.generateShortCode
+import rconnect.retvens.technologies.utils.shakeAnimation
+import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class IdentityTypeAdapter(val list:ArrayList<GetIdentityTypeData>, val applicationContext: Context):RecyclerView.Adapter<IdentityTypeAdapter.NotificationHolder>() {
+class IdentityTypeAdapter(var list:ArrayList<GetIdentityTypeData>, val applicationContext: Context):RecyclerView.Adapter<IdentityTypeAdapter.NotificationHolder>() {
 
     var mListener : OnUpdate?= null
 
@@ -36,6 +43,8 @@ class IdentityTypeAdapter(val list:ArrayList<GetIdentityTypeData>, val applicati
     interface OnUpdate {
         fun onUpdateIdentityType()
     }
+
+    private lateinit var progressDialog : Dialog
 
     class NotificationHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
 
@@ -68,6 +77,10 @@ class IdentityTypeAdapter(val list:ArrayList<GetIdentityTypeData>, val applicati
         holder.craetedBy.text = "${item.createdBy} ${item.createdOn}"
         holder.lastModified.text = "${item.modifiedBy} ${item.modifiedOn}"
 
+        holder.delete.setOnClickListener {
+            list.remove(item)
+            notifyDataSetChanged()
+        }
         holder.edit.setOnClickListener {
             openCreateNewDialog(applicationContext, item.shortCode, item.identityType, item.identityTypeId)
         }
@@ -86,12 +99,20 @@ class IdentityTypeAdapter(val list:ArrayList<GetIdentityTypeData>, val applicati
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
         }
+        val identityTypeLayout = dialog.findViewById<TextInputLayout>(R.id.identityTypeLayout)
+        val shortCodeLayout = dialog.findViewById<TextInputLayout>(R.id.shortCodeLayout)
 
         val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCode)
         val identityTypeName = dialog.findViewById<TextInputEditText>(R.id.identityTypeName)
 
         shortCode.setText(shortCodeTxt)
         identityTypeName.setText(identityTypeTxt)
+
+        identityTypeName.doAfterTextChanged {
+            if (identityTypeName.text!!.length >= 2) {
+                shortCode.setText(generateShortCode(identityTypeName.text.toString()))
+            }
+        }
 
 
         val cancel = dialog.findViewById<TextView>(R.id.cancel)
@@ -101,9 +122,21 @@ class IdentityTypeAdapter(val list:ArrayList<GetIdentityTypeData>, val applicati
             dialog.dismiss()
         }
         save.setOnClickListener {
-            saveIdentity(context, dialog, shortCode.text.toString(), identityTypeName.text.toString(), identityTypeIdTxt)
+            if (identityTypeName.text!!.isEmpty()) {
+                shakeAnimation(identityTypeLayout, applicationContext)
+            } else if (shortCode.text!!.isEmpty()) {
+                shakeAnimation(shortCodeLayout, applicationContext)
+            } else {
+                progressDialog = showProgressDialog(applicationContext)
+                saveIdentity(
+                    context,
+                    dialog,
+                    shortCode.text.toString(),
+                    identityTypeName.text.toString(),
+                    identityTypeIdTxt
+                )
+            }
         }
-
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
         dialog.window?.setGravity(Gravity.END)
@@ -113,19 +146,26 @@ class IdentityTypeAdapter(val list:ArrayList<GetIdentityTypeData>, val applicati
 
     private fun saveIdentity(context: Context, dialog: Dialog, shortCodeTxt : String, identityTypeTxt:String , identityTypeIdTxt : String) {
         val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).updateIdentityTypeApi(UserSessionManager(context).getUserId().toString(), identityTypeIdTxt, UpdateIdentityTypeDataClass(shortCodeTxt, identityTypeTxt))
-        create.enqueue(object : Callback<GetReservationTypeDataClass?> {
+        create.enqueue(object : Callback<ResponseData?> {
             override fun onResponse(
-                call: Call<GetReservationTypeDataClass?>,
-                response: Response<GetReservationTypeDataClass?>
+                call: Call<ResponseData?>,
+                response: Response<ResponseData?>
             ) {
                 Log.d( "reservation", "${response.code()} ${response.message()}")
+                progressDialog.dismiss()
                 mListener?.onUpdateIdentityType()
                 dialog.dismiss()
             }
 
-            override fun onFailure(call: Call<GetReservationTypeDataClass?>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
                 Log.d("error", t.localizedMessage)
+                progressDialog.dismiss()
             }
         })
+    }
+
+    fun filterData(inputText : ArrayList<GetIdentityTypeData>){
+        list = inputText
+        notifyDataSetChanged()
     }
 }

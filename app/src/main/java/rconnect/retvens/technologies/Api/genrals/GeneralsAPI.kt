@@ -95,7 +95,7 @@ interface GeneralsAPI {
         @Query("userId") userId : String,
         @Query("identityTypeId") identityTypeId : String,
         @Body updateIdentityTypeDataClass: UpdateIdentityTypeDataClass
-    ): Call<GetReservationTypeDataClass>
+    ): Call<ResponseData>
 
     /*--------------------------------------- Transportation Mode Type-----------------------------------------*/
     @POST("addTransportation")
