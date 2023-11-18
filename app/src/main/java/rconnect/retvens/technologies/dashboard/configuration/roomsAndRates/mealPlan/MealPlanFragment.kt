@@ -17,6 +17,7 @@ import android.view.Window
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputEditText
@@ -85,28 +86,27 @@ class MealPlanFragment : Fragment(), MealPlanAdapter.OnUpdate {
 
                             binding.search.addTextChangedListener(object : TextWatcher {
                                 override fun beforeTextChanged(
-                                    s: CharSequence?,
-                                    start: Int,
-                                    count: Int,
-                                    after: Int
+                                    p0: CharSequence?,
+                                    p1: Int,
+                                    p2: Int,
+                                    p3: Int
                                 ) {
 
                                 }
 
                                 override fun onTextChanged(
-                                    s: CharSequence?,
-                                    start: Int,
-                                    before: Int,
-                                    count: Int
+                                    p0: CharSequence?,
+                                    p1: Int,
+                                    p2: Int,
+                                    p3: Int
                                 ) {
-
-                                    val filterData = data.filter {
-                                        it.mealPlanName.contains(s.toString(), true)
+                                    val filteredData = data.filter {
+                                        it.mealPlanName.contains(p0.toString(), true)
                                     }
-                                    adapter.filterList(filterData as ArrayList<GetMealPlanData>)
+                                    adapter.filterList(filteredData as ArrayList<GetMealPlanData>)
                                 }
 
-                                override fun afterTextChanged(s: Editable?) {
+                                override fun afterTextChanged(p0: Editable?) {
 
                                 }
                             })
@@ -204,6 +204,7 @@ class MealPlanFragment : Fragment(), MealPlanAdapter.OnUpdate {
                 dialog.dismiss()
                 if (isAdded){
                     if (response.isSuccessful) {
+                        setUpRecycler()
                         Toast.makeText(context, response.body()!!.message, Toast.LENGTH_SHORT).show()
                     } else {
                         Log.d("error", "${response.code()} ${response.message()}")

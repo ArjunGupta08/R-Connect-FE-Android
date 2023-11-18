@@ -40,6 +40,7 @@
                     android:textSize="@dimen/H2"/>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/businessSourceLayout1"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -65,7 +66,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/propertyChainLayout"
+                    android:id="@+id/shortLayout1"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
