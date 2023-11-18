@@ -19,6 +19,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.internal.DescendantOffsetUtils
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.Api.OAuthClient
@@ -145,13 +146,17 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
         holder.rate_codeEText.setText(currentData.shortCode)
         holder.mealPlanETxt.setText(currentData.mealPlanName)
 
-        holder.barRoomBaseRateET.setText(currentData.roomBaseRate)
-        holder.mealChargesET.setText(currentData.mealCharge)
-        holder.totalInclusionChargesET.setText(currentData.inclusionCharge)
-        holder.extraChildMealRateET.setText(currentData.extraChildRate)
-        holder.extraAdultMealRateET.setText(currentData.extraAdultRate)
-        holder.roundUpET.setText(currentData.roundUp)
-        holder.ratePlanTotalTxtCalculated.setText(currentData.ratePlanTotal)
+        try {
+            holder.barRoomBaseRateET.setText(currentData.roomBaseRate.toString())
+            holder.mealChargesET.setText(currentData.mealCharge.toString())
+            holder.totalInclusionChargesET.setText(currentData.inclusionCharge.toString())
+            holder.extraChildMealRateET.setText(currentData.extraChildRate.toString())
+            holder.extraAdultMealRateET.setText(currentData.extraAdultRate.toString())
+            holder.roundUpET.setText(currentData.roundUp)
+            holder.ratePlanTotalTxtCalculated.setText(currentData.ratePlanTotal)
+        } catch (e:Exception) {
+            e.printStackTrace()
+        }
 
         var totalInclusionCharges = 0.00
 
