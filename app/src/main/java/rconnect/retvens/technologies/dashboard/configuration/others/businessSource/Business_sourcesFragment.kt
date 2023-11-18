@@ -4,6 +4,8 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -14,8 +16,10 @@ import android.view.Window
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
@@ -23,6 +27,9 @@ import rconnect.retvens.technologies.dashboard.configuration.others.transportati
 import rconnect.retvens.technologies.databinding.FragmentBusinessSourcesBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.generateShortCode
+import rconnect.retvens.technologies.utils.shakeAnimation
+import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,6 +40,7 @@ class Business_sourcesFragment : Fragment(),BusinessSourceAdapter.OnUpdate {
     lateinit var binding:FragmentBusinessSourcesBinding
     lateinit var shortCode :TextInputEditText
     lateinit var sourceName :TextInputEditText
+    lateinit var loader:Dialog
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,9 +57,9 @@ class Business_sourcesFragment : Fragment(),BusinessSourceAdapter.OnUpdate {
 
 
         binding.reservationTypeRecycler.layoutManager = LinearLayoutManager(requireContext())
-        val businessSourceAdapter = BusinessSourceAdapter(list,requireContext())
-        binding.reservationTypeRecycler.adapter = businessSourceAdapter
-        businessSourceAdapter.notifyDataSetChanged()
+        loader = showProgressDialog(requireContext())
+        setUpRecycler()
+
         binding.createNewBtn.setOnClickListener {
             openCreateNewDialog()
         }
@@ -81,15 +89,35 @@ class Business_sourcesFragment : Fragment(),BusinessSourceAdapter.OnUpdate {
         sourceName = dialog.findViewById<TextInputEditText>(R.id.businessSource_text)
         shortCode = dialog.findViewById<TextInputEditText>(R.id.b_short_code_text)
 
+        val shortLayout = dialog.findViewById<TextInputLayout>(R.id.shortLayout1)
+        val sourceLayout = dialog.findViewById<TextInputLayout>(R.id.businessSourceLayout1)
 
+        sourceName.doAfterTextChanged {
+            if (sourceName.text!!.length>3) {
+                shortCode.setText(generateShortCode(sourceName.text.toString()))
+            }
+        }
 
 
         cancel.setOnClickListener {
             dialog.dismiss()
         }
         save.setOnClickListener {
-//            saveTMode(dialog, shortCode.text.toString(), transportationModeText.text.toString())
+            if (sourceName.text!!.isEmpty()){
+            shakeAnimation(sourceLayout,requireContext())
+        }
+        else if (shortCode.text!!.isEmpty()){
+            shakeAnimation(shortLayout,requireContext())
+        }
+        else{
+            loader.show()
             saveTMode(dialog)
+        }
+//            saveTMode(dialog, shortCode.text.toString(), transportationModeText.text.toString())
+            binding.reservationTypeRecycler.layoutManager = LinearLayoutManager(requireContext())
+            val businessSourceAdapter = BusinessSourceAdapter(list,requireContext())
+            binding.reservationTypeRecycler.adapter = businessSourceAdapter
+            businessSourceAdapter.notifyDataSetChanged()
         }
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -110,7 +138,9 @@ class Business_sourcesFragment : Fragment(),BusinessSourceAdapter.OnUpdate {
                 call: Call<GetBusinessSourceDataClass?>,
                 response: Response<GetBusinessSourceDataClass?>
             ) {
+                loader.dismiss()
                 if (response.isSuccessful){
+                    if (isAdded){
                     list = response.body()!!.data
                     Log.e("response recycler",list.toString())
                     Toast.makeText(requireContext(),list.size.toString(),Toast.LENGTH_SHORT)
@@ -122,11 +152,38 @@ class Business_sourcesFragment : Fragment(),BusinessSourceAdapter.OnUpdate {
                     binding.reservationTypeRecycler.adapter = adapter
                     adapter.setOnUpdateListener(this@Business_sourcesFragment)
                     adapter.notifyDataSetChanged()
+                        binding.search.addTextChangedListener(object : TextWatcher {
+                            override fun beforeTextChanged(
+                                p0: CharSequence?,
+                                p1: Int,
+                                p2: Int,
+                                p3: Int
+                            ) {
+
+                            }
+
+                            override fun onTextChanged(
+                                p0: CharSequence?,
+                                p1: Int,
+                                p2: Int,
+                                p3: Int
+                            ) {
+                                val filteredData = list.filter {
+                                    it.sourceName.contains(p0.toString())
+                                }
+                                adapter.filterList(filteredData as ArrayList<GetBusinessSourceData>)
+                            }
+
+                            override fun afterTextChanged(p0: Editable?) {
+
+                            }
+                        })
                 }
+            }
             }
 
             override fun onFailure(call: Call<GetBusinessSourceDataClass?>, t: Throwable) {
-
+                loader.dismiss()
             }
         })
 
@@ -165,9 +222,10 @@ class Business_sourcesFragment : Fragment(),BusinessSourceAdapter.OnUpdate {
 
         createBusinessSource.enqueue(object : Callback<ResponseData?> {
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                loader.show()
                 if (response.isSuccessful){
 //                    Toast.makeText(requireContext(), "succeed", Toast.LENGTH_SHORT).show()
-                    Log.d( "transport", "${response.code()} ${response.message()}")
+                    Log.d( "transport succeed", "${response.code()} ${response.message()}")
                     dialog.dismiss()
                     setUpRecycler()
                 }
@@ -178,6 +236,7 @@ class Business_sourcesFragment : Fragment(),BusinessSourceAdapter.OnUpdate {
             }
 
             override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                loader.show()
                 Toast.makeText(requireContext(), "failure", Toast.LENGTH_SHORT).show()
             }
         })
@@ -194,6 +253,7 @@ class Business_sourcesFragment : Fragment(),BusinessSourceAdapter.OnUpdate {
     }
 
     override fun onUpdateBusinessSource() {
+        loader.show()
         setUpRecycler()
     }
 
