@@ -51,4 +51,14 @@ interface SingleConfiguration {
         @Body addCompanyRatePlanDataClass: AddCompanyRatePlanDataClass
     ): Call<ResponseData>
 
+    @Multipart
+    @PATCH("uploadRoomImage")
+    fun postData(
+        @Query("roomTypeId") roomTypeId: String,
+        @Query("userId") userId: String,
+        @Part image: MultipartBody.Part,
+        @Part("image[{index}]rooms") rooms: RequestBody,
+        @Path("index") index: Int
+    ): Call<ResponseData>
+
 }
