@@ -12,6 +12,7 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,6 +70,7 @@ import rconnect.retvens.technologies.utils.leftInAnimation
 import rconnect.retvens.technologies.utils.prepareFilePart
 import rconnect.retvens.technologies.utils.rightInAnimation
 import rconnect.retvens.technologies.utils.shakeAnimation
+import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -100,6 +102,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.
 
     var latitude:Double = 0.0
     var longitude:Double = 0.0
+    lateinit var loader:Dialog
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -116,7 +119,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.
         robotoMedium = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)!!
 
         leftInAnimation(binding.propertyProfileLayout, requireContext())
-
+        loader = showProgressDialog(requireContext())
         getPropertyType()
         placesAPI()
 
@@ -194,7 +197,13 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.
                     shakeAnimation(binding.reservationPhoneLayout, requireContext())
                 }  else if (binding.emailText.text!!.isEmpty()) {
                     shakeAnimation(binding.emailLayout, requireContext())
-                }  else {
+                }
+                else if (!isEmailValid(binding.emailText.text.toString())){
+                    shakeAnimation(binding.emailLayout,requireContext())
+                    binding.emailLayout.error = "Invalid email Id"
+                }
+                else {
+                    loader = showProgressDialog(requireContext())
                     sendData()
                 }
             } else {
@@ -222,11 +231,17 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.
             }
         }
 
-        binding.add.setOnClickListener { openAddAmenitiesDialog() }
+        binding.add.setOnClickListener {
+            loader = showProgressDialog(requireContext())
+            openAddAmenitiesDialog()
+        }
 
         pickImageWork()
     }
-
+    // Function to validate email format
+    fun isEmailValid(email: String): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
     private fun getPropertyType() {
         val getPropType = RetrofitObject.dropDownApis.getPropertyType()
         getPropType.enqueue(object : Callback<GetPropertyTypeData?> {
@@ -234,6 +249,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.
                 call: Call<GetPropertyTypeData?>,
                 response: Response<GetPropertyTypeData?>
             ) {
+                loader.dismiss()
                 if (isAdded) {
                     if (response.isSuccessful) {
                         val data = response.body()!!.data
@@ -249,6 +265,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.
             }
             override fun onFailure(call: Call<GetPropertyTypeData?>, t: Throwable) {
                 Log.d("error", t.localizedMessage)
+                loader.dismiss()
             }
         })
     }
@@ -331,6 +348,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.
                     call: Call<AddPropertyResponseDataClass?>,
                     response: Response<AddPropertyResponseDataClass?>
                 ) {
+                    loader.dismiss()
                     if (response.isSuccessful) {
                         val respons = response.body()!!
 
@@ -373,6 +391,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.
                 }
 
                 override fun onFailure(call: Call<AddPropertyResponseDataClass?>, t: Throwable) {
+                    loader.dismiss()
                     Log.d("Error Onboarding", t.localizedMessage.toString())
                 }
             })
@@ -403,6 +422,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.
                     call: Call<AddPropertyResponseDataClass?>,
                     response: Response<AddPropertyResponseDataClass?>
                 ) {
+                    loader.dismiss()
                     if (response.isSuccessful) {
                         val respons = response.body()!!
 
@@ -445,6 +465,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.
                 }
 
                 override fun onFailure(call: Call<AddPropertyResponseDataClass?>, t: Throwable) {
+                    loader.dismiss()
                     Log.d("Error Onboarding", t.localizedMessage.toString())
                 }
             })
@@ -556,6 +577,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.
                 call: Call<AmenityDataClass?>,
                 response: Response<AmenityDataClass?>
             ) {
+                loader.dismiss()
                 if (response.isSuccessful) {
                     val addAmenitiesAdapter = AddAmenitiesAdapter(requireContext(), response.body()!!.data)
                     amenitiesRecycler.adapter = addAmenitiesAdapter
@@ -565,6 +587,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.
             }
 
             override fun onFailure(call: Call<AmenityDataClass?>, t: Throwable) {
+                loader.dismiss()
                 Log.d("error" , t.localizedMessage)
             }
         })
