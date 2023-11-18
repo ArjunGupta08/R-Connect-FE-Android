@@ -23,13 +23,15 @@ import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.GetReservationTypeDataClass
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class TransportationTypeAdapter(val list:ArrayList<GetTransportationTypeData>, val applicationContext: Context):RecyclerView.Adapter<TransportationTypeAdapter.NotificationHolder>() {
+class TransportationTypeAdapter(var list:ArrayList<GetTransportationTypeData>, val applicationContext: Context):RecyclerView.Adapter<TransportationTypeAdapter.NotificationHolder>() {
 
     var mListener : OnUpdate ?= null
+    lateinit var loader:Dialog
 
     fun setOnUpdateListener(listener : OnUpdate){
         mListener = listener
@@ -101,6 +103,7 @@ class TransportationTypeAdapter(val list:ArrayList<GetTransportationTypeData>, v
             dialog.dismiss()
         }
         save.setOnClickListener {
+            loader = showProgressDialog(applicationContext)
             saveIdentity(context, dialog, shortCode.text.toString(), transportationModeText.text.toString(), identityTypeIdTxt)
         }
 
@@ -115,12 +118,14 @@ class TransportationTypeAdapter(val list:ArrayList<GetTransportationTypeData>, v
         val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).updateTransportationModeTypeApi(UserSessionManager(context).getUserId().toString(), transportationModeIdTxt, UpdateTransportationTypeDataClass(shortCodeTxt, transportationModeTxt))
         create.enqueue(object : Callback<ResponseData?> {
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                loader.dismiss()
                     Log.d( "reservation", "${response.code()} ${response.message()}")
                     mListener?.onUpdateTransportationType()
                     dialog.dismiss()
             }
 
             override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                loader.dismiss()
                 Log.d("error", t.localizedMessage)
             }
         })
@@ -138,5 +143,10 @@ class TransportationTypeAdapter(val list:ArrayList<GetTransportationTypeData>, v
 //                Log.d("error", t.localizedMessage)
 //            }
 //        })
+    }
+
+    fun filterList(inputString : ArrayList<GetTransportationTypeData>) {
+        list = inputString
+        notifyDataSetChanged()
     }
 }

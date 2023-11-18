@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
@@ -25,15 +26,19 @@ import rconnect.retvens.technologies.dashboard.configuration.others.businessSour
 import rconnect.retvens.technologies.dashboard.configuration.others.businessSource.GetBusinessSourceData
 import rconnect.retvens.technologies.dashboard.configuration.others.businessSource.GetBusinessSourceDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.businessSource.UpdateBusinessSourceDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.GetMealPlanData
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.shakeAnimation
+import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class BusinessSourceAdapter(val list:ArrayList<GetBusinessSourceData>, val applicationContext: Context):RecyclerView.Adapter<BusinessSourceAdapter.NotificationHolder>() {
+class BusinessSourceAdapter(var list:ArrayList<GetBusinessSourceData>, val applicationContext: Context):RecyclerView.Adapter<BusinessSourceAdapter.NotificationHolder>() {
 
     var mListener : OnUpdate ?= null
+    lateinit var loader:Dialog
 
     fun setOnUpdateListener(listener: OnUpdate){
         mListener = listener
@@ -79,6 +84,10 @@ class BusinessSourceAdapter(val list:ArrayList<GetBusinessSourceData>, val appli
         holder.edit.setOnClickListener {
             openCreateNewDialog(applicationContext, item.shortCode, item.sourceName, item.sourceId)
         }
+        holder.delete.setOnClickListener {
+            list.remove(item)
+            notifyDataSetChanged()
+        }
     }
 
     private fun openCreateNewDialog(context : Context, shortCodeTxt:String , sourceName:String , sourceId : String) {
@@ -97,6 +106,8 @@ class BusinessSourceAdapter(val list:ArrayList<GetBusinessSourceData>, val appli
 
         val shortCode = dialog.findViewById<TextInputEditText>(R.id.b_short_code_text)
         val sourceText = dialog.findViewById<TextInputEditText>(R.id.businessSource_text)
+        val shortLayout = dialog.findViewById<TextInputLayout>(R.id.shortLayout1)
+        val sourceLayout = dialog.findViewById<TextInputLayout>(R.id.businessSourceLayout1)
         shortCode.setText(shortCodeTxt)
         sourceText.setText(sourceName)
 
@@ -107,7 +118,16 @@ class BusinessSourceAdapter(val list:ArrayList<GetBusinessSourceData>, val appli
             dialog.dismiss()
         }
         save.setOnClickListener {
-            saveIdentity(context, dialog, shortCode.text.toString(), sourceText.text.toString(), sourceId)
+            if (sourceText.text!!.isEmpty()){
+                shakeAnimation(sourceLayout,applicationContext)
+            }
+            else if (shortCode.text!!.isEmpty()){
+            shakeAnimation(shortLayout,applicationContext)
+        }
+            else if (shortCode.text!!.isNotEmpty()&&sourceText.text!!.isNotEmpty()){
+                loader = showProgressDialog(applicationContext)
+                saveIdentity(context, dialog, shortCode.text.toString(), sourceText.text.toString(), sourceId)
+            }
         }
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -124,6 +144,7 @@ class BusinessSourceAdapter(val list:ArrayList<GetBusinessSourceData>, val appli
         UpdateBusinessSourceDataClass(shortCodeTxt, sourceText))
         create.enqueue(object : Callback<ResponseData?> {
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                loader.dismiss()
                 if (response.isSuccessful){
                     Log.d( "reservation", "${response.code()} ${response.message()}")
                     mListener?.onUpdateBusinessSource()
@@ -149,5 +170,9 @@ class BusinessSourceAdapter(val list:ArrayList<GetBusinessSourceData>, val appli
 //                Log.d("error", t.localizedMessage)
 //            }
 //        })
+    }
+    fun filterList(inputString : ArrayList<GetBusinessSourceData>) {
+        list = inputString
+        notifyDataSetChanged()
     }
 }

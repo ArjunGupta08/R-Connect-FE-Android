@@ -4,6 +4,8 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -13,8 +15,10 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
@@ -24,12 +28,16 @@ import rconnect.retvens.technologies.dashboard.configuration.billings.PaymentTyp
 import rconnect.retvens.technologies.databinding.FragmentTransportationTypesBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.generateShortCode
+import rconnect.retvens.technologies.utils.shakeAnimation
+import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class TransportationTypesFragment : Fragment(), TransportationTypeAdapter.OnUpdate {
     private lateinit var binding : FragmentTransportationTypesBinding
+    lateinit var loader:Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,7 +50,7 @@ class TransportationTypesFragment : Fragment(), TransportationTypeAdapter.OnUpda
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        loader = showProgressDialog(requireContext())
         setUpRecycler()
 
         binding.createNewBtn.setOnClickListener {
@@ -60,19 +68,50 @@ class TransportationTypesFragment : Fragment(), TransportationTypeAdapter.OnUpda
                 response: Response<GetTransportationTypeDataClass?>
             ) {
                 if (response.isSuccessful) {
+                    loader.dismiss()
+                    if (isAdded){
                     try {
+                        val data = response.body()!!.data
                         val adapter =
                             TransportationTypeAdapter(response.body()!!.data, requireContext())
                         binding.reservationTypeRecycler.adapter = adapter
                         adapter.setOnUpdateListener(this@TransportationTypesFragment)
                         adapter.notifyDataSetChanged()
+                        binding.search.addTextChangedListener(object : TextWatcher {
+                            override fun beforeTextChanged(
+                                p0: CharSequence?,
+                                p1: Int,
+                                p2: Int,
+                                p3: Int
+                            ) {
+
+                            }
+
+                            override fun onTextChanged(
+                                p0: CharSequence?,
+                                p1: Int,
+                                p2: Int,
+                                p3: Int
+                            ) {
+                                val filteredData = data.filter {
+                                    it.transportationModeName.contains(p0.toString())
+                                }
+                                adapter.filterList(filteredData as ArrayList<GetTransportationTypeData>)
+                            }
+
+                            override fun afterTextChanged(p0: Editable?) {
+
+                            }
+                        })
                     } catch (e:NullPointerException){
                         e.printStackTrace()
                     }
                 } else {
+                    loader.dismiss()
                     openCreateNewDialog()
                     Log.d("respons", "${response.code()} ${response.message()}")
                 }
+            }
             }
 
             override fun onFailure(call: Call<GetTransportationTypeDataClass?>, t: Throwable) {
@@ -98,15 +137,34 @@ class TransportationTypesFragment : Fragment(), TransportationTypeAdapter.OnUpda
 
         val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCode)
         val transportationModeText = dialog.findViewById<TextInputEditText>(R.id.transportationModeText)
+        val transportationModeLayout = dialog.findViewById<TextInputLayout>(R.id.propertyChainLayout_transport)
+        val short_code_layout_tranport = dialog.findViewById<TextInputLayout>(R.id.short_code_layout_tranport)
 
         val cancel = dialog.findViewById<TextView>(R.id.cancel)
         val save = dialog.findViewById<CardView>(R.id.saveBtn)
+
+        transportationModeText.doAfterTextChanged {
+            if (transportationModeText.text!!.length>3){
+                shortCode.setText(generateShortCode(transportationModeText.text.toString()))
+            }
+        }
+
 
         cancel.setOnClickListener {
             dialog.dismiss()
         }
         save.setOnClickListener {
-            saveTMode(dialog, shortCode.text.toString(), transportationModeText.text.toString())
+
+            if (transportationModeText.text!!.isEmpty()){
+                shakeAnimation(transportationModeLayout,requireContext())
+            }
+            else if (shortCode.text!!.isEmpty()){
+                shakeAnimation(short_code_layout_tranport,requireContext())
+            }
+            else {
+                loader.show()
+                saveTMode(dialog, shortCode.text.toString(), transportationModeText.text.toString())
+            }
         }
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -123,11 +181,13 @@ class TransportationTypesFragment : Fragment(), TransportationTypeAdapter.OnUpda
 
         create.enqueue(object : Callback<ResponseData?> {
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                loader.dismiss()
                 Log.d( "transport", "${response.code()} ${response.message()}")
                 dialog.dismiss()
                 setUpRecycler()
             }
             override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                loader.dismiss()
                 Log.d("saveReservationError", "${t.localizedMessage}")
             }
         })
