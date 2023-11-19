@@ -24,7 +24,9 @@ import rconnect.retvens.technologies.dashboard.configuration.others.transportati
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.GetTransportationTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.UpdateTransportationTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.AmenityDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.FetchAmenities
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.GetAmenityIcon
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.PatchAmenityData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.PostAmenityData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.GetMealData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.AddInclusionsDataClass
@@ -250,6 +252,20 @@ interface GeneralsAPI {
     @POST("postAmenity")
     fun postAmenityApi(
         @Body postAmenityData: PostAmenityData
+    ): Call<ResponseData>
+
+    @GET("getAmenities")
+    fun fetchAmenitiesApi(
+        @Query("userId") userId : String,
+        @Query("propertyId") propertyId : String,
+        @Query("targetTimeZone") targetTimeZone : String? = "Asia/Kolkata"
+    ): Call<FetchAmenities>
+
+    @PATCH("patchAmenity")
+    fun patchAmenityApi(
+        @Query("userId") userId : String,
+        @Query("amenityId") amenityId : String,
+        @Body patchAmenityData: PatchAmenityData
     ): Call<ResponseData>
 
 }

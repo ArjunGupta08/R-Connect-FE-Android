@@ -33,6 +33,7 @@ import rconnect.retvens.technologies.dashboard.configuration.others.holiday.Holi
 import rconnect.retvens.technologies.databinding.FragmentInclusionPlansBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.fetchTargetTimeZoneId
 import rconnect.retvens.technologies.utils.generateShortCode
 import rconnect.retvens.technologies.utils.shakeAnimation
 import rconnect.retvens.technologies.utils.showDropdownMenu
@@ -82,7 +83,7 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate, CreateInc
 
         binding.paymentTypeRecycler.layoutManager = LinearLayoutManager(requireContext())
 
-        val identity = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).getInclusionApi(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString())
+        val identity = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).getInclusionApi(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString(), fetchTargetTimeZoneId())
         identity.enqueue(object : Callback<GetInclusionsDataClass?> {
             override fun onResponse(
                 call: Call<GetInclusionsDataClass?>,

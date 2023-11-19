@@ -10,6 +10,13 @@ data class PostAmenityData (
     val amenityIconLink : String
 )
 
+data class PatchAmenityData (
+    val amenityName : String,
+    val amenityType : String,
+    val amenityIcon : String,
+    val amenityIconLink : String
+)
+
 data class AmenityDataClass (
     val `data` : ArrayList<GetAmenityData>
 )
@@ -18,6 +25,24 @@ data class GetAmenityData (
     val amenityName : String,
     val amenityType : String,
     val amenityIconLink : String
+)
+
+        /* Fetch Amenities Type */
+data class FetchAmenities (
+    val `data` : ArrayList<FetchAmenitiesData>
+)
+data class FetchAmenitiesData (
+    val shortCode : String,
+    val amenityId : String,
+    val amenityName : String,
+    val amenityType : String,
+    val amenityIcon : String,
+    val amenityIconId : String,
+    val amenityIconLink : String,
+    val createdOn : String,
+    val createdBy : String,
+    val modifiedBy : String,
+    val modifiedOn : String,
 )
 
         /* Get Amenity Type */

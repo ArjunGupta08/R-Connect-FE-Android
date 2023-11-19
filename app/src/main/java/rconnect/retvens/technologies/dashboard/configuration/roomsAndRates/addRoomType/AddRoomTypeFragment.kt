@@ -36,7 +36,6 @@ import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AddAmenitiesAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AmenitiesIconAdapter
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AmenitiesIconDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.SelectedAmenitiesAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.AmenityDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.GetAmenityData
@@ -66,7 +65,6 @@ class AddRoomTypeFragment : Fragment(),
 
     val amenityIdsList = ArrayList<String>()
 
-    val amenities = ArrayList<AmenitiesIconDataClass>()
     val amenitiesType = ArrayList<String>()
     var amenityIconLink = ""
 

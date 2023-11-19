@@ -27,6 +27,7 @@ import rconnect.retvens.technologies.dashboard.configuration.others.transportati
 import rconnect.retvens.technologies.databinding.FragmentBusinessSourcesBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.fetchTargetTimeZoneId
 import rconnect.retvens.technologies.utils.generateShortCode
 import rconnect.retvens.technologies.utils.shakeAnimation
 import rconnect.retvens.technologies.utils.showProgressDialog
@@ -131,7 +132,7 @@ class Business_sourcesFragment : Fragment(),BusinessSourceAdapter.OnUpdate {
     private fun setUpRecycler() {
         binding.reservationTypeRecycler.layoutManager = LinearLayoutManager(requireContext())
 
-        val reservation = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).getBusinessSourceApi(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString())
+        val reservation = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).getBusinessSourceApi(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString(), fetchTargetTimeZoneId())
 
         reservation.enqueue(object : Callback<GetBusinessSourceDataClass?> {
             override fun onResponse(
