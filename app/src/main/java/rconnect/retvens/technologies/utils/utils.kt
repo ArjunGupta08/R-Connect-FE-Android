@@ -152,3 +152,10 @@ fun generateShortCode(inputString: String): String {
             uC.substring(0, 2)
         }
 }
+
+fun fetchTargetTimeZoneId(): String {
+    // Fetch the system's default time zone ID
+    val defaultTimeZoneId = TimeZone.getDefault().id
+
+    return defaultTimeZoneId
+}

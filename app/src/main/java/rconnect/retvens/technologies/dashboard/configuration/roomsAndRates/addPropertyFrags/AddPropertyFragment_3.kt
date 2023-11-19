@@ -106,30 +106,6 @@ class AddPropertyFragment_3 : Fragment() {
         val amenitiesIconRecycler = dialog.findViewById<RecyclerView>(R.id.amenitiesIconRecycler)
         amenitiesIconRecycler.layoutManager = GridLayoutManager(requireContext(), 6)
 
-        val amenities = ArrayList<AmenitiesIconDataClass>()
-
-        amenities.add(AmenitiesIconDataClass(R.drawable.check))
-        amenities.add(AmenitiesIconDataClass(R.drawable.check))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_keys))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_keys))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_add))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_add))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-        amenities.add(AmenitiesIconDataClass(R.drawable.svg_ac))
-
-//        val amenitiesIconAdapter = AmenitiesIconAdapter(requireContext(), amenities)
-//        amenitiesIconRecycler.adapter = amenitiesIconAdapter
 
         dialog.show()
         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)

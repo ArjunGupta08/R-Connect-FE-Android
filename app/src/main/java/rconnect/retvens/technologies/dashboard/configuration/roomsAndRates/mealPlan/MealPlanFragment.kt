@@ -30,6 +30,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclu
 import rconnect.retvens.technologies.databinding.FragmentMealPlanBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.fetchTargetTimeZoneId
 import rconnect.retvens.technologies.utils.generateShortCode
 import rconnect.retvens.technologies.utils.shakeAnimation
 import rconnect.retvens.technologies.utils.showProgressDialog
@@ -67,7 +68,7 @@ class MealPlanFragment : Fragment(), MealPlanAdapter.OnUpdate {
 
         binding.paymentTypeRecycler.layoutManager = LinearLayoutManager(requireContext())
 
-        val mp = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).getMealPlanApi(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString())
+        val mp = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).getMealPlanApi(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString(), fetchTargetTimeZoneId())
         mp.enqueue(object : Callback<GetMealPlanDataClass?> {
             override fun onResponse(
                 call: Call<GetMealPlanDataClass?>,
