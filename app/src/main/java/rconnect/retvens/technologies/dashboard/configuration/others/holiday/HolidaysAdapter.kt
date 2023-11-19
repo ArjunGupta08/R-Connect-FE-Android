@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
@@ -23,12 +24,20 @@ import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservatio
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.UpdateTransportationTypeDataClass
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.Calendar
+import java.util.Date
 
-class HolidaysAdapter(val list:ArrayList<GetHotelData>, val applicationContext: Context):RecyclerView.Adapter<HolidaysAdapter.NotificationHolder>() {
+class HolidaysAdapter(var list:ArrayList<GetHotelData>, val applicationContext: Context):RecyclerView.Adapter<HolidaysAdapter.NotificationHolder>() {
+    lateinit var loader:Dialog
+    lateinit var endDatePickerDialog: DatePickerDialog
+    lateinit var startDatePickerDialog: DatePickerDialog
+    var startDate:Date? = null
+    var endDate:Date? = null
+    var isDateSelected = false
 
     var mListener : OnItemUpdate ?= null
     fun setOnItemUpdateListener(listener : OnItemUpdate){
@@ -72,6 +81,10 @@ class HolidaysAdapter(val list:ArrayList<GetHotelData>, val applicationContext: 
         holder.text4.text = item.endDate
         holder.text5.text = "${item.createdBy} ${item.createdOn}"
         holder.lastModified.text = "${item.modifiedBy} ${item.modifiedOn}"
+        holder.delete.setOnClickListener {
+            list.remove(item)
+            notifyDataSetChanged()
+        }
 
         holder.edit.setOnClickListener {
             openCreateNewDialog(applicationContext, item.shortCode, item.holidayName, item.startDate, item.endDate, item.holidayId)
@@ -91,8 +104,8 @@ class HolidaysAdapter(val list:ArrayList<GetHotelData>, val applicationContext: 
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
         }
-        val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCode)
-        val holidayNameET = dialog.findViewById<TextInputEditText>(R.id.holidayName)
+        val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCodeHoliday)
+        val holidayNameET = dialog.findViewById<TextInputEditText>(R.id.holidayNameHoliday)
         shortCode.setText(shortCodeTxt)
         holidayNameET.setText(holidayName)
 
@@ -102,15 +115,44 @@ class HolidaysAdapter(val list:ArrayList<GetHotelData>, val applicationContext: 
 
         val from_date = dialog.findViewById<TextView>(R.id.from_date)
         val to_date = dialog.findViewById<TextView>(R.id.to_date)
+        startDatePickerDialog = createDatePickerDialog(applicationContext,from_date) { date->
+            startDate = date
+        }
+
+        endDatePickerDialog = createDatePickerDialog(applicationContext,to_date){date->
+
+            endDatePickerDialog.datePicker.minDate = startDate!!.time
+
+            if (startDate!=null&&date.before(startDate)){
+//                    isRightEndDate = false
+
+                Toast.makeText(applicationContext, "End date cannot be before start date", Toast.LENGTH_SHORT).show()
+//                    showToast("End date cannot be before start date")
+//                    to_date.text = "--/--/----"
+//                    Handler().postDelayed(Runnable {
+//                        isRightEndDate = true
+//                    },1000)
+            }
+            else{
+                endDate = date
+            }
+        }
+
+        endDatePickerDialog = toCreateDatePickerDialog(to_date){date->
+            if (startDate!=null){
+                endDatePickerDialog.datePicker.minDate = startDate!!.time
+                endDate = date
+            }
+        }
         from_date.text = from
         to_date.text = to
 
         from_date.setOnClickListener {
-            showCalendarDialog(applicationContext,from_date)
+            startDatePickerDialog.show()
             dialog.show()
         }
         to_date.setOnClickListener {
-            showCalendarDialog(applicationContext,to_date)
+            endDatePickerDialog.show()
             dialog.show()
         }
 
@@ -118,6 +160,7 @@ class HolidaysAdapter(val list:ArrayList<GetHotelData>, val applicationContext: 
             dialog.dismiss()
         }
         save.setOnClickListener {
+            loader = showProgressDialog(applicationContext)
             saveHoliday(applicationContext, dialog, shortCode.text.toString(), holidayNameET.text.toString(), from_date.text.toString(), to_date.text.toString(), holidayId)
         }
 
@@ -159,6 +202,7 @@ class HolidaysAdapter(val list:ArrayList<GetHotelData>, val applicationContext: 
                 call: Call<ResponseData?>,
                 response: Response<ResponseData?>
             ) {
+                loader.dismiss()
                 Log.d( "holiday", "${response.code()} ${response.message()}")
                 mListener?.onUpdate()
                 dialog.dismiss()
@@ -170,4 +214,61 @@ class HolidaysAdapter(val list:ArrayList<GetHotelData>, val applicationContext: 
         })
     }
 
+    fun filterList(inputString : ArrayList<GetHotelData>) {
+        list = inputString
+        notifyDataSetChanged()
+    }
+    fun createDatePickerDialog(applicationContext: Context, textDate:TextView, onDateSetListener: (Date) -> Unit): DatePickerDialog {
+        val calendar = Calendar.getInstance()
+        return DatePickerDialog(
+            applicationContext,
+            { _, year, month, dayOfMonth ->
+                // Create a Date object from the selected date
+                calendar.set(year, month, dayOfMonth)
+                val selectedDate = calendar.time
+                // Invoke the provided listener
+                onDateSetListener.invoke(selectedDate)
+                // Set the selected date on the EditText
+                val selectedDate2 = "$dayOfMonth/${month+1}/$year"
+                textDate.setText(selectedDate2)
+
+//                if (textDate==from_date){
+//                    startDate = selectedDate
+//                }
+//                else{
+//                    endDate = selectedDate
+//                }
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+    }
+
+    private fun toCreateDatePickerDialog(textDate:TextView,onDateSetListener: (Date) -> Unit): DatePickerDialog {
+        val calendar = Calendar.getInstance()
+        return DatePickerDialog(
+            applicationContext,
+            { _, year, month, dayOfMonth ->
+                // Create a Date object from the selected date
+                calendar.set(year, month, dayOfMonth)
+                val selectedDate = calendar.time
+                // Invoke the provided listener
+                onDateSetListener.invoke(selectedDate)
+                // Set the selected date on the EditText
+                val selectedDate2 = "$dayOfMonth/${month+1}/$year"
+                textDate.text = selectedDate2
+
+//                if (textDate==from_date){
+//                    startDate = selectedDate
+//                }
+//                else{
+//                    endDate = selectedDate
+//                }
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+    }
 }
