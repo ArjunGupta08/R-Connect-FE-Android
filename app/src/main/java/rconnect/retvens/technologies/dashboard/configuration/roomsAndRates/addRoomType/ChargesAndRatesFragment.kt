@@ -35,10 +35,13 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealP
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.GetMealPlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.MealPlanAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.MealPlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.FragmentChargesAndRatesBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.Const
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.shakeAnimation
+import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -58,6 +61,8 @@ class ChargesAndRatesFragment : Fragment(),
     var baseRate = 2500.00
     var adultRate = 1500.00
     var childRate = 600.00
+
+    private lateinit var progressDialog : Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -79,7 +84,12 @@ class ChargesAndRatesFragment : Fragment(),
 
         val continueBtn = requireActivity().findViewById<CardView>(R.id.continueBtnRoom)
         continueBtn?.setOnClickListener {
-            updateRoomAndSendRatePlaneData()
+            if (ratePlanDetailsList.isEmpty()) {
+                shakeAnimation(binding.addMealPlanCard, requireContext())
+            } else {
+                progressDialog = showProgressDialog(requireContext())
+                updateRoomAndSendRatePlaneData()
+            }
         }
 
         binding.addMealPlanCard.setOnClickListener {
@@ -104,16 +114,19 @@ class ChargesAndRatesFragment : Fragment(),
         update.enqueue(object : Callback<ResponseData?> {
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
                 if (isAdded){
-                    Log.e("error", response.message().toString())
+                    Log.e("errorUpdateRoom", response.message().toString())
                     if (response.isSuccessful) {
                         Toast.makeText(requireContext(), "Clicked", Toast.LENGTH_SHORT).show()
                         sendRatePlanData()
+                    } else {
+                        progressDialog.dismiss()
                     }
                 }
             }
 
             override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
-                Log.e("error", t.localizedMessage)
+                progressDialog.dismiss()
+                Log.e("errorUpdateRoom", t.localizedMessage)
             }
         })
     }
@@ -144,16 +157,24 @@ class ChargesAndRatesFragment : Fragment(),
                     call: Call<ResponseData?>,
                     response: Response<ResponseData?>
                 ) {
+                    progressDialog.dismiss()
                     if (response.isSuccessful) {
 
+//                        Const.isAddingNewRoom = false
+
+                        val childFragment: Fragment = RoomTypeFragment()
+                        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                        transaction.replace(R.id.dashboardFragmentContainer,childFragment)
+                        transaction.commit()
+
                     } else {
-                        Log.d("error", response.message())
+                        Log.d("errorSend", response.message())
                     }
-                    Toast.makeText(requireContext(), response.code().toString(), Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
-                    Log.d("error", t.localizedMessage)
+                    progressDialog.dismiss()
+                    Log.d("errorSend", t.localizedMessage)
                 }
             })
         }

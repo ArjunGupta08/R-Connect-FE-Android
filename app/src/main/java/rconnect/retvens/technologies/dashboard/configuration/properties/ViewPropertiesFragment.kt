@@ -1,6 +1,8 @@
 package rconnect.retvens.technologies.dashboard.configuration.properties
 
+import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +20,7 @@ import rconnect.retvens.technologies.databinding.FragmentViewPropertiesBinding
 import rconnect.retvens.technologies.utils.Const
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.bottomSlideInAnimation
+import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,6 +29,10 @@ class ViewPropertiesFragment : Fragment() {
     lateinit var binding:FragmentViewPropertiesBinding
 
     private var viewT = 1
+
+    private lateinit var progressDialog : Dialog
+    private var data = ArrayList<PropData>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -143,17 +150,30 @@ class ViewPropertiesFragment : Fragment() {
     }
 
     private fun fetchProp(){
+        progressDialog = showProgressDialog(requireContext())
         val i = UserSessionManager(requireContext()).getUserId().toString()
         val fetchProp = OAuthClient<ChainConfiguration>(requireContext()).create(ChainConfiguration::class.java).fetchProperty(i)
         fetchProp.enqueue(object : Callback<FetchPropertyData?> {
             override fun onResponse(call: Call<FetchPropertyData?>, response: Response<FetchPropertyData?>) {
 
-                println("Response : ${response.code()} ${response.message()} ${response.body()?.message} ${response.body()?.data}" )
+                progressDialog.dismiss()
 
+                if (response.isSuccessful) {
+                    println("Response : ${response.code()} ${response.message()} ${response.body()?.message} ${response.body()?.data}")
+                    if (isAdded) {
+                        try {
+                            data = response.body()!!.data
+//                            val
+                        } catch (e : Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
             }
 
             override fun onFailure(call: Call<FetchPropertyData?>, t: Throwable) {
-
+                Log.d("error", t.localizedMessage)
+                progressDialog.dismiss()
             }
         })
     }
