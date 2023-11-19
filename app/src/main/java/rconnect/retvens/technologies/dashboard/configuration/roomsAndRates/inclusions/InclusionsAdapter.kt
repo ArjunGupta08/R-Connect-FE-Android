@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.SystemClock
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -39,10 +40,12 @@ class InclusionsAdapter(var list:ArrayList<GetInclusionsData>, val applicationCo
     }
 
     interface OnUpdate {
-        fun onUpdateIdentityType()
+        fun onUpdateIdentityType(currentData : GetInclusionsData)
     }
 
     lateinit var progressDialog: Dialog
+    private var mLastClickTime : Long = 0
+
     class NotificationHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
 
         val shortCode = itemView.findViewById<TextView>(R.id.shortCode)
@@ -50,7 +53,8 @@ class InclusionsAdapter(var list:ArrayList<GetInclusionsData>, val applicationCo
         val text3 = itemView.findViewById<TextView>(R.id.text3)
         val text4 = itemView.findViewById<TextView>(R.id.text4)
         val text5 = itemView.findViewById<TextView>(R.id.text5)
-        val lastModified = itemView.findViewById<TextView>(R.id.text6)
+        val createdBy = itemView.findViewById<TextView>(R.id.text6)
+        val lastModified = itemView.findViewById<TextView>(R.id.text7)
 
         val edit = itemView.findViewById<ImageView>(R.id.edit)
         val delete = itemView.findViewById<ImageView>(R.id.delete)
@@ -76,119 +80,22 @@ class InclusionsAdapter(var list:ArrayList<GetInclusionsData>, val applicationCo
         holder.text3.text = item.inclusionType
         holder.text4.text = item.postingRule
         holder.text5.text = item.chargeRule
-        holder.lastModified.text = "${item.createdBy} ${item.createdOn}"
-//        holder.lastModified.text = "${item.modifiedBy} ${item.modifiedOn}"
+        holder.createdBy.text = "${item.createdBy} ${item.createdOn}"
+        holder.lastModified.text = "${item.modifiedBy} ${item.modifiedOn}"
 
         holder.delete.setOnClickListener {
             list.remove(item)
             notifyDataSetChanged()
         }
         holder.edit.setOnClickListener {
-            openCreateNewDialog(item.shortCode, item.inclusionName, item.inclusionType, item.charge, item.chargeRule, item.postingRule, item.inclusionId)
-        }
-    }
-
-    private fun openCreateNewDialog(shortCodeTxt: String, inclusionNameTxt: String, inclusionTypeTxt: String, chargeTxt: String, chargeRuleTxt: String, postingRuleTxt: String, inclusionId: String) {
-        val dialog = Dialog(applicationContext, ) // Use 'this' as the context, assuming this code is within an Activity
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(true)
-        dialog.setCanceledOnTouchOutside(true)
-        dialog.setContentView(R.layout.dialog_create_inclusion)
-        dialog.window?.apply {
-            setBackgroundDrawableResource(android.R.color.transparent) // Makes the background transparent
-            setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-        }
-
-        val inclusionNameLayout = dialog.findViewById<TextInputLayout>(R.id.inclusionNameLayout)
-        val shortCodeLayout = dialog.findViewById<TextInputLayout>(R.id.shortCodeLayout)
-        val chargeLayout = dialog.findViewById<TextInputLayout>(R.id.chargeLayout)
-        val postingRuleLayout = dialog.findViewById<TextInputLayout>(R.id.postingRuleLayout)
-        val chargeRuleLayout = dialog.findViewById<TextInputLayout>(R.id.chargeRuleLayout)
-
-
-        val inclusionName = dialog.findViewById<TextInputEditText>(R.id.inclusionName)
-        val inclusionType = dialog.findViewById<TextInputEditText>(R.id.inclusionType)
-        val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCode)
-        val charge = dialog.findViewById<TextInputEditText>(R.id.charge)
-        val chargeRule = dialog.findViewById<TextInputEditText>(R.id.chargeRule)
-        val postingRule = dialog.findViewById<TextInputEditText>(R.id.postingRule)
-
-        inclusionName.setText(inclusionNameTxt)
-        inclusionType.setText(inclusionTypeTxt)
-        shortCode.setText(shortCodeTxt)
-        charge.setText(chargeTxt)
-        chargeRule.setText(chargeRuleTxt)
-        postingRule.setText(postingRuleTxt)
-
-        inclusionName.doAfterTextChanged {
-            if (inclusionName.text!!.length > 3) {
-                shortCode.setText(generateShortCode(inclusionName.text.toString()))
+            // mis-clicking prevention, using threshold of 1000 ms
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                return@setOnClickListener;
             }
+            mLastClickTime = SystemClock.elapsedRealtime()
+
+            mListener?.onUpdateIdentityType(item)
         }
-
-
-        val cancel = dialog.findViewById<TextView>(R.id.cancel)
-        val save = dialog.findViewById<CardView>(R.id.saveBtn)
-
-        cancel.setOnClickListener {
-            dialog.dismiss()
-        }
-        save.setOnClickListener {
-
-            if (inclusionName.text!!.isEmpty()) {
-                shakeAnimation(inclusionNameLayout, applicationContext)
-            } else if (shortCode.text!!.isEmpty()) {
-                shakeAnimation(shortCodeLayout, applicationContext)
-            } else if (chargeRule.text!!.isEmpty()) {
-                shakeAnimation(chargeRuleLayout, applicationContext)
-            } else if (postingRule.text!!.isEmpty()) {
-                shakeAnimation(postingRuleLayout, applicationContext)
-            } else if (charge.text!!.isEmpty()) {
-                shakeAnimation(chargeLayout, applicationContext)
-            } else {
-                progressDialog = showProgressDialog(applicationContext)
-                saveInclusion(
-                    applicationContext,
-                    dialog,
-                    shortCode.text.toString(),
-                    charge.text.toString(),
-                    inclusionName.text.toString(),
-                    inclusionType.text.toString(),
-                    chargeRule.text.toString(),
-                    postingRule.text.toString(),
-                    inclusionId
-                )
-            }
-        }
-
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-        dialog.window?.setGravity(Gravity.END)
-
-        dialog.show()
-
-    }
-
-    private fun saveInclusion(context: Context, dialog: Dialog, shortCodeTxt : String, charge:String, inclusionName:String, inclusionType:String, chargeRule:String, postingRule:String, inclusionId:String) {
-        val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).updateInclusionsApi(
-            UserSessionManager(context).getUserId().toString(), inclusionId, UpdateInclusionDataClass(shortCodeTxt, charge, inclusionName, inclusionType, chargeRule, postingRule))
-
-        create.enqueue(object : Callback<ResponseData?> {
-            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
-                progressDialog.dismiss()
-                Log.d( "inclusion", "${response.code()} ${response.message()}")
-                mListener?.onUpdateIdentityType()
-                dialog.dismiss()
-            }
-
-            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
-                progressDialog.dismiss()
-                Log.d("error", t.localizedMessage)
-            }
-        })
     }
 
     fun filterList(inputString : ArrayList<GetInclusionsData>) {

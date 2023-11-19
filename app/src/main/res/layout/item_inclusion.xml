@@ -23,13 +23,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.26"/>
+            app:layout_constraintGuide_percent="0.25"/>
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.45"/>
+            app:layout_constraintGuide_percent="0.44"/>
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide4"
             android:layout_width="wrap_content"
@@ -79,7 +79,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             style="@style/listText"
-            android:text="End Date"
+            android:text="Posting Rule"
             android:layout_marginStart="5dp"
             app:layout_constraintStart_toEndOf="@id/text3"
             app:layout_constraintEnd_toStartOf="@id/guide3"
@@ -88,10 +88,10 @@
 
         <TextView
             android:id="@+id/text5"
-            android:layout_width="0dp"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
             style="@style/listText"
-            android:text="By Arjun on 11:12, 12/12/2023"
+            android:text="Charge Rule"
             android:layout_marginStart="5dp"
             app:layout_constraintEnd_toStartOf="@id/text6"
             app:layout_constraintStart_toStartOf="@id/guide3"
@@ -102,13 +102,26 @@
             android:id="@+id/text6"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            style="@style/listText"
-            android:text="By Arjun on 11:12, 12/12/2023"
+            style="@style/listTextHeading"
             android:layout_marginStart="5dp"
+            android:text="By Arjun on 11:12, 12/12/2023"
             app:layout_constraintStart_toEndOf="@id/text5"
-            app:layout_constraintEnd_toStartOf="@id/actions"
+            app:layout_constraintEnd_toStartOf="@id/text7"
             app:layout_constraintBottom_toBottomOf="@id/shortCode"
             app:layout_constraintTop_toTopOf="@id/shortCode"/>
+
+        <TextView
+            android:id="@+id/text7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/listTextHeading"
+            android:text="By Arjun on 11:12, 12/12/2023"
+            android:layout_marginStart="5dp"
+            app:layout_constraintStart_toEndOf="@id/text6"
+            app:layout_constraintEnd_toStartOf="@id/guide4"
+            app:layout_constraintBottom_toBottomOf="@id/shortCode"
+            app:layout_constraintTop_toTopOf="@id/shortCode"/>
+
 
         <LinearLayout
             android:id="@+id/actions"

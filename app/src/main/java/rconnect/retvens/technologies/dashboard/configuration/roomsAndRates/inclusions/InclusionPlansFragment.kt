@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.SystemClock
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -40,14 +41,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
+class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate, CreateInclusionDialogSheet.OnInclusionSave {
     private lateinit var binding : FragmentInclusionPlansBinding
-    var postingList = ArrayList<String>()
-
-    private  var postingRuleArray = ArrayList<String>()
-    private  var chargeRuleArray = ArrayList<String>()
 
     private lateinit var progressDialog: Dialog
+
+    private var mLastClickTime : Long = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,145 +62,18 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
 
         setUpRecycler()
 
-        getPostingRule()
-        getChargeRule()
-
         binding.createNewBtn.setOnClickListener {
-            openCreateNewDialog()
-        }
-
-    }
-
-    private fun getPostingRule() {
-        val get = RetrofitObject.dropDownApis.getPostingRulesModels()
-        get.enqueue(object : Callback<GetPostingRuleArray?> {
-            override fun onResponse(
-                call: Call<GetPostingRuleArray?>,
-                response: Response<GetPostingRuleArray?>
-            ) {
-                Log.d("error", response.code().toString())
-                if (response.isSuccessful) {
-                    try {
-                        val data = response.body()!!.data
-                        data.forEach {
-                            postingRuleArray.add(it.postingRule)
-                        }
-                    } catch (e : Exception) {
-                        e.printStackTrace()
-                    }
-                }
+            // mis-clicking prevention, using threshold of 1000 ms
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                return@setOnClickListener;
             }
+            mLastClickTime = SystemClock.elapsedRealtime()
 
-            override fun onFailure(call: Call<GetPostingRuleArray?>, t: Throwable) {
-                Log.d("error", t.localizedMessage)
-            }
-        })
-    }
-
-    private fun getChargeRule() {
-        val get = RetrofitObject.dropDownApis.getChargeRulesModels()
-        get.enqueue(object : Callback<GetChargeRuleArray?> {
-            override fun onResponse(
-                call: Call<GetChargeRuleArray?>,
-                response: Response<GetChargeRuleArray?>
-            ) {
-                if (response.isSuccessful) {
-                    try {
-                        val data = response.body()!!.data
-                        data.forEach {
-                            chargeRuleArray.add(it.chargeRule)
-                        }
-                    } catch (e : Exception) {
-                        e.printStackTrace()
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<GetChargeRuleArray?>, t: Throwable) {
-                Log.d("error", t.localizedMessage)
-            }
-        })
-    }
-
-    private fun openCreateNewDialog() {
-        val dialog = Dialog(requireContext()) // Use 'this' as the context, assuming this code is within an Activity
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(true)
-        dialog.setCanceledOnTouchOutside(true)
-        dialog.setContentView(R.layout.dialog_create_inclusion)
-        dialog.window?.apply {
-            setBackgroundDrawableResource(android.R.color.transparent) // Makes the background transparent
-            setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
+            val openDialog = CreateInclusionDialogSheet()
+            val fragManager = childFragmentManager
+            fragManager.let{openDialog.show(it, CreateInclusionDialogSheet.TAG)}
+            openDialog.setOnInclusionDialogListener(this)
         }
-
-        val inclusionNameLayout = dialog.findViewById<TextInputLayout>(R.id.inclusionNameLayout)
-        val shortCodeLayout = dialog.findViewById<TextInputLayout>(R.id.shortCodeLayout)
-        val chargeLayout = dialog.findViewById<TextInputLayout>(R.id.chargeLayout)
-
-        val inclusionName = dialog.findViewById<TextInputEditText>(R.id.inclusionName)
-        val inclusionType = dialog.findViewById<TextInputEditText>(R.id.inclusionType)
-        val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCode)
-        val charge = dialog.findViewById<TextInputEditText>(R.id.charge)
-        val chargeRule = dialog.findViewById<TextInputEditText>(R.id.chargeRule)
-        val postingRule = dialog.findViewById<TextInputEditText>(R.id.postingRule)
-
-        inclusionName.doAfterTextChanged {
-            if (inclusionName.text!!.length > 3) {
-                shortCode.setText(generateShortCode(inclusionName.text.toString()))
-            }
-        }
-
-        val cancel = dialog.findViewById<TextView>(R.id.cancel)
-        val save = dialog.findViewById<CardView>(R.id.saveBtn)
-
-        val postingRuleLayout = dialog.findViewById<TextInputLayout>(R.id.postingRuleLayout)
-        val chargeRuleLayout = dialog.findViewById<TextInputLayout>(R.id.chargeRuleLayout)
-
-        postingRule.setOnClickListener {
-            showDropdownMenu(requireContext(), postingRule, it, postingRuleArray)
-        }
-
-        chargeRule.setOnClickListener {
-            showDropdownMenu(requireContext(), chargeRule, it, chargeRuleArray)
-        }
-
-        cancel.setOnClickListener {
-            dialog.dismiss()
-        }
-        save.setOnClickListener {
-            if (inclusionName.text!!.isEmpty()) {
-                shakeAnimation(inclusionNameLayout, requireContext())
-            } else if (shortCode.text!!.isEmpty()) {
-                shakeAnimation(shortCodeLayout, requireContext())
-            } else if (chargeRule.text!!.isEmpty()) {
-                shakeAnimation(chargeRuleLayout, requireContext())
-            } else if (postingRule.text!!.isEmpty()) {
-                shakeAnimation(postingRuleLayout, requireContext())
-            } else if (charge.text!!.isEmpty()) {
-                shakeAnimation(chargeLayout, requireContext())
-            } else {
-                progressDialog.show()
-                saveInclusion(
-                    requireContext(),
-                    dialog,
-                    shortCode.text.toString(),
-                    charge.text.toString(),
-                    inclusionName.text.toString(),
-                    inclusionType.text.toString(),
-                    chargeRule.text.toString(),
-                    postingRule.text.toString()
-                )
-            }
-        }
-
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-        dialog.window?.setGravity(Gravity.END)
-
-        dialog.show()
 
     }
 
@@ -271,25 +143,14 @@ class InclusionPlansFragment : Fragment(), InclusionsAdapter.OnUpdate {
 
     }
 
-    private fun saveInclusion(context: Context, dialog: Dialog, shortCodeTxt : String, charge:String, inclusionName:String, inclusionType:String, chargeRule:String, postingRule:String) {
-        val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).addInclusionsApi(
-            AddInclusionsDataClass(UserSessionManager(context).getUserId().toString(), UserSessionManager(context).getPropertyId().toString(), shortCodeTxt, charge, inclusionName, inclusionType, chargeRule, postingRule))
-
-        create.enqueue(object : Callback<ResponseData?> {
-            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
-                Log.d( "inclusion", "${response.code()} ${response.message()}")
-                progressDialog.dismiss()
-                dialog.dismiss()
-                setUpRecycler()
-            }
-
-            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
-                Log.d("error", t.localizedMessage)
-            }
-        })
+    override fun onUpdateIdentityType(currentData : GetInclusionsData) {
+        val openDialog = CreateInclusionDialogSheet(currentData)
+        val fragManager = childFragmentManager
+        fragManager.let{openDialog.show(it, CreateInclusionDialogSheet.TAG)}
+        openDialog.setOnInclusionDialogListener(this)
     }
 
-    override fun onUpdateIdentityType() {
+    override fun onInclusionSave() {
         setUpRecycler()
     }
 
