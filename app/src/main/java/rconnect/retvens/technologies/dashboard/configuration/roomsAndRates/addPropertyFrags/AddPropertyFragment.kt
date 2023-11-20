@@ -8,6 +8,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.SystemClock
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
@@ -56,6 +57,7 @@ import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.Api.configurationApi.ChainConfiguration
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.properties.ViewPropertiesFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddAmenitiesDialog
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddImagesFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectRoomImagesAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectImagesDataClass
@@ -77,7 +79,7 @@ import retrofit2.Response
 import java.lang.IndexOutOfBoundsException
 import java.lang.NullPointerException
 
-class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.OnItemClick {
+class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesDialog.OnAmenityAdd, SelectedAmenitiesAdapter.OnSelectedAmenityRemove {
 
     private lateinit var binding : FragmentAddPropertyBinding
     private lateinit var roboto : Typeface
@@ -92,6 +94,9 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.
     private var isImageSelected = false
     private var isImageEdited = false
 
+    private lateinit var selectedAmenitiesAdapter : SelectedAmenitiesAdapter
+    private var selectedAmenitiesListFinal = ArrayList<GetAmenityData>()
+
     val amenityIdsList = ArrayList<String>()
 
     val itemsPropertyType = ArrayList<String>()
@@ -103,6 +108,9 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.
     var latitude:Double = 0.0
     var longitude:Double = 0.0
     lateinit var loader:Dialog
+
+    private var mLastClickTime : Long = 0
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -125,6 +133,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.
 
         getPropertyTypeRating()
 
+        onTabsClick()
 
         binding.continueBtn.setOnClickListener {
 
@@ -191,9 +200,9 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.
                     shakeAnimation(binding.cityLayout, requireContext())
                 } else if (binding.pincodeText.text!!.isEmpty()) {
                     shakeAnimation(binding.pincodeLayout, requireContext())
-                } else if (binding.phoneText.text!!.isEmpty()) {
+                } else if (binding.phoneText.text!!.length < 10) {
                     shakeAnimation(binding.phoneLayout, requireContext())
-                } else if (binding.reservationPhoneText.text!!.isEmpty()) {
+                } else if (binding.reservationPhoneText.text!!.length < 6) {
                     shakeAnimation(binding.reservationPhoneLayout, requireContext())
                 }  else if (binding.emailText.text!!.isEmpty()) {
                     shakeAnimation(binding.emailLayout, requireContext())
@@ -232,8 +241,16 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.
         }
 
         binding.add.setOnClickListener {
-            loader = showProgressDialog(requireContext())
-            openAddAmenitiesDialog()
+            // mis-clicking prevention, using threshold of 1000 ms
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                return@setOnClickListener;
+            }
+            mLastClickTime = SystemClock.elapsedRealtime()
+
+            val openDialog = AddAmenitiesDialog(selectedAmenitiesListFinal)
+            val fragManager = childFragmentManager
+            fragManager.let{openDialog.show(it, AddAmenitiesDialog.TAG)}
+            openDialog.setOnAddAmenityDialogListener(this)
         }
 
         pickImageWork()
@@ -547,58 +564,6 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.
         }
     }
 
-    private fun openAddAmenitiesDialog() {
-        val dialog = Dialog(requireContext())
-        dialog.setCancelable(true)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.dialog_add_amenities)
-
-        val createNewAmenityBtn = dialog.findViewById<TextView>(R.id.createNewAmenityBtn)
-        createNewAmenityBtn.visibility = View.GONE
-        createNewAmenityBtn.setOnClickListener {
-//            openCreateNewAmenityDialog()
-        }
-        val cancel = dialog.findViewById<TextView>(R.id.cancel)
-        cancel.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        val saveBtn = dialog.findViewById<CardView>(R.id.saveBtn)
-        saveBtn.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        val amenitiesRecycler = dialog.findViewById<RecyclerView>(R.id.amenitiesRecycler)
-        amenitiesRecycler.layoutManager = GridLayoutManager(requireContext(), 8)
-
-        val getAmenity = RetrofitObject.getGeneralsAPI.getAmenityApi()
-        getAmenity.enqueue(object : Callback<AmenityDataClass?> {
-            override fun onResponse(
-                call: Call<AmenityDataClass?>,
-                response: Response<AmenityDataClass?>
-            ) {
-                loader.dismiss()
-                if (response.isSuccessful) {
-                    val addAmenitiesAdapter = AddAmenitiesAdapter(requireContext(), response.body()!!.data)
-                    amenitiesRecycler.adapter = addAmenitiesAdapter
-                    addAmenitiesAdapter.notifyDataSetChanged()
-                    addAmenitiesAdapter.setOnClickListener(this@AddPropertyFragment)
-                }
-            }
-
-            override fun onFailure(call: Call<AmenityDataClass?>, t: Throwable) {
-                loader.dismiss()
-                Log.d("error" , t.localizedMessage)
-            }
-        })
-
-        dialog.show()
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-//        dialog.window?.setGravity(Gravity.BOTTOM)
-    }
-
     private fun placesAPI() {
         // Initialize Places API
         Places.initialize(requireContext(), "AIzaSyBRAnfSXzM-fQXpa751GkbMQDEuavUSDP0")
@@ -733,22 +698,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.
         }
     }
 
-    override fun onItemListUpdate(selectedAmenitiesList: ArrayList<GetAmenityData>) {
-        binding.selectedAmenitiesRecycler.layoutManager = GridLayoutManager(requireContext(), 4)
-        val selectedAmenitiesAdapter = SelectedAmenitiesAdapter(requireContext(), selectedAmenitiesList)
-        binding.selectedAmenitiesRecycler.adapter = selectedAmenitiesAdapter
-        selectedAmenitiesAdapter.notifyDataSetChanged()
-
-        selectedAmenitiesList.forEach {
-            if (!amenityIdsList.contains(it.amenityId)) {
-                amenityIdsList.add(it.amenityId)
-            } else {
-                amenityIdsList.remove(it.amenityId)
-            }
-        }
-    }
-
-    fun onTabsClick() {
+    private fun onTabsClick() {
 
         binding.propertyProfile.setOnClickListener {
             page = 1
@@ -774,28 +724,64 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.
         }
 
         binding.addressAndContacts.setOnClickListener {
-            page = 2
 
-            binding.addressAndContacts.textSize = 20.0f
-            binding.addressAndContacts.typeface = robotoMedium
-            binding.addressAndContacts.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+            if (binding.propertyNameET.text!!.isEmpty()) {
+                shakeAnimation(binding.propertyNameLayout, requireContext())
+            } else if (binding.propertyTypeET.text!!.isEmpty()) {
+                shakeAnimation(binding.propertyTypeLayout, requireContext())
+            } else if (binding.propertyRatingET.text!!.isEmpty()) {
+                shakeAnimation(binding.propertyRatingLayout, requireContext())
+            } else if (amenityIdsList.isEmpty()) {
+                shakeAnimation(binding.add, requireContext())
+            } else {
+                page = 2
 
-            binding.propertyProfile.textSize = 16.0f
-            binding.propertyProfile.typeface = roboto
+                binding.addressAndContacts.textSize = 18.0f
+                binding.addressAndContacts.typeface = robotoMedium
+                binding.addressAndContacts.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.secondary
+                    )
+                )
 
-            binding.propertyImages.textSize = 16.0f
-            binding.propertyImages.typeface = roboto
+                binding.propertyProfile.textSize = 16.0f
+                binding.propertyProfile.typeface = roboto
 
-            binding.propertyProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-            binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
-            binding.propertyImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+                binding.propertyImages.textSize = 16.0f
+                binding.propertyImages.typeface = roboto
 
-            binding.propertyProfileLayout.visibility = View.GONE
-            binding.propertyImagesFrameLayout.visibility = View.GONE
-            binding.addressLayout.visibility = View.VISIBLE
-            rightInAnimation(binding.addressLayout, requireContext())
+                binding.propertyProfile.setBackgroundDrawable(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.corner_top_grey_background
+                    )
+                )
+                binding.addressAndContacts.setBackgroundDrawable(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.corner_top_white_background
+                    )
+                )
+                binding.propertyImages.setBackgroundDrawable(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.corner_top_grey_background
+                    )
+                )
+
+                binding.propertyProfileLayout.visibility = View.GONE
+                binding.propertyImagesFrameLayout.visibility = View.GONE
+                binding.addressLayout.visibility = View.VISIBLE
+                rightInAnimation(binding.addressLayout, requireContext())
+            }
         }
 
+        binding.propertyImages.setOnClickListener {
+            shakeAnimation(binding.continueBtn, requireContext())
+        }
+
+    /*
         binding.propertyImages.setOnClickListener {
             page = 3
 
@@ -822,7 +808,7 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.
             binding.propertyImagesFrameLayout.visibility = View.VISIBLE
             binding.addressLayout.visibility = View.GONE
             rightInAnimation(binding.addressLayout, requireContext())
-        }
+        }*/
     }
 
     private fun showDropdownMenu(adapter: ArrayAdapter<String>, anchorView: View, et : TextInputEditText) {
@@ -835,6 +821,33 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesAdapter.
             listPopupWindow.dismiss()
         }
         listPopupWindow.show()
+    }
+
+
+    override fun onAmenityAdd(selectedAmenitiesList: ArrayList<GetAmenityData>) {
+        binding.selectedAmenitiesRecycler.layoutManager = GridLayoutManager(requireContext(), 4)
+        selectedAmenitiesList.forEach {
+            if (!selectedAmenitiesListFinal.contains(it)) {
+                selectedAmenitiesListFinal.add(it)
+            }
+        }
+        selectedAmenitiesAdapter = SelectedAmenitiesAdapter(requireContext(), selectedAmenitiesListFinal)
+        binding.selectedAmenitiesRecycler.adapter = selectedAmenitiesAdapter
+        selectedAmenitiesAdapter.setOnAmenityRemoveListener(this)
+        selectedAmenitiesAdapter.notifyDataSetChanged()
+
+        selectedAmenitiesListFinal.forEach {
+            if (!amenityIdsList.contains(it.amenityId)) {
+                amenityIdsList.add(it.amenityId)
+            } else {
+                amenityIdsList.remove(it.amenityId)
+            }
+        }
+    }
+
+    override fun onSelectedAmenityRemove(currentItem : GetAmenityData) {
+        selectedAmenitiesListFinal.remove(currentItem)
+        selectedAmenitiesAdapter.notifyDataSetChanged()
     }
 
 }
