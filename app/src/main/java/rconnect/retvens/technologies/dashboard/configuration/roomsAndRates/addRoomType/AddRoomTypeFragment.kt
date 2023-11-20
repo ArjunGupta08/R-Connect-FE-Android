@@ -6,6 +6,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.SystemClock
 import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -29,6 +30,7 @@ import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AddAmenitiesAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.SelectedAmenitiesAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.AmenityDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.CreateAmenityDialog
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.GetAmenityData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.FragmentAddRoomTypeBinding
@@ -43,9 +45,14 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class AddRoomTypeFragment : Fragment(),
-    AddBedTypeAdapter.BedTypeIdInterface, AddAmenitiesAdapter.OnItemClick{
+    SelectedAmenitiesAdapter.OnSelectedAmenityRemove,
+    AddBedTypeAdapter.BedTypeIdInterface,
+    AddAmenitiesDialog.OnAmenityAdd {
 
     private lateinit var binding:FragmentAddRoomTypeBinding
+
+    private lateinit var selectedAmenitiesAdapter : SelectedAmenitiesAdapter
+    private var selectedAmenitiesListFinal = ArrayList<GetAmenityData>()
 
     private var bedTypeIds = ArrayList<String>()
     val bedTypeList = ArrayList<GetBedTypeDataClass>()
@@ -71,6 +78,8 @@ class AddRoomTypeFragment : Fragment(),
     private var maxOccupancyCount = 1
 
     private lateinit var progressDialog : Dialog
+    private var mLastClickTime : Long = 0
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -172,7 +181,18 @@ class AddRoomTypeFragment : Fragment(),
 //        }
         binding.bedTypeRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        binding.add.setOnClickListener { openAddAmenitiesDialog() }
+        binding.add.setOnClickListener {
+            // mis-clicking prevention, using threshold of 1000 ms
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                return@setOnClickListener;
+            }
+            mLastClickTime = SystemClock.elapsedRealtime()
+
+            val openDialog = AddAmenitiesDialog(selectedAmenitiesListFinal)
+            val fragManager = childFragmentManager
+            fragManager.let{openDialog.show(it, AddAmenitiesDialog.TAG)}
+            openDialog.setOnAddAmenityDialogListener(this)
+        }
 
         getBedType()
     }
@@ -291,7 +311,6 @@ class AddRoomTypeFragment : Fragment(),
         })
     }
 
-
     private fun handleCounts(){
 
         /* --------------- Handle Room Type Inventory -------------------*/
@@ -366,56 +385,6 @@ class AddRoomTypeFragment : Fragment(),
             }
         }
 
-    }
-
-    private fun openAddAmenitiesDialog() {
-        val dialog = Dialog(requireContext())
-        dialog.setCancelable(true)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.dialog_add_amenities)
-
-        val createNewAmenityBtn = dialog.findViewById<TextView>(R.id.createNewAmenityBtn)
-        createNewAmenityBtn.setOnClickListener {
-//            openCreateNewAmenityDialog()
-        }
-        val cancel = dialog.findViewById<TextView>(R.id.cancel)
-        cancel.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        val amenitiesRecycler = dialog.findViewById<RecyclerView>(R.id.amenitiesRecycler)
-        amenitiesRecycler.layoutManager = GridLayoutManager(requireContext(), 8)
-
-        val getAmenity = RetrofitObject.getGeneralsAPI.getAmenityApi()
-        getAmenity.enqueue(object : Callback<AmenityDataClass?> {
-            override fun onResponse(
-                call: Call<AmenityDataClass?>,
-                response: Response<AmenityDataClass?>
-            ) {
-
-                if (response.isSuccessful) {
-                    val addAmenitiesAdapter = AddAmenitiesAdapter(requireContext(), response.body()!!.data)
-                    amenitiesRecycler.adapter = addAmenitiesAdapter
-                    addAmenitiesAdapter.notifyDataSetChanged()
-                    addAmenitiesAdapter.setOnClickListener(this@AddRoomTypeFragment)
-                }
-            }
-
-            override fun onFailure(call: Call<AmenityDataClass?>, t: Throwable) {
-                Log.d("error" , t.localizedMessage)
-            }
-        })
-
-        val saveBtn = dialog.findViewById<CardView>(R.id.saveBtn)
-        saveBtn.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        dialog.show()
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-//        dialog.window?.setGravity(Gravity.BOTTOM)
     }
 
     private fun onTabClick(){
@@ -515,19 +484,30 @@ class AddRoomTypeFragment : Fragment(),
         }
     }
 
-    override fun onItemListUpdate(selectedAmenitiesList: ArrayList<GetAmenityData>) {
+    override fun onAmenityAdd(selectedAmenitiesList: ArrayList<GetAmenityData>) {
         binding.selectedAmenitiesRecycler.layoutManager = GridLayoutManager(requireContext(), 4)
-        val selectedAmenitiesAdapter = SelectedAmenitiesAdapter(requireContext(), selectedAmenitiesList)
+        selectedAmenitiesList.forEach {
+            if (!selectedAmenitiesListFinal.contains(it)) {
+                selectedAmenitiesListFinal.add(it)
+            }
+        }
+        selectedAmenitiesAdapter = SelectedAmenitiesAdapter(requireContext(), selectedAmenitiesListFinal)
         binding.selectedAmenitiesRecycler.adapter = selectedAmenitiesAdapter
+        selectedAmenitiesAdapter.setOnAmenityRemoveListener(this)
         selectedAmenitiesAdapter.notifyDataSetChanged()
 
-        selectedAmenitiesList.forEach {
+        selectedAmenitiesListFinal.forEach {
             if (!amenityIdsList.contains(it.amenityId)) {
                 amenityIdsList.add(it.amenityId)
             } else {
                 amenityIdsList.remove(it.amenityId)
             }
         }
+    }
+
+    override fun onSelectedAmenityRemove(currentItem : GetAmenityData) {
+        selectedAmenitiesListFinal.remove(currentItem)
+        selectedAmenitiesAdapter.notifyDataSetChanged()
     }
 
 }
