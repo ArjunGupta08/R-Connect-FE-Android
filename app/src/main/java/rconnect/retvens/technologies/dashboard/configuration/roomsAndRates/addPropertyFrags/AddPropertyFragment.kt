@@ -369,8 +369,6 @@ class AddPropertyFragment : Fragment(), OnMapReadyCallback, AddAmenitiesDialog.O
                     if (response.isSuccessful) {
                         val respons = response.body()!!
 
-                        UserSessionManager(requireContext()).savePropertyId(response.body()?.propertyId.toString())
-
                         Toast.makeText(
                             requireContext(),
                             respons.message.toString(),
