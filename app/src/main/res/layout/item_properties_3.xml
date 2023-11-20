@@ -71,6 +71,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             style="@style/listText"
+            android:visibility="gone"
             android:text="Occupancy"
             android:layout_marginStart="5dp"
             app:layout_constraintEnd_toStartOf="@id/totalRooms"
@@ -90,6 +91,7 @@
             app:layout_constraintTop_toTopOf="@id/hCode">
 
             <TextView
+                android:id="@+id/totalRoomsTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -122,6 +124,7 @@
             app:layout_constraintTop_toTopOf="@id/hCode">
 
             <TextView
+                android:id="@+id/amenitiesTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -168,12 +171,14 @@
             app:layout_constraintTop_toTopOf="@id/hCode">
 
             <ImageView
+                android:id="@+id/edit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:src="@drawable/svg_pen" />
 
             <ImageView
+                android:id="@+id/delete"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
