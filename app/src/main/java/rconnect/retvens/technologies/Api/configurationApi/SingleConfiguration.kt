@@ -6,6 +6,8 @@ import okhttp3.RequestBody
 import org.json.JSONObject
 import rconnect.retvens.technologies.dashboard.configuration.properties.FetchPropertyData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.CreateRoomData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.GetRoomData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.GetRoomDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.UpdateRoomData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanPackage.AddPackageDataClass
@@ -28,6 +30,14 @@ interface SingleConfiguration {
     fun createRoomApi(
         @Body createRoomData: CreateRoomData
     ): Call<ResponseData>
+
+    /*---------------------------------------GET Room-----------------------------------------*/
+    @GET("getRoom")
+    fun getRoomApi(
+        @Query("targetTimeZone") targetTimeZone : String? = "Asia/Kolkata",
+        @Query("propertyId") propertyId : String,
+        @Query("userId") userId : String,
+    ): Call<GetRoomData>
 
     /*---------------------------------------Update Room-----------------------------------------*/
     @PATCH("updateRoom/{roomTypeId}")

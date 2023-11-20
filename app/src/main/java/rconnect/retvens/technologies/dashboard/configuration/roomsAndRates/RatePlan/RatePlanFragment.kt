@@ -8,15 +8,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateTypeFragment
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.roomType.RoomTypeAdapter
 import rconnect.retvens.technologies.databinding.FragmentRatePlanBinding
 
 class RatePlanFragment : Fragment() {
 
     lateinit var binding: FragmentRatePlanBinding
-
-    private lateinit var roomTypeAdapter: RoomTypeAdapter
-    private var roomTypeList = ArrayList<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,23 +37,7 @@ class RatePlanFragment : Fragment() {
     private fun roomTypeRecycler() {
         binding.roomTypeRecycler.layoutManager = LinearLayoutManager(requireContext())
 
-        roomTypeList.add("4")
-        roomTypeList.add("4")
-        roomTypeList.add("4")
-        roomTypeList.add("4")
-        roomTypeList.add("4")
-        roomTypeList.add("4")
-        roomTypeList.add("4")
-        roomTypeList.add("4")
-        roomTypeList.add("4")
-        roomTypeList.add("4")
-        roomTypeList.add("4")
-        roomTypeList.add("4")
-        roomTypeList.add("4")
 
-        roomTypeAdapter = RoomTypeAdapter(roomTypeList, requireContext())
-        binding.roomTypeRecycler.adapter = roomTypeAdapter
-        roomTypeAdapter.notifyDataSetChanged()
     }
 
     private fun replaceFragment(fragment: Fragment) {
