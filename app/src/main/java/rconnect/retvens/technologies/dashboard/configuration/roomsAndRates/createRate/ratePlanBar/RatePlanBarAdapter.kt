@@ -29,6 +29,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRo
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.RatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateTypeAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.InclusionPlan
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.AddInclusionsDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetChargeRuleArray
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsData
@@ -169,10 +170,21 @@ class RatePlanBarAdapter(val applicationContext:Context, val rateTypeList:ArrayL
         val createRateTypeAdapter = CreateRateTypeAdapter(applicationContext, selectedInclusions, postingRuleArray, chargeRuleArray)
         holder.recycler_inclusion.adapter = createRateTypeAdapter
         createRateTypeAdapter.notifyDataSetChanged()
-
+//
         val myInterfaceImplementation = object : AddInclusionsAdapter.OnUpdate {
             override fun onUpdateList(selectedList: ArrayList<GetInclusionsData>) {
-                selectedInclusions = selectedList
+                selectedList.forEach { getInclusionData ->
+                    val inclusionPlan = InclusionPlan(
+                        inclusionId = getInclusionData.inclusionId,
+                        inclusionType = getInclusionData.inclusionType,
+                        inclusionName = getInclusionData.inclusionName,
+                        postingRule = getInclusionData.postingRule,
+                        chargeRule = getInclusionData.chargeRule,
+                        rate = getInclusionData.charge
+                    )
+
+                    selectedInclusions.add(inclusionPlan)
+                }
                 holder.recycler_inclusion.layoutManager = LinearLayoutManager(applicationContext)
                 val createRateTypeAdapter = CreateRateTypeAdapter(applicationContext, selectedInclusions, postingRuleArray, chargeRuleArray)
                 holder.recycler_inclusion.adapter = createRateTypeAdapter

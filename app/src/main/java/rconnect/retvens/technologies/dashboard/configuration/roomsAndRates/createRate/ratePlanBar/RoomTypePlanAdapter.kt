@@ -13,6 +13,7 @@ import com.google.android.material.textfield.TextInputEditText
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomType
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.InclusionPlan
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsData
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.showDropdownMenu
@@ -21,7 +22,7 @@ class RoomTypePlanAdapter(val applicationContext:Context, val rateTypeList:Array
     RatePlanBarAdapter.OnRateTypeListChangeListener {
 
     private var ratePlan:ArrayList<AddCompanyRatePlanDataClass> = ArrayList()
-    val selectedInclusionList: ArrayList<GetInclusionsData> = arrayListOf()
+    val selectedInclusionList: ArrayList<InclusionPlan> = arrayListOf()
     private var onRateTypeListChangeListener : OnRateTypeListChangeListener ?= null
     fun setOnListUpdateListener (listener : OnRateTypeListChangeListener) {
         onRateTypeListChangeListener = listener

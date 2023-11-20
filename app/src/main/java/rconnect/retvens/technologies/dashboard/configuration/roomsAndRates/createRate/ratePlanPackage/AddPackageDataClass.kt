@@ -1,5 +1,6 @@
 package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanPackage
 
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.InclusionPlan
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsData
 
 data class AddPackageDataClass(
@@ -9,7 +10,7 @@ data class AddPackageDataClass(
     val roomTypeId : String,
     val ratePlanId : String,
     val shortCode : String,
-    val ratePlanInclusion : ArrayList<GetInclusionsData>,
+    val ratePlanInclusion : ArrayList<InclusionPlan>,
     val ratePlanName : String,
     val minimumNights : String,
     val maximumNights : String,

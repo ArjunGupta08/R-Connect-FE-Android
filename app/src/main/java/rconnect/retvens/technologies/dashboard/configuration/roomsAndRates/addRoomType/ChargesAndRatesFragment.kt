@@ -30,6 +30,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.creat
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.RatePlanDetailsAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.AddBarRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.InclusionPlan
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.GetMealPlanData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.GetMealPlanDataClass
@@ -366,7 +367,7 @@ class ChargesAndRatesFragment : Fragment(),
 
     override fun onUpdateMealPlan(selectedList: ArrayList<GetMealPlanData>) {
         selectedList.forEach {
-            val selectedInclusionList: ArrayList<GetInclusionsData> = arrayListOf()
+            val selectedInclusionList: ArrayList<InclusionPlan> = arrayListOf()
 
             val ratePlanDataClass =  AddCompanyRatePlanDataClass(
                  UserSessionManager(requireContext()).getUserId().toString(),

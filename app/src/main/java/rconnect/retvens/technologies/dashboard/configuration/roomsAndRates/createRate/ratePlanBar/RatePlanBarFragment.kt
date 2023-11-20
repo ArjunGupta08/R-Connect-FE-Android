@@ -31,6 +31,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.creat
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomType
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.RatePlanDetailsAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.InclusionPlan
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.AddInclusionsDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsDataClass
@@ -246,7 +247,7 @@ class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:Arra
 
     override fun onUpdateMealPlan(selectedList: ArrayList<GetMealPlanData>) {
         selectedList.forEach {
-            val selectedInclusionList: ArrayList<GetInclusionsData> = arrayListOf()
+            val selectedInclusionList: ArrayList<InclusionPlan> = arrayListOf()
 
             val ratePlanDataClass =  AddCompanyRatePlanDataClass(
                 UserSessionManager(requireContext()).getUserId().toString(),
@@ -275,7 +276,7 @@ class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:Arra
         }
     }
     override fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddCompanyRatePlanDataClass>) {
-        ratePlanDetailsList = updatedRateTypeList
+        ratePlanDetailsList.addAll(updatedRateTypeList)
         Log.e("finalList",ratePlanDetailsList.toString())
         ratePlanDetailsAdapter.notifyDataSetChanged()
     }

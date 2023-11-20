@@ -38,6 +38,7 @@ import rconnect.retvens.technologies.utils.showDropdownMenu
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.NullPointerException
 
 class AddReservationAdapter(val applicationContext: Context,val reservationList:ArrayList<RoomDetail>,val availableList:ArrayList<AvailableRoomType>):RecyclerView.Adapter<AddReservationAdapter.ReservationHolder>() {
     var cc = 1
@@ -121,7 +122,7 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
             ""
         )
 
-        val emptyPrices = RoomDetailPrices(0,0,0,0,0,0,0)
+        val emptyPrices = RoomDetailPrices(0,0,0.0,0.0,0.0,0.0,0.0)
 
         // Add the new item to the list
         reservationList.add(emptyRoomDetails)
@@ -179,7 +180,7 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
             val increaseInChildCount = cc - roomDetailPrices.baseChildCount.toInt()
 
             // Calculate the total price for extra children
-            roomDetailPrices.totalPriceForExtraChild = increaseInChildCount * roomDetailPrices.pricePerExtraChild.toInt()
+            roomDetailPrices.totalPriceForExtraChild = increaseInChildCount * roomDetailPrices.pricePerExtraChild
 
             // Update roomDetails.extraChild with the calculated total price
             holder.extraChildCharges.text = "₹${roomDetailPrices.totalPriceForExtraChild}.00"
@@ -197,7 +198,7 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
                 val decreaseInChildCount = maxOf(0, cc - roomDetailPrices.baseChildCount.toInt())
 
                 // Calculate the total price for reduced extra children
-                roomDetailPrices.totalPriceForExtraChild = decreaseInChildCount * roomDetailPrices.pricePerExtraChild.toInt()
+                roomDetailPrices.totalPriceForExtraChild = decreaseInChildCount * roomDetailPrices.pricePerExtraChild
                 // Update roomDetails.extraChild with the calculated total price
                 holder.extraChildCharges.text = "₹ ${roomDetailPrices.totalPriceForExtraChild.toString()}.00"
 
@@ -216,7 +217,7 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
             val increaseInAdultCount = ac - roomDetailPrices.baseAdultCount.toInt()
 
             // Calculate the total price for extra adults
-            roomDetailPrices.totalPriceForExtraAdult = increaseInAdultCount * roomDetailPrices.pricePerExtraAdult.toInt()
+            roomDetailPrices.totalPriceForExtraAdult = increaseInAdultCount * roomDetailPrices.pricePerExtraAdult.toDouble()
 
             // Update roomDetails.extraAdult with the calculated total price
             holder.extraAdultCharges.text = "₹${roomDetailPrices.totalPriceForExtraAdult}.00"
@@ -235,7 +236,7 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
                 val decreaseInAdultCount = maxOf(0, ac - roomDetailPrices.baseAdultCount.toInt())
 
                 // Calculate the total price for reduced extra adults
-                roomDetailPrices.totalPriceForExtraAdult = decreaseInAdultCount * roomDetailPrices.pricePerExtraAdult.toInt()
+                roomDetailPrices.totalPriceForExtraAdult = decreaseInAdultCount * roomDetailPrices.pricePerExtraAdult
 
                 holder.extraAdultCharges.text = "₹${roomDetailPrices.totalPriceForExtraAdult}.00"
 
@@ -329,9 +330,9 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
             charges.text = selectedItem?.ratePlanTotal
             roomCharges.text = "₹ ${selectedItem?.ratePlanTotal}"
             roomDetailList[positions].charge = selectedItem?.ratePlanTotal.toString()
-            roomDetailPricess[positions].pricePerExtraAdult = selectedItem?.extraAdultRate!!.toInt()
-            roomDetailPricess[positions].pricePerExtraChild = selectedItem?.extraChildRate!!.toInt()
-            roomDetailPricess[positions].totalCharges = selectedItem?.ratePlanTotal!!.toInt()
+            roomDetailPricess[positions].pricePerExtraAdult = selectedItem?.extraAdultRate!!.toDouble()
+            roomDetailPricess[positions].pricePerExtraChild = selectedItem?.extraChildRate!!.toDouble()
+            roomDetailPricess[positions].totalCharges = selectedItem?.ratePlanTotal!!.toDouble()
             total.text = "₹ ${selectedItem?.ratePlanTotal}"
             listPopupWindow.dismiss()
             clickListener?.updateRates()
@@ -401,9 +402,14 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
                 response: Response<RatePlanDataClass?>
             ) {
                 if (response.isSuccessful){
-                    val response = response.body()!!
-                    ratePlanList.clear()
-                    ratePlanList.addAll(response.data)
+                    try {
+                        val response = response.body()!!
+                        ratePlanList.clear()
+                        ratePlanList.addAll(response.data)
+                    }catch (e:NullPointerException){
+                        Toast.makeText(applicationContext, "No Rate Plan For This Room", Toast.LENGTH_SHORT).show()
+                    }
+
                 }else{
                     Log.e("error",response.code().toString())
                     ratePlanList.clear()
