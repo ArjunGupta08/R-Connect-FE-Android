@@ -9,6 +9,8 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRo
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.UpdateRoomData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanPackage.AddPackageDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlaneDiscount.AddDiscountDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlaneDiscount.GetBarRatePlanForDiscountDataClass
 import rconnect.retvens.technologies.onboarding.ResponseData
 import retrofit2.Call
 import retrofit2.Response
@@ -51,14 +53,16 @@ interface SingleConfiguration {
         @Body addCompanyRatePlanDataClass: AddCompanyRatePlanDataClass
     ): Call<ResponseData>
 
-    @Multipart
-    @PATCH("uploadRoomImage")
-    fun postData(
-        @Query("roomTypeId") roomTypeId: String,
-        @Query("userId") userId: String,
-        @Part image: MultipartBody.Part,
-        @Part("image[{index}]rooms") rooms: RequestBody,
-        @Path("index") index: Int
-    ): Call<ResponseData>
 
+    @GET("getRoomsWithPlans")
+    fun getRoomWithPlans(
+        @Query("userId")userId:String,
+        @Query("propertyId")propertyId:String
+    ):Call<GetBarRatePlanForDiscountDataClass>
+
+    @POST("addDiscountPlan")
+    fun addDiscount(
+        @Query("userId")userId:String,
+        @Body addDiscountDataClass: AddDiscountDataClass
+    ):Call<ResponseData>
 }

@@ -17,13 +17,25 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import rconnect.retvens.technologies.Api.OAuthClient
+import rconnect.retvens.technologies.Api.configurationApi.ChainConfiguration
+import rconnect.retvens.technologies.Api.configurationApi.SingleConfiguration
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.ImageCategoryDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.ImagesCategoryAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectImagesDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectRoomImagesAdapter
 import rconnect.retvens.technologies.databinding.FragmentAddImagesBinding
+import rconnect.retvens.technologies.onboarding.ResponseData
+import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.prepareFilePart
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import www.sanju.motiontoast.MotionToast
 
 class AddImagesFragment : Fragment(),
     ImagesCategoryAdapter.OnItemClickListener {
@@ -152,7 +164,39 @@ class AddImagesFragment : Fragment(),
     }
 
     private fun uploadImages(imageCategoryDataClass: ImageCategoryDataClass) {
-        val imageuri = prepareFilePart()
+        imageCategoryDataClass.imageList.forEach { imageUri ->
+
+            val propertyImage = prepareFilePart(imageUri, "roomImage", requireContext())
+            val userId = UserSessionManager(requireContext()).getUserId().toString()
+
+            val uploadRoomImage = OAuthClient<ChainConfiguration>(requireContext())
+                .create(ChainConfiguration::class.java)
+                .uploadPropertyImages( "rZClXWnl", userId, propertyImage!!, createPartFromString(imageCategoryDataClass.imageType))
+
+            uploadRoomImage.enqueue(object : Callback<ResponseData?> {
+                override fun onResponse(
+                    call: Call<ResponseData?>,
+                    response: Response<ResponseData?>
+                ) {
+                    if (response.isSuccessful) {
+                        val responseData = response.body()!!
+                        Toast.makeText(requireContext(),responseData.message,Toast.LENGTH_SHORT).show()
+                        Log.e("res", responseData?.message.toString())
+                    } else {
+                        Log.e("res", "Error: ${response.message()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                    Log.e("res", "Failure: ${t.message}")
+                }
+            })
+        }
+    }
+
+    // Helper method to create RequestBody from a string
+    private fun createPartFromString(string: String): RequestBody {
+        return string.toRequestBody("multipart/form-data".toMediaTypeOrNull())
     }
 
 
