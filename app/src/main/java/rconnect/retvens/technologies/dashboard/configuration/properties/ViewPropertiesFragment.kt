@@ -16,6 +16,7 @@ import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.Api.configurationApi.ChainConfiguration
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AddPropertyFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddImagesFragment
 import rconnect.retvens.technologies.databinding.FragmentViewPropertiesBinding
 import rconnect.retvens.technologies.utils.Const
 import rconnect.retvens.technologies.utils.UserSessionManager

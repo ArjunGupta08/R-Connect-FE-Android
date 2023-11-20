@@ -145,17 +145,10 @@ class CreateRateTypeFragment : Fragment(), RatePlanBarAdapter.OnRateTypeListChan
 
             // Set text on textView
             if (type == "Bar"){
-
                 replaceChildFrag(RatePlanBarFragment(selectedRoomTypeList,selectedMealList,false))
-            }else if (type == "5"){
-
-                    replaceChildFrag(RatePlanBarFragment(selectedRoomTypeList,selectedMealList,false))
-                }else if (type == "Company"){
+            }else if (type == "Company"){
                     Log.e("check11",type.toString())
                 replaceChildFrag(RatePlanCompanyFragment(selectedRoomTypeList,selectedMealList,false))
-            } else if (type == "5"){
-
-                replaceChildFrag(RatePlanBarFragment(selectedRoomTypeList,selectedMealList,false))
             }
             binding.dropRoom.setText(stringBuilder.toString())
         }
@@ -265,7 +258,12 @@ class CreateRateTypeFragment : Fragment(), RatePlanBarAdapter.OnRateTypeListChan
             }
             // Set text on textView
             binding.mealPlanET.setText(stringBuilder.toString())
-            replaceChildFrag(RatePlanBarFragment(selectedRoomTypeList,selectedMealList,false))
+            if (type == "Bar"){
+                replaceChildFrag(RatePlanBarFragment(selectedRoomTypeList,selectedMealList,false))
+            }else if (type == "Company"){
+                Log.e("check11",type.toString())
+                replaceChildFrag(RatePlanCompanyFragment(selectedRoomTypeList,selectedMealList,false))
+            }
             Log.e("list",selectedMealList.toString())
         }
 

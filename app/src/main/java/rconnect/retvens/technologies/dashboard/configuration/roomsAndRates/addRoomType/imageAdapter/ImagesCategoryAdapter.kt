@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
@@ -27,6 +28,7 @@ class ImagesCategoryAdapter(val context: Context, private val itemList: ArrayLis
     }
     interface OnItemClickListener {
         fun onAddRoomImage(position: Int)
+        fun setImages(imageCategoryDataClass: ImageCategoryDataClass)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -52,7 +54,12 @@ class ImagesCategoryAdapter(val context: Context, private val itemList: ArrayLis
             onItemClickListener?.onAddRoomImage(position)
         }
 
+        holder.deleteImage.setOnClickListener {
+            itemList.removeAt(holder.position)
+            notifyDataSetChanged() // Assuming you are using notifyDataSetChanged to refresh the UI
+        }
 
+        onItemClickListener?.setImages(item)
     }
 
     override fun getItemCount(): Int {
@@ -73,6 +80,7 @@ class ImagesCategoryAdapter(val context: Context, private val itemList: ArrayLis
         val imagesRecycler = itemView.findViewById<RecyclerView>(R.id.imagesRecycler)
         val addImage = itemView.findViewById<TextView>(R.id.addImages)
         lateinit var selectImagesAdapter: SelectRoomImagesAdapter
+        val deleteImage = itemView.findViewById<ImageView>(R.id.delete)
 
     }
 

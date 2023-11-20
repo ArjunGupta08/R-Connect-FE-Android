@@ -93,5 +93,7 @@ class RoomTypePlanAdapter(val applicationContext:Context, val rateTypeList:Array
 
     override fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddCompanyRatePlanDataClass>) {
         onRateTypeListChangeListener?.onRateTypeListChanged(updatedRateTypeList)
+        Log.e("updatedRateTypeList",updatedRateTypeList.toString())
+        notifyDataSetChanged()
     }
 }

@@ -11,6 +11,7 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
@@ -70,4 +71,13 @@ interface ChainConfiguration {
     fun fetchProperty(
         @Query("userId") userId: String
     ): Call<FetchPropertyData>
+
+    @Multipart
+    @PATCH("uploadRoomImage")
+    fun uploadPropertyImages(
+        @Query("roomTypeId") roomTypeId: String,
+        @Query("userId") userId: String,
+        @Part image: MultipartBody.Part,
+        @Part("image[0]rooms") rooms: RequestBody
+    ): Call<ResponseData>
 }

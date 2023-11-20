@@ -109,7 +109,7 @@ class RatePlanBarAdapter(val applicationContext:Context, val rateTypeList:ArrayL
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int){
         val currentData = rateTypeList[position]
-
+        Log.e("currentFinal",rateTypeList.toString())
         var isRateCardEdit = true
 
         holder.ratePlanText.text = currentData.ratePlanName
@@ -124,8 +124,9 @@ class RatePlanBarAdapter(val applicationContext:Context, val rateTypeList:ArrayL
         holder.ratePlanTotalTxt.text = currentData.ratePlanTotal
 
         holder.delete.setOnClickListener {
-            rateTypeList.remove(currentData)
-            notifyDataSetChanged()
+            Log.e("List Size Before Remove", "${rateTypeList.size}")
+            rateTypeList.removeAt(position)
+            Log.e("List Size After Remove", "${rateTypeList.size}")
             onRateTypeListChangeListener?.onRateTypeListChanged(rateTypeList)
         }
 

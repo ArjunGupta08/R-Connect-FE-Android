@@ -84,10 +84,7 @@ class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:Arra
             sendRatePlanData()
         }
 
-
     }
-
-
 
     private fun sendRatePlanData() {
         Log.e("roomList",ratePlanDetailsList.toString())
@@ -281,7 +278,6 @@ class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:Arra
         ratePlanDetailsList = updatedRateTypeList
         Log.e("finalList",ratePlanDetailsList.toString())
         ratePlanDetailsAdapter.notifyDataSetChanged()
-        onRateTypeListChangeListener?.onRateTypeListChanged(updatedRateTypeList)
     }
 
 
