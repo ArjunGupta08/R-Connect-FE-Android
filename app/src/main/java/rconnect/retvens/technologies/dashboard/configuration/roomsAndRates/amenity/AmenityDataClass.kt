@@ -37,7 +37,6 @@ data class FetchAmenitiesData (
     val amenityName : String,
     val amenityType : String,
     val amenityIcon : String,
-    val amenityIconId : String,
     val amenityIconLink : String,
     val createdOn : String,
     val createdBy : String,
