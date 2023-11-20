@@ -57,10 +57,10 @@ class ViewPropertiesFragment : Fragment() {
 
         binding.resortsRecycler.layoutManager = GridLayoutManager(requireContext(), 3)
 
-        fetchProp()
-
         /*  -----View Type 2 ----------*/
         binding.allRecycler.layoutManager = LinearLayoutManager(requireContext())
+
+        fetchProp()
 
         /* ------------------- Change View Type -------------------*/
         binding.llView.setOnClickListener {

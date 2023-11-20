@@ -39,7 +39,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AddAmenitiesDialog(var selectedAmenitiesList: ArrayList<GetAmenityData>) : DialogFragment(), AddAmenitiesAdapter.OnItemClick, CreateAmenityDialog.OnAmenitySave {
+class AddAmenitiesDialog(var selectedAmenitiesList: ArrayList<GetAmenityData>, private var isAddingForRoom : Boolean ?= false) : DialogFragment(), AddAmenitiesAdapter.OnItemClick, CreateAmenityDialog.OnAmenitySave {
 
     private var mListener: OnAmenityAdd? = null
     fun setOnAddAmenityDialogListener(listener: OnAmenityAdd) {
@@ -98,7 +98,11 @@ class AddAmenitiesDialog(var selectedAmenitiesList: ArrayList<GetAmenityData>) :
         amenitiesRecycler = view.findViewById<RecyclerView>(R.id.amenitiesRecycler)
         amenitiesRecycler.layoutManager = GridLayoutManager(requireContext(), 5)
 
-        getAmenityRecycler()
+        if (isAddingForRoom!!) {
+            getRoomAmenityRecycler()
+        } else {
+            getPropertyAmenityRecycler()
+        }
 
         val saveBtn = view.findViewById<CardView>(R.id.saveBtn)
         saveBtn.setOnClickListener {
@@ -107,7 +111,7 @@ class AddAmenitiesDialog(var selectedAmenitiesList: ArrayList<GetAmenityData>) :
 
     }
 
-    private fun getAmenityRecycler() {
+    private fun getPropertyAmenityRecycler() {
         val propertyId =UserSessionManager(requireContext()).getPropertyId().toString()
         Toast.makeText(requireContext(), propertyId, Toast.LENGTH_SHORT).show()
         progressDialog = showProgressDialog(requireContext())
@@ -176,12 +180,85 @@ class AddAmenitiesDialog(var selectedAmenitiesList: ArrayList<GetAmenityData>) :
 
     }
 
+    private fun getRoomAmenityRecycler() {
+        val propertyId =UserSessionManager(requireContext()).getPropertyId().toString()
+        Toast.makeText(requireContext(), propertyId, Toast.LENGTH_SHORT).show()
+        progressDialog = showProgressDialog(requireContext())
+//        "150860"
+        val getAmenity = RetrofitObject.getGeneralsAPI.getRoomAmenityApi(propertyId)
+        getAmenity.enqueue(object : Callback<AmenityDataClass?> {
+            override fun onResponse(
+                call: Call<AmenityDataClass?>,
+                response: Response<AmenityDataClass?>
+            ) {
+
+                if (response.isSuccessful) {
+                    if (isAdded) {
+                        try {
+                            val data = response.body()!!.data
+                            selectedAmenitiesList.forEach {
+                                if (data.contains(it)){
+                                    data.remove(it)
+                                }
+                            }
+                            val addAmenitiesAdapter = AddAmenitiesAdapter(requireContext(),data)
+                            amenitiesRecycler.adapter = addAmenitiesAdapter
+                            addAmenitiesAdapter.notifyDataSetChanged()
+                            addAmenitiesAdapter.setOnClickListener(this@AddAmenitiesDialog)
+
+                            search.addTextChangedListener(object : TextWatcher {
+                                override fun beforeTextChanged(
+                                    s: CharSequence?,
+                                    start: Int,
+                                    count: Int,
+                                    after: Int
+                                ) {
+
+                                }
+
+                                override fun onTextChanged(
+                                    s: CharSequence?,
+                                    start: Int,
+                                    before: Int,
+                                    count: Int
+                                ) {
+                                    val filterData = data.filter {
+                                        it.amenityName.contains(s.toString(), true)
+                                    }
+                                    addAmenitiesAdapter.filterList(filterData as ArrayList<GetAmenityData>)
+                                }
+
+                                override fun afterTextChanged(s: Editable?) {
+
+                                }
+                            })
+                        } catch (e : Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+
+                progressDialog.dismiss()
+            }
+
+            override fun onFailure(call: Call<AmenityDataClass?>, t: Throwable) {
+                progressDialog.dismiss()
+                Log.d("error" , t.localizedMessage)
+            }
+        })
+
+    }
+
     override fun onItemListUpdate(selectedAmenitiesList: ArrayList<GetAmenityData>) {
         mListener?.onAmenityAdd(selectedAmenitiesList)
     }
 
     override fun onAmenitySave() {
-        getAmenityRecycler()
+        if (isAddingForRoom!!) {
+            getRoomAmenityRecycler()
+        } else {
+            getPropertyAmenityRecycler()
+        }
     }
 
 }

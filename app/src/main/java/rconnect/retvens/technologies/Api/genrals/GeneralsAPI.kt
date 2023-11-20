@@ -248,6 +248,11 @@ interface GeneralsAPI {
         @Query("propertyId") propertyId : String
     ): Call<AmenityDataClass>
 
+    @GET("getRoomAmenity")
+    fun getRoomAmenityApi (
+        @Query("propertyId") propertyId : String
+    ): Call<AmenityDataClass>
+
     @GET("getAmenityIcon")
     fun getAmenityIconApi (): Call<GetAmenityIcon>
 

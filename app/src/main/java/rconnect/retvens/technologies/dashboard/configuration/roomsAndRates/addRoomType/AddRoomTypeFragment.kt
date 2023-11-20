@@ -188,7 +188,7 @@ class AddRoomTypeFragment : Fragment(),
             }
             mLastClickTime = SystemClock.elapsedRealtime()
 
-            val openDialog = AddAmenitiesDialog(selectedAmenitiesListFinal)
+            val openDialog = AddAmenitiesDialog(selectedAmenitiesListFinal, true)
             val fragManager = childFragmentManager
             fragManager.let{openDialog.show(it, AddAmenitiesDialog.TAG)}
             openDialog.setOnAddAmenityDialogListener(this)
@@ -197,7 +197,7 @@ class AddRoomTypeFragment : Fragment(),
         getBedType()
     }
 
-    fun sendData(){
+    private fun sendData(){
         val send = OAuthClient<SingleConfiguration>(requireContext()).create(SingleConfiguration::class.java).createRoomApi(
             CreateRoomData(
                 UserSessionManager(requireContext()).getUserId().toString(),
@@ -414,58 +414,61 @@ class AddRoomTypeFragment : Fragment(),
 
         binding.roomImages.setOnClickListener {
 
-            page = 2
+            shakeAnimation(binding.continueBtnRoom, requireContext())
 
-            binding.roomImages.textSize = 20.0f
-            binding.roomImages.typeface = robotoMedium
-            binding.roomImages.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
-
-            binding.roomProfile.textSize = 16.0f
-            binding.roomProfile.typeface = roboto
-
-            binding.chargePlans.textSize = 16.0f
-            binding.chargePlans.typeface = roboto
-
-            binding.roomImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
-            binding.roomProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-            binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-
-            val childFragment: Fragment = AddImagesFragment()
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.createRoomFragContainer,childFragment)
-            transaction.commit()
-
-            binding.frame.visibility = View.GONE
-            binding.createRoomFragContainer.visibility = View.VISIBLE
-            rightInAnimation(binding.createRoomFragContainer, requireContext())
+        //            page = 2
+//
+//            binding.roomImages.textSize = 20.0f
+//            binding.roomImages.typeface = robotoMedium
+//            binding.roomImages.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+//
+//            binding.roomProfile.textSize = 16.0f
+//            binding.roomProfile.typeface = roboto
+//
+//            binding.chargePlans.textSize = 16.0f
+//            binding.chargePlans.typeface = roboto
+//
+//            binding.roomImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+//            binding.roomProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+//            binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+//
+//            val childFragment: Fragment = AddImagesFragment()
+//            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+//            transaction.replace(R.id.createRoomFragContainer,childFragment)
+//            transaction.commit()
+//
+//            binding.frame.visibility = View.GONE
+//            binding.createRoomFragContainer.visibility = View.VISIBLE
+//            rightInAnimation(binding.createRoomFragContainer, requireContext())
         }
 
         binding.chargePlans.setOnClickListener {
+            shakeAnimation(binding.continueBtnRoom, requireContext())
 
-            page = 3
-
-            binding.chargePlans.textSize = 20.0f
-            binding.chargePlans.typeface = robotoMedium
-            binding.chargePlans.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
-
-            binding.roomImages.textSize = 16.0f
-            binding.roomImages.typeface = roboto
-
-            binding.roomProfile.textSize = 16.0f
-            binding.roomProfile.typeface = roboto
-
-            binding.roomImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-            binding.roomProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-            binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
-
-            val childFragment: Fragment = ChargesAndRatesFragment()
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.createRoomFragContainer,childFragment)
-            transaction.commit()
-
-            binding.frame.visibility = View.GONE
-            binding.createRoomFragContainer.visibility = View.VISIBLE
-            rightInAnimation(binding.createRoomFragContainer, requireContext())
+//            page = 3
+//
+//            binding.chargePlans.textSize = 20.0f
+//            binding.chargePlans.typeface = robotoMedium
+//            binding.chargePlans.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+//
+//            binding.roomImages.textSize = 16.0f
+//            binding.roomImages.typeface = roboto
+//
+//            binding.roomProfile.textSize = 16.0f
+//            binding.roomProfile.typeface = roboto
+//
+//            binding.roomImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+//            binding.roomProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+//            binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+//
+//            val childFragment: Fragment = ChargesAndRatesFragment()
+//            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+//            transaction.replace(R.id.createRoomFragContainer,childFragment)
+//            transaction.commit()
+//
+//            binding.frame.visibility = View.GONE
+//            binding.createRoomFragContainer.visibility = View.VISIBLE
+//            rightInAnimation(binding.createRoomFragContainer, requireContext())
 
         }
 
