@@ -166,12 +166,16 @@ class AddImagesFragment : Fragment(),
     private fun uploadImages(imageCategoryDataClass: ImageCategoryDataClass) {
         imageCategoryDataClass.imageList.forEach { imageUri ->
 
-            val propertyImage = prepareFilePart(imageUri, "roomImage", requireContext())
+            val propertyImage = prepareFilePart(imageUri, "hotelImage", requireContext())
             val userId = UserSessionManager(requireContext()).getUserId().toString()
+            val propertyId = UserSessionManager(requireContext()).getPropertyId().toString()
+
+            Log.e("user",userId.toString())
+            Log.e("property",propertyId.toString())
 
             val uploadRoomImage = OAuthClient<ChainConfiguration>(requireContext())
                 .create(ChainConfiguration::class.java)
-                .uploadPropertyImages( "rZClXWnl", userId, propertyImage!!, createPartFromString(imageCategoryDataClass.imageType))
+                .uploadPropertyImages( userId,propertyId ,createPartFromString(imageCategoryDataClass.imageType),propertyImage!!)
 
             uploadRoomImage.enqueue(object : Callback<ResponseData?> {
                 override fun onResponse(
@@ -183,7 +187,7 @@ class AddImagesFragment : Fragment(),
                         Toast.makeText(requireContext(),responseData.message,Toast.LENGTH_SHORT).show()
                         Log.e("res", responseData?.message.toString())
                     } else {
-                        Log.e("res", "Error: ${response.message()}")
+                        Log.e("res", "Error: ${response.code().toString()}")
                     }
                 }
 

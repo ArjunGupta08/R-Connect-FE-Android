@@ -88,7 +88,7 @@ class ViewPropertiesFragment : Fragment() {
             Const.isAddingNewProperty = true
             val dashboardFragmentContainer = requireActivity().findViewById<FrameLayout>(R.id.dashboardFragmentContainer)
 
-            val childFragment: Fragment = AddPropertyFragment()
+            val childFragment: Fragment = AddImagesFragment()
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(R.id.dashboardFragmentContainer,childFragment)
             transaction.commit()

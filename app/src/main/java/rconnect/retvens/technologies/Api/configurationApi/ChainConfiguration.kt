@@ -74,10 +74,19 @@ interface ChainConfiguration {
 
     @Multipart
     @PATCH("uploadRoomImage")
-    fun uploadPropertyImages(
+    fun uploadRoomsImages(
         @Query("roomTypeId") roomTypeId: String,
         @Query("userId") userId: String,
         @Part image: MultipartBody.Part,
         @Part("image[0]rooms") rooms: RequestBody
+    ): Call<ResponseData>
+
+    @Multipart
+    @PATCH("uploadPropertyImages")
+    fun uploadPropertyImages(
+        @Query("userId") userId: String,
+        @Query("propertyId") propertyId: String,
+        @Part("imageTags[0][imageTags]") tag1: RequestBody,
+        @Part image: MultipartBody.Part
     ): Call<ResponseData>
 }
