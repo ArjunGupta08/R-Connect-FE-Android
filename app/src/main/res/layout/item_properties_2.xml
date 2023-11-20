@@ -27,14 +27,16 @@
 
         <TextView
             android:id="@+id/propertyName"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/secondary"
-            android:text="@string/next"
+            android:text="propertyName"
             android:textSize="@dimen/H5"
             android:layout_marginStart="8dp"
             android:fontFamily="@font/roboto_medium"
             android:background="@color/white"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintEnd_toStartOf="@id/location"
             app:layout_constraintStart_toEndOf="@id/propertyLogo"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="5dp"
@@ -42,14 +44,16 @@
 
         <TextView
             android:id="@+id/location"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="9dp"
+            android:layout_marginStart="5dp"
             android:background="@color/white"
-            android:fontFamily="@font/roboto"
+            android:fontFamily="@font/roboto_light"
             android:text="@string/next"
             android:textColor="@color/secondary"
             android:textSize="@dimen/H6"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/propertyName"
             app:layout_constraintBottom_toBottomOf="@id/propertyName" />
 
