@@ -56,7 +56,6 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
     var postingList = ArrayList<String>()
     private  var postingRuleArray = ArrayList<String>()
 
-
     fun setOnClickListener (listener : OnItemClick){
         clickListener = listener
     }
@@ -384,7 +383,6 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
             listPopupWindow.dismiss()
             getRatePlan()
         }
-
         listPopupWindow.show()
     }
 

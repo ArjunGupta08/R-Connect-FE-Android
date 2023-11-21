@@ -10,8 +10,6 @@ data class RoomType(
 data class InventoryDataClass(
     val date: String,
     val inventory: Int,
-    val COA: String,
-    val COD: String,
     val isBlocked: String
 )
 

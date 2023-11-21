@@ -2,6 +2,7 @@ package rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory
 
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
@@ -39,6 +40,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.creat
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomTypeData
 import rconnect.retvens.technologies.databinding.FragmentRatesAndInventoryBinding
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.showProgressDialog
 import rconnect.retvens.technologies.utils.utilCreateDatePickerDialog
 import retrofit2.Call
 import retrofit2.Callback
@@ -71,7 +73,7 @@ class RatesAndInventoryFragment : Fragment() {
     lateinit var txt_weekends:TextView
     lateinit var room_typeText:TextInputEditText
     lateinit var rate_planText:TextInputEditText
-
+    private lateinit var progressDialog: Dialog
     lateinit var txt_custom:TextView
     lateinit var startDatePickerDialog:DatePickerDialog
     lateinit var endDatePickerDialog: DatePickerDialog
@@ -523,6 +525,8 @@ class RatesAndInventoryFragment : Fragment() {
         val userId = UserSessionManager(requireContext()).getUserId()
         val propertyId = UserSessionManager(requireContext()).getPropertyId()
 
+
+        progressDialog = showProgressDialog(requireContext())
         setInventory(userId,propertyId,checkInDate,checkOutDate)
 
 
@@ -716,14 +720,17 @@ class RatesAndInventoryFragment : Fragment() {
                    inventoryAdapter = RoomsInventoryAdapter(requireContext(),response)
                    bindingTab.inventoryRecycler.adapter = inventoryAdapter
                    inventoryAdapter.notifyDataSetChanged()
+                   progressDialog.dismiss()
                }else{
                    Log.e("error",response.code().toString())
                    Log.e("message",response.message().toString())
+                   progressDialog.dismiss()
                }
            }
 
            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
                Log.e("error",t.message.toString())
+               progressDialog.dismiss()
            }
        })
 

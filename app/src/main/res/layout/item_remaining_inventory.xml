@@ -101,27 +101,42 @@
 <!--                android:orientation="vertical"-->
 <!--                app:layout_constraintGuide_percent=".97"/>-->
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/inventory_1"
-                style="@style/inventoryText"
-                android:layout_width="0dp"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/inventory_1"
+            style="@style/inventoryText"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:cursorVisible="true"
+            android:focusable="true"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="0dp"
+            android:focusableInTouchMode="true"
+            android:inputType="number"
+            android:maxLength="3"
+            app:strokeWidth="0dp"
+            android:backgroundTint="#E8F3C1"
+            app:layout_constraintEnd_toStartOf="@id/inventory_2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/g1"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:cursorVisible="true"
-                android:focusable="true"
-                app:cardElevation="0dp"
-                app:cardCornerRadius="0dp"
-                android:focusableInTouchMode="true"
-                android:inputType="number"
-                android:maxLength="3"
-                android:text="6"
-                app:strokeWidth="0dp"
-                android:backgroundTint="#E8F3C1"
-                app:layout_constraintEnd_toStartOf="@id/inventory_2"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@id/g1"
-                app:layout_constraintTop_toTopOf="parent">
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/lock_1"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:visibility="gone"
+                    android:src="@drawable/unavaialble_lock"
+                    android:layout_marginRight="5dp"
+                    android:layout_gravity="center"/>
+
                 <TextView
                     android:id="@+id/inventory_"
                     android:layout_width="wrap_content"
@@ -132,25 +147,43 @@
                     android:textColor="@color/black"
                     android:layout_gravity="center"/>
 
-            </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/inventory_2"
-                android:layout_width="0dp"
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/inventory_2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toEndOf="@id/inventory_1"
+            app:layout_constraintEnd_toStartOf="@id/inventory_3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_gravity="center"
+            app:strokeWidth="0dp"
+            app:cardCornerRadius="0dp"
+            android:elevation="0dp"
+            android:maxLength="3"
+            android:backgroundTint="#E8F3C1"
+            android:layout_weight="1"
+            android:text="6">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintStart_toEndOf="@id/inventory_1"
-                app:layout_constraintEnd_toStartOf="@id/inventory_3"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_gravity="center"
-                app:strokeWidth="0dp"
-                app:cardCornerRadius="0dp"
-                android:elevation="0dp"
-                android:maxLength="3"
-                android:backgroundTint="#E8F3C1"
-                android:layout_weight="1"
-                android:background="@drawable/inventory_edit_background"
-                android:text="6">
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/lock_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/unavaialble_lock"
+                    android:visibility="gone"
+                    android:layout_marginRight="5dp"
+                    android:layout_gravity="center"/>
+
                 <TextView
                     android:id="@+id/inventory_20"
                     android:layout_width="wrap_content"
@@ -159,25 +192,43 @@
                     style="@style/inventoryText"
                     android:textColor="@color/black"
                     android:layout_gravity="center"/>
-            </com.google.android.material.card.MaterialCardView>
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/inventory_3"
-                style="@style/inventoryText"
-                android:layout_width="0dp"
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/inventory_3"
+            style="@style/inventoryText"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            app:layout_constraintStart_toEndOf="@id/inventory_2"
+            app:layout_constraintEnd_toStartOf="@id/inventory_4"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_weight="1"
+            app:strokeWidth="0dp"
+            android:backgroundTint="#E8F3C1"
+            app:cardCornerRadius="0dp"
+            android:elevation="0dp"
+            android:maxLength="3"
+            android:text="6">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                app:layout_constraintStart_toEndOf="@id/inventory_2"
-                app:layout_constraintEnd_toStartOf="@id/inventory_4"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_weight="1"
-                app:strokeWidth="0dp"
-                android:backgroundTint="#E8F3C1"
-                app:cardCornerRadius="0dp"
-                android:elevation="0dp"
-                android:maxLength="3"
-                android:background="@drawable/inventory_edit_background"
-                android:text="6">
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/lock_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/unavaialble_lock"
+                    android:visibility="gone"
+                    android:layout_marginRight="5dp"
+                    android:layout_gravity="center"/>
+
                 <TextView
                     android:id="@+id/inventory_30"
                     android:layout_width="wrap_content"
@@ -186,26 +237,45 @@
                     style="@style/inventoryText"
                     android:textColor="@color/black"
                     android:layout_gravity="center"/>
-            </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/inventory_4"
-                style="@style/inventoryText"
-                android:layout_width="0dp"
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/inventory_4"
+            style="@style/inventoryText"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:maxLength="3"
+            app:strokeWidth="0dp"
+            app:layout_constraintEnd_toStartOf="@id/inventory_5"
+            app:layout_constraintStart_toEndOf="@id/inventory_3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:cardCornerRadius="0dp"
+            android:backgroundTint="#E8F3C1"
+            android:elevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_weight="1"
+            android:background="@drawable/inventory_edit_background"
+            android:text="6">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:maxLength="3"
-                app:strokeWidth="0dp"
-                app:layout_constraintEnd_toStartOf="@id/inventory_5"
-                app:layout_constraintStart_toEndOf="@id/inventory_3"
-                app:layout_constraintTop_toTopOf="parent"
-                app:cardCornerRadius="0dp"
-                android:backgroundTint="#E8F3C1"
-                android:elevation="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_weight="1"
-                android:background="@drawable/inventory_edit_background"
-                android:text="6" >
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/lock_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:src="@drawable/unavaialble_lock"
+                    android:layout_marginRight="5dp"
+                    android:layout_gravity="center"/>
+
                 <TextView
                     android:id="@+id/inventory_40"
                     android:layout_width="wrap_content"
@@ -214,26 +284,44 @@
                     style="@style/inventoryText"
                     android:textColor="@color/black"
                     android:layout_gravity="center"/>
-            </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/inventory_5"
-                style="@style/inventoryText"
-                android:layout_width="0dp"
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/inventory_5"
+            style="@style/inventoryText"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:maxLength="3"
+            app:strokeWidth="0dp"
+            android:backgroundTint="#E8F3C1"
+            android:layout_gravity="center"
+            app:layout_constraintStart_toEndOf="@id/inventory_4"
+            app:layout_constraintEnd_toStartOf="@id/inventory_6"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:cardCornerRadius="0dp"
+            android:elevation="0dp"
+            android:layout_weight="1"
+            android:text="6">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:maxLength="3"
-                app:strokeWidth="0dp"
-                android:backgroundTint="#E8F3C1"
-                android:layout_gravity="center"
-                app:layout_constraintStart_toEndOf="@id/inventory_4"
-                app:layout_constraintEnd_toStartOf="@id/inventory_6"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:cardCornerRadius="0dp"
-                android:elevation="0dp"
-                android:layout_weight="1"
-                android:background="@drawable/inventory_edit_background"
-                android:text="6">
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/lock_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:src="@drawable/unavaialble_lock"
+                    android:layout_marginRight="5dp"
+                    android:layout_gravity="center"/>
+
                 <TextView
                     android:id="@+id/inventory_50"
                     android:layout_width="wrap_content"
@@ -242,25 +330,43 @@
                     style="@style/inventoryText"
                     android:textColor="@color/black"
                     android:layout_gravity="center"/>
-            </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/inventory_6"
-                style="@style/inventoryText"
-                android:layout_width="0dp"
-                app:strokeWidth="0dp"
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/inventory_6"
+            style="@style/inventoryText"
+            android:layout_width="0dp"
+            app:strokeWidth="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:maxLength="3"
+            app:cardCornerRadius="0dp"
+            android:backgroundTint="#E8F3C1"
+            app:layout_constraintEnd_toStartOf="@id/inventory_7"
+            app:layout_constraintStart_toEndOf="@id/inventory_5"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_weight="1"
+            android:text="6">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:maxLength="3"
-                app:cardCornerRadius="0dp"
-                android:backgroundTint="#E8F3C1"
-                app:layout_constraintEnd_toStartOf="@id/inventory_7"
-                app:layout_constraintStart_toEndOf="@id/inventory_5"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_weight="1"
-                android:background="@drawable/inventory_edit_background"
-                android:text="6">
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/lock_6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/unavaialble_lock"
+                    android:layout_marginRight="5dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center"/>
+
                 <TextView
                     android:id="@+id/inventory_60"
                     android:layout_width="wrap_content"
@@ -269,25 +375,44 @@
                     style="@style/inventoryText"
                     android:textColor="@color/black"
                     android:layout_gravity="center"/>
-            </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/inventory_7"
-                style="@style/inventoryText"
-                android:layout_width="0dp"
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/inventory_7"
+            style="@style/inventoryText"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:maxLength="3"
+            android:layout_gravity="center"
+            android:backgroundTint="#E8F3C1"
+            app:strokeWidth="0dp"
+            app:layout_constraintStart_toEndOf="@id/inventory_6"
+            app:layout_constraintEnd_toStartOf="@id/inventory_8"
+            app:layout_constraintTop_toTopOf="parent"
+            app:cardCornerRadius="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_weight="1"
+            android:background="@drawable/inventory_edit_background"
+            android:text="6">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:maxLength="3"
-                android:layout_gravity="center"
-                android:backgroundTint="#E8F3C1"
-                app:strokeWidth="0dp"
-                app:layout_constraintStart_toEndOf="@id/inventory_6"
-                app:layout_constraintEnd_toStartOf="@id/inventory_8"
-                app:layout_constraintTop_toTopOf="parent"
-                app:cardCornerRadius="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_weight="1"
-                android:background="@drawable/inventory_edit_background"
-                android:text="6">
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/lock_7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/unavaialble_lock"
+                    android:layout_marginRight="5dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center"/>
+
                 <TextView
                     android:id="@+id/inventory_70"
                     android:layout_width="wrap_content"
@@ -296,26 +421,44 @@
                     style="@style/inventoryText"
                     android:textColor="@color/black"
                     android:layout_gravity="center"/>
-            </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/inventory_8"
-                style="@style/inventoryText"
-                android:layout_width="0dp"
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/inventory_8"
+            style="@style/inventoryText"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:maxLength="3"
+            app:cardCornerRadius="0dp"
+            android:elevation="0dp"
+            app:strokeWidth="0dp"
+            android:backgroundTint="#E8F3C1"
+            app:layout_constraintStart_toEndOf="@id/inventory_7"
+            app:layout_constraintEnd_toStartOf="@id/inventory_9"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_weight="1"
+            android:text="6">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:maxLength="3"
-                app:cardCornerRadius="0dp"
-                android:elevation="0dp"
-                app:strokeWidth="0dp"
-                android:backgroundTint="#E8F3C1"
-                app:layout_constraintStart_toEndOf="@id/inventory_7"
-                app:layout_constraintEnd_toStartOf="@id/inventory_9"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_weight="1"
-                android:background="@drawable/inventory_edit_background"
-                android:text="6">
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/lock_8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/unavaialble_lock"
+                    android:layout_marginRight="5dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center"/>
+
                 <TextView
                     android:id="@+id/inventory_80"
                     android:layout_width="wrap_content"
@@ -324,25 +467,44 @@
                     style="@style/inventoryText"
                     android:textColor="@color/black"
                     android:layout_gravity="center"/>
-            </com.google.android.material.card.MaterialCardView>
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/inventory_9"
-                style="@style/inventoryText"
-                android:layout_width="0dp"
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/inventory_9"
+            style="@style/inventoryText"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:maxLength="3"
+            app:cardCornerRadius="0dp"
+            android:backgroundTint="#E8F3C1"
+            app:strokeWidth="0dp"
+            android:elevation="0dp"
+            app:layout_constraintStart_toEndOf="@id/inventory_8"
+            app:layout_constraintEnd_toStartOf="@id/inventory_10"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_weight="1"
+            android:text="6">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:maxLength="3"
-                app:cardCornerRadius="0dp"
-                android:backgroundTint="#E8F3C1"
-                app:strokeWidth="0dp"
-                android:elevation="0dp"
-                app:layout_constraintStart_toEndOf="@id/inventory_8"
-                app:layout_constraintEnd_toStartOf="@id/inventory_10"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_weight="1"
-                android:background="@drawable/inventory_edit_background"
-                android:text="6">
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/lock_9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/unavaialble_lock"
+                    android:visibility="gone"
+                    android:layout_marginRight="5dp"
+                    android:layout_gravity="center"/>
+
                 <TextView
                     android:id="@+id/inventory_90"
                     android:layout_width="wrap_content"
@@ -351,34 +513,56 @@
                     android:text="6"
                     android:textColor="@color/black"
                     android:layout_gravity="center"/>
-            </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/inventory_10"
-                style="@style/inventoryText"
-                android:layout_width="0dp"
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/inventory_10"
+            style="@style/inventoryText"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:maxLength="3"
+            android:backgroundTint="#E8F3C1"
+            app:layout_constraintStart_toEndOf="@id/inventory_9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:cardCornerRadius="0dp"
+            android:elevation="0dp"
+            app:strokeWidth="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_weight="1"
+            android:text="6">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:maxLength="3"
-                android:backgroundTint="#E8F3C1"
-                app:layout_constraintStart_toEndOf="@id/inventory_9"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:cardCornerRadius="0dp"
-                android:elevation="0dp"
-                app:strokeWidth="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_weight="1"
-                android:text="6">
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/lock_10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/unavaialble_lock"
+                    android:layout_marginRight="5dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center"/>
+
                 <TextView
                     android:id="@+id/inventory_100"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="6"
                     style="@style/inventoryText"
+                    android:text="6"
                     android:textColor="@color/black"
                     android:layout_gravity="center"/>
-            </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
 
 

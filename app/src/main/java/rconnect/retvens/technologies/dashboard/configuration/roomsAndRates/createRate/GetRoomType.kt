@@ -5,7 +5,8 @@ data class GetRoomType(
     val roomTypeId:String,
     val roomTypeName:String,
     val extraAdultRate:String,
-    val extraChildRate:String
+    val extraChildRate:String,
+    val baseRate:String
 )
 data class GetRoomTypeData(
     val `data`:ArrayList<GetRoomType>

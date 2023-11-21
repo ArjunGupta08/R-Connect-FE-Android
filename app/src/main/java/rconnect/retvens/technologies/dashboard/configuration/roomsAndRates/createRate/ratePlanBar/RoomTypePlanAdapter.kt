@@ -62,13 +62,11 @@ class RoomTypePlanAdapter(val applicationContext:Context, val rateTypeList:Array
 
         val ratePlans = AddCompanyRatePlanDataClass(
             UserSessionManager(applicationContext).getUserId().toString(),currentData.propertyId,currentData.roomTypeId,"Bar",currentData.roomTypeId,
-            "",it.mealPlanName,it.mealPlanId,shortCode, selectedInclusionList,"",it.chargesPerOccupancy,"","",currentData.extraAdultRate,currentData.extraChildRate,"",it.mealPlanName
+            "",it.mealPlanName,it.mealPlanId,shortCode, selectedInclusionList,"",it.chargesPerOccupancy,"","",currentData.extraAdultRate,currentData.extraChildRate,currentData.roomBasePrice,it.mealPlanName
         )
 
         ratePlan.add(ratePlans)
         }
-
-
 
         holder.recyclerRoom.layoutManager = LinearLayoutManager(applicationContext)
         val adapter = RatePlanBarAdapter(applicationContext,ratePlan)

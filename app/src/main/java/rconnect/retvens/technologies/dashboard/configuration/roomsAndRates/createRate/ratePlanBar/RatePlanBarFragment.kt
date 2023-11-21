@@ -232,7 +232,7 @@ class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:Arra
 
 
         roomList.forEach {
-            roomTypePlanList.add(RoomTypePlanDataClass(it.propertyId,it.roomTypeId,it.roomTypeName,it.extraAdultRate,it.extraChildRate,mealList))
+            roomTypePlanList.add(RoomTypePlanDataClass(it.propertyId,it.roomTypeId,it.roomTypeName,it.extraAdultRate,it.extraChildRate,it.baseRate,mealList))
         }
 
 
