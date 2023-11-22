@@ -53,7 +53,8 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
         onRateTypeListChangeListener = listener
     }
     interface OnRateTypeListChangeListener {
-        fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddCompanyRatePlanDataClass>)
+        fun onRateTypeListChanged(updatedRateTypeList: AddCompanyRatePlanDataClass, position: Int)
+        fun onDeleteButtonClick(updatedRateTypeList: AddCompanyRatePlanDataClass, position: Int)
     }
     class ViewHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
 
@@ -121,9 +122,7 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
         holder.ratePlanTotalTxt.text = currentData.ratePlanTotal
 
         holder.delete.setOnClickListener {
-            rateTypeList.remove(currentData)
-            notifyDataSetChanged()
-            onRateTypeListChangeListener?.onRateTypeListChanged(rateTypeList)
+            onRateTypeListChangeListener?.onDeleteButtonClick(currentData, position)
         }
 
         holder.edit.setOnClickListener {
@@ -172,25 +171,23 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
 
         val myInterfaceImplementation = object : AddInclusionsAdapter.OnUpdate {
             override fun onUpdateList(selectedList: ArrayList<GetInclusionsData>) {
-                selectedList.forEach { getInclusionData ->
-                    val inclusionPlan = InclusionPlan(
-                        inclusionId = getInclusionData.inclusionId,
-                        inclusionType = getInclusionData.inclusionType,
-                        inclusionName = getInclusionData.inclusionName,
-                        postingRule = getInclusionData.postingRule,
-                        chargeRule = getInclusionData.chargeRule,
-                        rate = getInclusionData.charge
-                    )
-
-                    selectedInclusions.add(inclusionPlan)
+                selectedList.forEach {
+                    val currentItem = InclusionPlan(
+                        it.inclusionId,
+                        it.inclusionType,
+                        it.inclusionName,
+                        it.postingRule, it.chargeRule, it.charge)
+                    if (!selectedInclusions.contains(currentItem)) {
+                        selectedInclusions.add(currentItem)
+                    }
                 }
                 holder.recycler_inclusion.layoutManager = LinearLayoutManager(applicationContext)
                 val createRateTypeAdapter = CreateRateTypeAdapter(applicationContext, selectedInclusions, postingRuleArray, chargeRuleArray)
                 holder.recycler_inclusion.adapter = createRateTypeAdapter
                 createRateTypeAdapter.notifyDataSetChanged()
 
-                selectedList.forEach {
-                    totalInclusionCharges += it.charge.toDouble()
+                selectedInclusions.forEach {
+                    totalInclusionCharges += it.rate.toDouble()
                 }
 
                 holder.totalInclusionChargesET.setText("$totalInclusionCharges")
@@ -326,11 +323,11 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
                     "${holder.mealPlanETxt.text.toString()}",
                 )
                 Log.d("ratePlanData", ratePlanDataClass.toString())
-                if (!updatedRateTypeList.contains(ratePlanDataClass)) {
-                    updatedRateTypeList.add(ratePlanDataClass)
-                }
 
-                onRateTypeListChangeListener?.onRateTypeListChanged(updatedRateTypeList)
+                    updatedRateTypeList.add(ratePlanDataClass)
+
+
+                onRateTypeListChangeListener?.onRateTypeListChanged(currentData, position)
             }
         }
     }
@@ -370,11 +367,16 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
                 response: Response<GetInclusionsDataClass?>
             ) {
                 if (response.isSuccessful) {
-                    val adapter = AddInclusionsAdapter(response.body()!!.data, applicationContext)
-                    recyclerView.adapter = adapter
-                    adapter.setOnUpdateListener(myInterfaceImplementation)
-                    myInterfaceImplementation
-                    adapter.notifyDataSetChanged()
+                    try {
+                        val adapter =
+                            AddInclusionsAdapter(response.body()!!.data, applicationContext)
+                        recyclerView.adapter = adapter
+                        adapter.setOnUpdateListener(myInterfaceImplementation)
+                        myInterfaceImplementation
+                        adapter.notifyDataSetChanged()
+                    }catch (e : Exception) {
+                        e.printStackTrace()
+                    }
                 } else {
                     Log.d("error", "${response.code()} ${response.message()}")
                 }
