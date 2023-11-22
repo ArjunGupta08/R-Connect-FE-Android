@@ -113,6 +113,7 @@ class LoginFragment : Fragment() {
                     SharedPrefOnboardingFlags(requireContext()).saveLoginFlagValue(true)
                     UserSessionManager(requireContext()).saveUserData(response.body()!!.data!!.userId, response.body()!!.data!!.token)
                     UserSessionManager(requireContext()).savePropertyId(binding.authCode.text.toString())
+                    UserSessionManager(requireContext()).saveUsername(binding.username.text.toString())
 
                     val intent = Intent(requireContext(), DashboardActivity::class.java)
                     startActivity(intent)

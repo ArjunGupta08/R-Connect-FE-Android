@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
@@ -24,7 +25,10 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
+import rconnect.retvens.technologies.Api.OAuthClient
+import rconnect.retvens.technologies.Api.configurationApi.ChainConfiguration
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.channelManager.AddReservationFragment.AddReservationFragment
 import rconnect.retvens.technologies.dashboard.channelManager.ChannelsManagement.ChannelManagementFragment
@@ -48,11 +52,16 @@ import rconnect.retvens.technologies.dashboard.configuration.others.businessSour
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.AmenitiesFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.InclusionPlansFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.RatePlan.RatePlanFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.GetPropertyData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.SelectedAmenitiesAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.MealPlanFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.ActivityDashboardBinding
 import rconnect.retvens.technologies.utils.bottomSlideInAnimation
 import rconnect.retvens.technologies.utils.topInAnimation
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class DashboardActivity : AppCompatActivity() {
 
@@ -87,6 +96,9 @@ class DashboardActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         toolBar()
+        getProperty()
+
+        binding.name.text = UserSessionManager(applicationContext).getUsername().toString()
 
         val userSessionManager = UserSessionManager(applicationContext)
 
@@ -136,6 +148,43 @@ class DashboardActivity : AppCompatActivity() {
 
         chanelManagerNavLayout()
     }
+
+    private fun getProperty() {
+            val get = OAuthClient<ChainConfiguration>(applicationContext).create(ChainConfiguration::class.java).getPropertyById(
+                UserSessionManager(applicationContext).getUserId().toString(),
+                UserSessionManager(applicationContext).getPropertyId().toString()
+            )
+            get.enqueue(object : Callback<GetPropertyData?> {
+                override fun onResponse(
+                    call: Call<GetPropertyData?>,
+                    response: Response<GetPropertyData?>
+                ) {
+                    if (response.isSuccessful) {
+                            try {
+                                val data = response.body()!!.data
+
+                                Log.e("data", data.toString())
+
+                                if (data.hotelLogo.isEmpty()) {
+                                    binding.hotelImg.setImageResource(R.drawable.svg_add_property)
+                                } else {
+                                    Glide.with(applicationContext).load(data.hotelLogo)
+                                        .into(binding.hotelImg)
+                                }
+                                binding.hotelName.text = (data.propertyName)
+                                binding.hotelLocation.text = "${data.city}, ${data.country}"
+
+                            } catch (e : Exception) {
+                                e.printStackTrace()
+                            }
+                    }
+                }
+
+                override fun onFailure(call: Call<GetPropertyData?>, t: Throwable) {
+                    Log.e("error", t.localizedMessage)
+                }
+            })
+        }
 
     private fun toolBar() {
 
@@ -237,6 +286,10 @@ class DashboardActivity : AppCompatActivity() {
     }
 
     private fun chanelManagerNavLayout() {
+        binding.quickReservation.isVisible = true
+        binding.imgNotify.isVisible = true
+        binding.notificationCountCard.isVisible = true
+
         binding.dashboardCard.setOnClickListener {
             replaceFragment(DashBoardFragment())
             isCardSelected(binding.dashboardCard, binding.dashboardTxt)
@@ -293,6 +346,10 @@ class DashboardActivity : AppCompatActivity() {
     }
 
     private fun configurationNavLayout() {
+        binding.quickReservation.isVisible = false
+        binding.imgNotify.isVisible = false
+        binding.notificationCountCard.isVisible = false
+
         isCardSelected(binding.propertiesCard, binding.propertiesText)
         replaceFragment(ViewPropertiesFragment())
 
