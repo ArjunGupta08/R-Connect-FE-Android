@@ -20,7 +20,7 @@ import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.showDropdownMenu
 
 class RoomTypeCompanyPlanAdapter(val applicationContext:Context, val rateTypeList:ArrayList<RoomTypePlanDataClass>):RecyclerView.Adapter<RoomTypeCompanyPlanAdapter.ViewHolder>(),
-    RatePlanBarAdapter.OnRateTypeListChangeListener {
+    RatePlanCompanyAdapter.OnRateTypeListChangeListener {
 
     private var ratePlan:ArrayList<AddCompanyRatePlanDataClass> = ArrayList()
     val selectedInclusionList: ArrayList<InclusionPlan> = arrayListOf()
@@ -72,7 +72,7 @@ class RoomTypeCompanyPlanAdapter(val applicationContext:Context, val rateTypeLis
 
 
         holder.recyclerRoom.layoutManager = LinearLayoutManager(applicationContext)
-        val adapter = RatePlanBarAdapter(applicationContext,ratePlan)
+        val adapter = RatePlanCompanyAdapter(applicationContext,ratePlan)
         holder.recyclerRoom.adapter = adapter
         Log.e("check",rateTypeList.toString())
         adapter.notifyDataSetChanged()
@@ -92,7 +92,6 @@ class RoomTypeCompanyPlanAdapter(val applicationContext:Context, val rateTypeLis
         // Combine the two codes and convert to uppercase
         return (code1 + code2).toUpperCase()
     }
-
     override fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddCompanyRatePlanDataClass>) {
         onRateTypeListChangeListener?.onRateTypeListChanged(updatedRateTypeList)
     }

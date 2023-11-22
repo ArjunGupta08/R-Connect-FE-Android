@@ -84,8 +84,8 @@ class RatesAndInventoryFragment : Fragment() {
      var endDate:Date? = null
     private var checkInDate: String? = null
     private var checkOutDate: String? = null
-
-
+    var isBlocked = ""
+    var isAddedInt = ""
     var otaList = ArrayList<String>()
     var otaDialogList = ArrayList<String>()
 
@@ -522,10 +522,9 @@ class RatesAndInventoryFragment : Fragment() {
         progressDialog = showProgressDialog(requireContext())
         setInventory(userId,propertyId,checkInDate,checkOutDate)
 
-
         bindingTab.saveCard.setOnClickListener {
             progressDialog = showProgressDialog(requireContext())
-            UpdateSingleInventory(roomId,apistartDate,updateinventory)
+            UpdateSingleInventory(roomId,apistartDate,updateinventory,isBlocked,isAddedInt)
         }
 
 
@@ -534,12 +533,14 @@ class RatesAndInventoryFragment : Fragment() {
     private fun UpdateSingleInventory(
         roomId: String,
         apistartDate: String,
-        updateinventory: String
+        updateinventory: String,
+        isBlock:String,
+        isAdd:String
     ) {
 
         val body = UpdateSingleInventory(UserSessionManager(requireContext()).getUserId().toString(),
             UserSessionManager(requireContext()).getPropertyId().toString(),
-            roomId,apistartDate,apistartDate,"true",updateinventory,"OTA Common Pool")
+            roomId,apistartDate,apistartDate,isAdd.toBoolean(),isBlock.toBoolean(),updateinventory,"OTA Common Pool")
 
         val updateInventory = OAuthClient<RatesAndInventoryInterface>(requireContext()).create(RatesAndInventoryInterface::class.java).updateInventory(body)
 
@@ -593,7 +594,7 @@ class RatesAndInventoryFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<GetRatePlansData?>, t: Throwable) {
-                TODO("Not yet implemented")
+
             }
         })
 
@@ -706,8 +707,6 @@ class RatesAndInventoryFragment : Fragment() {
                 Toast.makeText(requireContext(), "Mission failed SuccessFully", Toast.LENGTH_SHORT).show()
             }
         })
-
-
     }
 
     private fun selectCard(day: TextView?) {
@@ -740,12 +739,11 @@ class RatesAndInventoryFragment : Fragment() {
 
     private fun setInventory(userId:String?,propertyId:String?,startDate:String?,endDate:String?) {
 
-
         Log.e("token",UserSessionManager(requireContext()).getToken().toString())
 
         val inventoryApi = OAuthClient<RatesAndInventoryInterface>(requireContext()).create(RatesAndInventoryInterface::class.java).getInventory(userId.toString(),propertyId.toString(),startDate.toString(),endDate.toString())
 
-       inventoryApi.enqueue(object : Callback<ResponseData?>,
+        inventoryApi.enqueue(object : Callback<ResponseData?>,
            RoomsInventoryAdapter.OnRateTypeListChangeListener {
            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
                if (response.isSuccessful && isAdded){
@@ -762,7 +760,6 @@ class RatesAndInventoryFragment : Fragment() {
                    progressDialog.dismiss()
                }
            }
-
            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
                Log.e("error",t.message.toString())
                progressDialog.dismiss()
@@ -771,12 +768,21 @@ class RatesAndInventoryFragment : Fragment() {
            override fun onRateTypeListChanged(
                roomTypeId: String,
                startDate: String,
-               inventory: String
+               inventory: String,
+               isBlock: String,
+               isAdd: String
            ) {
+               Log.e("finalInventory",inventory.toString())
+               Log.e("isBlock",isBlock.toString())
+               Log.e("isAdd",isAdd.toString())
                apistartDate = startDate
                roomId = roomTypeId
                updateinventory = inventory
+               isBlocked = isBlock
+               isAddedInt = isAdd
            }
+
+
        })
 
 

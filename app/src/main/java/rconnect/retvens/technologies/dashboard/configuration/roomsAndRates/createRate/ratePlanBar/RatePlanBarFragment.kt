@@ -56,7 +56,7 @@ class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:Arra
 
     val rateList = ArrayList<CreateRateData>()
     private lateinit var ratePlanDetailsAdapter : RoomTypePlanAdapter
-    private var ratePlanDetailsList = ArrayList<AddCompanyRatePlanDataClass>()
+    private var ratePlanDetailsList = ArrayList<AddBarsRatePlanDataClass>()
     private var onRateTypeListChangeListener : OnRateTypeListChangeListener ?= null
     fun setOnListUpdateListener (listener : OnRateTypeListChangeListener) {
         onRateTypeListChangeListener = listener
@@ -248,7 +248,7 @@ class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:Arra
         selectedList.forEach {
             val selectedInclusionList: ArrayList<InclusionPlan> = arrayListOf()
 
-            val ratePlanDataClass =  AddCompanyRatePlanDataClass(
+            val ratePlanDataClass =  AddBarsRatePlanDataClass(
                 UserSessionManager(requireContext()).getUserId().toString(),
                 UserSessionManager(requireContext()).getPropertyId().toString(),
                 "",
@@ -274,7 +274,7 @@ class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:Arra
             }
         }
     }
-    override fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddCompanyRatePlanDataClass>) {
+    override fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddBarsRatePlanDataClass>) {
         ratePlanDetailsList.addAll(updatedRateTypeList)
         Log.e("finalList",ratePlanDetailsList.toString())
         ratePlanDetailsAdapter.notifyDataSetChanged()
