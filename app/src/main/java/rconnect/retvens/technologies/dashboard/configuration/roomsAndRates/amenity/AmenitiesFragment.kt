@@ -51,6 +51,7 @@ class AmenitiesFragment : Fragment(), CreateAmenityDialog.OnAmenitySave, Ameniti
             val fragManager = childFragmentManager
             fragManager.let{openDialog.show(it, CreateAmenityDialog.TAG)}
             openDialog.setOnAmenityDialogListener(this@AmenitiesFragment)
+            openDialog.isCancelable = false
 
         }
 
@@ -78,6 +79,12 @@ class AmenitiesFragment : Fragment(), CreateAmenityDialog.OnAmenitySave, Ameniti
                         try {
 
                             val data = response.body()!!.data
+//
+//                                data.forEach {
+//                                    if (it.displayStatusData.toString() == "0"){
+//                                    data.remove(it)
+//                                }
+//                                }
                             val adapter = AmenitiesAdapter(data, requireContext())
                             binding.recyclerView.adapter = adapter
                             adapter.notifyDataSetChanged()

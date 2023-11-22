@@ -32,3 +32,7 @@ data class GetHotelData(
     val modifiedBy : String,
     val modifiedOn : String
 )
+
+data class DisplayStatusData(
+    val displayStatus:String
+)

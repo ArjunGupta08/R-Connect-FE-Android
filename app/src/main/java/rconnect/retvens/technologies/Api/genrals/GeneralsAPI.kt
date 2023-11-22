@@ -14,6 +14,7 @@ import rconnect.retvens.technologies.dashboard.configuration.others.businessSour
 import rconnect.retvens.technologies.dashboard.configuration.others.businessSource.GetBusinessSourceDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.businessSource.UpdateBusinessSourceDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.holiday.AddHolidayDataClass
+import rconnect.retvens.technologies.dashboard.configuration.others.holiday.DisplayStatusData
 import rconnect.retvens.technologies.dashboard.configuration.others.holiday.GetHotelDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.holiday.UpdateHolidayDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.seasons.AddSeasonDataClass
@@ -136,6 +137,12 @@ interface GeneralsAPI {
         @Query("sourceId") sourceId : String,
         @Body updateBusinessSourceDataClass: UpdateBusinessSourceDataClass
     ): Call<ResponseData>
+    @PATCH("updateBusinessSources")
+    fun deleteBusinessSourceApi (
+        @Query("userId") userId : String,
+        @Query("sourceId") sourceId : String,
+        @Body displayStatusData: DisplayStatusData
+    ): Call<ResponseData>
 
     /*--------------------------------------- Booking Source Type-----------------------------------------*/
 //    @POST("addTransportation")
@@ -194,6 +201,13 @@ interface GeneralsAPI {
         @Query("holidayId") holidayId : String,
         @Query("userId") userId : String,
         @Body updateHolidayDataClass: UpdateHolidayDataClass
+    ): Call<ResponseData>
+
+    @PATCH("patchHoliday")
+    fun deleteHolidayApi (
+        @Query("holidayId") holidayId : String,
+        @Query("userId") userId : String,
+        @Body displayStatusData : DisplayStatusData
     ): Call<ResponseData>
 
     /*--------------------------------------- Inclusions-----------------------------------------*/
@@ -266,6 +280,13 @@ interface GeneralsAPI {
         @Query("userId") userId : String,
         @Query("amenityId") amenityId : String,
         @Body patchAmenityData: PatchAmenityData
+    ): Call<ResponseData>
+
+    @PATCH("patchAmenity")
+    fun deleteAmenityApi(
+        @Query("userId") userId : String,
+        @Query("amenityId") amenityId : String,
+        @Body displayStatusData: rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.DisplayStatusData
     ): Call<ResponseData>
 
 }

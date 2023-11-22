@@ -43,6 +43,7 @@ data class FetchAmenitiesData (
     val createdBy : String,
     val modifiedBy : String,
     val modifiedOn : String,
+    val displayStatusData:String
 )
 
         /* Get Amenity Type */
@@ -62,4 +63,7 @@ data class GetAmenityIconData (
     val amenityIconId : String,
     val amenityIconLink : String,
     val amenityIconTags : ArrayList<String>,
+)
+data class DisplayStatusData(
+    val displayStatusData:String
 )

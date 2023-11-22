@@ -24,3 +24,7 @@ data class GetBusinessSourceData(
     val modifiedOn:String,
     val shortCode:String
 )
+
+data class DisplayStatusData(
+    val displayStatus:String
+)
