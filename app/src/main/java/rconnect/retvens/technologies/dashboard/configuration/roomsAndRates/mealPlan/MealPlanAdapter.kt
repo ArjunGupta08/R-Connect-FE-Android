@@ -1,5 +1,6 @@
 package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -21,6 +22,7 @@ import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.others.holiday.DisplayStatusData
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.generateShortCode
@@ -77,8 +79,10 @@ class MealPlanAdapter(var list:ArrayList<GetMealPlanData>, val applicationContex
         holder.lastModified.text = "${item.modifiedBy} ${item.modifiedOn}"
 
         holder.delete.setOnClickListener {
-            list.remove(item)
-            notifyDataSetChanged()
+            showDeleteConfirmationDialog(applicationContext){
+                progressDialog = showProgressDialog(applicationContext)
+                deleteMealPlan(applicationContext,item.mealPlanId,item)
+            }
         }
 
         holder.edit.setOnClickListener {
@@ -180,9 +184,51 @@ class MealPlanAdapter(var list:ArrayList<GetMealPlanData>, val applicationContex
             }
         })
     }
+    private fun deleteMealPlan(context: Context, mealPlanId: String,getMealPlanData: GetMealPlanData) {
+        val mP = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java)
+            .deleteMealPlanApi(UserSessionManager(applicationContext).getUserId().toString(),mealPlanId,
+                DisplayStatusData("0")
+            )
+
+        mP.enqueue(object : Callback<ResponseData?> {
+            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                progressDialog.dismiss()
+                if (response.isSuccessful) {
+                    list.remove(getMealPlanData)
+                    notifyDataSetChanged()
+                } else {
+                    Log.d("error", "${response.code()} ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                progressDialog.dismiss()
+                Log.d("error", t.localizedMessage)
+            }
+        })
+    }
 
     fun filterList(inputString : ArrayList<GetMealPlanData>) {
         list = inputString
         notifyDataSetChanged()
+    }
+
+    fun showDeleteConfirmationDialog(context: Context, onDeleteConfirmed: () -> Unit) {
+        val alertDialogBuilder = AlertDialog.Builder(context)
+        alertDialogBuilder.setTitle("Confirm Deletion")
+        alertDialogBuilder.setMessage("Do you really want to delete this item?")
+
+        alertDialogBuilder.setPositiveButton("Yes") { _, _ ->
+            // User clicked "Yes"
+            onDeleteConfirmed.invoke()
+        }
+
+        alertDialogBuilder.setNegativeButton("No") { dialog, _ ->
+            // User clicked "No"
+            dialog.dismiss()
+        }
+
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.show()
     }
 }

@@ -1,5 +1,6 @@
 package rconnect.retvens.technologies.dashboard.configuration.billings
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -21,6 +22,8 @@ import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.GetReservationTypeDataClass
+import rconnect.retvens.technologies.dashboard.configuration.others.holiday.DisplayStatusData
+import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.generateShortCode
 import rconnect.retvens.technologies.utils.shakeAnimation
@@ -74,8 +77,10 @@ class PaymentTypeAdapter(var list:ArrayList<GetPaymentTypeData>, val application
         holder.lastModified.text = "${item.modifiedBy} ${item.modifiedOn}"
 
         holder.delete.setOnClickListener {
-            list.remove(item)
-            notifyDataSetChanged()
+            showDeleteConfirmationDialog(applicationContext){
+                progressBar = showProgressDialog(applicationContext)
+                deletePayment(applicationContext,item.paymentTypeId,item)
+            }
         }
 
         holder.edit.setOnClickListener {
@@ -169,6 +174,44 @@ class PaymentTypeAdapter(var list:ArrayList<GetPaymentTypeData>, val application
                 Log.d("saveReservationError", "${t.localizedMessage}")
             }
         })
+    }
+    private fun deletePayment(context: Context,paymentTypeId: String,getPaymentTypeData: GetPaymentTypeData) {
+        val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).deletePaymentTypeApi(UserSessionManager(applicationContext).getUserId().toString(),paymentTypeId,
+            DisplayStatusData(("0"))
+        )
+        create.enqueue(object : Callback<ResponseData?> {
+            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                progressBar.dismiss()
+                if (response.isSuccessful){
+                    list.remove(getPaymentTypeData)
+                    notifyDataSetChanged()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                progressBar.dismiss()
+            }
+        })
+
+    }
+
+    fun showDeleteConfirmationDialog(context: Context, onDeleteConfirmed: () -> Unit) {
+        val alertDialogBuilder = AlertDialog.Builder(context)
+        alertDialogBuilder.setTitle("Confirm Deletion")
+        alertDialogBuilder.setMessage("Do you really want to delete this item?")
+
+        alertDialogBuilder.setPositiveButton("Yes") { _, _ ->
+            // User clicked "Yes"
+            onDeleteConfirmed.invoke()
+        }
+
+        alertDialogBuilder.setNegativeButton("No") { dialog, _ ->
+            // User clicked "No"
+            dialog.dismiss()
+        }
+
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.show()
     }
 
     fun filterList(searchText: ArrayList<GetPaymentTypeData>){

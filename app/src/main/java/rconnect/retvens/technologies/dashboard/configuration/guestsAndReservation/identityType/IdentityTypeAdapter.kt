@@ -1,5 +1,6 @@
 package rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.identityType
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -23,6 +24,7 @@ import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.GetReservationTypeDataClass
+import rconnect.retvens.technologies.dashboard.configuration.others.holiday.DisplayStatusData
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.generateShortCode
@@ -78,8 +80,10 @@ class IdentityTypeAdapter(var list:ArrayList<GetIdentityTypeData>, val applicati
         holder.lastModified.text = "${item.modifiedBy} ${item.modifiedOn}"
 
         holder.delete.setOnClickListener {
-            list.remove(item)
-            notifyDataSetChanged()
+            showDeleteConfirmationDialog(applicationContext){
+                progressDialog = showProgressDialog(applicationContext)
+                deleteIdentity(applicationContext,item.identityTypeId,item)
+            }
         }
         holder.edit.setOnClickListener {
             openCreateNewDialog(applicationContext, item.shortCode, item.identityType, item.identityTypeId)
@@ -162,6 +166,49 @@ class IdentityTypeAdapter(var list:ArrayList<GetIdentityTypeData>, val applicati
                 progressDialog.dismiss()
             }
         })
+    }
+
+    private fun deleteIdentity(context: Context,identityTypeId:String,getIdentityTypeData: GetIdentityTypeData) {
+        val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).deleteIdentityTypeApi(UserSessionManager(applicationContext).getUserId().toString(),identityTypeId,
+            DisplayStatusData(("0"))
+        )
+        create.enqueue(object : Callback<ResponseData?> {
+            override fun onResponse(
+                call: Call<ResponseData?>,
+                response: Response<ResponseData?>
+            ) {
+                Log.d( "reservation", "${response.code()} ${response.message()}")
+                progressDialog.dismiss()
+                if (response.isSuccessful){
+                    list.remove(getIdentityTypeData)
+                    notifyDataSetChanged()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+                progressDialog.dismiss()
+            }
+        })
+    }
+
+    fun showDeleteConfirmationDialog(context: Context, onDeleteConfirmed: () -> Unit) {
+        val alertDialogBuilder = AlertDialog.Builder(context)
+        alertDialogBuilder.setTitle("Confirm Deletion")
+        alertDialogBuilder.setMessage("Do you really want to delete this item?")
+
+        alertDialogBuilder.setPositiveButton("Yes") { _, _ ->
+            // User clicked "Yes"
+            onDeleteConfirmed.invoke()
+        }
+
+        alertDialogBuilder.setNegativeButton("No") { dialog, _ ->
+            // User clicked "No"
+            dialog.dismiss()
+        }
+
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.show()
     }
 
     fun filterData(inputText : ArrayList<GetIdentityTypeData>){

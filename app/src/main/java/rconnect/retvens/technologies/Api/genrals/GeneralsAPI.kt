@@ -88,6 +88,12 @@ interface GeneralsAPI {
         @Query("paymentTypeId") paymentTypeId : String,
         @Body updatePaymentTypeDataClass: UpdatePaymentTypeDataClass
     ): Call<GetReservationTypeDataClass>
+    @PATCH("patchPaymentType")
+    fun deletePaymentTypeApi (
+        @Query("userId") userId : String,
+        @Query("paymentTypeId") paymentTypeId : String,
+        @Body displayStatusData: DisplayStatusData
+    ): Call<ResponseData>
 
     /*--------------------------------------- Payment Type-----------------------------------------*/
     @POST("postIdentity")
@@ -105,6 +111,12 @@ interface GeneralsAPI {
         @Query("userId") userId : String,
         @Query("identityTypeId") identityTypeId : String,
         @Body updateIdentityTypeDataClass: UpdateIdentityTypeDataClass
+    ): Call<ResponseData>
+    @PATCH("patchIdentityType")
+    fun deleteIdentityTypeApi (
+        @Query("userId") userId : String,
+        @Query("identityTypeId") identityTypeId : String,
+        @Body displayStatusData: DisplayStatusData
     ): Call<ResponseData>
 
     /*--------------------------------------- Transportation Mode Type-----------------------------------------*/
@@ -241,6 +253,12 @@ interface GeneralsAPI {
         @Query("inclusionId") inclusionId : String,
         @Body updateInclusionDataClass: UpdateInclusionDataClass
     ): Call<ResponseData>
+    @PATCH("patchInclusion")
+    fun deleteInclusionsApi (
+        @Query("userId") userId : String,
+        @Query("inclusionId") inclusionId : String,
+        @Body displayStatusData: DisplayStatusData
+    ): Call<ResponseData>
 
     /*--------------------------------------- Meal Plan-----------------------------------------*/
     @POST("postMealPlan")
@@ -266,6 +284,12 @@ interface GeneralsAPI {
         @Query("userId") userId : String,
         @Query("mealPlanId") mealPlanId : String,
         @Body updateMealPlanData: UpdateMealPlanData
+    ): Call<ResponseData>
+    @PATCH("patchMeal")
+    fun deleteMealPlanApi (
+        @Query("userId") userId : String,
+        @Query("mealPlanId") mealPlanId : String,
+        @Body displayStatusData: DisplayStatusData
     ): Call<ResponseData>
 
     /*--------------------------------------- Amenity-----------------------------------------*/

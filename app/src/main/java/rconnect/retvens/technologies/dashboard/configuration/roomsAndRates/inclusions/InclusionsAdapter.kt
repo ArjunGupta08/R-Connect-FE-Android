@@ -1,5 +1,6 @@
 package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -22,6 +23,7 @@ import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.others.holiday.DisplayStatusData
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.generateShortCode
@@ -84,8 +86,10 @@ class InclusionsAdapter(var list:ArrayList<GetInclusionsData>, val applicationCo
         holder.lastModified.text = "${item.modifiedBy} ${item.modifiedOn}"
 
         holder.delete.setOnClickListener {
-            list.remove(item)
-            notifyDataSetChanged()
+            showDeleteConfirmationDialog(applicationContext){
+                progressDialog = showProgressDialog(applicationContext)
+                deleteInclusion(applicationContext,item.inclusionId,item)
+            }
         }
         holder.edit.setOnClickListener {
             // mis-clicking prevention, using threshold of 1000 ms
@@ -98,8 +102,46 @@ class InclusionsAdapter(var list:ArrayList<GetInclusionsData>, val applicationCo
         }
     }
 
+    fun deleteInclusion(applicationContext: Context,inclusionId:String,getInclusionsData: GetInclusionsData){
+        val create = OAuthClient<GeneralsAPI>(applicationContext).create(GeneralsAPI::class.java).deleteInclusionsApi(UserSessionManager(applicationContext).getUserId().toString(),inclusionId,
+            DisplayStatusData("0")
+        )
+        create.enqueue(object : Callback<ResponseData?> {
+            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                progressDialog.dismiss()
+                if (response.isSuccessful){
+                    list.remove(getInclusionsData)
+                    notifyDataSetChanged()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                progressDialog.dismiss()
+            }
+        })
+    }
+
     fun filterList(inputString : ArrayList<GetInclusionsData>) {
         list = inputString
         notifyDataSetChanged()
+    }
+
+    fun showDeleteConfirmationDialog(context: Context, onDeleteConfirmed: () -> Unit) {
+        val alertDialogBuilder = AlertDialog.Builder(context)
+        alertDialogBuilder.setTitle("Confirm Deletion")
+        alertDialogBuilder.setMessage("Do you really want to delete this item?")
+
+        alertDialogBuilder.setPositiveButton("Yes") { _, _ ->
+            // User clicked "Yes"
+            onDeleteConfirmed.invoke()
+        }
+
+        alertDialogBuilder.setNegativeButton("No") { dialog, _ ->
+            // User clicked "No"
+            dialog.dismiss()
+        }
+
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.show()
     }
 }
