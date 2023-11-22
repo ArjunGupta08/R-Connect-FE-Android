@@ -5,7 +5,9 @@ import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.res.ColorStateList
 import android.inputmethodservice.InputMethodService
+import android.text.Editable
 import android.text.InputType
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,14 +20,18 @@ import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.textfield.TextInputEditText
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.RatesAndInventoryInterface
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.IndexOutOfBoundsException
+import java.lang.NullPointerException
 
 class RoomsInventoryAdapter(val context: Context, private val inventory:ResponseData) :
     RecyclerView.Adapter<RoomsInventoryAdapter.InventoryViewHolder>() {
@@ -33,21 +39,28 @@ class RoomsInventoryAdapter(val context: Context, private val inventory:Response
     private lateinit var ratePlanPricesAdapter: RatePlanPricesAdapter
     private  var mList:ArrayList<String> = ArrayList()
 
-    private var barRateList:ArrayList<BarRatePlan> = ArrayList()
     private lateinit var progressDialog:Dialog
+    private var onRateTypeListChangeListener : OnRateTypeListChangeListener ?= null
+    fun setOnListUpdateListener (listener : OnRateTypeListChangeListener) {
+        onRateTypeListChangeListener = listener
+    }
+
+    interface OnRateTypeListChangeListener {
+        fun onRateTypeListChanged(roomTypeId:String,startDate:String,inventory:String)
+    }
 
     class InventoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val roomType:TextView = itemView.findViewById(R.id.roomType)
-        val inventory1: TextView = itemView.findViewById(R.id.inventory_)
-        val inventory2: TextView = itemView.findViewById(R.id.inventory_20)
-        val inventory3: TextView = itemView.findViewById(R.id.inventory_30)
-        val inventory4: TextView = itemView.findViewById(R.id.inventory_40)
-        val inventory5: TextView = itemView.findViewById(R.id.inventory_50)
-        val inventory6: TextView = itemView.findViewById(R.id.inventory_60)
-        val inventory7: TextView = itemView.findViewById(R.id.inventory_70)
-        val inventory8: TextView = itemView.findViewById(R.id.inventory_80)
-        val inventory9: TextView = itemView.findViewById(R.id.inventory_90)
-        val inventory10: TextView = itemView.findViewById(R.id.inventory_100)
+        val inventory1: TextInputEditText = itemView.findViewById(R.id.inventory_)
+        val inventory2: TextInputEditText = itemView.findViewById(R.id.inventory_20)
+        val inventory3: TextInputEditText = itemView.findViewById(R.id.inventory_30)
+        val inventory4: TextInputEditText = itemView.findViewById(R.id.inventory_40)
+        val inventory5: TextInputEditText = itemView.findViewById(R.id.inventory_50)
+        val inventory6: TextInputEditText = itemView.findViewById(R.id.inventory_60)
+        val inventory7: TextInputEditText = itemView.findViewById(R.id.inventory_70)
+        val inventory8: TextInputEditText = itemView.findViewById(R.id.inventory_80)
+        val inventory9: TextInputEditText = itemView.findViewById(R.id.inventory_90)
+        val inventory10: TextInputEditText = itemView.findViewById(R.id.inventory_100)
 
         val inventoryCard: MaterialCardView = itemView.findViewById(R.id.inventory_1)
         val inventoryCard20: MaterialCardView = itemView.findViewById(R.id.inventory_2)
@@ -88,16 +101,16 @@ class RoomsInventoryAdapter(val context: Context, private val inventory:Response
         Log.e("current",inventory.toString())
 
         holder.roomType.setText(room.roomTypeName)
-        holder.inventory1.text = room.calculatedInventoryData.get(0).inventory.toString()
-        holder.inventory2.text = room.calculatedInventoryData.get(1).inventory.toString()
-        holder.inventory3.text = room.calculatedInventoryData.get(2).inventory.toString()
-        holder.inventory4.text = room.calculatedInventoryData.get(3).inventory.toString()
-        holder.inventory5.text = room.calculatedInventoryData.get(4).inventory.toString()
-        holder.inventory6.text = room.calculatedInventoryData.get(5).inventory.toString()
-        holder.inventory7.text = room.calculatedInventoryData.get(6).inventory.toString()
-        holder.inventory8.text = room.calculatedInventoryData.get(7).inventory.toString()
-        holder.inventory9.text = room.calculatedInventoryData.get(8).inventory.toString()
-        holder.inventory10.text = room.calculatedInventoryData.get(9).inventory.toString()
+        holder.inventory1.setText(room.calculatedInventoryData.get(0).inventory.toString())
+        holder.inventory2.setText(room.calculatedInventoryData.get(1).inventory.toString())
+        holder.inventory3.setText(room.calculatedInventoryData.get(2).inventory.toString())
+        holder.inventory4.setText(room.calculatedInventoryData.get(3).inventory.toString())
+        holder.inventory5.setText(room.calculatedInventoryData.get(4).inventory.toString())
+        holder.inventory6.setText(room.calculatedInventoryData.get(5).inventory.toString())
+        holder.inventory7.setText(room.calculatedInventoryData.get(6).inventory.toString())
+        holder.inventory8.setText(room.calculatedInventoryData.get(7).inventory.toString())
+        holder.inventory9.setText(room.calculatedInventoryData.get(8).inventory.toString())
+        holder.inventory10.setText(room.calculatedInventoryData.get(9).inventory.toString())
 
         if (room.calculatedInventoryData.get(0).inventory.toString() == "0"){
             holder.inventoryCard.setBackgroundResource(R.drawable.unavailable_room_card)
@@ -321,28 +334,47 @@ class RoomsInventoryAdapter(val context: Context, private val inventory:Response
             holder.unAvailableLock10.visibility = View.VISIBLE
         }
 
-        holder.inventory1.isCursorVisible = true;
-        holder.inventory1.inputType = InputType.TYPE_CLASS_NUMBER;
+//        holder.inventory1.setOnClickListener {
+//            setInputEditText(holder.inventory1)
+//        }
+        setInputEditText(holder.inventory1,room.roomTypeId.toString(),room.calculatedInventoryData.get(0).date)
+        setInputEditText(holder.inventory2,room.roomTypeId.toString(),room.calculatedInventoryData.get(1).date)
+        setInputEditText(holder.inventory3,room.roomTypeId.toString(),room.calculatedInventoryData.get(2).date)
+        setInputEditText(holder.inventory4,room.roomTypeId.toString(),room.calculatedInventoryData.get(3).date)
+        setInputEditText(holder.inventory5,room.roomTypeId.toString(),room.calculatedInventoryData.get(4).date)
+        setInputEditText(holder.inventory6,room.roomTypeId.toString(),room.calculatedInventoryData.get(5).date)
+        setInputEditText(holder.inventory7,room.roomTypeId.toString(),room.calculatedInventoryData.get(6).date)
+        setInputEditText(holder.inventory8,room.roomTypeId.toString(),room.calculatedInventoryData.get(7).date)
+        setInputEditText(holder.inventory9,room.roomTypeId.toString(),room.calculatedInventoryData.get(8).date)
+        setInputEditText(holder.inventory10,room.roomTypeId.toString(),room.calculatedInventoryData.get(9).date)
 
-        holder.inventory1.setOnClickListener{
-            holder.inventory1.isCursorVisible = true;
-            holder.inventory1.isFocusableInTouchMode = true;
-            holder.inventory1.inputType = InputType.TYPE_CLASS_NUMBER;
+        holder.recyclerView.layoutManager = LinearLayoutManager(context)
 
-            holder.inventory1.requestFocus(); //to trigger the soft input
 
-        }
 
         progressDialog = showProgressDialog(context)
-        getRates(room.roomTypeId)
+        getRates(position,room.roomTypeId,holder.recyclerView)
         progressDialog.dismiss()
-        holder.recyclerView.layoutManager = LinearLayoutManager(context)
-        ratePlanPricesAdapter = RatePlanPricesAdapter(context,barRateList)
-        holder.recyclerView.adapter = ratePlanPricesAdapter
-        ratePlanPricesAdapter.notifyDataSetChanged()
     }
 
-    private fun getRates(roomTypeId:String) {
+    private fun setInputEditText(input: TextInputEditText,roomTypeId: String,startDate: String) {
+        input.addTextChangedListener(object :TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                        onRateTypeListChangeListener?.onRateTypeListChanged(roomTypeId,startDate,p0.toString())
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+        })
+    }
+
+    private fun getRates(position: Int,roomTypeId:String,recyclerView: RecyclerView) {
 
         val userId = UserSessionManager(context).getUserId().toString()
         Log.e("userId",userId.toString())
@@ -352,12 +384,17 @@ class RoomsInventoryAdapter(val context: Context, private val inventory:Response
         getRate.enqueue(object : Callback<RatesDataClass?> {
             override fun onResponse(call: Call<RatesDataClass?>, response: Response<RatesDataClass?>) {
                 if (response.isSuccessful){
-                    val response = response.body()!!
-                    barRateList.clear()
-                    barRateList.addAll(response.data)
-                    Log.e("response",response.toString())
-                    ratePlanPricesAdapter.notifyDataSetChanged()
-                    progressDialog.dismiss()
+                    try {
+                        val response = response.body()!!
+                        ratePlanPricesAdapter = RatePlanPricesAdapter(context,response.data!!)
+                        recyclerView.adapter = ratePlanPricesAdapter
+                        Log.e("response",response.toString())
+                        ratePlanPricesAdapter.notifyItemChanged(position)
+                        progressDialog.dismiss()
+                    }catch (e:IndexOutOfBoundsException){
+                        Log.e("error",e.message.toString())
+                    }
+
                 }else{
                     Log.e("error",response.code().toString())
                     progressDialog.dismiss()
