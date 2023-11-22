@@ -1,5 +1,6 @@
 package rconnect.retvens.technologies.dashboard.configuration.others.seasons
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
@@ -21,6 +22,7 @@ import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.GetReservationTypeDataClass
+import rconnect.retvens.technologies.dashboard.configuration.others.holiday.DisplayStatusData
 import rconnect.retvens.technologies.dashboard.configuration.others.holiday.GetHotelData
 import rconnect.retvens.technologies.dashboard.configuration.others.holiday.UpdateHolidayDataClass
 import rconnect.retvens.technologies.onboarding.ResponseData
@@ -98,6 +100,29 @@ class SeasonAdapter(var list:ArrayList<GetSeasonData>, val applicationContext: C
             }
         })
     }
+    private fun deleteSeason(context: Context,seasonId:String, getSeasonData: GetSeasonData) {
+        val create = UserSessionManager(applicationContext).getUserId()?.let {
+            OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).deleteSeasonTypeApi(
+                UserSessionManager(applicationContext).getUserId().toString(),seasonId,DisplayStatusData("0")
+            )
+        }
+        create?.enqueue(object : Callback<ResponseData?> {
+            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                loader.dismiss()
+                if (response.isSuccessful){
+                    response.body()
+                }
+                Log.d( "season delete", "${response.code()} ${response.message()}")
+                list.remove(getSeasonData)
+                notifyDataSetChanged()
+            }
+
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                loader.dismiss()
+                Log.e("error", t.localizedMessage)
+            }
+        })
+    }
 
 
     override fun onBindViewHolder(holder: NotificationHolder, position: Int) {
@@ -113,6 +138,13 @@ class SeasonAdapter(var list:ArrayList<GetSeasonData>, val applicationContext: C
         Toast.makeText(applicationContext, item.days.toString(), Toast.LENGTH_SHORT).show()
         holder.edit.setOnClickListener {
             openCreateNewDialog(applicationContext,item.shortCode,item.seasonName,from_date.toString(),to_date.toString())
+        }
+        holder.delete.setOnClickListener {
+            showDeleteConfirmationDialog(applicationContext){
+                loader = showProgressDialog(applicationContext)
+                deleteSeason(applicationContext,item.seasonId.toString(),item)
+            }
+
         }
     }
 
@@ -251,5 +283,23 @@ class SeasonAdapter(var list:ArrayList<GetSeasonData>, val applicationContext: C
     fun filterList(inputString : ArrayList<GetSeasonData>) {
         list = inputString
         notifyDataSetChanged()
+    }
+    fun showDeleteConfirmationDialog(context: Context, onDeleteConfirmed: () -> Unit) {
+        val alertDialogBuilder = AlertDialog.Builder(context)
+        alertDialogBuilder.setTitle("Confirm Deletion")
+        alertDialogBuilder.setMessage("Do you really want to delete this item?")
+
+        alertDialogBuilder.setPositiveButton("Yes") { _, _ ->
+            // User clicked "Yes"
+            onDeleteConfirmed.invoke()
+        }
+
+        alertDialogBuilder.setNegativeButton("No") { dialog, _ ->
+            // User clicked "No"
+            dialog.dismiss()
+        }
+
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.show()
     }
 }

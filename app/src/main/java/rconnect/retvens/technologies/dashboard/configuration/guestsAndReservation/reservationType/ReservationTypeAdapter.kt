@@ -1,5 +1,6 @@
 package rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -20,6 +21,8 @@ import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.others.holiday.DisplayStatusData
+import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.shakeAnimation
 import rconnect.retvens.technologies.utils.showProgressDialog
@@ -73,8 +76,10 @@ class ReservationTypeAdapter(var list:ArrayList<GetReservationTypeData>, val app
         holder.lastModified.text = "${item.modifiedBy} ${item.modifiedOn}"
 
         holder.delete.setOnClickListener {
-            list.remove(item)
-            notifyDataSetChanged()
+            showDeleteConfirmationDialog(applicationContext){
+                progressDialog = showProgressDialog(applicationContext)
+                deleteReservation(applicationContext,item.reservationTypeId,item)
+            }
         }
 
         holder.edit.setOnClickListener {
@@ -135,6 +140,25 @@ class ReservationTypeAdapter(var list:ArrayList<GetReservationTypeData>, val app
         dialog.show()
     }
 
+    fun showDeleteConfirmationDialog(context: Context, onDeleteConfirmed: () -> Unit) {
+        val alertDialogBuilder = AlertDialog.Builder(context)
+        alertDialogBuilder.setTitle("Confirm Deletion")
+        alertDialogBuilder.setMessage("Do you really want to delete this item?")
+
+        alertDialogBuilder.setPositiveButton("Yes") { _, _ ->
+            // User clicked "Yes"
+            onDeleteConfirmed.invoke()
+        }
+
+        alertDialogBuilder.setNegativeButton("No") { dialog, _ ->
+            // User clicked "No"
+            dialog.dismiss()
+        }
+
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.show()
+    }
+
     private fun saveReservation(context: Context, dialog: Dialog, rName : String, status:String, rId : String) {
         val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).updateReservationTypeApi(UserSessionManager(context).getUserId().toString(), rId, UpdateReservationTypeDataClass(rName, status))
         create.enqueue(object : Callback<GetReservationTypeDataClass?> {
@@ -151,6 +175,25 @@ class ReservationTypeAdapter(var list:ArrayList<GetReservationTypeData>, val app
             override fun onFailure(call: Call<GetReservationTypeDataClass?>, t: Throwable) {
                 progressDialog.dismiss()
                 Log.d("error", t.localizedMessage)
+            }
+        })
+    }
+    private fun deleteReservation(context: Context,reservationId:String,getReservationTypeData: GetReservationTypeData) {
+        val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).deleteReservationTypeApi(UserSessionManager(context).getUserId().toString(),reservationId,
+            DisplayStatusData(("0"))
+        )
+        create.enqueue(object : Callback<ResponseData?> {
+            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                progressDialog.dismiss()
+                if (response.isSuccessful){
+                    Log.d("response success",response.message().toString())
+                    list.remove(getReservationTypeData)
+                    notifyDataSetChanged()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                TODO("Not yet implemented")
             }
         })
     }

@@ -40,31 +40,6 @@
                     android:textSize="@dimen/H2"/>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/short_code_layout_tranport"
-                    style="@style/TextInputLayoutStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:hint="Short Code"
-                    app:endIconMode="clear_text"
-                    app:endIconTint="@color/black"
-                    app:layout_constraintEnd_toStartOf="@id/cardImg"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/shortCode"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/roboto"
-                        android:inputType="text"
-                        android:textColor="@color/secondary"
-                        android:textColorHint="@drawable/hint_selector" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/propertyChainLayout_transport"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="match_parent"
@@ -89,6 +64,31 @@
                         android:textColorHint="@drawable/hint_selector" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/short_code_layout_tranport"
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:hint="Short Code"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black"
+                    app:layout_constraintEnd_toStartOf="@id/cardImg"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/shortCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="text"
+                        android:textColor="@color/secondary"
+                        android:textColorHint="@drawable/hint_selector" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
 
             </LinearLayout>
 

@@ -47,7 +47,6 @@ class CreateAmenityDialog(
         "",
         "",
         "",
-        "",
         ""
     )
 ) : DialogFragment(), AmenitiesIconAdapter.OnIconClick {

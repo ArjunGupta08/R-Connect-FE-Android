@@ -124,7 +124,6 @@ class ReservationTypeFragment : Fragment(), ReservationTypeAdapter.OnUpdate {
             }
         })
     }
-
     private fun reservationTypeRecycler() {
         progressDialog = showProgressDialog(requireContext())
 

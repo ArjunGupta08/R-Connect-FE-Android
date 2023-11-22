@@ -1,5 +1,6 @@
 package rconnect.retvens.technologies.dashboard.configuration.others.holiday
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
@@ -81,13 +82,15 @@ class HolidaysAdapter(var list:ArrayList<GetHotelData>, val applicationContext: 
         holder.text4.text = item.endDate
         holder.text5.text = "${item.createdBy} ${item.createdOn}"
         holder.lastModified.text = "${item.modifiedBy} ${item.modifiedOn}"
-        holder.delete.setOnClickListener {
-            loader = showProgressDialog(applicationContext)
-            deleteHoliday(applicationContext,item.holidayId, item)
-        }
 
         holder.edit.setOnClickListener {
             openCreateNewDialog(applicationContext, item.shortCode, item.holidayName, item.startDate, item.endDate, item.holidayId)
+        }
+        holder.delete.setOnClickListener {
+            showDeleteConfirmationDialog(applicationContext){
+                loader = showProgressDialog(applicationContext)
+                deleteHoliday(applicationContext,item.holidayId,item)
+            }
         }
     }
 
@@ -170,29 +173,6 @@ class HolidaysAdapter(var list:ArrayList<GetHotelData>, val applicationContext: 
 
         dialog.show()
     }
-
-    fun showCalendarDialog(context : Context, textDate: TextView) {
-        val calendar = Calendar.getInstance()
-        val currentYear = calendar.get(Calendar.YEAR)
-        val currentMonth = calendar.get(Calendar.MONTH)
-        val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
-
-        val datePickerDialog = DatePickerDialog(
-            context,
-            { _, year, month, dayOfMonth ->
-                // Set the selected date on the EditText
-                val selectedDate = "$dayOfMonth/${month+1}/$year"
-                textDate.text = selectedDate
-            },
-            currentYear,
-            currentMonth,
-            currentDay
-        )
-        datePickerDialog.setCancelable(false)
-
-        datePickerDialog.show()
-    }
-
     private fun saveHoliday(context: Context, dialog: Dialog, shortCodeTxt : String, holidayName:String, startDate:String, endDate:String, holidayId: String) {
         val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).updateHolidayApi(
              holidayId, UserSessionManager(context).getUserId().toString(), UpdateHolidayDataClass(shortCodeTxt, holidayName, startDate, endDate)
@@ -242,6 +222,25 @@ class HolidaysAdapter(var list:ArrayList<GetHotelData>, val applicationContext: 
     fun filterList(inputString : ArrayList<GetHotelData>) {
         list = inputString
         notifyDataSetChanged()
+    }
+
+    fun showDeleteConfirmationDialog(context: Context, onDeleteConfirmed: () -> Unit) {
+        val alertDialogBuilder = AlertDialog.Builder(context)
+        alertDialogBuilder.setTitle("Confirm Deletion")
+        alertDialogBuilder.setMessage("Do you really want to delete this item?")
+
+        alertDialogBuilder.setPositiveButton("Yes") { _, _ ->
+            // User clicked "Yes"
+            onDeleteConfirmed.invoke()
+        }
+
+        alertDialogBuilder.setNegativeButton("No") { dialog, _ ->
+            // User clicked "No"
+            dialog.dismiss()
+        }
+
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.show()
     }
     fun createDatePickerDialog(applicationContext: Context, textDate:TextView, onDateSetListener: (Date) -> Unit): DatePickerDialog {
         val calendar = Calendar.getInstance()

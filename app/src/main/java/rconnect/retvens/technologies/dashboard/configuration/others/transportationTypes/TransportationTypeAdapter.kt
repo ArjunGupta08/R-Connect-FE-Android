@@ -1,5 +1,6 @@
 package rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -11,16 +12,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
-import android.widget.Switch
 import android.widget.TextView
-import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
-import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.GetReservationTypeDataClass
+import rconnect.retvens.technologies.dashboard.configuration.others.holiday.DisplayStatusData
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.showProgressDialog
@@ -74,6 +73,12 @@ class TransportationTypeAdapter(var list:ArrayList<GetTransportationTypeData>, v
 
         holder.edit.setOnClickListener {
             openCreateNewDialog(applicationContext, item.shortCode, item.transportationModeName, item.transportationId)
+        }
+        holder.delete.setOnClickListener {
+            showDeleteConfirmationDialog(applicationContext){
+                loader = showProgressDialog(applicationContext)
+                deleteIdentity(applicationContext,item.transportationId,item)
+            }
         }
     }
 
@@ -144,9 +149,62 @@ class TransportationTypeAdapter(var list:ArrayList<GetTransportationTypeData>, v
 //            }
 //        })
     }
+    private fun deleteIdentity(
+        context: Context,
+        transportationModeIdTxt: String,
+        getTransportationTypeData: GetTransportationTypeData) {
+        val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).deleteTransportationModeTypeApi(UserSessionManager(context).getUserId().toString(), transportationModeIdTxt,
+            DisplayStatusData("0")
+        )
+        create.enqueue(object : Callback<ResponseData?> {
+            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                loader.dismiss()
+                    Log.d( "reservation", "${response.code()} ${response.message()}")
+                list.remove(getTransportationTypeData)
+                notifyDataSetChanged()
+            }
+
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                loader.dismiss()
+                Log.d("error", t.localizedMessage)
+            }
+        })
+//        create.enqueue(object : Callback<GetReservationTypeDataClass?> {
+//            override fun onResponse(
+//                call: Call<GetReservationTypeDataClass?>,
+//                response: Response<GetReservationTypeDataClass?>
+//            ) {
+//                    Log.d( "reservation", "${response.code()} ${response.message()}")
+//                    mListener?.onUpdateTransportationType()
+//                    dialog.dismiss()
+//            }
+//
+//            override fun onFailure(call: Call<GetReservationTypeDataClass?>, t: Throwable) {
+//                Log.d("error", t.localizedMessage)
+//            }
+//        })
+    }
 
     fun filterList(inputString : ArrayList<GetTransportationTypeData>) {
         list = inputString
         notifyDataSetChanged()
+    }
+    fun showDeleteConfirmationDialog(context: Context, onDeleteConfirmed: () -> Unit) {
+        val alertDialogBuilder = AlertDialog.Builder(context)
+        alertDialogBuilder.setTitle("Confirm Deletion")
+        alertDialogBuilder.setMessage("Do you really want to delete this item?")
+
+        alertDialogBuilder.setPositiveButton("Yes") { _, _ ->
+            // User clicked "Yes"
+            onDeleteConfirmed.invoke()
+        }
+
+        alertDialogBuilder.setNegativeButton("No") { dialog, _ ->
+            // User clicked "No"
+            dialog.dismiss()
+        }
+
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.show()
     }
 }

@@ -1,5 +1,6 @@
 package rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -86,8 +87,10 @@ class BusinessSourceAdapter(var list:ArrayList<GetBusinessSourceData>, val appli
             openCreateNewDialog(applicationContext, item.shortCode, item.sourceName, item.sourceId)
         }
         holder.delete.setOnClickListener {
-            loader = showProgressDialog(applicationContext)
-            deleteIdentity(applicationContext,item.sourceId,item)
+            showDeleteConfirmationDialog(applicationContext){
+                loader = showProgressDialog(applicationContext)
+                deleteIdentity(applicationContext,item.sourceId,item)
+            }
         }
     }
 
@@ -212,5 +215,23 @@ class BusinessSourceAdapter(var list:ArrayList<GetBusinessSourceData>, val appli
     fun filterList(inputString : ArrayList<GetBusinessSourceData>) {
         list = inputString
         notifyDataSetChanged()
+    }
+    fun showDeleteConfirmationDialog(context: Context, onDeleteConfirmed: () -> Unit) {
+        val alertDialogBuilder = AlertDialog.Builder(context)
+        alertDialogBuilder.setTitle("Confirm Deletion")
+        alertDialogBuilder.setMessage("Do you really want to delete this item?")
+
+        alertDialogBuilder.setPositiveButton("Yes") { _, _ ->
+            // User clicked "Yes"
+            onDeleteConfirmed.invoke()
+        }
+
+        alertDialogBuilder.setNegativeButton("No") { dialog, _ ->
+            // User clicked "No"
+            dialog.dismiss()
+        }
+
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.show()
     }
 }

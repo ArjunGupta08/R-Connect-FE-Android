@@ -63,6 +63,12 @@ interface GeneralsAPI {
         @Query("reservationTypeId") reservationTypeId : String,
         @Body updateReservationTypeDataClass: UpdateReservationTypeDataClass
     ): Call<GetReservationTypeDataClass>
+    @PATCH("updateReservationType")
+    fun deleteReservationTypeApi (
+        @Query("userId") userId : String,
+        @Query("reservationTypeId") reservationTypeId : String,
+        @Body displayStatusData: DisplayStatusData
+    ): Call<ResponseData>
 
     /*--------------------------------------- Payment Type-----------------------------------------*/
     @POST("addPaymentType")
@@ -117,6 +123,12 @@ interface GeneralsAPI {
         @Query("userId") userId : String,
         @Query("transportationId") transportationId : String,
         @Body updateTransportationTypeDataClass: UpdateTransportationTypeDataClass
+    ): Call<ResponseData>
+    @PATCH("updateTransportation")
+    fun deleteTransportationModeTypeApi (
+        @Query("userId") userId : String,
+        @Query("transportationId") transportationId : String,
+        @Body displayStatusData: DisplayStatusData
     ): Call<ResponseData>
 
 //    business sources
@@ -176,12 +188,12 @@ interface GeneralsAPI {
         @Query("propertyId") propertyId : String,
         @Query("targetTimeZone") targetTimeZone : String? = "Asia/Kolkata"
     ): Call<GetSeasonDataClass>
-//    @PATCH("updateTransportation")
-//    fun updateBookingSourceTypeApi (
-//        @Query("userId") userId : String,
-//        @Query("transportationId") transportationId : String,
-//        @Body updateTransportationTypeDataClass: UpdateTransportationTypeDataClass
-//    ): Call<GetReservationTypeDataClass>
+    @PATCH("patchSeason")
+    fun deleteSeasonTypeApi (
+        @Query("userId") userId : String,
+        @Query("seasonId") seasonId : String,
+        @Body displayStatusData: DisplayStatusData
+    ): Call<ResponseData>
 
     /*--------------------------------------- Holiday-----------------------------------------*/
     @POST("postHoliday")

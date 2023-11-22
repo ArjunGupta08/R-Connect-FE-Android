@@ -187,14 +187,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         app:layout_constraintGuide_percent="0.87"/>
-                    <CheckBox
-                        android:id="@+id/switch_all"
-                        android:layout_width="19dp"
-                        android:layout_height="19dp"
-                        app:layout_constraintEnd_toStartOf="@id/shortCode"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"/>
 
 
                     <TextView
@@ -207,7 +199,7 @@
                         app:layout_constraintEnd_toStartOf="@id/propertyName"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/switch_all"/>
+                        app:layout_constraintStart_toStartOf="parent"/>
 
                     <TextView
                         android:id="@+id/propertyName"

@@ -1,5 +1,6 @@
 package rconnect.retvens.technologies.dashboard.configuration.others.holiday
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
@@ -270,27 +271,6 @@ class HolidaysFragment : Fragment(), HolidaysAdapter.OnItemUpdate {
 
     }
 
-    fun showCalendarDialog(context : Context, textDate: TextView) {
-        val calendar = Calendar.getInstance()
-        val currentYear = calendar.get(Calendar.YEAR)
-        val currentMonth = calendar.get(Calendar.MONTH)
-        val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
-
-        val datePickerDialog = DatePickerDialog(
-            context,
-            { _, year, month, dayOfMonth ->
-                // Set the selected date on the EditText
-                val selectedDate = "$dayOfMonth/${month+1}/$year"
-                textDate.text = selectedDate
-            },
-            currentYear,
-            currentMonth,
-            currentDay
-        )
-        datePickerDialog.setCancelable(false)
-
-        datePickerDialog.show()
-    }
 
     private fun saveHoliday(context: Context, dialog: Dialog, shortCodeTxt : String, holidayName:String, startDate:String, endDate:String) {
         val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).addHolidayApi(
