@@ -66,7 +66,7 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
 
     private var roomTypeInventoryCount = 1
     private var bedCount = 1
-    private var bedCountList = ArrayList<String>()
+    private var bedCountList = ArrayList<BedCountData>()
     private lateinit var addBedTypeAdapter: AddBedTypeAdapter
 
     private lateinit var roboto : Typeface
@@ -101,7 +101,12 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
         robotoMedium = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)!!
 
         if (roomTypeId != "") {
+            Toast.makeText(requireContext(), roomTypeId, Toast.LENGTH_SHORT).show()
+            Log.e("roomId", roomTypeId!!)
             getRoomData()
+            getBedType()
+        } else {
+            getBedType()
         }
 
         binding.continueBtnRoom.setOnClickListener {
@@ -121,7 +126,11 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
                     if (roomTypeId != "") {
 
                     } else {
-                        sendData()
+                        if (roomTypeId != "") {
+                            updateData()
+                        } else {
+                            sendData()
+                        }
                     }
                     Const.addedRoomTypeName = binding.roomTypeNameEt.text.toString()
                     Const.addedRoomTypeShortCode = binding.shortCodeET.text.toString()
@@ -210,7 +219,6 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
             openDialog.setOnAddAmenityDialogListener(this)
         }
 
-        getBedType()
     }
 
     private fun getRoomData() {
@@ -231,20 +239,57 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
 
                             binding.roomTypeNameEt.setText(data.roomTypeName)
                             binding.shortCodeET.setText(data.shortCode)
+
+                            roomTypeInventoryCount = data.numberOfRooms
                             binding.roomTypeInventoryCountText.text = "${data.numberOfRooms}"
+
                             binding.bedCount.text = (data.noOfBeds)
+                            bedCount = data.noOfBeds.toInt()
+
+                            for (i in 1 .. bedCount) {
+                                data.bedType.forEach { bedType ->
+                                    bedCountList.add(BedCountData("$i", bedType.bedType))
+                                }
+                            }
+
+                            bedType()
+
+                            baseAdultCount = (data.baseAdult).toInt()
+                            baseChildCount = (data.baseChild).toInt()
+                            maxAdultCount = (data.maxAdult).toInt()
+                            maxChildCount = (data.maxChild).toInt()
+                            maxOccupancyCount = (data.maxOccupancy).toInt()
+
                             binding.baseAdultText.text = (data.baseAdult)
                             binding.baseChildText.text = (data.baseChild)
                             binding.maxAdultText.text = (data.maxAdult)
                             binding.maxChildText.text = (data.maxChild)
                             binding.maxOccupancyText.text = (data.maxOccupancy)
+
                             binding.roomDescriptionEt.setText(data.roomDescription)
 
+                            selectedAmenitiesListFinal.addAll(data.amenities)
+
+                            binding.selectedAmenitiesRecycler.layoutManager = GridLayoutManager(requireContext(), 4)
+
+                            selectedAmenitiesAdapter = SelectedAmenitiesAdapter(requireContext(), selectedAmenitiesListFinal)
+                            binding.selectedAmenitiesRecycler.adapter = selectedAmenitiesAdapter
+                            selectedAmenitiesAdapter.setOnAmenityRemoveListener(this@AddRoomTypeFragment)
+                            selectedAmenitiesAdapter.notifyDataSetChanged()
+
+                            selectedAmenitiesListFinal.forEach {
+                                if (!amenityIdsList.contains(it.amenityId)) {
+                                    amenityIdsList.add(it.amenityId)
+                                } else {
+                                    amenityIdsList.remove(it.amenityId)
+                                }
+                            }
                         } catch (e:Exception){
                             e.printStackTrace()
                         }
                     }
                 }
+                Log.d("data", response.toString())
             }
 
             override fun onFailure(call: Call<FetchRoomData?>, t: Throwable) {
@@ -318,18 +363,85 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
         })
     }
 
+    private fun updateData(){
+        val send = OAuthClient<SingleConfiguration>(requireContext()).create(SingleConfiguration::class.java).updateRoomApi(
+            roomTypeId!!,
+            CreateRoomData(
+                UserSessionManager(requireContext()).getUserId().toString(),
+                UserSessionManager(requireContext()).getPropertyId().toString(),
+                binding.baseAdultText.text.toString(),
+                binding.baseChildText.text.toString(),
+                binding.shortCodeET.text.toString(),
+                binding.roomDescriptionEt.text.toString(),
+                binding.roomTypeNameEt.text.toString(),
+                binding.maxAdultText.text.toString(),
+                binding.maxChildText.text.toString(),
+                binding.maxOccupancyText.text.toString(),
+                roomTypeInventoryCount,
+                binding.bedCount.text.toString(),
+                bedTypeIds.joinToString(", ").removeSurrounding("[", "]"),
+               amenityIdsList.joinToString(", ").removeSurrounding("[", "]"),
+                "Android"
+                )
+        )
+        send.enqueue(object : Callback<ResponseData?> {
+            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+
+                Log.d("sent", response.message())
+
+                progressDialog.dismiss()
+
+                if (response.isSuccessful){
+
+                    page = 2
+
+                    binding.roomImages.textSize = 18.0f
+                    binding.roomImages.typeface = robotoMedium
+                    binding.roomImages.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+
+                    binding.roomProfile.textSize = 16.0f
+                    binding.roomProfile.typeface = roboto
+
+                    binding.chargePlans.textSize = 16.0f
+                    binding.chargePlans.typeface = roboto
+
+                    binding.roomImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+                    binding.roomProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+                    binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+
+                    val childFragment: Fragment = AddImagesFragment()
+                    val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.createRoomFragContainer,childFragment)
+                    transaction.commit()
+
+                    binding.frame.visibility = View.GONE
+                    binding.createRoomFragContainer.visibility = View.VISIBLE
+                    rightInAnimation(binding.createRoomFragContainer, requireContext())
+
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                progressDialog.dismiss()
+                Log.d("error", t.localizedMessage)
+            }
+        })
+    }
+
     private fun bedType(){
-        bedCountList.add("$bedCount")
+        if (roomTypeId == "") {
+            bedCountList.add(BedCountData("$bedCount", ""))
+        }
         binding.addBeds.setOnClickListener {
                 bedCount++
                 binding.bedCount.setText("$bedCount")
-                bedCountList.add("$bedCount")
+                bedCountList.add(BedCountData("$bedCount", ""))
                 addBedTypeAdapter.notifyDataSetChanged()
                 Toast.makeText(requireContext(), bedTypeIds.size.toString(), Toast.LENGTH_SHORT).show()
         }
         binding.removeBeds.setOnClickListener {
             if (bedCount>1) {
-                bedCountList.remove("$bedCount")
+                bedCountList.remove(BedCountData("$bedCount", ""))
                 bedCount--
                 binding.bedCount.setText("$bedCount")
                 addBedTypeAdapter.notifyDataSetChanged()
@@ -357,7 +469,7 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
                     } catch (e : Exception){
                         e.printStackTrace()
                     }
-                    bedType()
+                        bedType()
                 } else {
                     Toast.makeText(requireContext(), response.body()!!.copy().toString(), Toast.LENGTH_SHORT).show()
                 }

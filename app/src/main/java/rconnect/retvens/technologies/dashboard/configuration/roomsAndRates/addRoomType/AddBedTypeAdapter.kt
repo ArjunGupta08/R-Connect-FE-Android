@@ -24,7 +24,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AddBedTypeAdapter(val context: Context, private val itemList: List<String>, private val bedSuggestionList: List<String>) : RecyclerView.Adapter<AddBedTypeAdapter.ViewHolder>() {
+class AddBedTypeAdapter(val context: Context, private val itemList: List<BedCountData>, private val bedSuggestionList: List<String>) : RecyclerView.Adapter<AddBedTypeAdapter.ViewHolder>() {
 
     val bedTypeList = ArrayList<String>()
 
@@ -48,7 +48,8 @@ class AddBedTypeAdapter(val context: Context, private val itemList: List<String>
             val adapter = ArrayAdapter(context, R.layout.simple_spinner_item1, bedSuggestionList)
             showDropdownBedTypeMenu(adapter, it, holder.textInputEditText)
         }
-        holder.textInputLayout.hint = "Bed $item Type"
+        holder.textInputLayout.hint = "Bed ${item.bedCount} Type"
+        holder.textInputEditText.setText(item.bedType)
     }
 
     override fun getItemCount(): Int {

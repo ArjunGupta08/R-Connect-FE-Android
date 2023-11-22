@@ -23,16 +23,11 @@ import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.configurationApi.SingleConfiguration
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.RatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.AddMealPlanAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateData
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateTypeAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomType
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.RatePlanDetailsAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.GetMealPlanItem
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.RoomTypePlanAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.RoomTypePlanDataClass
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.GetMealPlanData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.GetMealPlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.MealPlanDataClass
@@ -45,7 +40,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class RatePlanCompanyFragment(val roomList:ArrayList<GetRoomType>, val mealList:ArrayList<GetMealPlanItem>,val isSend:Boolean) : Fragment(), AddMealPlanAdapter.OnUpdate, RatePlanDetailsAdapter.OnRateTypeListChangeListener,
+class RatePlanCompanyFragment(val roomList:ArrayList<GetRoomType>, val mealList:ArrayList<GetMealPlanItem>,val isSend:Boolean) : Fragment(), AddMealPlanAdapter.OnUpdate,
     RatePlanCompanyAdapter.OnRateTypeListChangeListener,
     RoomTypeCompanyPlanAdapter.OnRateTypeListChangeListener {
     private lateinit var binding : FragmentRatePlanCompanyBinding

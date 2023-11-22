@@ -77,7 +77,7 @@ data class FetchRoomDataClass(
     val baseRate: String,
     val minimumRate: String,
     val maximumRate : String,
-    val amenities : ArrayList<GetAmenity>,
+    val amenities : ArrayList<GetAmenityData>,
     val roomTypeId: String,
     val roomImages : ArrayList<RoomImages>
 )
@@ -86,12 +86,11 @@ data class RoomImages(
     val images : String
 )
 
-data class GetAmenity(
-    val amenityName: String,
-    val amenityIconLink: String
-)
-
 data class BedTypeData(
     val bedTypeId : String,
+    val bedType : String,
+)
+data class BedCountData(
+    val bedCount : String,
     val bedType : String,
 )

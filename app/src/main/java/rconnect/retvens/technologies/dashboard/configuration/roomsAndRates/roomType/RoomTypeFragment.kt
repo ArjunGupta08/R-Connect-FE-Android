@@ -67,6 +67,7 @@ class RoomTypeFragment : Fragment(), RoomTypeAdapter.SetOnEditClickListener {
 
         binding.roomTypeRecycler.layoutManager = LinearLayoutManager(requireContext())
 
+        Log.d("proprID", UserSessionManager(requireContext()).getPropertyId().toString())
         val get = OAuthClient<SingleConfiguration>(requireContext()).create(SingleConfiguration::class.java).getRoomApi(
             fetchTargetTimeZoneId(),
             UserSessionManager(requireContext()).getPropertyId().toString(),

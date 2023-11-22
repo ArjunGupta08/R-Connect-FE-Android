@@ -34,6 +34,13 @@ interface SingleConfiguration {
         @Body createRoomData: CreateRoomData
     ): Call<ResponseData>
 
+    /*---------------------------------------Edit Room-----------------------------------------*/
+    @PATCH("updateRoom")
+    fun updateRoomApi(
+        @Query("roomTypeId") roomTypeId : String,
+        @Body createRoomData: CreateRoomData
+    ): Call<ResponseData>
+
     /*---------------------------------------GET Room-----------------------------------------*/
     @GET("getRoom")
     fun getRoomApi(
