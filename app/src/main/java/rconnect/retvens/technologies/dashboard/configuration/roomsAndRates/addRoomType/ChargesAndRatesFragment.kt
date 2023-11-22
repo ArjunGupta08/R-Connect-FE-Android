@@ -54,6 +54,7 @@ class ChargesAndRatesFragment : Fragment(),
 
     private lateinit var binding : FragmentChargesAndRatesBinding
 
+    private lateinit var ratePlanDataClass : AddCompanyRatePlanDataClass
     private lateinit var ratePlanDetailsAdapter : RatePlanDetailsAdapter
     private var ratePlanDetailsList = ArrayList<AddCompanyRatePlanDataClass>()
 //    private val rateTypeList = ArrayList<RatePlanDataClass>()
@@ -369,7 +370,7 @@ class ChargesAndRatesFragment : Fragment(),
         selectedList.forEach {
             val selectedInclusionList: ArrayList<InclusionPlan> = arrayListOf()
 
-            val ratePlanDataClass =  AddCompanyRatePlanDataClass(
+            ratePlanDataClass =  AddCompanyRatePlanDataClass(
                  UserSessionManager(requireContext()).getUserId().toString(),
                  UserSessionManager(requireContext()).getPropertyId().toString(),
                 "",
@@ -395,9 +396,18 @@ class ChargesAndRatesFragment : Fragment(),
             }
         }
     }
-    override fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddCompanyRatePlanDataClass>) {
-        ratePlanDetailsList = updatedRateTypeList
-        ratePlanDetailsAdapter.notifyDataSetChanged()
+
+    override fun onRateTypeListChanged(updatedRateTypeList: AddCompanyRatePlanDataClass, position: Int) {
+        ratePlanDetailsList.removeAt(position)
+        ratePlanDetailsList.add(updatedRateTypeList)
+        Log.d("ratePlanDL", ratePlanDetailsList.toString())
+        setUpRecycler()
+    }
+
+    override fun onDeleteButtonClick(updatedRateTypeList: AddCompanyRatePlanDataClass, position: Int) {
+        ratePlanDetailsList.removeAt(position)
+        Log.d("ratePlanDL", ratePlanDetailsList.toString())
+        setUpRecycler()
     }
 
 }
