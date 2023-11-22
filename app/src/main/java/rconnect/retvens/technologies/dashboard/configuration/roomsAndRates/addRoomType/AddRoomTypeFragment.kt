@@ -21,6 +21,7 @@ import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import rconnect.retvens.technologies.Api.OAuthClient
@@ -37,6 +38,7 @@ import rconnect.retvens.technologies.databinding.FragmentAddRoomTypeBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.Const
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.generateShortCode
 import rconnect.retvens.technologies.utils.rightInAnimation
 import rconnect.retvens.technologies.utils.shakeAnimation
 import rconnect.retvens.technologies.utils.showProgressDialog
@@ -44,7 +46,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AddRoomTypeFragment : Fragment(),
+class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
     SelectedAmenitiesAdapter.OnSelectedAmenityRemove,
     AddBedTypeAdapter.BedTypeIdInterface,
     AddAmenitiesDialog.OnAmenityAdd {
@@ -58,7 +60,7 @@ class AddRoomTypeFragment : Fragment(),
     val bedTypeList = ArrayList<GetBedTypeDataClass>()
     val bedSuggestionList = ArrayList<String>()
 
-    val amenityIdsList = ArrayList<String>()
+    private val amenityIdsList = ArrayList<String>()
 
     private var page = 1
 
@@ -98,6 +100,10 @@ class AddRoomTypeFragment : Fragment(),
         roboto = ResourcesCompat.getFont(requireContext(), R.font.roboto)!!
         robotoMedium = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)!!
 
+        if (roomTypeId != "") {
+            getRoomData()
+        }
+
         binding.continueBtnRoom.setOnClickListener {
 
             if (page == 1){
@@ -112,7 +118,11 @@ class AddRoomTypeFragment : Fragment(),
                     shakeAnimation(binding.add, requireContext())
                 } else {
                     progressDialog = showProgressDialog(requireContext())
-                    sendData()
+                    if (roomTypeId != "") {
+
+                    } else {
+                        sendData()
+                    }
                     Const.addedRoomTypeName = binding.roomTypeNameEt.text.toString()
                     Const.addedRoomTypeShortCode = binding.shortCodeET.text.toString()
                 }
@@ -173,6 +183,12 @@ class AddRoomTypeFragment : Fragment(),
             }
         }
 
+        binding.roomTypeNameEt.doAfterTextChanged {
+            if (binding.roomTypeNameEt.text!!.length > 3){
+                binding.shortCodeET.setText(generateShortCode(binding.roomTypeNameEt.text.toString()))
+            }
+        }
+
         handleCounts()
 
 //        binding.bed1TypeET.setOnClickListener {
@@ -195,6 +211,47 @@ class AddRoomTypeFragment : Fragment(),
         }
 
         getBedType()
+    }
+
+    private fun getRoomData() {
+        progressDialog = showProgressDialog(requireContext())
+        val get = OAuthClient<SingleConfiguration>(requireContext()).create(SingleConfiguration::class.java).fetchRoomByRoomTypeIdApi(
+            UserSessionManager(requireContext()).getUserId().toString(), roomTypeId!!
+        )
+        get.enqueue(object : Callback<FetchRoomData?> {
+            override fun onResponse(
+                call: Call<FetchRoomData?>,
+                response: Response<FetchRoomData?>
+            ) {
+                progressDialog.dismiss()
+                if (response.isSuccessful) {
+                    if (isAdded) {
+                        try {
+                            val data = response.body()!!.data.get(0)
+
+                            binding.roomTypeNameEt.setText(data.roomTypeName)
+                            binding.shortCodeET.setText(data.shortCode)
+                            binding.roomTypeInventoryCountText.text = "${data.numberOfRooms}"
+                            binding.bedCount.text = (data.noOfBeds)
+                            binding.baseAdultText.text = (data.baseAdult)
+                            binding.baseChildText.text = (data.baseChild)
+                            binding.maxAdultText.text = (data.maxAdult)
+                            binding.maxChildText.text = (data.maxChild)
+                            binding.maxOccupancyText.text = (data.maxOccupancy)
+                            binding.roomDescriptionEt.setText(data.roomDescription)
+
+                        } catch (e:Exception){
+                            e.printStackTrace()
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<FetchRoomData?>, t: Throwable) {
+                progressDialog.dismiss()
+                Log.e("error", t.localizedMessage)
+            }
+        })
     }
 
     private fun sendData(){
@@ -416,59 +473,59 @@ class AddRoomTypeFragment : Fragment(),
 
             shakeAnimation(binding.continueBtnRoom, requireContext())
 
-        //            page = 2
-//
-//            binding.roomImages.textSize = 20.0f
-//            binding.roomImages.typeface = robotoMedium
-//            binding.roomImages.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
-//
-//            binding.roomProfile.textSize = 16.0f
-//            binding.roomProfile.typeface = roboto
-//
-//            binding.chargePlans.textSize = 16.0f
-//            binding.chargePlans.typeface = roboto
-//
-//            binding.roomImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
-//            binding.roomProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-//            binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-//
-//            val childFragment: Fragment = AddImagesFragment()
-//            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-//            transaction.replace(R.id.createRoomFragContainer,childFragment)
-//            transaction.commit()
-//
-//            binding.frame.visibility = View.GONE
-//            binding.createRoomFragContainer.visibility = View.VISIBLE
-//            rightInAnimation(binding.createRoomFragContainer, requireContext())
+             page = 2
+
+            binding.roomImages.textSize = 20.0f
+            binding.roomImages.typeface = robotoMedium
+            binding.roomImages.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+
+            binding.roomProfile.textSize = 16.0f
+            binding.roomProfile.typeface = roboto
+
+            binding.chargePlans.textSize = 16.0f
+            binding.chargePlans.typeface = roboto
+
+            binding.roomImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+            binding.roomProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+            binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+
+            val childFragment: Fragment = AddImagesFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.createRoomFragContainer,childFragment)
+            transaction.commit()
+
+            binding.frame.visibility = View.GONE
+            binding.createRoomFragContainer.visibility = View.VISIBLE
+            rightInAnimation(binding.createRoomFragContainer, requireContext())
         }
 
         binding.chargePlans.setOnClickListener {
             shakeAnimation(binding.continueBtnRoom, requireContext())
 
-//            page = 3
-//
-//            binding.chargePlans.textSize = 20.0f
-//            binding.chargePlans.typeface = robotoMedium
-//            binding.chargePlans.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
-//
-//            binding.roomImages.textSize = 16.0f
-//            binding.roomImages.typeface = roboto
-//
-//            binding.roomProfile.textSize = 16.0f
-//            binding.roomProfile.typeface = roboto
-//
-//            binding.roomImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-//            binding.roomProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-//            binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
-//
-//            val childFragment: Fragment = ChargesAndRatesFragment()
-//            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-//            transaction.replace(R.id.createRoomFragContainer,childFragment)
-//            transaction.commit()
-//
-//            binding.frame.visibility = View.GONE
-//            binding.createRoomFragContainer.visibility = View.VISIBLE
-//            rightInAnimation(binding.createRoomFragContainer, requireContext())
+            page = 3
+
+            binding.chargePlans.textSize = 20.0f
+            binding.chargePlans.typeface = robotoMedium
+            binding.chargePlans.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+
+            binding.roomImages.textSize = 16.0f
+            binding.roomImages.typeface = roboto
+
+            binding.roomProfile.textSize = 16.0f
+            binding.roomProfile.typeface = roboto
+
+            binding.roomImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+            binding.roomProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+            binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+
+            val childFragment: Fragment = ChargesAndRatesFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.createRoomFragContainer,childFragment)
+            transaction.commit()
+
+            binding.frame.visibility = View.GONE
+            binding.createRoomFragContainer.visibility = View.VISIBLE
+            rightInAnimation(binding.createRoomFragContainer, requireContext())
 
         }
 

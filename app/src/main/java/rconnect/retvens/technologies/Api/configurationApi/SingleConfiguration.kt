@@ -6,6 +6,7 @@ import okhttp3.RequestBody
 import org.json.JSONObject
 import rconnect.retvens.technologies.dashboard.configuration.properties.FetchPropertyData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.CreateRoomData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.FetchRoomData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.GetRoomData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.GetRoomDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.UpdateRoomData
@@ -40,6 +41,12 @@ interface SingleConfiguration {
         @Query("propertyId") propertyId : String,
         @Query("userId") userId : String,
     ): Call<GetRoomData>
+
+    @GET("fetchRoom")
+    fun fetchRoomByRoomTypeIdApi(
+        @Query("userId") userId : String,
+        @Query("roomTypeId") roomTypeId : String,
+    ): Call<FetchRoomData>
 
     /*---------------------------------------Update Room-----------------------------------------*/
     @PATCH("updateRoom/{roomTypeId}")

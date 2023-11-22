@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.GetRoomDataClass
+import rconnect.retvens.technologies.utils.Const
 
 class RoomTypeAdapter(var list:ArrayList<GetRoomDataClass>, val applicationContext: Context):RecyclerView.Adapter<RoomTypeAdapter.NotificationHolder>() {
 
@@ -19,7 +20,7 @@ class RoomTypeAdapter(var list:ArrayList<GetRoomDataClass>, val applicationConte
         mListener = listener
     }
     interface SetOnEditClickListener{
-        fun onEditButtonClick()
+        fun onEditButtonClick(roomTypeId : String)
     }
     class NotificationHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
         val shortCode : TextView = itemView.findViewById(R.id.shortCode)
@@ -58,7 +59,7 @@ class RoomTypeAdapter(var list:ArrayList<GetRoomDataClass>, val applicationConte
         holder.amenitiesCountTxt.text = "${currentData.amenities}"
 
         holder.edit.setOnClickListener {
-            mListener?.onEditButtonClick()
+            mListener?.onEditButtonClick(currentData.roomTypeId)
         }
 
         holder.delete.setOnClickListener {

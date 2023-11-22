@@ -6,10 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddImagesFragment
 
 class ViewPropertiesAdapterView2(val context: Context, private var itemList: ArrayList<PropData>) : RecyclerView.Adapter<ViewPropertiesAdapterView2.ViewHolder>() {
+
+    private var mListener : OnEditPropertyListener?= null
+    fun setOnEditPropertyClickListener(listener : OnEditPropertyListener){
+        mListener = listener
+    }
+    interface OnEditPropertyListener{
+        fun onEditPropertyClick(propertyId : String)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_properties_3, parent, false)
@@ -25,7 +35,7 @@ class ViewPropertiesAdapterView2(val context: Context, private var itemList: Arr
         holder.amenitiesTxt.text = "${item.amenities}"
 
         holder.edit.setOnClickListener {
-
+            mListener?.onEditPropertyClick(item.propertyId)
         }
         holder.delete.setOnClickListener {
             itemList.remove(item)

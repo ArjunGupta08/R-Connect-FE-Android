@@ -130,11 +130,11 @@ class RoomTypeFragment : Fragment(), RoomTypeAdapter.SetOnEditClickListener {
         })
     }
 
-    override fun onEditButtonClick() {
+    override fun onEditButtonClick(roomTypeId : String) {
 
         Const.isAddingNewRoom = true
 
-        val childFragment: Fragment = AddRoomTypeFragment()
+        val childFragment: Fragment = AddRoomTypeFragment(roomTypeId)
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.dashboardFragmentContainer,childFragment)
         transaction.commit()

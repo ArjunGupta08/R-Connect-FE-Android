@@ -28,7 +28,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ViewPropertiesFragment : Fragment() {
+class ViewPropertiesFragment : Fragment(), ViewPropertiesAdapterView2.OnEditPropertyListener {
     lateinit var binding:FragmentViewPropertiesBinding
 
     private var viewT = 1
@@ -88,7 +88,7 @@ class ViewPropertiesFragment : Fragment() {
             Const.isAddingNewProperty = true
             val dashboardFragmentContainer = requireActivity().findViewById<FrameLayout>(R.id.dashboardFragmentContainer)
 
-            val childFragment: Fragment = AddImagesFragment()
+            val childFragment: Fragment = AddPropertyFragment()
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(R.id.dashboardFragmentContainer,childFragment)
             transaction.commit()
@@ -118,6 +118,7 @@ class ViewPropertiesFragment : Fragment() {
 
                             viewPropertiesAdapter2 = ViewPropertiesAdapterView2(requireContext(), data)
                             binding.allRecycler.adapter = viewPropertiesAdapter2
+                            viewPropertiesAdapter2.setOnEditPropertyClickListener(this@ViewPropertiesFragment)
                             viewPropertiesAdapter2.notifyDataSetChanged()
 
                             binding.search.addTextChangedListener(object : TextWatcher {
@@ -163,5 +164,14 @@ class ViewPropertiesFragment : Fragment() {
                 progressDialog.dismiss()
             }
         })
+    }
+
+    override fun onEditPropertyClick(propertyId: String) {
+        Const.isAddingNewProperty = true
+
+        val childFragment: Fragment = AddPropertyFragment(propertyId)
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.dashboardFragmentContainer,childFragment)
+        transaction.commit()
     }
 }

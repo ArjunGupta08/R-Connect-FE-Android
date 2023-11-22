@@ -49,7 +49,6 @@ import retrofit2.Response
 
 class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:ArrayList<GetMealPlanItem>,val isSend:Boolean) : Fragment(),
     AddMealPlanAdapter.OnUpdate,
-    RatePlanDetailsAdapter.OnRateTypeListChangeListener,
     RoomTypePlanAdapter.OnRateTypeListChangeListener {
 
     private lateinit var binding : FragmentRatePlanBarBinding
