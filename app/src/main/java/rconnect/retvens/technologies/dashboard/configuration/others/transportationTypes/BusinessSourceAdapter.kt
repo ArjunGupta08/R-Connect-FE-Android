@@ -26,6 +26,7 @@ import rconnect.retvens.technologies.dashboard.configuration.others.businessSour
 import rconnect.retvens.technologies.dashboard.configuration.others.businessSource.GetBusinessSourceData
 import rconnect.retvens.technologies.dashboard.configuration.others.businessSource.GetBusinessSourceDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.businessSource.UpdateBusinessSourceDataClass
+import rconnect.retvens.technologies.dashboard.configuration.others.holiday.DisplayStatusData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.GetMealPlanData
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
@@ -85,8 +86,8 @@ class BusinessSourceAdapter(var list:ArrayList<GetBusinessSourceData>, val appli
             openCreateNewDialog(applicationContext, item.shortCode, item.sourceName, item.sourceId)
         }
         holder.delete.setOnClickListener {
-            list.remove(item)
-            notifyDataSetChanged()
+            loader = showProgressDialog(applicationContext)
+            deleteIdentity(applicationContext,item.sourceId,item)
         }
     }
 
@@ -149,6 +150,43 @@ class BusinessSourceAdapter(var list:ArrayList<GetBusinessSourceData>, val appli
                     Log.d( "reservation", "${response.code()} ${response.message()}")
                     mListener?.onUpdateBusinessSource()
                     dialog.dismiss()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                Log.d("Error",t.localizedMessage.toString())
+            }
+        })
+//        create.enqueue(object : Callback<GetReservationTypeDataClass?> {
+//            override fun onResponse(
+//                call: Call<GetReservationTypeDataClass?>,
+//                response: Response<GetReservationTypeDataClass?>
+//            ) {
+//                    Log.d( "reservation", "${response.code()} ${response.message()}")
+//                    mListener?.onUpdateTransportationType()
+//                    dialog.dismiss()
+//            }
+//
+//            override fun onFailure(call: Call<GetReservationTypeDataClass?>, t: Throwable) {
+//                Log.d("error", t.localizedMessage)
+//            }
+//        })
+    }
+    private fun deleteIdentity(context: Context, sourceId: String,getBusinessSourceData: GetBusinessSourceData) {
+        val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).deleteBusinessSourceApi(
+            UserSessionManager(context).getUserId().toString(),
+            sourceId,
+        DisplayStatusData("0")
+        )
+        create.enqueue(object : Callback<ResponseData?> {
+            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                loader.dismiss()
+                if (response.isSuccessful){
+                    list.remove(getBusinessSourceData)
+                    notifyDataSetChanged()
+
+                    Log.d( "reservation", "${response.code()} ${response.message()}")
+                    mListener?.onUpdateBusinessSource()
                 }
             }
 

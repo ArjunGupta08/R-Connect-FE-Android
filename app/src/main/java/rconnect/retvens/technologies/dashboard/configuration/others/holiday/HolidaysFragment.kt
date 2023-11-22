@@ -221,6 +221,7 @@ class HolidaysFragment : Fragment(), HolidaysAdapter.OnItemUpdate {
                 call: Call<GetHotelDataClass?>,
                 response: Response<GetHotelDataClass?>
             ) {
+                loader.dismiss()
                 if (isAdded) {
                     loader.dismiss()
                     if (response.isSuccessful) {

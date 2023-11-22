@@ -137,11 +137,14 @@
                     android:layout_marginRight="5dp"
                     android:layout_gravity="center"/>
 
-                <TextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inventory_"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="6"
+                    android:selectAllOnFocus="true"
+                    android:inputType="number"
+                    android:background="#00FFFFFF"
                     style="@style/inventoryText"
                     android:textAlignment="center"
                     android:textColor="@color/black"
@@ -184,11 +187,13 @@
                     android:layout_marginRight="5dp"
                     android:layout_gravity="center"/>
 
-                <TextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inventory_20"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="6"
+                    android:inputType="number"
+                    android:background="#00FFFFFF"
                     style="@style/inventoryText"
                     android:textColor="@color/black"
                     android:layout_gravity="center"/>
@@ -229,11 +234,13 @@
                     android:layout_marginRight="5dp"
                     android:layout_gravity="center"/>
 
-                <TextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inventory_30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="6"
+                    android:inputType="number"
+                    android:background="#00FFFFFF"
                     style="@style/inventoryText"
                     android:textColor="@color/black"
                     android:layout_gravity="center"/>
@@ -276,11 +283,13 @@
                     android:layout_marginRight="5dp"
                     android:layout_gravity="center"/>
 
-                <TextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inventory_40"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="6"
+                    android:inputType="number"
+                    android:background="#00FFFFFF"
                     style="@style/inventoryText"
                     android:textColor="@color/black"
                     android:layout_gravity="center"/>
@@ -322,11 +331,13 @@
                     android:layout_marginRight="5dp"
                     android:layout_gravity="center"/>
 
-                <TextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inventory_50"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="6"
+                    android:inputType="number"
+                    android:background="#00FFFFFF"
                     style="@style/inventoryText"
                     android:textColor="@color/black"
                     android:layout_gravity="center"/>
@@ -367,11 +378,13 @@
                     android:visibility="gone"
                     android:layout_gravity="center"/>
 
-                <TextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inventory_60"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="6"
+                    android:inputType="number"
+                    android:background="#00FFFFFF"
                     style="@style/inventoryText"
                     android:textColor="@color/black"
                     android:layout_gravity="center"/>
@@ -413,11 +426,13 @@
                     android:visibility="gone"
                     android:layout_gravity="center"/>
 
-                <TextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inventory_70"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="6"
+                    android:inputType="number"
+                    android:background="#00FFFFFF"
                     style="@style/inventoryText"
                     android:textColor="@color/black"
                     android:layout_gravity="center"/>
@@ -459,11 +474,13 @@
                     android:visibility="gone"
                     android:layout_gravity="center"/>
 
-                <TextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inventory_80"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="6"
+                    android:inputType="number"
+                    android:background="#00FFFFFF"
                     style="@style/inventoryText"
                     android:textColor="@color/black"
                     android:layout_gravity="center"/>
@@ -505,12 +522,14 @@
                     android:layout_marginRight="5dp"
                     android:layout_gravity="center"/>
 
-                <TextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inventory_90"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/inventoryText"
                     android:text="6"
+                    android:inputType="number"
+                    android:background="#00FFFFFF"
                     android:textColor="@color/black"
                     android:layout_gravity="center"/>
 
@@ -551,12 +570,14 @@
                     android:visibility="gone"
                     android:layout_gravity="center"/>
 
-                <TextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inventory_100"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/inventoryText"
                     android:text="6"
+                    android:inputType="number"
+                    android:background="#00FFFFFF"
                     android:textColor="@color/black"
                     android:layout_gravity="center"/>
 

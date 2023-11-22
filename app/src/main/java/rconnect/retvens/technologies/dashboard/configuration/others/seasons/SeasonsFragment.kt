@@ -20,14 +20,20 @@ import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.databinding.FragmentSeasonsBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.fetchTargetTimeZoneId
+import rconnect.retvens.technologies.utils.generateShortCode
+import rconnect.retvens.technologies.utils.shakeAnimation
+import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -37,7 +43,7 @@ import java.util.Date
 
 class SeasonsFragment : Fragment() {
     private lateinit var binding: FragmentSeasonsBinding
-
+    lateinit var loader:Dialog
     private var list = ArrayList<String>()
     private lateinit var robotoMedium : Typeface
     private lateinit var roboto:Typeface
@@ -58,12 +64,14 @@ class SeasonsFragment : Fragment() {
     var isWeekDay = false
     var isCustom = true
 
+    private var isDateSelected = false
+
     var isMon = false
     var isTues = false
     var isWed = false
     var isThur = false
-    var frid = false
-    var satu = true
+    var isFri = false
+    var isSat = true
     var isSun = false
 
     lateinit var startDatePickerDialog: DatePickerDialog
@@ -91,6 +99,7 @@ class SeasonsFragment : Fragment() {
         roboto = ResourcesCompat.getFont(requireContext(), R.font.roboto)!!
         robotoMedium = ResourcesCompat.getFont(requireContext(),R.font.roboto_medium)!!
 
+        loader = showProgressDialog(requireContext())
         setUpRecycler()
 
         binding.createNewBtn.setOnClickListener {
@@ -119,8 +128,8 @@ class SeasonsFragment : Fragment() {
                 )
             }
 
-         to_date = dialog.findViewById<TextView>(R.id.to_date)
-         from_date = dialog.findViewById<TextView>(R.id.from_date)
+         to_date = dialog.findViewById<TextView>(R.id.to_date_season)
+         from_date = dialog.findViewById<TextView>(R.id.from_date_season)
 
 //        startDatePickerDialog = createDatePickerDialog {date->
 //        }
@@ -128,10 +137,10 @@ class SeasonsFragment : Fragment() {
 //        }
 
 
-        startDatePickerDialog = createDatePickerDialog(from_date) {date->
+        startDatePickerDialog = createDatePickerDialog(requireContext(),from_date) {date->
             startDate = date
         }
-        endDatePickerDialog = createDatePickerDialog(to_date){date->
+        endDatePickerDialog = createDatePickerDialog(requireContext(),to_date){date->
 
             endDatePickerDialog.datePicker.minDate = startDate!!.time
 
@@ -149,29 +158,26 @@ class SeasonsFragment : Fragment() {
                 isRightEndDate = true
 //                Toast.makeText(requireContext(), "Karan ji", Toast.LENGTH_SHORT).show()
                 endDate = date
+                isDateSelected = true
             }
         }
 
+
+        from_date.setOnClickListener {
+            startDatePickerDialog.show()
+            dialog.show()
+        }
         to_date.setOnClickListener {
 //            showCalendarDialog(requireContext(),to_date)
+//            dialog.show()
 
             if (startDate!=null){
                 endDatePickerDialog.datePicker.minDate = startDate!!.time
-            endDatePickerDialog.show()
-            dialog.show()
-        }
+                endDatePickerDialog.show()
+                dialog.show()
+            }
         }
 
-        from_date.setOnClickListener {
-            endDate = null
-
-            // Set the minimum date for the start date picker to be the current date
-            startDatePickerDialog.datePicker.minDate = System.currentTimeMillis()
-            startDatePickerDialog.show()
-//            showCalendarDialog(requireContext(),from_date)
-//            startDatePickerDialog.show()
-            dialog.show()
-        }
 
 
 
@@ -198,21 +204,21 @@ class SeasonsFragment : Fragment() {
 
 
             fri.setOnClickListener {
-                if (!frid) {
+                if (!isFri) {
                     selectCard(fri)
-                    frid = true
+                    isFri = true
                 } else {
                     unSelectCard(fri)
-                    frid = false
+                    isFri = false
                 }
             }
             sat.setOnClickListener {
-                if (!satu) {
+                if (!isSat) {
                     selectCard(sat)
-                    satu = true
+                    isSat = true
                 } else {
                     unSelectCard(sat)
-                    satu = false
+                    isSat = false
                 }
             }
             sun.setOnClickListener {
@@ -309,7 +315,15 @@ class SeasonsFragment : Fragment() {
 
 
         val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCodeText)
+        val shortCodeLayout = dialog.findViewById<TextInputLayout>(R.id.short_code_layout_season)
         val seasonText = dialog.findViewById<TextInputEditText>(R.id.seasonText)
+        val seasonTextLayout = dialog.findViewById<TextInputLayout>(R.id.seasonLayout)
+
+        seasonText.doAfterTextChanged {
+            if (seasonText.text!!.length>3){
+                shortCode.setText(generateShortCode(seasonText.text.toString()))
+            }
+        }
 
         cancel.setOnClickListener {
             startDate = null
@@ -317,7 +331,20 @@ class SeasonsFragment : Fragment() {
             dialog.dismiss()
         }
         save.setOnClickListener {
-            saveSeason(requireContext(), dialog, shortCode.text.toString(), seasonText.text.toString())
+            if (seasonText.text!!.isEmpty()){
+                shakeAnimation(seasonTextLayout,requireContext())
+            }
+            else if(shortCode.text!!.isEmpty()){
+                shakeAnimation(shortCodeLayout,requireContext())
+            }
+            else if (!isDateSelected){
+                shakeAnimation(from_date,requireContext())
+                shakeAnimation(to_date,requireContext())
+            }
+            else{
+                loader.show()
+                saveSeason(requireContext(), dialog, shortCode.text.toString(), seasonText.text.toString())
+            }
         }
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -333,12 +360,14 @@ class SeasonsFragment : Fragment() {
         )
         create.enqueue(object : Callback<ResponseData?> {
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                loader.dismiss()
                 Log.d( "season", "${response.code()} ${response.message()}")
                 dialog.dismiss()
             }
 
             override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
-                Log.d("error", t.localizedMessage)
+                loader.dismiss()
+                Log.e("error", t.localizedMessage)
             }
         })
     }
@@ -388,12 +417,15 @@ class SeasonsFragment : Fragment() {
 
         binding.paymentTypeRecycler.layoutManager = LinearLayoutManager(requireContext())
 
-        val identity = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).getSeasonApi(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString())
+        val identity = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).getSeasonApi(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString(),
+            fetchTargetTimeZoneId()
+        )
         identity.enqueue(object : Callback<GetSeasonDataClass?> {
             override fun onResponse(
                 call: Call<GetSeasonDataClass?>,
                 response: Response<GetSeasonDataClass?>
             ) {
+                loader.dismiss()
                 if (response.isSuccessful){
                     val adapter = SeasonAdapter(response.body()!!.data, requireContext())
                     binding.paymentTypeRecycler.adapter = adapter
@@ -405,7 +437,8 @@ class SeasonsFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<GetSeasonDataClass?>, t: Throwable) {
-
+                Toast.makeText(requireContext(), t.message.toString(), Toast.LENGTH_SHORT).show()
+                loader.dismiss()
             }
         })
 
@@ -416,24 +449,31 @@ class SeasonsFragment : Fragment() {
         if (!selectedDays.contains(days) && days != "All Days" && days != "Weekdays" && days != "Weekends" && days != "Custom"){
             when (days) {
                 "Mon" -> {
+                    isMon = true
                     selectedDays.add("Monday")
                 }
                 "Tue" -> {
+                    isTues = true
                     selectedDays.add("Tuesday")
                 }
                 "Wed" -> {
+                    isWed = true
                     selectedDays.add("Wednesday")
                 }
                 "Thu" -> {
+                    isThur = true
                     selectedDays.add("Thursday")
                 }
                 "Fri" -> {
+                    isFri = true
                     selectedDays.add("Friday")
                 }
                 "Sat" -> {
+                    isSat = true
                     selectedDays.add("Saturday")
                 }
                 else -> {
+                    isSun = true
                     selectedDays.add("Sunday")
                 }
             }
@@ -448,24 +488,31 @@ class SeasonsFragment : Fragment() {
 
             when (days) {
                 "Mon" -> {
+                    isMon = false
                     selectedDays.remove("Monday")
                 }
                 "Tue" -> {
+                    isTues = false
                     selectedDays.remove("Tuesday")
                 }
                 "Wed" -> {
+                    isWed = false
                     selectedDays.remove("Wednesday")
                 }
                 "Thu" -> {
+                    isThur = false
                     selectedDays.remove("Thursday")
                 }
                 "Fri" -> {
+                    isFri = false
                     selectedDays.remove("Friday")
                 }
                 "Sat" -> {
+                    isSat = false
                     selectedDays.remove("Saturday")
                 }
                 else -> {
+                    isSun = false
                     selectedDays.remove("Sunday")
                 }
             }
@@ -481,33 +528,60 @@ class SeasonsFragment : Fragment() {
 //    }
 
 
-private fun createDatePickerDialog(textDate:TextView,onDateSetListener: (Date) -> Unit): DatePickerDialog {
-    val calendar = Calendar.getInstance()
-    return DatePickerDialog(
-        requireContext(),
-        { _, year, month, dayOfMonth ->
-            // Create a Date object from the selected date
-            calendar.set(year, month, dayOfMonth)
-            val selectedDate = calendar.time
-            // Invoke the provided listener
-            onDateSetListener.invoke(selectedDate)
-            // Set the selected date on the EditText
-            if (isRightEndDate){
-            val selectedDate2 = "$dayOfMonth/${month+1}/$year"
-            textDate.text = selectedDate2
-        }
-            if (textDate==from_date){
-                startDate = selectedDate
-            }
-            else{
-                endDate = selectedDate
-            }
-        },
-        calendar.get(Calendar.YEAR),
-        calendar.get(Calendar.MONTH),
-        calendar.get(Calendar.DAY_OF_MONTH)
-    )
-}
+    private fun createDatePickerDialog(applicationContext: Context, textDate:TextView, onDateSetListener: (Date) -> Unit): DatePickerDialog {
+        val calendar = Calendar.getInstance()
+        return DatePickerDialog(
+            applicationContext,
+            { _, year, month, dayOfMonth ->
+                // Create a Date object from the selected date
+                calendar.set(year, month, dayOfMonth)
+                val selectedDate = calendar.time
+                // Invoke the provided listener
+                onDateSetListener.invoke(selectedDate)
+                // Set the selected date on the EditText
+                val selectedDate2 = "$dayOfMonth/${month+1}/$year"
+                textDate.setText(selectedDate2)
+
+//                if (textDate==from_date){
+//                    startDate = selectedDate
+//                }
+//                else{
+//                    endDate = selectedDate
+//                }
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+    }
+
+    private fun toCreateDatePickerDialog(textDate:TextView,onDateSetListener: (Date) -> Unit): DatePickerDialog {
+        val calendar = Calendar.getInstance()
+        return DatePickerDialog(
+            requireContext(),
+            { _, year, month, dayOfMonth ->
+                // Create a Date object from the selected date
+                calendar.set(year, month, dayOfMonth)
+                val selectedDate = calendar.time
+                // Invoke the provided listener
+                onDateSetListener.invoke(selectedDate)
+                // Set the selected date on the EditText
+                val selectedDate2 = "$dayOfMonth/${month+1}/$year"
+                textDate.text = selectedDate2
+
+//                if (textDate==from_date){
+//                    startDate = selectedDate
+//                }
+//                else{
+//                    endDate = selectedDate
+//                }
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+    }
+
 
 
 }

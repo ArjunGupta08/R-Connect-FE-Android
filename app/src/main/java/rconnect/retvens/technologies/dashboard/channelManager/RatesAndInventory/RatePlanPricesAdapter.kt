@@ -10,8 +10,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlaneDiscount.BarRatePlan
 
-class RatePlanPricesAdapter(val context:Context,private val rateList: ArrayList<BarRatePlan>) :
+class RatePlanPricesAdapter(val context:Context,private val rateList: List<RatePlan>) :
     RecyclerView.Adapter<RatePlanPricesAdapter.InventoryViewHolder>() {
 
     private lateinit var otaPricesAdapter: OtaPricesAdapter
@@ -40,7 +41,7 @@ class RatePlanPricesAdapter(val context:Context,private val rateList: ArrayList<
     override fun onBindViewHolder(holder: InventoryViewHolder, position: Int) {
         val currentItem = rateList[position]
 
-        Log.e("currentRes",currentItem.baseRates.toString())
+        Log.e("currentRes",rateList.toString())
 
         holder.mealPlanName.text = currentItem.ratePlanName
 
@@ -67,11 +68,11 @@ class RatePlanPricesAdapter(val context:Context,private val rateList: ArrayList<
                 }
             }
 
-//        holder.recyclerView.layoutManager = LinearLayoutManager(context)
-//        otaPricesAdapter = OtaPricesAdapter(stringList)
-//
-//        holder.recyclerView.adapter = otaPricesAdapter
-//        otaPricesAdapter.notifyDataSetChanged()
+        holder.recyclerView.layoutManager = LinearLayoutManager(context)
+        otaPricesAdapter = OtaPricesAdapter(context,currentItem.OTA!!)
+
+        holder.recyclerView.adapter = otaPricesAdapter
+        otaPricesAdapter.notifyDataSetChanged()
 
     }
 

@@ -82,8 +82,8 @@ class HolidaysAdapter(var list:ArrayList<GetHotelData>, val applicationContext: 
         holder.text5.text = "${item.createdBy} ${item.createdOn}"
         holder.lastModified.text = "${item.modifiedBy} ${item.modifiedOn}"
         holder.delete.setOnClickListener {
-            list.remove(item)
-            notifyDataSetChanged()
+            loader = showProgressDialog(applicationContext)
+            deleteHoliday(applicationContext,item.holidayId, item)
         }
 
         holder.edit.setOnClickListener {
@@ -209,6 +209,31 @@ class HolidaysAdapter(var list:ArrayList<GetHotelData>, val applicationContext: 
             }
 
             override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                loader.dismiss()
+                Log.d("error", t.localizedMessage)
+            }
+        })
+    }
+
+    private fun deleteHoliday(context: Context, holidayId: String,getHotelData: GetHotelData) {
+        val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).
+            deleteHolidayApi(holidayId,UserSessionManager(applicationContext).getUserId().toString(),DisplayStatusData("0"))
+        create.enqueue(object : Callback<ResponseData?> {
+            override fun onResponse(
+                call: Call<ResponseData?>,
+                response: Response<ResponseData?>
+            ) {
+                if (response.isSuccessful){
+                    list.remove(getHotelData)
+                    notifyDataSetChanged()
+                }
+                loader.dismiss()
+                Log.d( "holiday", "${response.code()} ${response.message()}")
+                mListener?.onUpdate()
+            }
+
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                loader.dismiss()
                 Log.d("error", t.localizedMessage)
             }
         })
