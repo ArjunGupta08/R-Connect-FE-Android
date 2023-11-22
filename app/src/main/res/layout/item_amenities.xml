@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginHorizontal="1dp"
@@ -8,13 +8,13 @@
     android:id="@+id/card"
     app:strokeColor="@color/secondary"
     app:strokeWidth="0dp"
+    app:cardElevation="1dp"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="5dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:layout_marginHorizontal="8dp"
         android:orientation="horizontal">
 
@@ -23,7 +23,9 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginVertical="5dp"
-        android:src="@drawable/svg_ac"/>
+        android:src="@drawable/svg_ac"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"/>
 
         <TextView
             android:id="@+id/amenityName"
@@ -31,6 +33,9 @@
             android:layout_height="wrap_content"
             android:text="Child-friendly activities"
             android:textSize="@dimen/H5"
+            android:layout_toRightOf="@id/amenityIcon"
+            android:layout_toLeftOf="@id/remove"
+            android:layout_centerVertical="true"
             android:maxLines="2"
             android:layout_marginHorizontal="8dp"
             android:textColor="@color/secondary"
@@ -38,9 +43,12 @@
 
     <ImageView
         android:id="@+id/remove"
-        android:layout_width="20dp"
+        android:layout_width="28dp"
         android:layout_height="20dp"
+        android:paddingHorizontal="5dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
         android:src="@drawable/svg_delete_lite"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>

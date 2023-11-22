@@ -221,7 +221,7 @@ class RatePlanCompanyFragment(val roomList:ArrayList<GetRoomType>, val mealList:
     private fun setUpRecycler() {
 
         roomList.forEach {
-            roomTypePlanList.add(RoomTypePlanDataClass(it.propertyId,it.roomTypeId,it.roomTypeName,it.extraAdultRate,it.extraChildRate,mealList))
+            roomTypePlanList.add(RoomTypePlanDataClass(it.propertyId,it.roomTypeId,it.roomTypeName,it.extraAdultRate,it.extraChildRate,it.baseRate,mealList))
         }
 
 
@@ -236,7 +236,7 @@ class RatePlanCompanyFragment(val roomList:ArrayList<GetRoomType>, val mealList:
 
     override fun onUpdateMealPlan(selectedList: ArrayList<GetMealPlanData>) {
         selectedList.forEach {
-            val selectedInclusionList: ArrayList<GetInclusionsData> = arrayListOf()
+            val selectedInclusionList: ArrayList<InclusionPlan> = arrayListOf()
 
             val ratePlanDataClass =  AddCompanyRatePlanDataClass(
                 UserSessionManager(requireContext()).getUserId().toString(),

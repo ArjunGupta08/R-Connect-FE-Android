@@ -13,6 +13,7 @@ import com.google.android.material.textfield.TextInputEditText
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomType
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.InclusionPlan
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsData
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.showDropdownMenu
@@ -21,7 +22,7 @@ class RoomTypePlanAdapter(val applicationContext:Context, val rateTypeList:Array
     RatePlanBarAdapter.OnRateTypeListChangeListener {
 
     private var ratePlan:ArrayList<AddCompanyRatePlanDataClass> = ArrayList()
-    val selectedInclusionList: ArrayList<GetInclusionsData> = arrayListOf()
+    val selectedInclusionList: ArrayList<InclusionPlan> = arrayListOf()
     private var onRateTypeListChangeListener : OnRateTypeListChangeListener ?= null
     fun setOnListUpdateListener (listener : OnRateTypeListChangeListener) {
         onRateTypeListChangeListener = listener
@@ -61,13 +62,11 @@ class RoomTypePlanAdapter(val applicationContext:Context, val rateTypeList:Array
 
         val ratePlans = AddCompanyRatePlanDataClass(
             UserSessionManager(applicationContext).getUserId().toString(),currentData.propertyId,currentData.roomTypeId,"Bar",currentData.roomTypeId,
-            "",it.mealPlanName,it.mealPlanId,shortCode, selectedInclusionList,"",it.chargesPerOccupancy,"","",currentData.extraAdultRate,currentData.extraChildRate,"",it.mealPlanName
+            "",it.mealPlanName,it.mealPlanId,shortCode, selectedInclusionList,"",it.chargesPerOccupancy,"","",currentData.extraAdultRate,currentData.extraChildRate,currentData.roomBasePrice,it.mealPlanName
         )
 
         ratePlan.add(ratePlans)
         }
-
-
 
         holder.recyclerRoom.layoutManager = LinearLayoutManager(applicationContext)
         val adapter = RatePlanBarAdapter(applicationContext,ratePlan)
@@ -93,5 +92,7 @@ class RoomTypePlanAdapter(val applicationContext:Context, val rateTypeList:Array
 
     override fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddCompanyRatePlanDataClass>) {
         onRateTypeListChangeListener?.onRateTypeListChanged(updatedRateTypeList)
+        Log.e("updatedRateTypeList",updatedRateTypeList.toString())
+        notifyDataSetChanged()
     }
 }

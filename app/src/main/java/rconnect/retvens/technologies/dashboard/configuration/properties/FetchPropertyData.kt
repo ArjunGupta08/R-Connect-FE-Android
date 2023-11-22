@@ -1,15 +1,18 @@
 package rconnect.retvens.technologies.dashboard.configuration.properties
 
-import org.json.JSONArray
-
 data class FetchPropertyData(
     val `data` : ArrayList<PropData>,
     val message : String
 )
 
 data class PropData(
-    val country : String,
-    val createdOn : String,
-    val userId : String,
+    val propertyName : String,
     val propertyId : String,
+    val city : String,
+    val country : String,
+    val hotelLogo : String,
+    val propertyRating : String,
+    val createdOn : String,
+    val totalRooms : String,
+    val amenities : String,
 )

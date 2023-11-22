@@ -14,7 +14,7 @@ import com.google.android.material.card.MaterialCardView
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.GetAmenityData
 
-class AddAmenitiesAdapter(val context: Context, private val itemList: ArrayList<GetAmenityData>) : RecyclerView.Adapter<AddAmenitiesAdapter.ViewHolder>() {
+class AddAmenitiesAdapter(val context: Context, private var itemList: ArrayList<GetAmenityData>) : RecyclerView.Adapter<AddAmenitiesAdapter.ViewHolder>() {
 
     val selectedAmenitiesList = ArrayList<GetAmenityData>()
 
@@ -38,6 +38,11 @@ class AddAmenitiesAdapter(val context: Context, private val itemList: ArrayList<
         holder.amenityName.text = item.amenityName
         Glide.with(context).load(item.amenityIconLink).into(holder.amenityIcon)
 //            .onLoadStarted(ContextCompat.getDrawable(context, R.drawable.image_loader))
+
+//        if (selectedAmenitiesLisFinal.contains(item)) {
+//            itemList.remove(item)
+//            notifyDataSetChanged()
+//        }
 
         holder.card.setOnClickListener {
             if (!selectedAmenitiesList.contains(item)){
@@ -65,5 +70,10 @@ class AddAmenitiesAdapter(val context: Context, private val itemList: ArrayList<
         val remove = itemView.findViewById<ImageView>(R.id.remove)
         val amenityName = itemView.findViewById<TextView>(R.id.amenityName)
 
+    }
+
+    fun filterList(inputString : ArrayList<GetAmenityData>) {
+        itemList = inputString
+        notifyDataSetChanged()
     }
 }

@@ -12,7 +12,7 @@ data class AddCompanyRatePlanDataClass(
     val ratePlanName : String,
     val mealPlanId : String,
     val shortCode : String,
-    val ratePlanInclusion : ArrayList<GetInclusionsData>,
+    val ratePlanInclusion : ArrayList<InclusionPlan>,
     val roomBaseRate : String,
     val mealCharge : String,
     val inclusionCharge : String,
@@ -21,4 +21,12 @@ data class AddCompanyRatePlanDataClass(
     val extraChildRate : String,
     val ratePlanTotal : String,
     val mealPlanName : String,
+)
+data class InclusionPlan(
+    val inclusionId: String,
+    val inclusionType: String,
+    val inclusionName: String,
+    val postingRule: String,
+    val chargeRule: String,
+    val rate: String
 )

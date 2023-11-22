@@ -9,10 +9,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.InclusionPlan
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsData
 import rconnect.retvens.technologies.utils.showDropdownMenu
 
-class CreateRateTypeAdapter(val applicationContext:Context,val rateTypeList:ArrayList<GetInclusionsData>,val postingRuleArray:ArrayList<String>,val chargeRuleArray:ArrayList<String>):RecyclerView.Adapter<CreateRateTypeAdapter.ViewHolder>() {
+class CreateRateTypeAdapter(val applicationContext:Context,val rateTypeList:ArrayList<InclusionPlan>,val postingRuleArray:ArrayList<String>,val chargeRuleArray:ArrayList<String>):RecyclerView.Adapter<CreateRateTypeAdapter.ViewHolder>() {
     class ViewHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
         val inclusion:TextInputEditText = itemView.findViewById(R.id.inclusion)
         val posting:TextInputEditText = itemView.findViewById(R.id.posting)
@@ -34,7 +35,7 @@ class CreateRateTypeAdapter(val applicationContext:Context,val rateTypeList:Arra
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentData = rateTypeList[position]
-        holder.rate.setText(currentData.charge)
+        holder.rate.setText(currentData.rate)
         holder.charge.setText(currentData.chargeRule)
         holder.inclusion.setText(currentData.inclusionName)
         holder.posting.setText(currentData.postingRule)

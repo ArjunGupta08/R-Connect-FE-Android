@@ -12,7 +12,7 @@ import com.google.android.material.card.MaterialCardView
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.amenity.GetAmenityIconData
 
-class AmenitiesIconAdapter(val context: Context, private var itemList: List<GetAmenityIconData>) : RecyclerView.Adapter<AmenitiesIconAdapter.ViewHolder>() {
+class AmenitiesIconAdapter(val context: Context, private var itemList: List<GetAmenityIconData>, private var iconLink : String) : RecyclerView.Adapter<AmenitiesIconAdapter.ViewHolder>() {
 
     var clickListener : OnIconClick ?= null
     fun setOnIconClick(listener : OnIconClick){
@@ -41,7 +41,12 @@ class AmenitiesIconAdapter(val context: Context, private var itemList: List<GetA
             holder.card.strokeWidth = 0
         }
 
+        if (iconLink == item.amenityIconLink) {
+            holder.card.strokeWidth = 3
+        }
+
         holder.card.setOnClickListener {
+            iconLink = ""
             selectedItemPos = position
             if(lastItemSelectedPos == -1) {
                 lastItemSelectedPos = selectedItemPos

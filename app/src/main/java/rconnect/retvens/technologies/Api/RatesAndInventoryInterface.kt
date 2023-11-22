@@ -1,9 +1,13 @@
 package rconnect.retvens.technologies.Api
 
 import rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory.InventoryDataClass
+import rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory.RatesDataClass
 import rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory.ResponseData
+import rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory.UpdateSingleInventory
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -17,4 +21,16 @@ interface RatesAndInventoryInterface {
         @Query("checkOutDate") checkOutDate: String
     ): Call<ResponseData>
 
+    @GET("getRate")
+    fun getRates(
+        @Query("roomTypeId") roomTypeId: String,
+        @Query("startDate") checkInDate: String,
+        @Query("endDate") checkOutDate: String,
+        @Query("userId") userId: String
+    ): Call<RatesDataClass>
+
+    @PATCH("updateInventory")
+    fun updateInventory(
+        @Body updateInventory : UpdateSingleInventory
+    ):Call<rconnect.retvens.technologies.onboarding.ResponseData>
 }

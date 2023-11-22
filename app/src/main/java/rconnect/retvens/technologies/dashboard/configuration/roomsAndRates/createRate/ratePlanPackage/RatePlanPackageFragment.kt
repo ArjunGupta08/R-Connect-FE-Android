@@ -26,6 +26,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRo
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateTypeAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.RatePlanDetailsAdapter
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.InclusionPlan
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.AddInclusionsDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetChargeRuleArray
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsData
@@ -46,7 +47,7 @@ class RatePlanPackageFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
 
     var totalInclusionCharges = 0.00
     val packageRateAdjustmentArray = ArrayList<PackageRateAdjustmentData>()
-    var selectedInclusionsList = ArrayList<GetInclusionsData>()
+    var selectedInclusionsList = ArrayList<InclusionPlan>()
 
     var minimumNights = 1
     var maximumNights = 1
@@ -217,10 +218,10 @@ class RatePlanPackageFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
                 response: Response<GetInclusionsDataClass?>
             ) {
                 if (response.isSuccessful) {
-                    val adapter = AddInclusionsAdapter(response.body()!!.data, requireContext())
-                    recyclerView.adapter = adapter
-                    adapter.setOnUpdateListener(this@RatePlanPackageFragment)
-                    adapter.notifyDataSetChanged()
+//                    val adapter = AddInclusionsAdapter(response.body()!!.data, requireContext())
+//                    recyclerView.adapter = adapter
+//                    adapter.setOnUpdateListener(this@RatePlanPackageFragment)
+//                    adapter.notifyDataSetChanged()
                 } else {
                     Log.d("error", "${response.code()} ${response.message()}")
                 }
@@ -287,9 +288,22 @@ class RatePlanPackageFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
 
     override fun onUpdateList(selectedList: ArrayList<GetInclusionsData>) {
 
-        selectedInclusionsList = selectedList
+        val seletedInclusion:ArrayList<InclusionPlan> = ArrayList()
+
+        selectedList.forEach { getInclusionData ->
+            val inclusionPlan = InclusionPlan(
+                inclusionId = getInclusionData.inclusionId,
+                inclusionType = getInclusionData.inclusionType,
+                inclusionName = getInclusionData.inclusionName,
+                postingRule = getInclusionData.postingRule,
+                chargeRule = getInclusionData.chargeRule,
+                rate = getInclusionData.charge
+            )
+
+            seletedInclusion.add(inclusionPlan)
+        }
         binding.recyclerInclusion.layoutManager = LinearLayoutManager(requireContext())
-        val createRateTypeAdapter = CreateRateTypeAdapter(requireContext(), selectedList, postingRuleArray, chargeRuleArray)
+        val createRateTypeAdapter = CreateRateTypeAdapter(requireContext(), seletedInclusion, postingRuleArray, chargeRuleArray)
         binding.recyclerInclusion.adapter = createRateTypeAdapter
         createRateTypeAdapter.notifyDataSetChanged()
 

@@ -2,6 +2,7 @@ package rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory
 
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
@@ -39,6 +40,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.creat
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomTypeData
 import rconnect.retvens.technologies.databinding.FragmentRatesAndInventoryBinding
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.showProgressDialog
 import rconnect.retvens.technologies.utils.utilCreateDatePickerDialog
 import retrofit2.Call
 import retrofit2.Callback
@@ -66,12 +68,15 @@ class RatesAndInventoryFragment : Fragment() {
     lateinit var tues:TextView
     lateinit var wed:TextView
     lateinit var thur:TextView
+    lateinit var roomId:String
+    lateinit var updateinventory:String
+    lateinit var apistartDate:String
     lateinit var txt_all_days:TextView
     lateinit var txt_week_days:TextView
     lateinit var txt_weekends:TextView
     lateinit var room_typeText:TextInputEditText
     lateinit var rate_planText:TextInputEditText
-
+    private lateinit var progressDialog: Dialog
     lateinit var txt_custom:TextView
     lateinit var startDatePickerDialog:DatePickerDialog
     lateinit var endDatePickerDialog: DatePickerDialog
@@ -195,14 +200,6 @@ class RatesAndInventoryFragment : Fragment() {
                 // Show dropdown menu
                 showDropdownMenu(rate_planText,rateAdapter,it)
             }
-
-
-
-
-
-
-
-
 
 
             unSelectAllDays()
@@ -522,12 +519,55 @@ class RatesAndInventoryFragment : Fragment() {
 
         val userId = UserSessionManager(requireContext()).getUserId()
         val propertyId = UserSessionManager(requireContext()).getPropertyId()
-
+        progressDialog = showProgressDialog(requireContext())
         setInventory(userId,propertyId,checkInDate,checkOutDate)
 
 
+        bindingTab.saveCard.setOnClickListener {
+            progressDialog = showProgressDialog(requireContext())
+            UpdateSingleInventory(roomId,apistartDate,updateinventory)
+        }
 
 
+    }
+
+    private fun UpdateSingleInventory(
+        roomId: String,
+        apistartDate: String,
+        updateinventory: String
+    ) {
+
+        val body = UpdateSingleInventory(UserSessionManager(requireContext()).getUserId().toString(),
+            UserSessionManager(requireContext()).getPropertyId().toString(),
+            roomId,apistartDate,apistartDate,"true",updateinventory,"OTA Common Pool")
+
+        val updateInventory = OAuthClient<RatesAndInventoryInterface>(requireContext()).create(RatesAndInventoryInterface::class.java).updateInventory(body)
+
+       updateInventory.enqueue(object : Callback<rconnect.retvens.technologies.onboarding.ResponseData?> {
+           override fun onResponse(
+               call: Call<rconnect.retvens.technologies.onboarding.ResponseData?>,
+               response: Response<rconnect.retvens.technologies.onboarding.ResponseData?>
+           ) {
+               if (response.isSuccessful){
+                   progressDialog.dismiss()
+                   val response = response.body()!!
+                   Toast.makeText(requireContext(), response.message.toString(), Toast.LENGTH_SHORT).show()
+                   val userId = UserSessionManager(requireContext()).getUserId()
+                   val propertyId = UserSessionManager(requireContext()).getPropertyId()
+                   progressDialog = showProgressDialog(requireContext())
+                   setInventory(userId,propertyId,checkInDate,checkOutDate)
+               }else{
+                   progressDialog.dismiss()
+               }
+           }
+
+           override fun onFailure(
+               call: Call<rconnect.retvens.technologies.onboarding.ResponseData?>,
+               t: Throwable
+           ) {
+              progressDialog.dismiss()
+           }
+       })
     }
 
     private fun getRatePlans() {
@@ -549,7 +589,6 @@ class RatesAndInventoryFragment : Fragment() {
                 }
                 else{
                     Log.e("ratePlans",response.message().toString())
-                    Toast.makeText(requireContext(), "rate plan failing", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -621,8 +660,6 @@ class RatesAndInventoryFragment : Fragment() {
                         otaList.add(it.otaName)
                         otaDialogList.add(it.otaName)
                     }
-                    Toast.makeText(requireContext(), data.toString(), Toast.LENGTH_SHORT).show()
-                    Toast.makeText(requireContext(), "successFull", Toast.LENGTH_SHORT).show()
                 }
                 else{
                     Toast.makeText(requireContext(), "failed", Toast.LENGTH_SHORT).show()
@@ -708,7 +745,8 @@ class RatesAndInventoryFragment : Fragment() {
 
         val inventoryApi = OAuthClient<RatesAndInventoryInterface>(requireContext()).create(RatesAndInventoryInterface::class.java).getInventory(userId.toString(),propertyId.toString(),startDate.toString(),endDate.toString())
 
-       inventoryApi.enqueue(object : Callback<ResponseData?> {
+       inventoryApi.enqueue(object : Callback<ResponseData?>,
+           RoomsInventoryAdapter.OnRateTypeListChangeListener {
            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
                if (response.isSuccessful && isAdded){
                    val response = response.body()!!
@@ -716,14 +754,28 @@ class RatesAndInventoryFragment : Fragment() {
                    inventoryAdapter = RoomsInventoryAdapter(requireContext(),response)
                    bindingTab.inventoryRecycler.adapter = inventoryAdapter
                    inventoryAdapter.notifyDataSetChanged()
+                   inventoryAdapter.setOnListUpdateListener(this)
+                   progressDialog.dismiss()
                }else{
                    Log.e("error",response.code().toString())
                    Log.e("message",response.message().toString())
+                   progressDialog.dismiss()
                }
            }
 
            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
                Log.e("error",t.message.toString())
+               progressDialog.dismiss()
+           }
+
+           override fun onRateTypeListChanged(
+               roomTypeId: String,
+               startDate: String,
+               inventory: String
+           ) {
+               apistartDate = startDate
+               roomId = roomTypeId
+               updateinventory = inventory
            }
        })
 

@@ -16,6 +16,13 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.ameni
 
 class SelectedAmenitiesAdapter(val context: Context, private val itemList: ArrayList<GetAmenityData>) : RecyclerView.Adapter<SelectedAmenitiesAdapter.ViewHolder>() {
 
+    private var mListener : OnSelectedAmenityRemove ?= null
+    fun setOnAmenityRemoveListener(listener : OnSelectedAmenityRemove) {
+        mListener = listener
+    }
+    interface OnSelectedAmenityRemove{
+        fun onSelectedAmenityRemove(currentItem : GetAmenityData)
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_amenities, parent, false)
         return ViewHolder(view)
@@ -29,8 +36,7 @@ class SelectedAmenitiesAdapter(val context: Context, private val itemList: Array
 //            .onLoadStarted(ContextCompat.getDrawable(context, R.drawable.image_loader))
 
         holder.remove.setOnClickListener {
-            itemList.remove(item)
-            notifyDataSetChanged()
+            mListener?.onSelectedAmenityRemove(item)
         }
     }
 

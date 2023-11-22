@@ -95,7 +95,6 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
 
         binding.recyclerRoomDetails.layoutManager = LinearLayoutManager(requireContext())
         addReservationAdapter = AddReservationAdapter(requireContext(), roomDetailsList,availableList)
-        addReservationAdapter.getRatePlan()
 
         binding.recyclerRoomDetails.adapter = addReservationAdapter
 
@@ -470,16 +469,16 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
 
     override fun updateRates() {
 
-        val totalCharge = listRoom.sumBy { it.charge.toIntOrNull() ?: 0 }
+        val totalCharge = listRoom.sumByDouble { (it.charge.toDoubleOrNull() ?: 0.0) }
 
-        val grandTotal = listRoom.sumBy {
-            val charge = it.charge.toIntOrNull() ?: 0
-            val extras = it.extraInclusion.toIntOrNull() ?: 0
+        val grandTotal = listRoom.sumByDouble {
+            val charge = it.charge.toDoubleOrNull() ?: 0.0
+            val extras = it.extraInclusion.toDoubleOrNull() ?: 0.0
             val totalWithoutGST = charge + extras
             val gst = 0.16 // 16% GST
 
             // Calculate the total amount with GST
-            val totalWithGST = totalWithoutGST + (totalWithoutGST * gst).toInt()
+            val totalWithGST = totalWithoutGST + (totalWithoutGST * gst)
 
             totalWithGST
         }

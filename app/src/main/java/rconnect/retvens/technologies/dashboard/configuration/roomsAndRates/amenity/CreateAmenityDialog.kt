@@ -121,7 +121,6 @@ class CreateAmenityDialog(
             amenityNameET.setText(currentItem.amenityName)
             amenityTypeET.setText(currentItem.amenityType)
             switchBtn.isChecked = currentItem.amenityIcon == "true"
-            Toast.makeText(requireContext(), currentItem.amenityIconLink.toString(), Toast.LENGTH_SHORT).show()
             amenityIconLink = currentItem.amenityIconLink
         }
 
@@ -176,7 +175,7 @@ class CreateAmenityDialog(
                             Log.d("error", response.message())
                             Log.d("error", data.toString())
                             val amenitiesIconAdapter =
-                                AmenitiesIconAdapter(requireContext(), data)
+                                AmenitiesIconAdapter(requireContext(), data, currentItem!!.amenityIconLink)
                             amenitiesIconRecycler.adapter = amenitiesIconAdapter
                             amenitiesIconAdapter.setOnIconClick(this@CreateAmenityDialog)
 
@@ -262,10 +261,8 @@ class CreateAmenityDialog(
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
                 dismiss()
                 progressDialog.dismiss()
-                if (response.isSuccessful){
                     mListener?.onAmenitySave()
                     Log.d("response", response.body()!!.message)
-                }
             }
 
             override fun onFailure(call: Call<ResponseData?>, t: Throwable) {

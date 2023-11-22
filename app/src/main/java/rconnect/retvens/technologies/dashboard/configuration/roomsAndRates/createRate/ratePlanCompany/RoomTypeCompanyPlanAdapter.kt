@@ -23,7 +23,7 @@ class RoomTypeCompanyPlanAdapter(val applicationContext:Context, val rateTypeLis
     RatePlanBarAdapter.OnRateTypeListChangeListener {
 
     private var ratePlan:ArrayList<AddCompanyRatePlanDataClass> = ArrayList()
-    val selectedInclusionList: ArrayList<GetInclusionsData> = arrayListOf()
+    val selectedInclusionList: ArrayList<InclusionPlan> = arrayListOf()
     private var onRateTypeListChangeListener : OnRateTypeListChangeListener ?= null
     fun setOnListUpdateListener (listener : OnRateTypeListChangeListener) {
         onRateTypeListChangeListener = listener

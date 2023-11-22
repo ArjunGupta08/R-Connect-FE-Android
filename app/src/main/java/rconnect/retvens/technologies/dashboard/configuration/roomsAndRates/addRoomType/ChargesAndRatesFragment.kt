@@ -30,6 +30,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.creat
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.RatePlanDetailsAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.AddBarRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.InclusionPlan
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.GetMealPlanData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.GetMealPlanDataClass
@@ -53,6 +54,7 @@ class ChargesAndRatesFragment : Fragment(),
 
     private lateinit var binding : FragmentChargesAndRatesBinding
 
+    private lateinit var ratePlanDataClass : AddCompanyRatePlanDataClass
     private lateinit var ratePlanDetailsAdapter : RatePlanDetailsAdapter
     private var ratePlanDetailsList = ArrayList<AddCompanyRatePlanDataClass>()
 //    private val rateTypeList = ArrayList<RatePlanDataClass>()
@@ -366,9 +368,9 @@ class ChargesAndRatesFragment : Fragment(),
 
     override fun onUpdateMealPlan(selectedList: ArrayList<GetMealPlanData>) {
         selectedList.forEach {
-            val selectedInclusionList: ArrayList<GetInclusionsData> = arrayListOf()
+            val selectedInclusionList: ArrayList<InclusionPlan> = arrayListOf()
 
-            val ratePlanDataClass =  AddCompanyRatePlanDataClass(
+            ratePlanDataClass =  AddCompanyRatePlanDataClass(
                  UserSessionManager(requireContext()).getUserId().toString(),
                  UserSessionManager(requireContext()).getPropertyId().toString(),
                 "",
@@ -394,9 +396,18 @@ class ChargesAndRatesFragment : Fragment(),
             }
         }
     }
-    override fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddCompanyRatePlanDataClass>) {
-        ratePlanDetailsList = updatedRateTypeList
-        ratePlanDetailsAdapter.notifyDataSetChanged()
+
+    override fun onRateTypeListChanged(updatedRateTypeList: AddCompanyRatePlanDataClass, position: Int) {
+        ratePlanDetailsList.removeAt(position)
+        ratePlanDetailsList.add(updatedRateTypeList)
+        Log.d("ratePlanDL", ratePlanDetailsList.toString())
+        setUpRecycler()
+    }
+
+    override fun onDeleteButtonClick(updatedRateTypeList: AddCompanyRatePlanDataClass, position: Int) {
+        ratePlanDetailsList.removeAt(position)
+        Log.d("ratePlanDL", ratePlanDetailsList.toString())
+        setUpRecycler()
     }
 
 }

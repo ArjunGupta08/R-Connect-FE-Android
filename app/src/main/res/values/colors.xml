@@ -11,6 +11,12 @@
     <color name="shadowColor">#7B7F80</color>
     <color name="textColor">#171717</color>
     <color name="cardbackcolor">#10141A</color>
+    <color name="BlockedInventoryStrokeColor">#99F09E24</color>
+    <color name="BlockedInventoryColor">#4DF09E24</color>
+    <color name="UnavailableRoom">#FAFAFB</color>
+    <color name="UnavailableRoomStroke">#9DA4A6</color>
+
+    <color name="availableInventoryColor">#E8F3C1</color>
     <color name="subtitle">#828282</color>
 
     <!--BackGround Color-->

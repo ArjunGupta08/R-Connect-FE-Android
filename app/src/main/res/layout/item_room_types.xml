@@ -73,6 +73,7 @@
                 android:layout_marginTop="1dp"
                 android:src="@drawable/svg_person_adult"/>
             <TextView
+                android:id="@+id/adultCountRangeTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1-3"
@@ -89,6 +90,7 @@
                 android:layout_marginTop="1dp"
                 android:src="@drawable/svg_child"/>
             <TextView
+                android:id="@+id/childCountRangeTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0-3"
@@ -137,6 +139,7 @@
             app:layout_constraintTop_toTopOf="@id/shortCode">
 
             <TextView
+                android:id="@+id/amenitiesCountTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/listText"
@@ -165,12 +168,14 @@
             app:layout_constraintTop_toTopOf="@id/shortCode">
 
             <ImageView
+                android:id="@+id/edit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:src="@drawable/svg_pen" />
 
             <ImageView
+                android:id="@+id/delete"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

@@ -6,5 +6,6 @@ data class RoomTypePlanDataClass(
     val roomTypeName:String,
     val extraAdultRate:String,
     val extraChildRate:String,
+    val roomBasePrice:String,
     val getMeal:ArrayList<GetMealPlanItem>
 )

@@ -173,7 +173,18 @@ class RatePlanCompanyAdapter(val applicationContext:Context, val rateTypeList:Ar
 
         val myInterfaceImplementation = object : AddInclusionsAdapter.OnUpdate {
             override fun onUpdateList(selectedList: ArrayList<GetInclusionsData>) {
-                selectedInclusions = selectedList
+                selectedList.forEach { getInclusionData ->
+                    val inclusionPlan = InclusionPlan(
+                        inclusionId = getInclusionData.inclusionId,
+                        inclusionType = getInclusionData.inclusionType,
+                        inclusionName = getInclusionData.inclusionName,
+                        postingRule = getInclusionData.postingRule,
+                        chargeRule = getInclusionData.chargeRule,
+                        rate = getInclusionData.charge
+                    )
+
+                    selectedInclusions.add(inclusionPlan)
+                }
                 holder.recycler_inclusion.layoutManager = LinearLayoutManager(applicationContext)
                 val createRateTypeAdapter = CreateRateTypeAdapter(applicationContext, selectedInclusions, postingRuleArray, chargeRuleArray)
                 holder.recycler_inclusion.adapter = createRateTypeAdapter

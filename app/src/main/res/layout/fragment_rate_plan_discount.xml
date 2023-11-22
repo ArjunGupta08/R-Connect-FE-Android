@@ -62,6 +62,7 @@
                         android:orientation="horizontal">
 
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/ratePlanLayout"
                             android:layout_width="0dp"
                             android:layout_height="@dimen/textInputLayoutHeight"
                             android:hint="Rate Plan Name"
@@ -71,6 +72,7 @@
                             app:endIconMode="clear_text"
                             app:endIconTint="@color/black">
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/ratePlanName"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:fontFamily="@font/roboto"
@@ -93,6 +95,7 @@
                             app:endIconMode="clear_text"
                             app:endIconTint="@color/black">
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/shortCode_text"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:fontFamily="@font/roboto"
@@ -186,12 +189,13 @@
                                 app:endIconMode="clear_text"
                                 app:endIconTint="@color/black">
                                 <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/discount_text"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:fontFamily="@font/roboto"
                                     android:textSize="@dimen/H5"
                                     android:hint="Discount"
-                                    android:inputType="text"
+                                    android:inputType="numberDecimal"
                                     android:textColorHint="@drawable/hint_selector"
                                     android:textColor="@color/secondary" />
                             </com.google.android.material.textfield.TextInputLayout>
@@ -349,12 +353,6 @@
                                     tools:listitem="@layout/item_applicable_room_type"/>
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-
-
 
 
 

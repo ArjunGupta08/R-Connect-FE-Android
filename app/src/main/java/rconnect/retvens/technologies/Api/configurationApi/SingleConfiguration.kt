@@ -6,9 +6,14 @@ import okhttp3.RequestBody
 import org.json.JSONObject
 import rconnect.retvens.technologies.dashboard.configuration.properties.FetchPropertyData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.CreateRoomData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.FetchRoomData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.GetRoomData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.GetRoomDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.UpdateRoomData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanPackage.AddPackageDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlaneDiscount.AddDiscountDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlaneDiscount.GetBarRatePlanForDiscountDataClass
 import rconnect.retvens.technologies.onboarding.ResponseData
 import retrofit2.Call
 import retrofit2.Response
@@ -28,6 +33,20 @@ interface SingleConfiguration {
     fun createRoomApi(
         @Body createRoomData: CreateRoomData
     ): Call<ResponseData>
+
+    /*---------------------------------------GET Room-----------------------------------------*/
+    @GET("getRoom")
+    fun getRoomApi(
+        @Query("targetTimeZone") targetTimeZone : String? = "Asia/Kolkata",
+        @Query("propertyId") propertyId : String,
+        @Query("userId") userId : String,
+    ): Call<GetRoomData>
+
+    @GET("fetchRoom")
+    fun fetchRoomByRoomTypeIdApi(
+        @Query("userId") userId : String,
+        @Query("roomTypeId") roomTypeId : String,
+    ): Call<FetchRoomData>
 
     /*---------------------------------------Update Room-----------------------------------------*/
     @PATCH("updateRoom/{roomTypeId}")
@@ -51,4 +70,16 @@ interface SingleConfiguration {
         @Body addCompanyRatePlanDataClass: AddCompanyRatePlanDataClass
     ): Call<ResponseData>
 
+
+    @GET("getRoomsWithPlans")
+    fun getRoomWithPlans(
+        @Query("userId")userId:String,
+        @Query("propertyId")propertyId:String
+    ):Call<GetBarRatePlanForDiscountDataClass>
+
+    @POST("addDiscountPlan")
+    fun addDiscount(
+        @Query("userId")userId:String,
+        @Body addDiscountDataClass: AddDiscountDataClass
+    ):Call<ResponseData>
 }
