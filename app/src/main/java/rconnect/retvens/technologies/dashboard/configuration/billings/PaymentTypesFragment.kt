@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.widget.doAfterTextChanged
@@ -59,6 +60,9 @@ class PaymentTypesFragment : Fragment(), PaymentTypeAdapter.MealUpdatedListener 
 
         binding.createNewBtn.setOnClickListener {
             openCreateNewDialog()
+        }
+        binding.filterPayment.setOnClickListener{
+            openFilterDialog()
         }
 
     }
@@ -204,5 +208,31 @@ class PaymentTypesFragment : Fragment(), PaymentTypeAdapter.MealUpdatedListener 
 
     override fun onMealUpdated() {
         setUpRecycler()
+    }
+
+    private fun openFilterDialog() {
+        val dialog =
+            Dialog(requireContext()) // Use 'this' as the context, assuming this code is within an Activity
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.setContentView(R.layout.dialog_payment_type_filter)
+        dialog.window?.apply {
+            setBackgroundDrawableResource(android.R.color.transparent) // Makes the background transparent
+            setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        }
+
+
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        dialog.window?.setGravity(Gravity.END)
+
+        dialog.show()
+
+        dialog.findViewById<ImageView>(R.id.iv_back).setOnClickListener { dialog.dismiss() }
     }
 }

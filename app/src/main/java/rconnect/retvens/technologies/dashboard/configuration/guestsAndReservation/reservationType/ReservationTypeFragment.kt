@@ -13,15 +13,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.NotificationAdapter
 import rconnect.retvens.technologies.databinding.FragmentReservationTypeBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
@@ -39,6 +44,7 @@ class ReservationTypeFragment : Fragment(), ReservationTypeAdapter.OnUpdate {
     private lateinit var reservationTypeAdapter: ReservationTypeAdapter
 
     private lateinit var progressDialog : Dialog
+    var list = ArrayList<GetReservationTypeData>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,6 +63,9 @@ class ReservationTypeFragment : Fragment(), ReservationTypeAdapter.OnUpdate {
 
         binding.createNewBtn.setOnClickListener {
             openCreateNewDialog()
+        }
+        binding.filterReservation.setOnClickListener{
+            openFilterDialog()
         }
 
     }
@@ -139,6 +148,7 @@ class ReservationTypeFragment : Fragment(), ReservationTypeAdapter.OnUpdate {
                 if (response.isSuccessful) {
                     try {
                         val data = response.body()!!.data
+                        list = data
                         reservationTypeAdapter = ReservationTypeAdapter(data, requireContext())
                         binding.reservationTypeRecycler.adapter = reservationTypeAdapter
                         reservationTypeAdapter.setOnUpdateListener(this@ReservationTypeFragment)
@@ -184,6 +194,58 @@ class ReservationTypeFragment : Fragment(), ReservationTypeAdapter.OnUpdate {
             }
         })
 
+    }
+
+
+    private fun openFilterDialog() {
+        val dialog =
+            Dialog(requireContext()) // Use 'this' as the context, assuming this code is within an Activity
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.setContentView(R.layout.dialog_reservation_filter)
+        dialog.window?.apply {
+            setBackgroundDrawableResource(android.R.color.transparent) // Makes the background transparent
+            setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        }
+
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        dialog.window?.setGravity(Gravity.END)
+
+        dialog.show()
+        val rName = dialog.findViewById<MaterialCardView>(R.id.card_reservation_name)
+        val rStatus = dialog.findViewById<MaterialCardView>(R.id.card_reservation_status)
+        val recyclerReservation = dialog.findViewById<RecyclerView>(R.id.recycler_reservation)
+
+        val countName = dialog.findViewById<TextView>(R.id.count_name)
+        val countStatus = dialog.findViewById<TextView>(R.id.count_status)
+
+        countName.text = "${list.size}"
+        countStatus.text = "${list.size}"
+        recyclerReservation.layoutManager = LinearLayoutManager(requireContext())
+
+        rName.setOnClickListener {
+            rName.isVisible = false
+            rStatus.isVisible = false
+            recyclerReservation.isVisible = true
+            recyclerReservation.adapter = ReservationTypeDialogAdapter(list,requireContext(),true)
+            recyclerReservation.adapter!!.notifyDataSetChanged()
+        }
+        rStatus.setOnClickListener {
+            rName.isVisible = false
+            rStatus.isVisible = false
+            recyclerReservation.isVisible = true
+            recyclerReservation.adapter = ReservationTypeDialogAdapter(list,requireContext(),false)
+            recyclerReservation.adapter!!.notifyDataSetChanged()
+        }
+
+        dialog.findViewById<ImageView>(R.id.iv_back).setOnClickListener {
+            dialog.dismiss() }
     }
 
     override fun onUpdateReservationType() {

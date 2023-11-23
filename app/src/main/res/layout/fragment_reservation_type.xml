@@ -87,6 +87,7 @@
             app:layout_constraintStart_toEndOf="@id/searchCard">
 
             <LinearLayout
+                android:id="@+id/filter_reservation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
