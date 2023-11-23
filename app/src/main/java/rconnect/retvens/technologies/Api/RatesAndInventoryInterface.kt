@@ -3,6 +3,7 @@ package rconnect.retvens.technologies.Api
 import rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory.InventoryDataClass
 import rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory.RatesDataClass
 import rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory.ResponseData
+import rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory.UpdateBulkInventory
 import rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory.UpdateSingleInventory
 import retrofit2.Call
 import retrofit2.http.Body
@@ -32,5 +33,10 @@ interface RatesAndInventoryInterface {
     @PATCH("updateInventory")
     fun updateInventory(
         @Body updateInventory : UpdateSingleInventory
+    ):Call<rconnect.retvens.technologies.onboarding.ResponseData>
+
+    @PATCH("updateInventory")
+    fun updateBulkInventory(
+        @Body updateInventory : UpdateBulkInventory
     ):Call<rconnect.retvens.technologies.onboarding.ResponseData>
 }

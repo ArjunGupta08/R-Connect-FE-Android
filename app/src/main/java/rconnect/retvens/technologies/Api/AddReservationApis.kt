@@ -45,6 +45,14 @@ interface AddReservationApis {
         @Query("userId") userId:String
     ):Call<RatePlanDataClass>
 
+    @GET("getRatePlanlistOfBooking")
+    fun getRatePlanUpdated(
+        @Query("roomTypeId") roomTypeId:String,
+        @Query("checkInDate") checkInDate:String,
+        @Query("checkOutDate") checkOutDate:String,
+        @Query("userId") userId:String
+    ):Call<RatePlanDataClass>
+
     @GET("getRoomAvailability")
     fun getAvailableRoom(
         @Query("userId") userId:String,
@@ -57,4 +65,6 @@ interface AddReservationApis {
     fun generateBooking(
         @Body addReserVation:ReservationDataClass
     ):Call<BookingResponse>
+
+
 }

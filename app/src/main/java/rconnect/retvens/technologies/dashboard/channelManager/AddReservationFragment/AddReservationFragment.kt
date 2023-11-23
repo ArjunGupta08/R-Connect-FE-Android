@@ -91,25 +91,23 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
         getBookingSource()
         getReservationType()
 
-        guestInfo.add(GuestInfo("Shubham Singh","88464","shub@gmail.com","kujqwhdukbs","kujqhubd","India","MP","INdore","501401"))
+        guestInfo.add(GuestInfo("Shubham Singh","88464","shub@gmail.com","kujqwhdukbs","kujqhubd","India","MP","INdore","501401",
+            emptyList()
+        ))
 
         binding.recyclerRoomDetails.layoutManager = LinearLayoutManager(requireContext())
-        addReservationAdapter = AddReservationAdapter(requireContext(), roomDetailsList,availableList)
-
+        addReservationAdapter = AddReservationAdapter(requireContext(), roomDetailsList,availableList,apiCheckInDate,apiCheckOutDate)
         binding.recyclerRoomDetails.adapter = addReservationAdapter
-
+        addReservationAdapter.notifyDataSetChanged()
         addReservationAdapter.setOnClickListener(this)
-
-        addReservationAdapter.addItem()
-        listRoom = addReservationAdapter.reservationList
 
         binding.roomCount.text = "1 Room Added"
 
+        addReservationAdapter.addItem()
+
         binding.llAddRoom.setOnClickListener {
             addReservationAdapter.addItem()
-
             binding.roomCount.text = "(${listRoom.size} Rooms Added)"
-
         }
 
         startDatePickerDialog =
@@ -130,7 +128,14 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
                 binding.countNight2.text = nights.toString()
                 apiCheckOutDate = ApiformatDate(date.toString())
                 getAvailableRoom()
+                binding.recyclerRoomDetails.layoutManager = LinearLayoutManager(requireContext())
+                addReservationAdapter = AddReservationAdapter(requireContext(), roomDetailsList,availableList,apiCheckInDate,apiCheckOutDate)
+                binding.recyclerRoomDetails.adapter = addReservationAdapter
 
+                addReservationAdapter.setOnClickListener(this)
+
+                addReservationAdapter.addItem()
+                listRoom = addReservationAdapter.reservationList
             }
 
         binding.CheckInLayout.setEndIconOnClickListener {
@@ -188,9 +193,7 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
 
     private fun generateBooking() {
 
-
-
-        barRateReservation.add(BarRateReservation(bookingTypeId,bookingSourceId))
+        barRateReservation.add(BarRateReservation(bookingTypeId,"",bookingSourceId))
 
         val booking = ReservationDataClass(
             userId,
@@ -198,16 +201,13 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
             apiCheckInDate,
             apiCheckOutDate,
             nights,
-            rateTypeId,
-            guestInfo,
-            barRateReservation,
-            roomDetailsList,
             emptyList(),
+            barRateReservation,
+            listRoom,
             reservationSummary,
             "",
             emptyList(),
-            emptyList(),
-            emptyList(),
+            emptyList()
         )
 
         val generateBooking = OAuthClient<AddReservationApis>(requireContext()).create(AddReservationApis::class.java).generateBooking(booking)
@@ -473,8 +473,7 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
 
         val grandTotal = listRoom.sumByDouble {
             val charge = it.charge.toDoubleOrNull() ?: 0.0
-            val extras = it.extraInclusion.toDoubleOrNull() ?: 0.0
-            val totalWithoutGST = charge + extras
+            val totalWithoutGST = charge
             val gst = 0.16 // 16% GST
 
             // Calculate the total amount with GST
