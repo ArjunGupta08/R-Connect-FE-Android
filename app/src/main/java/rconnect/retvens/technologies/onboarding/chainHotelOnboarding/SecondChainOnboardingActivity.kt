@@ -18,6 +18,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.GetPropertyTypeData
 import rconnect.retvens.technologies.databinding.ActivitySecondChainOnboardingBinding
 import rconnect.retvens.technologies.onboarding.FinalOnboardingScreen
 import rconnect.retvens.technologies.onboarding.ResponseData
@@ -25,6 +26,7 @@ import rconnect.retvens.technologies.utils.SharedPrefOnboardingFlags
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.prepareFilePart
 import rconnect.retvens.technologies.utils.shakeAnimation
+import rconnect.retvens.technologies.utils.showDropdownMenu
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,7 +35,9 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivitySecondChainOnboardingBinding
 
-    var propertyCount : Int = 1
+    private var propTypeList = ArrayList<String>()
+
+    private var propertyCount : Int = 1
 
     private var imageUri: Uri ?= null
     private var PICK_IMAGE_REQUEST_CODE : Int = 0
@@ -47,6 +51,8 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.demoBackbtn.setOnClickListener { onBackPressed() }
+
+        getPropertyType()
 
         binding.cardSingleNext.setOnClickListener {
 
@@ -240,6 +246,28 @@ class SecondChainOnboardingActivity : AppCompatActivity() {
         // start the animation
         view.startAnimation(animSlideIn)
         binding.imageEditLayout.isVisible = false
+    }
+    private fun getPropertyType() {
+        val getPropType = RetrofitObject.dropDownApis.getPropertyType()
+        getPropType.enqueue(object : Callback<GetPropertyTypeData?> {
+            override fun onResponse(
+                call: Call<GetPropertyTypeData?>,
+                response: Response<GetPropertyTypeData?>
+            ) {
+                if (response.isSuccessful) {
+                    val data = response.body()!!.data
+                    data.forEach {
+                        propTypeList.add(it.propertyType)
+                    }
+                    binding.properytyTypeText.setOnClickListener {
+                        showDropdownMenu(applicationContext, binding.properytyTypeText, it, propTypeList)
+                    }
+                }
+            }
+            override fun onFailure(call: Call<GetPropertyTypeData?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
     }
 
     private fun openGallery() {

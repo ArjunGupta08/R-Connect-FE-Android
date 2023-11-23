@@ -24,6 +24,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.GetPropertyTypeData
 import rconnect.retvens.technologies.databinding.ActivitySecondOnboardingScreenBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.SharedPrefOnboardingFlags
@@ -31,6 +32,7 @@ import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.fetchCountryName
 import rconnect.retvens.technologies.utils.prepareFilePart
 import rconnect.retvens.technologies.utils.shakeAnimation
+import rconnect.retvens.technologies.utils.showDropdownMenu
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -38,8 +40,8 @@ import java.lang.IndexOutOfBoundsException
 
 class SecondOnboardingScreen : AppCompatActivity() {
 
-    val countryList = ArrayList<String>()
-    val fullAddressList = ArrayList<String>()
+    val propTypeList = ArrayList<String>()
+
     private lateinit var binding : ActivitySecondOnboardingScreenBinding
 
     private var imageUri: Uri ?= null
@@ -58,6 +60,8 @@ class SecondOnboardingScreen : AppCompatActivity() {
         }
 
         imageSelection()
+
+        getPropertyType()
 
         placesAPI()
 
@@ -231,6 +235,28 @@ class SecondOnboardingScreen : AppCompatActivity() {
             })
         }
 
+    }
+    private fun getPropertyType() {
+        val getPropType = RetrofitObject.dropDownApis.getPropertyType()
+        getPropType.enqueue(object : Callback<GetPropertyTypeData?> {
+            override fun onResponse(
+                call: Call<GetPropertyTypeData?>,
+                response: Response<GetPropertyTypeData?>
+            ) {
+                    if (response.isSuccessful) {
+                        val data = response.body()!!.data
+                        data.forEach {
+                            propTypeList.add(it.propertyType)
+                        }
+                        binding.propertyTypeText.setOnClickListener {
+                            showDropdownMenu(applicationContext, binding.propertyTypeText, it, propTypeList)
+                        }
+                    }
+            }
+            override fun onFailure(call: Call<GetPropertyTypeData?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
     }
 
     private fun placesAPI() {
