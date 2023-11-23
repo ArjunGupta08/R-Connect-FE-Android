@@ -15,11 +15,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ListPopupWindow
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
@@ -29,15 +31,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import rconnect.retvens.technologies.Api.AddReservationApis
 import rconnect.retvens.technologies.Api.DropDownApis
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.RatesAndInventoryInterface
 import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.Api.configurationApi.ChainConfiguration
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.channelManager.AddReservationFragment.RatePlanDataClass
+import rconnect.retvens.technologies.dashboard.channelManager.AddReservationFragment.RatePlanItem
 import rconnect.retvens.technologies.dashboard.channelManager.AddReservationFragment.RateType
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomType
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomTypeData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.GetMealPlanData
 import rconnect.retvens.technologies.databinding.FragmentRatesAndInventoryBinding
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.showProgressDialog
@@ -45,6 +51,7 @@ import rconnect.retvens.technologies.utils.utilCreateDatePickerDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -59,7 +66,9 @@ class RatesAndInventoryFragment : Fragment() {
     private  var mList: ArrayList<ResponseData> = ArrayList();
     lateinit var dialog: Dialog
     private lateinit var robotoMedium : Typeface
+    private var ratePlans:ArrayList<RatePlanItem> = ArrayList()
     private lateinit var roboto:Typeface
+    private var inventoryList:ArrayList<RoomType> = ArrayList()
     var isDismissAllowed = true
     lateinit var fri:TextView
     lateinit var sat:TextView
@@ -88,10 +97,13 @@ class RatesAndInventoryFragment : Fragment() {
     var isAddedInt = ""
     var otaList = ArrayList<String>()
     var otaDialogList = ArrayList<String>()
-
+    var basePrice = ""
+    var baseAdult = ""
+    var baseChild = ""
     var roomTypeList = ArrayList<String>()
     var roomTypeDialogList = ArrayList<String>()
     var roomTypeId = ""
+    var ratePlanId = ""
     var temporaryRoomType = ArrayList<GetRoomType>()
     var ratePlansList = ArrayList<String>()
 
@@ -118,7 +130,7 @@ class RatesAndInventoryFragment : Fragment() {
 
         val rateOptions = arrayOf("Rates", "Stop sell", "COA","COD","Min Night","Extra Adult Rates","Extra Child Rates")
 
-        val rateAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, ratePlansList)
+        val rateAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, rateOptions)
 
         // Set a click listener for the end icon
         bindingTab.ratesText.setOnClickListener {
@@ -152,356 +164,7 @@ class RatesAndInventoryFragment : Fragment() {
 //        bindingTab.inventoryRecycler.setOnTouchListener(OnTouchListener { v, event -> true });
 
         bindingTab.bulkUpdateCard.setOnClickListener {
-            if (isDismissAllowed) {        // here i gave a condition
-                isDismissAllowed = false
-                dialog = Dialog(requireContext())
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                dialog.setCancelable(true)
-                dialog.setContentView(R.layout.dilog_bulk_update)
-                dialog.window?.apply {
-                    setBackgroundDrawableResource(android.R.color.transparent) // Makes the background transparent
-                    setLayout(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT
-                    )
-                }
-                Handler().postDelayed(Runnable {
-                    isDismissAllowed = true
-                }, 1000)
-            }
-             fri = dialog.findViewById<TextView>(R.id.fri)
-             sun = dialog.findViewById<TextView>(R.id.sunday)
-             mon = dialog.findViewById<TextView>(R.id.monday)
-             tues = dialog.findViewById<TextView>(R.id.tuesday)
-             wed = dialog.findViewById<TextView>(R.id.wed)
-             thur = dialog.findViewById<TextView>(R.id.thursday)
-             txt_all_days = dialog.findViewById<TextView>(R.id.txt_all_days)
-             txt_weekends = dialog.findViewById<TextView>(R.id.txt_weekends)
-             txt_week_days = dialog.findViewById<TextView>(R.id.txt_week_days)
-             txt_custom = dialog.findViewById<TextView>(R.id.txt_custom)
-             sat = dialog.findViewById<TextView>(R.id.saturday)
-
-            room_typeText = dialog.findViewById(R.id.room_typeText)
-            rate_planText = dialog.findViewById(R.id.rate_planText)
-
-            val roomAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, temporaryRoomType)
-            // Set a click listener for the end icon
-            room_typeText.setOnClickListener {
-                // Show dropdown menu
-                showRoomDropdownMenu(roomAdapter,it)
-            }
-
-            val rateOptions = arrayOf("Rates", "Stop sell", "COA","COD","Min Night","Extra Adult Rates","Extra Child Rates")
-
-            val rateAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, ratePlansList)
-
-            // Set a click listener for the end icon
-            rate_planText.setOnClickListener {
-                // Show dropdown menu
-                showDropdownMenu(rate_planText,rateAdapter,it)
-            }
-
-
-            unSelectAllDays()
-            txt_all_days.setBackgroundResource(R.drawable.rounded_border_light_black)
-            txt_weekends.setBackgroundResource(R.drawable.rounded_border_light_black)
-            txt_week_days.setBackgroundResource(R.drawable.rounded_border_light_black)
-            selectCard(txt_custom)
-            txt_custom.setBackgroundResource(R.drawable.rounded_border_black)
-
-            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            dialog.show()
-            var isMon = false
-            var isTues = false
-            var isWed = false
-            var isThur = false
-            var frid = false
-            var satu = true
-            var isSun = false
-
-
-
-
-                val from = dialog.findViewById<TextInputEditText>(R.id.from_Text)
-                val fromLayout = dialog.findViewById<TextInputLayout>(R.id.from_Layout)
-                val to = dialog.findViewById<TextInputEditText>(R.id.to_Text)
-                val toLayout = dialog.findViewById<TextInputLayout>(R.id.to_Layout)
-
-//                setDate(from)
-//                setDate(to)
-
-            val cancel = dialog.findViewById<TextView>(R.id.cancel)
-            cancel.setOnClickListener {
-                startDate = null
-                endDate = null
-                dialog.cancel()
-            }
-
-            startDatePickerDialog = utilCreateDatePickerDialog(requireContext(),from) { date->
-                startDate = date
-            }
-
-            endDatePickerDialog = utilCreateDatePickerDialog(requireContext(),to){date->
-
-                endDatePickerDialog.datePicker.minDate = startDate!!.time
-
-                if (startDate!=null&&date.before(startDate)){
-//                    isRightEndDate = false
-
-                Toast.makeText(requireContext(), "End date cannot be before start date", Toast.LENGTH_SHORT).show()
-//                    showToast("End date cannot be before start date")
-//                    to_date.text = "--/--/----"
-//                    Handler().postDelayed(Runnable {
-//                        isRightEndDate = true
-//                    },1000)
-                }
-                else{
-//                    isRightEndDate = true
-//                Toast.makeText(requireContext(), "Karan ji", Toast.LENGTH_SHORT).show()
-                    endDate = date
-                }
-            }
-
-
-            endDatePickerDialog = createDatePickerDialog(to){date->
-                if (startDate!=null){
-                endDatePickerDialog.datePicker.minDate = startDate!!.time
-                endDate = date
-            }
-            }
-
-
-
-                fromLayout.setStartIconOnClickListener {
-                    endDate = null
-
-                    // Set the minimum date for the start date picker to be the current date
-                    startDatePickerDialog.datePicker.minDate = System.currentTimeMillis()
-                    startDatePickerDialog.show()
-//            showCalendarDialog(requireContext(),from_date)
-//            startDatePickerDialog.show()
-                    dialog.show()
-                }
-
-            toLayout.setStartIconOnClickListener {
-                if (startDate!=null){
-                    endDatePickerDialog.datePicker.minDate = startDate!!.time
-                    endDatePickerDialog.show()
-                    dialog.show()
-                }
-            }
-
-                fri.setOnClickListener {
-                    if (!frid) {
-                        selectCard(fri)
-                        frid = true
-                    } else {
-                        unSelectCard(fri)
-                        frid = false
-                    }
-                }
-                sat.setOnClickListener {
-                    if (!satu) {
-                        selectCard(sat)
-                        satu = true
-                    } else {
-                        unSelectCard(sat)
-                        satu = false
-                    }
-                }
-                sun.setOnClickListener {
-                    if (!isSun) {
-                        selectCard(sun)
-                        isSun = true
-                    } else {
-                        unSelectCard(sun)
-                        isSun = false
-                    }
-                }
-                mon.setOnClickListener {
-                    if (!isMon) {
-                        selectCard(mon)
-                        isMon = true
-                    } else {
-                        unSelectCard(mon)
-                        isMon = false
-                    }
-                }
-                tues.setOnClickListener {
-                    if (!isTues) {
-                        selectCard(tues)
-                        isTues = true
-                    } else {
-                        unSelectCard(tues)
-                        isTues = false
-                    }
-                }
-                wed.setOnClickListener {
-                    if (!isWed) {
-                        selectCard(wed)
-                        isWed = true
-                    } else {
-                        unSelectCard(wed)
-                        isWed = false
-                    }
-                }
-                thur.setOnClickListener {
-                    if (!isThur) {
-                        selectCard(thur)
-                        isThur = true
-                    } else {
-                        unSelectCard(thur)
-                        isThur = false
-                    }
-                }
-
-                var isAllDay = false
-                var isweekend = false
-                var isWeekDay = false
-                var isCustom = true
-
-
-                fun allClickable() {
-                    sun.isClickable = true
-                    mon.isClickable = true
-                    tues.isClickable = true
-                    wed.isClickable = true
-                    thur.isClickable = true
-                    fri.isClickable = true
-                    sat.isClickable = true
-                }
-
-                fun selectHead(head: TextView) {
-                    unSelectCard(txt_all_days)
-                    unSelectCard(txt_week_days)
-                    unSelectCard(txt_weekends)
-                    unSelectCard(txt_custom)
-
-                    head.typeface = robotoMedium
-                    selectCard(head)
-                }
-
-
-                txt_all_days.setOnClickListener {
-
-                    selectHead(txt_all_days)
-                    selectCard(sun)
-                    selectCard(mon)
-                    selectCard(tues)
-                    selectCard(wed)
-                    selectCard(thur)
-                    selectCard(fri)
-                    selectCard(sat)
-                    notClickable()
-                    isAllDay = true
-
-                }
-                txt_weekends.setOnClickListener {
-
-                    selectHead(txt_weekends)
-                    unSelectAllDays()
-                    selectCard(sat)
-                    selectCard(sun)
-                    isweekend = true
-                    notClickable()
-
-                }
-                txt_week_days.setOnClickListener {
-
-                    selectHead(txt_week_days)
-                    unSelectAllDays()
-
-                    selectCard(mon)
-                    selectCard(tues)
-                    selectCard(wed)
-                    selectCard(thur)
-                    selectCard(fri)
-                    isWeekDay = true
-
-                }
-                txt_custom.setOnClickListener {
-
-                    selectHead(txt_custom)
-                    unSelectAllDays()
-                    allClickable()
-                    isCustom = true
-                }
-
-                val add_inventory = dialog.findViewById<ImageView>(R.id.add_inventory)
-                val blockRoomCard = dialog.findViewById<MaterialCardView>(R.id.block_room)
-                val addRoomCard = dialog.findViewById<MaterialCardView>(R.id.add_room_card)
-            val sourceText = dialog.findViewById<TextInputEditText>(R.id.sourceText)
-            val room_typeText = dialog.findViewById<TextInputEditText>(R.id.room_typeText)
-            val rate_planText = dialog.findViewById<TextInputEditText>(R.id.rate_planText)
-
-
-            val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, otaDialogList)
-            // Set a click listener for the end icon
-            sourceText.setOnClickListener {
-                // Show dropdown menu
-                showDropdownMenu(sourceText,adapter,it)
-            }
-
-            val adapter2 = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, roomTypeDialogList)
-            // Set a click listener for the end icon
-            room_typeText.setOnClickListener {
-                // Show dropdown menu
-                showDropdownMenu(room_typeText,adapter2,it)
-            }
-            val adapter3 = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, ratePlansList)
-            // Set a click listener for the end icon
-            rate_planText.setOnClickListener {
-                // Show dropdown menu
-                showDropdownMenu(rate_planText,adapter3,it)
-            }
-
-                var isInventoryOpen = false
-                add_inventory.setOnClickListener {
-                    if (!isInventoryOpen) {
-                        add_inventory.setImageResource(R.drawable.svg_arrow_down)
-                        blockRoomCard.isVisible = true
-                        addRoomCard.isVisible = true
-                        isInventoryOpen = true
-                    } else {
-                        add_inventory.setImageResource(R.drawable.svg_add_icon)
-                        blockRoomCard.isVisible = false
-                        addRoomCard.isVisible = false
-                        isInventoryOpen = false
-                    }
-
-                }
-                val add_rates = dialog.findViewById<ImageView>(R.id.add_rate)
-                val ll_rates = dialog.findViewById<LinearLayout>(R.id.ll_rate)
-                var isRateOpen = false
-                add_rates.setOnClickListener {
-                    if (!isRateOpen) {
-                        add_rates.setImageResource(R.drawable.svg_arrow_down)
-                        ll_rates.isVisible = true
-                        isRateOpen = true
-                    } else {
-                        add_rates.setImageResource(R.drawable.svg_add_icon)
-                        ll_rates.isVisible = false
-                        isRateOpen = false
-                    }
-
-                }
-                val add_restriction = dialog.findViewById<ImageView>(R.id.add_restriction)
-                val ll_restriction = dialog.findViewById<LinearLayout>(R.id.ll_restriction)
-                var isRestrictionOpen = false
-                add_restriction.setOnClickListener {
-                    if (!isRestrictionOpen) {
-                        add_restriction.setImageResource(R.drawable.svg_arrow_down)
-                        ll_restriction.isVisible = true
-                        isRestrictionOpen = true
-                    } else {
-                        add_restriction.setImageResource(R.drawable.svg_add_icon)
-                        ll_restriction.isVisible = false
-                        isRestrictionOpen = false
-                    }
-
-                }
-
-
+            OpenBulkUpdateDialog()
         }
 
 
@@ -515,7 +178,8 @@ class RatesAndInventoryFragment : Fragment() {
 
 
         bindingTab.inventoryRecycler.layoutManager = LinearLayoutManager(requireContext())
-
+        inventoryAdapter = RoomsInventoryAdapter(requireContext(),inventoryList,"Rates")
+        bindingTab.inventoryRecycler.adapter = inventoryAdapter
 
         val userId = UserSessionManager(requireContext()).getUserId()
         val propertyId = UserSessionManager(requireContext()).getPropertyId()
@@ -527,6 +191,398 @@ class RatesAndInventoryFragment : Fragment() {
             UpdateSingleInventory(roomId,apistartDate,updateinventory,isBlocked,isAddedInt)
         }
 
+    }
+
+    private fun OpenBulkUpdateDialog() {
+        if (isDismissAllowed) {        // here i gave a condition
+            isDismissAllowed = false
+            dialog = Dialog(requireContext())
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCancelable(true)
+            dialog.setContentView(R.layout.dilog_bulk_update)
+            dialog.window?.apply {
+                setBackgroundDrawableResource(android.R.color.transparent) // Makes the background transparent
+                setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+            }
+            Handler().postDelayed(Runnable {
+                isDismissAllowed = true
+            }, 1000)
+        }
+        fri = dialog.findViewById<TextView>(R.id.fri)
+        sun = dialog.findViewById<TextView>(R.id.sunday)
+        mon = dialog.findViewById<TextView>(R.id.monday)
+        tues = dialog.findViewById<TextView>(R.id.tuesday)
+        wed = dialog.findViewById<TextView>(R.id.wed)
+        thur = dialog.findViewById<TextView>(R.id.thursday)
+        txt_all_days = dialog.findViewById<TextView>(R.id.txt_all_days)
+        txt_weekends = dialog.findViewById<TextView>(R.id.txt_weekends)
+        txt_week_days = dialog.findViewById<TextView>(R.id.txt_week_days)
+        txt_custom = dialog.findViewById<TextView>(R.id.txt_custom)
+        sat = dialog.findViewById<TextView>(R.id.saturday)
+
+
+
+        unSelectAllDays()
+        txt_all_days.setBackgroundResource(R.drawable.rounded_border_light_black)
+        txt_weekends.setBackgroundResource(R.drawable.rounded_border_light_black)
+        txt_week_days.setBackgroundResource(R.drawable.rounded_border_light_black)
+        selectCard(txt_custom)
+        txt_custom.setBackgroundResource(R.drawable.rounded_border_black)
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.show()
+        var isMon = false
+        var isTues = false
+        var isWed = false
+        var isThur = false
+        var frid = false
+        var satu = true
+        var isSun = false
+
+
+
+
+        val from = dialog.findViewById<TextInputEditText>(R.id.from_Text)
+        val fromLayout = dialog.findViewById<TextInputLayout>(R.id.from_Layout)
+        val to = dialog.findViewById<TextInputEditText>(R.id.to_Text)
+        val toLayout = dialog.findViewById<TextInputLayout>(R.id.to_Layout)
+
+//                setDate(from)
+//                setDate(to)
+
+        val cancel = dialog.findViewById<TextView>(R.id.cancel)
+        cancel.setOnClickListener {
+            startDate = null
+            endDate = null
+            dialog.cancel()
+        }
+
+        startDatePickerDialog = utilCreateDatePickerDialog(requireContext(),from) { date->
+            startDate = date
+            val checkInDate = ApiformatDate(date.toString())
+        }
+
+        endDatePickerDialog = utilCreateDatePickerDialog(requireContext(),to){date->
+            val checkOutDate = ApiformatDate(date.toString())
+            endDatePickerDialog.datePicker.minDate = startDate!!.time
+
+            if (startDate!=null&&date.before(startDate)){
+//                    isRightEndDate = false
+
+                Toast.makeText(requireContext(), "End date cannot be before start date", Toast.LENGTH_SHORT).show()
+//                    showToast("End date cannot be before start date")
+//                    to_date.text = "--/--/----"
+//                    Handler().postDelayed(Runnable {
+//                        isRightEndDate = true
+//                    },1000)
+            }
+            else{
+//                    isRightEndDate = true
+//                Toast.makeText(requireContext(), "Karan ji", Toast.LENGTH_SHORT).show()
+                endDate = date
+            }
+        }
+
+
+        endDatePickerDialog = createDatePickerDialog(to){date->
+            if (startDate!=null){
+                endDatePickerDialog.datePicker.minDate = startDate!!.time
+                endDate = date
+
+            }
+        }
+
+
+
+        fromLayout.setStartIconOnClickListener {
+            endDate = null
+
+            // Set the minimum date for the start date picker to be the current date
+            startDatePickerDialog.datePicker.minDate = System.currentTimeMillis()
+            startDatePickerDialog.show()
+//            showCalendarDialog(requireContext(),from_date)
+//            startDatePickerDialog.show()
+            dialog.show()
+        }
+
+        toLayout.setStartIconOnClickListener {
+            if (startDate!=null){
+                endDatePickerDialog.datePicker.minDate = startDate!!.time
+                endDatePickerDialog.show()
+                dialog.show()
+            }
+        }
+
+        fri.setOnClickListener {
+            if (!frid) {
+                selectCard(fri)
+                frid = true
+            } else {
+                unSelectCard(fri)
+                frid = false
+            }
+        }
+        sat.setOnClickListener {
+            if (!satu) {
+                selectCard(sat)
+                satu = true
+            } else {
+                unSelectCard(sat)
+                satu = false
+            }
+        }
+        sun.setOnClickListener {
+            if (!isSun) {
+                selectCard(sun)
+                isSun = true
+            } else {
+                unSelectCard(sun)
+                isSun = false
+            }
+        }
+        mon.setOnClickListener {
+            if (!isMon) {
+                selectCard(mon)
+                isMon = true
+            } else {
+                unSelectCard(mon)
+                isMon = false
+            }
+        }
+        tues.setOnClickListener {
+            if (!isTues) {
+                selectCard(tues)
+                isTues = true
+            } else {
+                unSelectCard(tues)
+                isTues = false
+            }
+        }
+        wed.setOnClickListener {
+            if (!isWed) {
+                selectCard(wed)
+                isWed = true
+            } else {
+                unSelectCard(wed)
+                isWed = false
+            }
+        }
+        thur.setOnClickListener {
+            if (!isThur) {
+                selectCard(thur)
+                isThur = true
+            } else {
+                unSelectCard(thur)
+                isThur = false
+            }
+        }
+
+        var isAllDay = false
+        var isweekend = false
+        var isWeekDay = false
+        var isCustom = true
+
+
+        fun allClickable() {
+            sun.isClickable = true
+            mon.isClickable = true
+            tues.isClickable = true
+            wed.isClickable = true
+            thur.isClickable = true
+            fri.isClickable = true
+            sat.isClickable = true
+        }
+
+        fun selectHead(head: TextView) {
+            unSelectCard(txt_all_days)
+            unSelectCard(txt_week_days)
+            unSelectCard(txt_weekends)
+            unSelectCard(txt_custom)
+
+            head.typeface = robotoMedium
+            selectCard(head)
+        }
+
+
+        txt_all_days.setOnClickListener {
+
+            selectHead(txt_all_days)
+            selectCard(sun)
+            selectCard(mon)
+            selectCard(tues)
+            selectCard(wed)
+            selectCard(thur)
+            selectCard(fri)
+            selectCard(sat)
+            notClickable()
+            isAllDay = true
+
+        }
+        txt_weekends.setOnClickListener {
+
+            selectHead(txt_weekends)
+            unSelectAllDays()
+            selectCard(sat)
+            selectCard(sun)
+            isweekend = true
+            notClickable()
+
+        }
+        txt_week_days.setOnClickListener {
+
+            selectHead(txt_week_days)
+            unSelectAllDays()
+
+            selectCard(mon)
+            selectCard(tues)
+            selectCard(wed)
+            selectCard(thur)
+            selectCard(fri)
+            isWeekDay = true
+
+        }
+        txt_custom.setOnClickListener {
+
+            selectHead(txt_custom)
+            unSelectAllDays()
+            allClickable()
+            isCustom = true
+        }
+
+        val add_inventory = dialog.findViewById<ImageView>(R.id.add_inventory)
+        val blockRoomCard = dialog.findViewById<MaterialCardView>(R.id.block_room)
+        val addRoomCard = dialog.findViewById<MaterialCardView>(R.id.add_room_card)
+        val sourceText = dialog.findViewById<TextInputEditText>(R.id.sourceText)
+        val room_typeText = dialog.findViewById<TextInputEditText>(R.id.room_typeText)
+        val rate_planText = dialog.findViewById<TextInputEditText>(R.id.rate_planText)
+        val ratePlanLayout = dialog.findViewById<TextInputLayout>(R.id.rate_planLayout)
+        val roomTypeLayout = dialog.findViewById<TextInputLayout>(R.id.room_typeLayout)
+        val baseRate = dialog.findViewById<EditText>(R.id.baseRatePrice)
+        val baseAdultRate = dialog.findViewById<EditText>(R.id.baseAdultPrice)
+        val baseChildRate = dialog.findViewById<EditText>(R.id.baseChildPrice)
+        val saveCard = dialog.findViewById<CardView>(R.id.continueBtn)
+        val blockRoom = dialog.findViewById<EditText>(R.id.CountBlockRoom)
+        val addRoom = dialog.findViewById<EditText>(R.id.count_AddRoom)
+
+
+        val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, otaDialogList)
+        // Set a click listener for the end icon
+        sourceText.setOnClickListener {
+            // Show dropdown menu
+            showDropdownMenu(sourceText,adapter,it)
+        }
+
+        val adapter2 = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, temporaryRoomType)
+        // Set a click listener for the end icon
+        room_typeText.setOnClickListener {
+            Log.e("dialog","drop")
+            showRoomDropdownMenuDialog(adapter2,it,roomTypeLayout)
+        }
+        val adapter3 = ArrayAdapter(requireContext(), R.layout.simple_spinner_item1, ratePlans)
+        // Set a click listener for the end icon
+        rate_planText.setOnClickListener {
+            // Show dropdown menu
+            showRatePlanDropdownMenuDialog(adapter3,it,ratePlanLayout,baseRate,baseAdultRate,baseChildRate)
+        }
+
+        var isInventoryOpen = false
+        add_inventory.setOnClickListener {
+            if (!isInventoryOpen) {
+                add_inventory.setImageResource(R.drawable.svg_arrow_down)
+                blockRoomCard.isVisible = true
+                addRoomCard.isVisible = true
+                isInventoryOpen = true
+            } else {
+                add_inventory.setImageResource(R.drawable.svg_add_icon)
+                blockRoomCard.isVisible = false
+                addRoomCard.isVisible = false
+                isInventoryOpen = false
+            }
+
+        }
+        val add_rates = dialog.findViewById<ImageView>(R.id.add_rate)
+        val ll_rates = dialog.findViewById<LinearLayout>(R.id.ll_rate)
+        var isRateOpen = false
+        add_rates.setOnClickListener {
+            if (!isRateOpen) {
+                add_rates.setImageResource(R.drawable.svg_arrow_down)
+                ll_rates.isVisible = true
+                isRateOpen = true
+            } else {
+                add_rates.setImageResource(R.drawable.svg_add_icon)
+                ll_rates.isVisible = false
+                isRateOpen = false
+            }
+
+        }
+        val add_restriction = dialog.findViewById<ImageView>(R.id.add_restriction)
+        val ll_restriction = dialog.findViewById<LinearLayout>(R.id.ll_restriction)
+        var isRestrictionOpen = false
+        add_restriction.setOnClickListener {
+            if (!isRestrictionOpen) {
+                add_restriction.setImageResource(R.drawable.svg_arrow_down)
+                ll_restriction.isVisible = true
+                isRestrictionOpen = true
+            } else {
+                add_restriction.setImageResource(R.drawable.svg_add_icon)
+                ll_restriction.isVisible = false
+                isRestrictionOpen = false
+            }
+
+        }
+
+
+        saveCard.setOnClickListener {
+            progressDialog = showProgressDialog(requireContext())
+            updateBulkinventory(sourceText,room_typeText,rate_planText,checkInDate!!,checkOutDate!!,blockRoom,addRoom)
+        }
+
+    }
+
+    private fun updateBulkinventory(source:TextInputEditText,roomType:TextInputEditText,ratePlan:TextInputEditText,startDate:String,endDate:String,block:EditText,add:EditText) {
+
+        val bulkUpdate = OAuthClient<RatesAndInventoryInterface>(requireContext()).create(RatesAndInventoryInterface::class.java).updateBulkInventory(
+            UpdateBulkInventory(
+                UserSessionManager(requireContext()).getUserId().toString(),
+                UserSessionManager(requireContext()).getPropertyId().toString(),
+                roomTypeId,
+                startDate,
+                endDate,
+                true,
+                false,
+                add.text.toString(),
+                source.text.toString()
+            )
+        )
+        bulkUpdate.enqueue(object : Callback<rconnect.retvens.technologies.onboarding.ResponseData?> {
+            override fun onResponse(
+                call: Call<rconnect.retvens.technologies.onboarding.ResponseData?>,
+                response: Response<rconnect.retvens.technologies.onboarding.ResponseData?>
+            ) {
+                if (response.isSuccessful){
+                    progressDialog.dismiss()
+                    val response = response.body()!!
+                    Toast.makeText(requireContext(), response.message.toString(), Toast.LENGTH_SHORT).show()
+                    val userId = UserSessionManager(requireContext()).getUserId()
+                    val propertyId = UserSessionManager(requireContext()).getPropertyId()
+                    progressDialog = showProgressDialog(requireContext())
+                    dialog.dismiss()
+                    setInventory(userId,propertyId,checkInDate,checkOutDate)
+                }else{
+                    progressDialog.dismiss()
+                }
+            }
+
+            override fun onFailure(
+                call: Call<rconnect.retvens.technologies.onboarding.ResponseData?>,
+                t: Throwable
+            ) {
+                progressDialog.dismiss()
+            }
+        })
 
     }
 
@@ -607,6 +663,9 @@ class RatesAndInventoryFragment : Fragment() {
         listPopupWindow.setOnItemClickListener { _, _, position, _ ->
             val selectedItem = adapter.getItem(position)
             et.setText(selectedItem)
+            inventoryAdapter = RoomsInventoryAdapter(requireContext(),inventoryList,selectedItem.toString())
+            bindingTab.inventoryRecycler.adapter = inventoryAdapter
+            inventoryAdapter.notifyDataSetChanged()
             listPopupWindow.dismiss()
         }
 
@@ -622,6 +681,7 @@ class RatesAndInventoryFragment : Fragment() {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
                 val view = super.getView(position, convertView, parent)
                 val rateType = getItem(position)?.roomTypeName
+
                 (view as TextView).text = rateType
                 return view
             }
@@ -641,10 +701,110 @@ class RatesAndInventoryFragment : Fragment() {
             val selectedItem = customAdapter.getItem(position)
             bindingTab.roomTypeLayout.editText?.setText(selectedItem?.roomTypeName)
             roomTypeId = selectedItem?.roomTypeId.toString()
+            val filteredData = inventoryList.filter {
+                it.roomTypeName.contains(selectedItem!!.roomTypeName, true)
+            }
+            inventoryAdapter.filterList(filteredData)
             listPopupWindow.dismiss()
         }
 
         listPopupWindow.show()
+    }
+
+    private fun showRoomDropdownMenuDialog(adapter: ArrayAdapter<GetRoomType>, it: View?,view: TextInputLayout) {
+        val listPopupWindow = ListPopupWindow(requireContext())
+
+        // Create a custom adapter to display only the rateType property
+        val customAdapter = object : ArrayAdapter<GetRoomType>(requireContext(), R.layout.simple_dropdown_item_1line, temporaryRoomType) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getView(position, convertView, parent)
+                val rateType = getItem(position)?.roomTypeName
+
+                (view as TextView).text = rateType
+                return view
+            }
+
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                val rateType = getItem(position)?.roomTypeName
+                (view as TextView).text = rateType
+                return view
+            }
+        }
+
+        listPopupWindow.setAdapter(customAdapter)
+
+        listPopupWindow.anchorView = it
+        listPopupWindow.setOnItemClickListener { _, _, position, _ ->
+            val selectedItem = customAdapter.getItem(position)
+            view.editText?.setText(selectedItem?.roomTypeName)
+            roomTypeId = selectedItem?.roomTypeId.toString()
+            listPopupWindow.dismiss()
+            getRatePlanList(roomTypeId)
+        }
+
+        listPopupWindow.show()
+    }
+
+
+    private fun showRatePlanDropdownMenuDialog(adapter: ArrayAdapter<RatePlanItem>, it: View?,view: TextInputLayout,baseRate:EditText,baseAdult:EditText,baseChild:EditText) {
+        val listPopupWindow = ListPopupWindow(requireContext())
+
+        // Create a custom adapter to display only the rateType property
+        val customAdapter = object : ArrayAdapter<RatePlanItem>(requireContext(), R.layout.simple_dropdown_item_1line, ratePlans) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getView(position, convertView, parent)
+                val rateType = getItem(position)?.ratePlanName
+
+                (view as TextView).text = rateType
+                return view
+            }
+
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                val rateType = getItem(position)?.ratePlanName
+                (view as TextView).text = rateType
+                return view
+            }
+        }
+
+        listPopupWindow.setAdapter(customAdapter)
+
+        listPopupWindow.anchorView = it
+        listPopupWindow.setOnItemClickListener { _, _, position, _ ->
+            val selectedItem = customAdapter.getItem(position)
+            view.editText?.setText(selectedItem?.ratePlanName)
+            ratePlanId = selectedItem?.roomTypeId.toString()
+            baseRate.setText( selectedItem?.ratePlanTotal.toString())
+            baseAdult.setText(selectedItem?.extraAdultRate.toString())
+            baseChild.setText(selectedItem?.extraChildRate.toString())
+            listPopupWindow.dismiss()
+            getRatePlanList(roomTypeId)
+        }
+
+        listPopupWindow.show()
+    }
+
+    private fun getRatePlanList(roomTypeId: String) {
+
+        val getRoomList = OAuthClient<AddReservationApis>(requireContext()).create(AddReservationApis::class.java).getRatePlan(roomTypeId,UserSessionManager(requireContext()).getUserId().toString())
+        getRoomList.enqueue(object : Callback<RatePlanDataClass?> {
+            override fun onResponse(
+                call: Call<RatePlanDataClass?>,
+                response: Response<RatePlanDataClass?>
+            ) {
+                if (response.isSuccessful){
+                    val response = response.body()!!
+                    ratePlans.clear()
+                    ratePlans.addAll(response.data)
+                }else{
+                    Log.e("error",response.code().toString())
+                }
+            }
+            override fun onFailure(call: Call<RatePlanDataClass?>, t: Throwable) {
+                Log.e("error",t.message.toString())
+            }
+        })
     }
 
 
@@ -686,15 +846,8 @@ class RatesAndInventoryFragment : Fragment() {
 
                     Log.e("response",response.body().toString())
                     val data = response.body()!!.data
+                    temporaryRoomType.clear()
                     temporaryRoomType.addAll(data)
-                    data.forEach{
-                        temporaryRoomType.add(it)
-                        val roomType = it.roomTypeName
-                        roomTypeList.add(roomType)
-                        roomTypeDialogList.add(it.roomTypeName)
-                        roomTypeId = it.roomTypeId
-                    }
-
                 }
                 else{
 
@@ -749,8 +902,7 @@ class RatesAndInventoryFragment : Fragment() {
                if (response.isSuccessful && isAdded){
                    val response = response.body()!!
                    Log.e("res",response.toString())
-                   inventoryAdapter = RoomsInventoryAdapter(requireContext(),response)
-                   bindingTab.inventoryRecycler.adapter = inventoryAdapter
+                   inventoryList.addAll(response.data)
                    inventoryAdapter.notifyDataSetChanged()
                    inventoryAdapter.setOnListUpdateListener(this)
                    progressDialog.dismiss()
@@ -882,5 +1034,18 @@ class RatesAndInventoryFragment : Fragment() {
     }
 
 
+    fun ApiformatDate(inputDate: String): String {
+        val inputFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH)
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+
+        try {
+            val date = inputFormat.parse(inputDate)
+            return outputFormat.format(date)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return inputDate // Return the original date if parsing fails
+    }
 
 }

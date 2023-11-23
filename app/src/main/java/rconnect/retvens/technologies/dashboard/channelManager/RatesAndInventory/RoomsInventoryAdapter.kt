@@ -1,10 +1,12 @@
 package rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.res.ColorStateList
 import android.inputmethodservice.InputMethodService
+import android.os.Handler
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
@@ -24,7 +26,9 @@ import com.google.android.material.textfield.TextInputEditText
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.RatesAndInventoryInterface
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.channelManager.AddReservationFragment.RateType
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.GetMealPlanData
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
@@ -33,11 +37,12 @@ import retrofit2.Response
 import java.lang.IndexOutOfBoundsException
 import java.lang.NullPointerException
 
-class RoomsInventoryAdapter(val context: Context, private val inventory:ResponseData) :
+class RoomsInventoryAdapter(val context: Context, private var inventory:List<RoomType>, val updateList:String) :
     RecyclerView.Adapter<RoomsInventoryAdapter.InventoryViewHolder>() {
 
     private lateinit var ratePlanPricesAdapter: RatePlanPricesAdapter
     private  var mList:ArrayList<String> = ArrayList()
+
 
     private lateinit var progressDialog:Dialog
     private var onRateTypeListChangeListener : OnRateTypeListChangeListener ?= null
@@ -94,8 +99,7 @@ class RoomsInventoryAdapter(val context: Context, private val inventory:Response
     }
 
     override fun onBindViewHolder(holder: InventoryViewHolder, position: Int) {
-        val data = inventory.data
-        val room = data[position]
+        val room = inventory[position]
 
 
         Log.e("current",inventory.toString())
@@ -363,6 +367,7 @@ class RoomsInventoryAdapter(val context: Context, private val inventory:Response
 
             }
 
+            @SuppressLint("SuspiciousIndentation")
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 val updateInventory = p0.toString()
                 if (updateInventory >= inventory){
@@ -382,8 +387,13 @@ class RoomsInventoryAdapter(val context: Context, private val inventory:Response
         })
     }
 
-    private fun getRates(position: Int,roomTypeId:String,recyclerView: RecyclerView) {
+    fun filterList(inputString : List<RoomType>) {
+        Log.e("filter",inputString.toString())
+        inventory = inputString
+        notifyDataSetChanged()
+    }
 
+    private fun getRates(position: Int,roomTypeId:String,recyclerView: RecyclerView) {
         val userId = UserSessionManager(context).getUserId().toString()
         Log.e("userId",userId.toString())
         Log.e("roomTypeId",roomTypeId.toString())
@@ -394,13 +404,14 @@ class RoomsInventoryAdapter(val context: Context, private val inventory:Response
                 if (response.isSuccessful){
                     try {
                         val response = response.body()!!
-                        ratePlanPricesAdapter = RatePlanPricesAdapter(context,response.data!!)
+                        ratePlanPricesAdapter = RatePlanPricesAdapter(context,response.data!!,updateList)
                         recyclerView.adapter = ratePlanPricesAdapter
                         Log.e("response",response.toString())
                         ratePlanPricesAdapter.notifyItemChanged(position)
                         progressDialog.dismiss()
                     }catch (e:IndexOutOfBoundsException){
                         Log.e("error",e.message.toString())
+                        progressDialog.dismiss()
                     }
 
                 }else{
@@ -417,6 +428,8 @@ class RoomsInventoryAdapter(val context: Context, private val inventory:Response
 
     }
 
+
+
     private fun setPlan() {
         mList.clear()
         mList.add("3000")
@@ -427,7 +440,7 @@ class RoomsInventoryAdapter(val context: Context, private val inventory:Response
     }
 
     override fun getItemCount(): Int {
-        return inventory.data.size
+        return inventory.size
     }
 }
 
