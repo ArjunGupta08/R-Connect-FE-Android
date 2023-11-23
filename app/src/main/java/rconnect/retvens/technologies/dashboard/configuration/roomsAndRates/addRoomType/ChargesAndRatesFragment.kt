@@ -83,7 +83,7 @@ class ChargesAndRatesFragment : Fragment(),
 
         setUpRecycler()
 
-        val continueBtn = requireActivity().findViewById<CardView>(R.id.continueBtnRoom)
+        val continueBtn = requireActivity().findViewById<CardView>(R.id.continueBtn)
         continueBtn?.setOnClickListener {
             if (ratePlanDetailsList.isEmpty()) {
                 shakeAnimation(binding.addMealPlanCard, requireContext())

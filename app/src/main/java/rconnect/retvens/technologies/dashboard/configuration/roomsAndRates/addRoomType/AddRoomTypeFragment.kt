@@ -96,7 +96,7 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        onTabClick()
+//        onTabClick()
 
         roboto = ResourcesCompat.getFont(requireContext(), R.font.roboto)!!
         robotoMedium = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)!!
@@ -110,7 +110,7 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
             getBedType()
         }
 
-        binding.continueBtnRoom.setOnClickListener {
+        binding.continueBtn.setOnClickListener {
 
             if (page == 1){
 
@@ -585,7 +585,7 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
 
         binding.roomImages.setOnClickListener {
 
-            shakeAnimation(binding.continueBtnRoom, requireContext())
+            shakeAnimation(binding.continueBtn, requireContext())
 
              page = 2
 
@@ -614,7 +614,7 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
         }
 
         binding.chargePlans.setOnClickListener {
-            shakeAnimation(binding.continueBtnRoom, requireContext())
+            shakeAnimation(binding.continueBtn, requireContext())
 
             page = 3
 

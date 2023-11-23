@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
@@ -25,12 +26,15 @@ import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.configurationApi.ChainConfiguration
 import rconnect.retvens.technologies.Api.configurationApi.SingleConfiguration
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.properties.ViewPropertiesFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.ImageCategoryDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.ImagesCategoryAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectImagesDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectRoomImagesAdapter
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.FragmentAddImagesBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
+import rconnect.retvens.technologies.utils.Const
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.prepareFilePart
 import rconnect.retvens.technologies.utils.showProgressDialog
@@ -56,6 +60,8 @@ class AddImagesFragment(val idForImg : String ?= "", val isRoom : Boolean ?= fal
 
     var uriList = ArrayList<Uri>()
 
+    private lateinit var continueBtnRoom : CardView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -76,7 +82,10 @@ class AddImagesFragment(val idForImg : String ?= "", val isRoom : Boolean ?= fal
            imagesCategoryAdapter.addEmptyItem("room")
         }
 
-
+        continueBtnRoom = requireActivity().findViewById<CardView>(R.id.continueBtn)
+        continueBtnRoom.setOnClickListener {
+            Toast.makeText(requireContext(), "Please Upload Images", Toast.LENGTH_SHORT).show()
+        }
 
         imagesCategoryAdapter = ImagesCategoryAdapter(requireContext(), selectedImagesList)
         binding.imagesRecycler.adapter = imagesCategoryAdapter
@@ -171,6 +180,8 @@ class AddImagesFragment(val idForImg : String ?= "", val isRoom : Boolean ?= fal
     }
 
     private fun uploadPropImages(imageCategoryDataClass: ImageCategoryDataClass) {
+        progressDialog = showProgressDialog(requireContext())
+
         imageCategoryDataClass.imageList.forEach { imageUri ->
 
             progressDialog = showProgressDialog(requireContext())
@@ -192,13 +203,24 @@ class AddImagesFragment(val idForImg : String ?= "", val isRoom : Boolean ?= fal
                     response: Response<ResponseData?>
                 ) {
                     if (response.isSuccessful) {
+                        progressDialog.dismiss()
                         val responseData = response.body()!!
                         Toast.makeText(requireContext(),responseData.message,Toast.LENGTH_SHORT).show()
                         Log.e("res", responseData?.message.toString())
+
+                        continueBtnRoom.setOnClickListener {
+                                Const.isAddingNewProperty = false
+
+                                val childFragment: Fragment = ViewPropertiesFragment()
+                                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                                transaction.replace(R.id.dashboardFragmentContainer, childFragment)
+                                transaction.commit()
+                        }
+
                     } else {
+                        progressDialog.dismiss()
                         Log.e("res", "Error: ${response.code().toString()}")
                     }
-                    progressDialog.dismiss()
                 }
 
                 override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
@@ -206,10 +228,14 @@ class AddImagesFragment(val idForImg : String ?= "", val isRoom : Boolean ?= fal
                     progressDialog.dismiss()
                 }
             })
+            progressDialog.dismiss()
         }
+        progressDialog.dismiss()
     }
 
     private fun uploadRoomImages(imageCategoryDataClass: ImageCategoryDataClass) {
+        progressDialog = showProgressDialog(requireContext())
+
         imageCategoryDataClass.imageList.forEach { imageUri ->
 
             progressDialog = showProgressDialog(requireContext())
@@ -223,7 +249,7 @@ class AddImagesFragment(val idForImg : String ?= "", val isRoom : Boolean ?= fal
 
             val uploadRoomImage = OAuthClient<ChainConfiguration>(requireContext())
                 .create(ChainConfiguration::class.java)
-                .uploadPropertyImages( userId,idForImg!! ,createPartFromString(imageCategoryDataClass.imageType),propertyImage!!)
+                .uploadRoomsImages( userId,idForImg!! ,propertyImage!!,createPartFromString(imageCategoryDataClass.imageType))
 
             uploadRoomImage.enqueue(object : Callback<ResponseData?> {
                 override fun onResponse(
@@ -234,6 +260,17 @@ class AddImagesFragment(val idForImg : String ?= "", val isRoom : Boolean ?= fal
                         val responseData = response.body()!!
                         Toast.makeText(requireContext(),responseData.message,Toast.LENGTH_SHORT).show()
                         Log.e("res", responseData?.message.toString())
+
+                        continueBtnRoom.setOnClickListener {
+                                Const.isAddingNewRoom = false
+
+                                val childFragment: Fragment = RoomTypeFragment()
+                                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                                transaction.replace(R.id.dashboardFragmentContainer,childFragment)
+                                transaction.commit()
+                        }
+
+
                     } else {
                         Log.e("res", "Error: ${response.code().toString()}")
                     }
@@ -246,6 +283,7 @@ class AddImagesFragment(val idForImg : String ?= "", val isRoom : Boolean ?= fal
                 }
             })
         }
+        progressDialog.dismiss()
     }
 
     // Helper method to create RequestBody from a string
