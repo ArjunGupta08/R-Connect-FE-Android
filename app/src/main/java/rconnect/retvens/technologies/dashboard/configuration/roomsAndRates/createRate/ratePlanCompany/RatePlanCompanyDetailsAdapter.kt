@@ -1,4 +1,4 @@
-package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate
+package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany
 
 import android.app.Dialog
 import android.content.Context
@@ -28,6 +28,7 @@ import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddInclusionsAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.RatePlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateTypeAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.AddBarsRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.InclusionPlan
@@ -45,16 +46,16 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:ArrayList<AddBarsRatePlanDataClass>):RecyclerView.Adapter<RatePlanDetailsAdapter.ViewHolder>(){
+class RatePlanCompanyDetailsAdapter(val applicationContext:Context, val rateTypeList:ArrayList<AddCompanyRatePlanDataClass>):RecyclerView.Adapter<RatePlanCompanyDetailsAdapter.ViewHolder>(){
 
-    private var updatedRateTypeList = ArrayList<AddBarsRatePlanDataClass>()
+    private var updatedRateTypeList = ArrayList<AddCompanyRatePlanDataClass>()
 
     private var onRateTypeListChangeListener : OnRateTypeListChangeListener ?= null
     fun setOnListUpdateListener (listener : OnRateTypeListChangeListener) {
         onRateTypeListChangeListener = listener
     }
     interface OnRateTypeListChangeListener {
-        fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddBarsRatePlanDataClass>)
+        fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddCompanyRatePlanDataClass>)
     }
     class ViewHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
 
@@ -112,10 +113,10 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
 
         holder.ratePlanText.text = currentData.ratePlanName
         holder.rateCode.text = currentData.shortCode
-        if (currentData.inclusionPlan.size == 0) {
+        if (currentData.ratePlanInclusion.size == 0) {
             holder.totalInclusions.text = "No Inclusions"
         } else {
-            holder.totalInclusions.text = "${currentData.inclusionPlan.size} Inclusions"
+            holder.totalInclusions.text = "${currentData.ratePlanInclusion.size} Inclusions"
         }
         holder.extraAdultRateTxt.text = currentData.extraAdultRate
         holder.extraChildRateTxt.text = currentData.extraChildRate
@@ -165,7 +166,7 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
         getPostingRule()
         getChargeRule()
 
-        var selectedInclusions = currentData.inclusionPlan
+        var selectedInclusions = currentData.ratePlanInclusion
         holder.recycler_inclusion.layoutManager = LinearLayoutManager(applicationContext)
         val createRateTypeAdapter = CreateRateTypeAdapter(applicationContext, selectedInclusions, postingRuleArray, chargeRuleArray)
         holder.recycler_inclusion.adapter = createRateTypeAdapter
@@ -306,7 +307,7 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
                 holder.detailCard.isVisible = true
                 isRateCardEdit = true
 
-                val ratePlanDataClass = AddBarsRatePlanDataClass(
+                val ratePlanDataClass = AddCompanyRatePlanDataClass(
                     "${currentData.userId}",
                     "${currentData.propertyId}",
                     "${currentData.roomTypeId}",

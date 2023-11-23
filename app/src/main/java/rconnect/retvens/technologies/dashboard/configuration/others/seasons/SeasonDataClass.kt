@@ -12,7 +12,10 @@ data class AddSeasonDataClass(
 
 data class UpdateSeasonDataClass(
     val shortCode : String,
-    val identityType : String,
+    val seasonName : String,
+    val startDate : String,
+    val endDate : String,
+    val days : ArrayList<String>,
 )
 
 data class GetSeasonDataClass(

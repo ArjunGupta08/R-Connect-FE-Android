@@ -46,7 +46,7 @@ class RoomsInventoryAdapter(val context: Context, private val inventory:Response
     }
 
     interface OnRateTypeListChangeListener {
-        fun onRateTypeListChanged(roomTypeId:String,startDate:String,inventory:String)
+        fun onRateTypeListChanged(roomTypeId:String,startDate:String,inventory:String,isBlock:String,isAdd:String)
     }
 
     class InventoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -337,16 +337,16 @@ class RoomsInventoryAdapter(val context: Context, private val inventory:Response
 //        holder.inventory1.setOnClickListener {
 //            setInputEditText(holder.inventory1)
 //        }
-        setInputEditText(holder.inventory1,room.roomTypeId.toString(),room.calculatedInventoryData.get(0).date)
-        setInputEditText(holder.inventory2,room.roomTypeId.toString(),room.calculatedInventoryData.get(1).date)
-        setInputEditText(holder.inventory3,room.roomTypeId.toString(),room.calculatedInventoryData.get(2).date)
-        setInputEditText(holder.inventory4,room.roomTypeId.toString(),room.calculatedInventoryData.get(3).date)
-        setInputEditText(holder.inventory5,room.roomTypeId.toString(),room.calculatedInventoryData.get(4).date)
-        setInputEditText(holder.inventory6,room.roomTypeId.toString(),room.calculatedInventoryData.get(5).date)
-        setInputEditText(holder.inventory7,room.roomTypeId.toString(),room.calculatedInventoryData.get(6).date)
-        setInputEditText(holder.inventory8,room.roomTypeId.toString(),room.calculatedInventoryData.get(7).date)
-        setInputEditText(holder.inventory9,room.roomTypeId.toString(),room.calculatedInventoryData.get(8).date)
-        setInputEditText(holder.inventory10,room.roomTypeId.toString(),room.calculatedInventoryData.get(9).date)
+        setInputEditText(holder.inventory1,room.roomTypeId.toString(),room.calculatedInventoryData.get(0).date,room.calculatedInventoryData.get(0).inventory.toString())
+        setInputEditText(holder.inventory2,room.roomTypeId.toString(),room.calculatedInventoryData.get(1).date,room.calculatedInventoryData.get(1).inventory.toString())
+        setInputEditText(holder.inventory3,room.roomTypeId.toString(),room.calculatedInventoryData.get(2).date,room.calculatedInventoryData.get(2).inventory.toString())
+        setInputEditText(holder.inventory4,room.roomTypeId.toString(),room.calculatedInventoryData.get(3).date,room.calculatedInventoryData.get(3).inventory.toString())
+        setInputEditText(holder.inventory5,room.roomTypeId.toString(),room.calculatedInventoryData.get(4).date,room.calculatedInventoryData.get(4).inventory.toString())
+        setInputEditText(holder.inventory6,room.roomTypeId.toString(),room.calculatedInventoryData.get(5).date,room.calculatedInventoryData.get(5).inventory.toString())
+        setInputEditText(holder.inventory7,room.roomTypeId.toString(),room.calculatedInventoryData.get(6).date,room.calculatedInventoryData.get(6).inventory.toString())
+        setInputEditText(holder.inventory8,room.roomTypeId.toString(),room.calculatedInventoryData.get(7).date,room.calculatedInventoryData.get(7).inventory.toString())
+        setInputEditText(holder.inventory9,room.roomTypeId.toString(),room.calculatedInventoryData.get(8).date,room.calculatedInventoryData.get(7).inventory.toString())
+        setInputEditText(holder.inventory10,room.roomTypeId.toString(),room.calculatedInventoryData.get(9).date,room.calculatedInventoryData.get(9).inventory.toString())
 
         holder.recyclerView.layoutManager = LinearLayoutManager(context)
 
@@ -357,14 +357,22 @@ class RoomsInventoryAdapter(val context: Context, private val inventory:Response
         progressDialog.dismiss()
     }
 
-    private fun setInputEditText(input: TextInputEditText,roomTypeId: String,startDate: String) {
+    private fun setInputEditText(input: TextInputEditText,roomTypeId: String,startDate: String,inventory:String) {
         input.addTextChangedListener(object :TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                        onRateTypeListChangeListener?.onRateTypeListChanged(roomTypeId,startDate,p0.toString())
+                val updateInventory = p0.toString()
+                if (updateInventory >= inventory){
+                    val finalInventory = updateInventory.toInt() - inventory.toInt()
+                            onRateTypeListChangeListener?.onRateTypeListChanged(roomTypeId,startDate,finalInventory.toString(),"false","true")
+                }else{
+                    val finalInventory = inventory.toInt() - updateInventory.toInt()
+                    onRateTypeListChangeListener?.onRateTypeListChanged(roomTypeId,startDate,finalInventory.toString(),"true","false")
+                }
+
             }
 
             override fun afterTextChanged(p0: Editable?) {

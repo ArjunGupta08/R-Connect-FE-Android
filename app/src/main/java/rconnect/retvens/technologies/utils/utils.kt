@@ -14,6 +14,8 @@ import android.widget.ListPopupWindow
 import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
 import rconnect.retvens.technologies.R
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.TimeZone
 import kotlin.random.Random
 
@@ -158,4 +160,10 @@ fun fetchTargetTimeZoneId(): String {
     val defaultTimeZoneId = TimeZone.getDefault().id
 
     return defaultTimeZoneId
+}
+
+fun convertStringToDate(dateString: String): Date {
+    val pattern = "dd/MM/yyyy"
+    val sdf = SimpleDateFormat(pattern)
+    return sdf.parse(dateString) ?: Date()
 }

@@ -20,6 +20,7 @@ import rconnect.retvens.technologies.dashboard.configuration.others.holiday.Upda
 import rconnect.retvens.technologies.dashboard.configuration.others.seasons.AddSeasonDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.seasons.GetSeasonData
 import rconnect.retvens.technologies.dashboard.configuration.others.seasons.GetSeasonDataClass
+import rconnect.retvens.technologies.dashboard.configuration.others.seasons.UpdateSeasonDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.AddTransportationTypeDataClass
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.GetTransportationTypeData
 import rconnect.retvens.technologies.dashboard.configuration.others.transportationTypes.GetTransportationTypeDataClass
@@ -205,6 +206,13 @@ interface GeneralsAPI {
         @Query("userId") userId : String,
         @Query("seasonId") seasonId : String,
         @Body displayStatusData: DisplayStatusData
+    ): Call<ResponseData>
+
+    @PATCH("patchSeason")
+    fun updateSeasonTypeApi (
+        @Query("userId") userId : String,
+        @Query("seasonId") seasonId : String,
+        @Body updateSeasonData: UpdateSeasonDataClass
     ): Call<ResponseData>
 
     /*--------------------------------------- Holiday-----------------------------------------*/

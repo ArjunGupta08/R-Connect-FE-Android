@@ -6,7 +6,8 @@ data class UpdateSingleInventory(
     val roomTypeId:String,
     val startDate:String,
     val endDate:String,
-    val isAddedInventory:String,
+    val isAddedInventory:Boolean,
+    val isBlockedInventory:Boolean,
     val inventory:String,
     val source:String
 )

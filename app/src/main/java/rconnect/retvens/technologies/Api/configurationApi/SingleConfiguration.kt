@@ -10,6 +10,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRo
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.GetRoomData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.GetRoomDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.UpdateRoomData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.AddBarsRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanPackage.AddPackageDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlaneDiscount.AddDiscountDataClass
@@ -74,7 +75,7 @@ interface SingleConfiguration {
 
     @POST("barRatePlan")
     fun barRatePlanApi (
-        @Body addCompanyRatePlanDataClass: AddCompanyRatePlanDataClass
+        @Body addCompanyRatePlanDataClass: AddBarsRatePlanDataClass
     ): Call<ResponseData>
 
 

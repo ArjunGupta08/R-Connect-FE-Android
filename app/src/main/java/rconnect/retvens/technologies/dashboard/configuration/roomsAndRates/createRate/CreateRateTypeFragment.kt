@@ -18,6 +18,7 @@ import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.AddBarsRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.GetMealData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.GetMealPlanItem
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.RatePlanBarAdapter
@@ -34,7 +35,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CreateRateTypeFragment : Fragment(), RatePlanBarAdapter.OnRateTypeListChangeListener,
+class CreateRateTypeFragment : Fragment(),
     RatePlanBarFragment.OnRateTypeListChangeListener {
 
     lateinit var binding:FragmentCreateRateTypeBinding
@@ -402,5 +403,7 @@ class CreateRateTypeFragment : Fragment(), RatePlanBarAdapter.OnRateTypeListChan
         ratePlanBarList.addAll(updatedRateTypeList)
         Log.e("ratePlanBarList",ratePlanBarList.toString())
     }
+
+
 
 }

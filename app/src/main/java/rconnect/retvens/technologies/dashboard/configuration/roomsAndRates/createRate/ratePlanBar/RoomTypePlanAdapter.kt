@@ -21,7 +21,7 @@ import rconnect.retvens.technologies.utils.showDropdownMenu
 class RoomTypePlanAdapter(val applicationContext:Context, val rateTypeList:ArrayList<RoomTypePlanDataClass>):RecyclerView.Adapter<RoomTypePlanAdapter.ViewHolder>(),
     RatePlanBarAdapter.OnRateTypeListChangeListener {
 
-    private var ratePlan:ArrayList<AddCompanyRatePlanDataClass> = ArrayList()
+    private var ratePlan:ArrayList<AddBarsRatePlanDataClass> = ArrayList()
     val selectedInclusionList: ArrayList<InclusionPlan> = arrayListOf()
     private var onRateTypeListChangeListener : OnRateTypeListChangeListener ?= null
     fun setOnListUpdateListener (listener : OnRateTypeListChangeListener) {
@@ -29,7 +29,7 @@ class RoomTypePlanAdapter(val applicationContext:Context, val rateTypeList:Array
     }
 
     interface OnRateTypeListChangeListener {
-        fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddCompanyRatePlanDataClass>)
+        fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddBarsRatePlanDataClass>)
     }
 
     class ViewHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
@@ -60,7 +60,7 @@ class RoomTypePlanAdapter(val applicationContext:Context, val rateTypeList:Array
             val shortCode = generateShortCode(currentData.roomTypeName,mealName)
 
 
-        val ratePlans = AddCompanyRatePlanDataClass(
+        val ratePlans = AddBarsRatePlanDataClass(
             UserSessionManager(applicationContext).getUserId().toString(),currentData.propertyId,currentData.roomTypeId,"Bar",currentData.roomTypeId,
             "",it.mealPlanName,it.mealPlanId,shortCode, selectedInclusionList,"",it.chargesPerOccupancy,"","",currentData.extraAdultRate,currentData.extraChildRate,currentData.roomBasePrice,it.mealPlanName
         )
@@ -90,7 +90,7 @@ class RoomTypePlanAdapter(val applicationContext:Context, val rateTypeList:Array
         return (code1 + code2).toUpperCase()
     }
 
-    override fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddCompanyRatePlanDataClass>) {
+    override fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddBarsRatePlanDataClass>) {
         onRateTypeListChangeListener?.onRateTypeListChanged(updatedRateTypeList)
         Log.e("updatedRateTypeList",updatedRateTypeList.toString())
         notifyDataSetChanged()

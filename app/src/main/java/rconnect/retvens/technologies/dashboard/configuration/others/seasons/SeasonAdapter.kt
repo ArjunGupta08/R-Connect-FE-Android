@@ -36,22 +36,15 @@ import java.util.Date
 
 class SeasonAdapter(var list:ArrayList<GetSeasonData>, val applicationContext: Context):RecyclerView.Adapter<SeasonAdapter.NotificationHolder>() {
 
-    lateinit var endDatePickerDialog: DatePickerDialog
-    lateinit var startDatePickerDialog: DatePickerDialog
-    var startDate:Date? = null
-    var endDate:Date? = null
     lateinit var loader:Dialog
-    var mListener : OnUpdate?= null
-    lateinit var from_date:TextView
-    lateinit var to_date:TextView
-    val selectedDays = ArrayList<String>()
 
+    var mListener : OnUpdate?= null
     fun setOnUpdateListener(listener : OnUpdate){
         mListener = listener
     }
-
     interface OnUpdate {
         fun onUpdate()
+        fun onEdit(item : GetSeasonData)
     }
 
     class NotificationHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
@@ -79,27 +72,6 @@ class SeasonAdapter(var list:ArrayList<GetSeasonData>, val applicationContext: C
         return list.size
     }
 
-    private fun saveSeason(context: Context, dialog: Dialog, shortCodeTxt : String, season:String) {
-        val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).addSeasonApi(
-            AddSeasonDataClass(UserSessionManager(context).getUserId().toString(), UserSessionManager(context).getPropertyId().toString(), season, shortCodeTxt, from_date.text.toString(), to_date.text.toString(), selectedDays)
-        )
-        create.enqueue(object : Callback<ResponseData?> {
-            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
-                loader.dismiss()
-                if (response.isSuccessful){
-                    response.body()
-                }
-                Log.d( "season", "${response.code()} ${response.message()}")
-                mListener?.onUpdate()
-                dialog.dismiss()
-            }
-
-            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
-                loader.dismiss()
-                Log.e("error", t.localizedMessage)
-            }
-        })
-    }
     private fun deleteSeason(context: Context,seasonId:String, getSeasonData: GetSeasonData) {
         val create = UserSessionManager(applicationContext).getUserId()?.let {
             OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).deleteSeasonTypeApi(
@@ -115,6 +87,7 @@ class SeasonAdapter(var list:ArrayList<GetSeasonData>, val applicationContext: C
                 Log.d( "season delete", "${response.code()} ${response.message()}")
                 list.remove(getSeasonData)
                 notifyDataSetChanged()
+                mListener?.onUpdate()
             }
 
             override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
@@ -137,7 +110,7 @@ class SeasonAdapter(var list:ArrayList<GetSeasonData>, val applicationContext: C
 
         Toast.makeText(applicationContext, item.days.toString(), Toast.LENGTH_SHORT).show()
         holder.edit.setOnClickListener {
-            openCreateNewDialog(applicationContext,item.shortCode,item.seasonName,from_date.toString(),to_date.toString())
+            mListener?.onEdit(item)
         }
         holder.delete.setOnClickListener {
             showDeleteConfirmationDialog(applicationContext){
@@ -148,138 +121,6 @@ class SeasonAdapter(var list:ArrayList<GetSeasonData>, val applicationContext: C
         }
     }
 
-    private fun openCreateNewDialog(context : Context, shortCodeTxt:String , seasonName:String , from:String , to:String) {
-        val dialog = Dialog(context) // Use 'this' as the context, assuming this code is within an Activity
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(true)
-        dialog.setCanceledOnTouchOutside(true)
-        dialog.setContentView(R.layout.dialog_create_season)
-        dialog.window?.apply {
-            setBackgroundDrawableResource(android.R.color.transparent) // Makes the background transparent
-            setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-        }
-        val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCodeHoliday)
-        val holidayNameET = dialog.findViewById<TextInputEditText>(R.id.holidayNameHoliday)
-        shortCode.setText(shortCodeTxt)
-        holidayNameET.setText(seasonName)
-
-        val cancel = dialog.findViewById<TextView>(R.id.cancel)
-        val save = dialog.findViewById<CardView>(R.id.saveBtn)
-
-
-        from_date = dialog.findViewById<TextView>(R.id.from_date)
-        to_date = dialog.findViewById<TextView>(R.id.to_date)
-        startDatePickerDialog = createDatePickerDialog(applicationContext,from_date) { date->
-            startDate = date
-        }
-
-        endDatePickerDialog = createDatePickerDialog(applicationContext,to_date){date->
-
-            endDatePickerDialog.datePicker.minDate = startDate!!.time
-
-            if (startDate!=null&&date.before(startDate)){
-//                    isRightEndDate = false
-
-                Toast.makeText(applicationContext, "End date cannot be before start date", Toast.LENGTH_SHORT).show()
-//                    showToast("End date cannot be before start date")
-//                    to_date.text = "--/--/----"
-//                    Handler().postDelayed(Runnable {
-//                        isRightEndDate = true
-//                    },1000)
-            }
-            else{
-                endDate = date
-            }
-        }
-
-        endDatePickerDialog = toCreateDatePickerDialog(to_date){date->
-            if (startDate!=null){
-                endDatePickerDialog.datePicker.minDate = startDate!!.time
-                endDate = date
-            }
-        }
-        from_date.text = from
-        to_date.text = to
-
-        from_date.setOnClickListener {
-            startDatePickerDialog.show()
-            dialog.show()
-        }
-        to_date.setOnClickListener {
-            endDatePickerDialog.show()
-            dialog.show()
-        }
-
-        cancel.setOnClickListener {
-            dialog.dismiss()
-        }
-        save.setOnClickListener {
-            loader = showProgressDialog(applicationContext)
-            saveSeason(applicationContext, dialog, shortCode.text.toString(), "season")
-        }
-
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-        dialog.window?.setGravity(Gravity.END)
-
-        dialog.show()
-    }
-    fun createDatePickerDialog(applicationContext: Context, textDate:TextView, onDateSetListener: (Date) -> Unit): DatePickerDialog {
-        val calendar = Calendar.getInstance()
-        return DatePickerDialog(
-            applicationContext,
-            { _, year, month, dayOfMonth ->
-                // Create a Date object from the selected date
-                calendar.set(year, month, dayOfMonth)
-                val selectedDate = calendar.time
-                // Invoke the provided listener
-                onDateSetListener.invoke(selectedDate)
-                // Set the selected date on the EditText
-                val selectedDate2 = "$dayOfMonth/${month+1}/$year"
-                textDate.setText(selectedDate2)
-
-//                if (textDate==from_date){
-//                    startDate = selectedDate
-//                }
-//                else{
-//                    endDate = selectedDate
-//                }
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
-    }
-
-    private fun toCreateDatePickerDialog(textDate:TextView,onDateSetListener: (Date) -> Unit): DatePickerDialog {
-        val calendar = Calendar.getInstance()
-        return DatePickerDialog(
-            applicationContext,
-            { _, year, month, dayOfMonth ->
-                // Create a Date object from the selected date
-                calendar.set(year, month, dayOfMonth)
-                val selectedDate = calendar.time
-                // Invoke the provided listener
-                onDateSetListener.invoke(selectedDate)
-                // Set the selected date on the EditText
-                val selectedDate2 = "$dayOfMonth/${month+1}/$year"
-                textDate.text = selectedDate2
-
-//                if (textDate==from_date){
-//                    startDate = selectedDate
-//                }
-//                else{
-//                    endDate = selectedDate
-//                }
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
-    }
     fun filterList(inputString : ArrayList<GetSeasonData>) {
         list = inputString
         notifyDataSetChanged()
