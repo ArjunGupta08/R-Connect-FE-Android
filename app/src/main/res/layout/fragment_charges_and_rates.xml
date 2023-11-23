@@ -87,9 +87,11 @@
                             android:fontFamily="@font/roboto"/>
                         <TextView
                             android:id="@+id/countMinimumRate"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="₹ 1000.00"
+                            android:drawablePadding="3dp"
+                            android:drawableStart="@drawable/baseline_currency_rupee_12"
+                            android:text="1000.00"
                             android:textAlignment="center"
                             android:textSize="16sp"
                             android:textColor="@color/black"
@@ -158,9 +160,11 @@
                             android:fontFamily="@font/roboto"/>
                         <TextView
                             android:id="@+id/countBaseRate"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="₹ 2500.00"
+                            android:drawablePadding="3dp"
+                            android:drawableStart="@drawable/baseline_currency_rupee_12"
+                            android:text="2500.00"
                             android:textAlignment="center"
                             android:textSize="16sp"
                             android:textColor="@color/black"
@@ -229,9 +233,11 @@
                             android:fontFamily="@font/roboto"/>
                         <TextView
                             android:id="@+id/countMaximumCharges"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="₹ 5000.00"
+                            android:drawablePadding="3dp"
+                            android:drawableStart="@drawable/baseline_currency_rupee_12"
+                            android:text="5000.00"
                             android:textAlignment="center"
                             android:textSize="16sp"
                             android:textColor="@color/black"
@@ -321,9 +327,11 @@
                             android:fontFamily="@font/roboto"/>
                         <TextView
                             android:id="@+id/countExtraAdultRate"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="₹ 1500.00"
+                            android:drawablePadding="3dp"
+                            android:drawableStart="@drawable/baseline_currency_rupee_12"
+                            android:text="1500.00"
                             android:textAlignment="center"
                             android:textSize="16sp"
                             android:textColor="@color/black"
@@ -392,9 +400,11 @@
                             android:fontFamily="@font/roboto"/>
                         <TextView
                             android:id="@+id/countMaxChildRate"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="₹ 600.00"
+                            android:drawablePadding="3dp"
+                            android:drawableStart="@drawable/baseline_currency_rupee_12"
+                            android:text="600.00"
                             android:textAlignment="center"
                             android:textSize="16sp"
                             android:textColor="@color/black"

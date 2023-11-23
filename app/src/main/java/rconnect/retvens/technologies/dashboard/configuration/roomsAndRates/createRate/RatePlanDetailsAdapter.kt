@@ -183,16 +183,15 @@ class RatePlanDetailsAdapter(val applicationContext:Context, val rateTypeList:Ar
                         rate = getInclusionData.charge
                     )
 
-                    selectedInclusions.add(inclusionPlan)
+                    if (!selectedInclusions.contains(inclusionPlan)) {
+                        selectedInclusions.add(inclusionPlan)
+                        totalInclusionCharges += inclusionPlan.rate.toDouble()
+                    }
                 }
                 holder.recycler_inclusion.layoutManager = LinearLayoutManager(applicationContext)
                 val createRateTypeAdapter = CreateRateTypeAdapter(applicationContext, selectedInclusions, postingRuleArray, chargeRuleArray)
                 holder.recycler_inclusion.adapter = createRateTypeAdapter
                 createRateTypeAdapter.notifyDataSetChanged()
-
-                selectedList.forEach {
-                    totalInclusionCharges += it.charge.toDouble()
-                }
 
                 holder.totalInclusionChargesET.setText("$totalInclusionCharges")
 

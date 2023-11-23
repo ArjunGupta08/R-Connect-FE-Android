@@ -126,7 +126,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
-                android:text="₹ 12,555.00"
+                android:drawablePadding="3dp"
+                android:drawableStart="@drawable/baseline_currency_rupee_12"
+                android:text="12,555.00"
                 android:textSize="@dimen/H5"/>
 
         </LinearLayout>
@@ -153,7 +155,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
-                android:text="₹ 12,555.00"
+                android:drawablePadding="3dp"
+                android:drawableStart="@drawable/baseline_currency_rupee_12"
+                android:text="12,555.00"
                 android:textSize="@dimen/H5"/>
 
         </LinearLayout>
@@ -181,7 +185,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
-                android:text="₹ 12,555.00"
+                android:drawablePadding="3dp"
+                android:drawableStart="@drawable/baseline_currency_rupee_12"
+                android:text="12,555.00"
                 android:textSize="@dimen/H5"/>
 
         </LinearLayout>
@@ -331,7 +337,11 @@
                         android:inputType="text"
                         android:textColor="@color/secondary"
                         android:textColorHint="@drawable/hint_selector"
-                        android:textSize="@dimen/H5"/>
+                        android:textSize="@dimen/H5"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:editable="false"
+                        android:cursorVisible="false"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
@@ -658,7 +668,11 @@
                                 android:drawablePadding="4dp"
                                 android:inputType="numberDecimal"
                                 android:textColorHint="@drawable/hint_selector"
-                                android:textColor="@color/secondary" />
+                                android:textColor="@color/secondary"
+                                android:focusable="false"
+                                android:clickable="true"
+                                android:editable="false"
+                                android:cursorVisible="false"/>
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -683,7 +697,11 @@
                                 android:drawablePadding="4dp"
                                 android:inputType="numberDecimal"
                                 android:textColorHint="@drawable/hint_selector"
-                                android:textColor="@color/secondary" />
+                                android:textColor="@color/secondary"
+                                android:focusable="false"
+                                android:clickable="true"
+                                android:editable="false"
+                                android:cursorVisible="false" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -708,7 +726,11 @@
                                 android:drawablePadding="4dp"
                                 android:inputType="numberDecimal"
                                 android:textColorHint="@drawable/hint_selector"
-                                android:textColor="@color/secondary" />
+                                android:textColor="@color/secondary"
+                                android:focusable="false"
+                                android:clickable="true"
+                                android:editable="false"
+                                android:cursorVisible="false" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -728,12 +750,16 @@
                                 android:layout_height="match_parent"
                                 android:fontFamily="@font/roboto"
                                 android:textSize="@dimen/H5"
-                                android:hint="00.00"
+                                android:text="00.00"
                                 android:drawableStart="@drawable/baseline_currency_rupee_12"
                                 android:drawablePadding="4dp"
                                 android:inputType="numberDecimal"
                                 android:textColorHint="@drawable/hint_selector"
-                                android:textColor="@color/secondary" />
+                                android:textColor="@color/secondary"
+                                android:focusable="false"
+                                android:clickable="true"
+                                android:editable="false"
+                                android:cursorVisible="false"/>
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <androidx.cardview.widget.CardView
@@ -833,7 +859,11 @@
                                 android:drawablePadding="4dp"
                                 android:inputType="numberDecimal"
                                 android:textColorHint="@drawable/hint_selector"
-                                android:textColor="@color/secondary"/>
+                                android:textColor="@color/secondary"
+                                android:focusable="false"
+                                android:clickable="true"
+                                android:editable="false"
+                                android:cursorVisible="false"/>
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -858,7 +888,11 @@
                                 android:drawablePadding="4dp"
                                 android:inputType="numberDecimal"
                                 android:textColorHint="@drawable/hint_selector"
-                                android:textColor="@color/secondary" />
+                                android:textColor="@color/secondary"
+                                android:focusable="false"
+                                android:clickable="true"
+                                android:editable="false"
+                                android:cursorVisible="false"/>
                         </com.google.android.material.textfield.TextInputLayout>
 
 

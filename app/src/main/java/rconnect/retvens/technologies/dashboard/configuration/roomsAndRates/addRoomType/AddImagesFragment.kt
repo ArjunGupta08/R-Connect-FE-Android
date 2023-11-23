@@ -1,5 +1,6 @@
 package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
@@ -32,12 +33,12 @@ import rconnect.retvens.technologies.databinding.FragmentAddImagesBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.prepareFilePart
+import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import www.sanju.motiontoast.MotionToast
 
-class AddImagesFragment : Fragment(),
+class AddImagesFragment(val idForImg : String ?= "", val isRoom : Boolean ?= false) : Fragment(),
     ImagesCategoryAdapter.OnItemClickListener {
     private lateinit var binding : FragmentAddImagesBinding
 
@@ -50,6 +51,8 @@ class AddImagesFragment : Fragment(),
 
     lateinit var imagesCategoryAdapter: ImagesCategoryAdapter
     lateinit var selectRoomImagesAdapter: SelectRoomImagesAdapter
+
+    private lateinit var progressDialog : Dialog
 
     var uriList = ArrayList<Uri>()
 
@@ -160,22 +163,28 @@ class AddImagesFragment : Fragment(),
 
     override fun setImages(imageCategoryDataClass: ImageCategoryDataClass) {
         Log.e("imageCategoryDataClass",imageCategoryDataClass.toString())
-        uploadImages(imageCategoryDataClass)
+        if (isRoom!!){
+            uploadRoomImages(imageCategoryDataClass)
+        } else {
+            uploadPropImages(imageCategoryDataClass)
+        }
     }
 
-    private fun uploadImages(imageCategoryDataClass: ImageCategoryDataClass) {
+    private fun uploadPropImages(imageCategoryDataClass: ImageCategoryDataClass) {
         imageCategoryDataClass.imageList.forEach { imageUri ->
+
+            progressDialog = showProgressDialog(requireContext())
 
             val propertyImage = prepareFilePart(imageUri, "hotelImage", requireContext())
             val userId = UserSessionManager(requireContext()).getUserId().toString()
-            val propertyId = UserSessionManager(requireContext()).getPropertyId().toString()
+//            val propertyId = UserSessionManager(requireContext()).getPropertyId().toString()
 
             Log.e("user",userId.toString())
-            Log.e("property",propertyId.toString())
+            Log.e("property",idForImg.toString())
 
             val uploadRoomImage = OAuthClient<ChainConfiguration>(requireContext())
                 .create(ChainConfiguration::class.java)
-                .uploadPropertyImages( userId,propertyId ,createPartFromString(imageCategoryDataClass.imageType),propertyImage!!)
+                .uploadPropertyImages( userId,idForImg!! ,createPartFromString(imageCategoryDataClass.imageType),propertyImage!!)
 
             uploadRoomImage.enqueue(object : Callback<ResponseData?> {
                 override fun onResponse(
@@ -189,10 +198,51 @@ class AddImagesFragment : Fragment(),
                     } else {
                         Log.e("res", "Error: ${response.code().toString()}")
                     }
+                    progressDialog.dismiss()
                 }
 
                 override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
                     Log.e("res", "Failure: ${t.message}")
+                    progressDialog.dismiss()
+                }
+            })
+        }
+    }
+
+    private fun uploadRoomImages(imageCategoryDataClass: ImageCategoryDataClass) {
+        imageCategoryDataClass.imageList.forEach { imageUri ->
+
+            progressDialog = showProgressDialog(requireContext())
+
+            val propertyImage = prepareFilePart(imageUri, "hotelImage", requireContext())
+            val userId = UserSessionManager(requireContext()).getUserId().toString()
+//            val propertyId = UserSessionManager(requireContext()).getPropertyId().toString()
+
+            Log.e("user",userId.toString())
+            Log.e("property",idForImg.toString())
+
+            val uploadRoomImage = OAuthClient<ChainConfiguration>(requireContext())
+                .create(ChainConfiguration::class.java)
+                .uploadPropertyImages( userId,idForImg!! ,createPartFromString(imageCategoryDataClass.imageType),propertyImage!!)
+
+            uploadRoomImage.enqueue(object : Callback<ResponseData?> {
+                override fun onResponse(
+                    call: Call<ResponseData?>,
+                    response: Response<ResponseData?>
+                ) {
+                    if (response.isSuccessful) {
+                        val responseData = response.body()!!
+                        Toast.makeText(requireContext(),responseData.message,Toast.LENGTH_SHORT).show()
+                        Log.e("res", responseData?.message.toString())
+                    } else {
+                        Log.e("res", "Error: ${response.code().toString()}")
+                    }
+                    progressDialog.dismiss()
+                }
+
+                override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                    Log.e("res", "Failure: ${t.message}")
+                    progressDialog.dismiss()
                 }
             })
         }

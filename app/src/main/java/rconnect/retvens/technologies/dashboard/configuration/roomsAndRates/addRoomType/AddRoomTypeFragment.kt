@@ -36,6 +36,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.ameni
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.FragmentAddRoomTypeBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
+import rconnect.retvens.technologies.onboarding.RoomResponseData
 import rconnect.retvens.technologies.utils.Const
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.generateShortCode
@@ -319,8 +320,8 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
                 "Android"
                 )
         )
-        send.enqueue(object : Callback<ResponseData?> {
-            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+        send.enqueue(object : Callback<RoomResponseData?> {
+            override fun onResponse(call: Call<RoomResponseData?>, response: Response<RoomResponseData?>) {
 
                 Log.d("sent", response.message())
 
@@ -344,7 +345,8 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
                     binding.roomProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
                     binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
 
-                    val childFragment: Fragment = AddImagesFragment()
+                    Toast.makeText(requireContext(),  "roomTypeId : ${response.body()!!.roomTypeId.toString()}", Toast.LENGTH_SHORT).show()
+                    val childFragment: Fragment = AddImagesFragment(response.body()!!.roomTypeId.toString(), true)
                     val transaction = requireActivity().supportFragmentManager.beginTransaction()
                     transaction.replace(R.id.createRoomFragContainer,childFragment)
                     transaction.commit()
@@ -356,7 +358,7 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
                 }
             }
 
-            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+            override fun onFailure(call: Call<RoomResponseData?>, t: Throwable) {
                 progressDialog.dismiss()
                 Log.d("error", t.localizedMessage)
             }

@@ -79,8 +79,6 @@ class ChargesAndRatesFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setUpRecycler()
-
         handlePlusMinus()
 
         setUpRecycler()
@@ -163,7 +161,7 @@ class ChargesAndRatesFragment : Fragment(),
                     progressDialog.dismiss()
                     if (response.isSuccessful) {
 
-//                        Const.isAddingNewRoom = false
+                        Const.isAddingNewRoom = false
 
                         val childFragment: Fragment = RoomTypeFragment()
                         val transaction = requireActivity().supportFragmentManager.beginTransaction()
