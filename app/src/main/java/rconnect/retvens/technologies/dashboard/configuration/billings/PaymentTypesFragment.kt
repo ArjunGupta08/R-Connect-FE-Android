@@ -16,14 +16,19 @@ import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.GetReservationTypeData
+import rconnect.retvens.technologies.dashboard.configuration.guestsAndReservation.reservationType.ReservationTypeDialogAdapter
 import rconnect.retvens.technologies.databinding.FragmentPaymentTypesBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
@@ -40,7 +45,7 @@ class PaymentTypesFragment : Fragment(), PaymentTypeAdapter.MealUpdatedListener 
     private lateinit var binding : FragmentPaymentTypesBinding
 
     private lateinit var payTypeAdapter: PaymentTypeAdapter
-    private var list = ArrayList<String>()
+    private var list = ArrayList<GetPaymentTypeData>()
 
     private lateinit var progressDialog : Dialog
 
@@ -157,6 +162,7 @@ class PaymentTypesFragment : Fragment(), PaymentTypeAdapter.MealUpdatedListener 
                 if (response.isSuccessful) {
                     try {
                         val data = response.body()!!.data
+                        list = data
                         payTypeAdapter = PaymentTypeAdapter(data, requireContext())
                         binding.paymentTypeRecycler.adapter = payTypeAdapter
                         payTypeAdapter.setOnMealUpdateListener(this@PaymentTypesFragment)
@@ -223,6 +229,33 @@ class PaymentTypesFragment : Fragment(), PaymentTypeAdapter.MealUpdatedListener 
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
+
+            val rName = dialog.findViewById<MaterialCardView>(R.id.card_received_payment)
+            val rStatus = dialog.findViewById<MaterialCardView>(R.id.card_paymentType)
+            val recyclerReservation = dialog.findViewById<RecyclerView>(R.id.recycler_payment)
+
+            val countName = dialog.findViewById<TextView>(R.id.count_received)
+            val countStatus = dialog.findViewById<TextView>(R.id.count_payment)
+
+            countName.text = "${list.size}"
+            countStatus.text = "${list.size}"
+            recyclerReservation.layoutManager = LinearLayoutManager(requireContext())
+
+            rName.setOnClickListener {
+                rName.isVisible = false
+                rStatus.isVisible = false
+                recyclerReservation.isVisible = true
+                recyclerReservation.adapter = PaymentTypeDialogAdapter(list,requireContext(),false)
+                recyclerReservation.adapter!!.notifyDataSetChanged()
+            }
+            rStatus.setOnClickListener {
+                rName.isVisible = false
+                rStatus.isVisible = false
+                recyclerReservation.isVisible = true
+                recyclerReservation.adapter = PaymentTypeDialogAdapter(list,requireContext(),true)
+                recyclerReservation.adapter!!.notifyDataSetChanged()
+            }
+
         }
 
 

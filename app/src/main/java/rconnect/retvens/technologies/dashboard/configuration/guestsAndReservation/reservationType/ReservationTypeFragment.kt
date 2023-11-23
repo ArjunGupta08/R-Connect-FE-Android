@@ -16,6 +16,7 @@ import android.view.Window
 import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,9 +38,10 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class ReservationTypeFragment : Fragment(), ReservationTypeAdapter.OnUpdate {
+class ReservationTypeFragment : Fragment(), ReservationTypeAdapter.OnUpdate,ReservationTypeDialogAdapter.OnUpdate {
 
     private lateinit var binding : FragmentReservationTypeBinding
+    var itemList = ""
 
     private lateinit var reservationTypeAdapter: ReservationTypeAdapter
 
@@ -224,6 +226,26 @@ class ReservationTypeFragment : Fragment(), ReservationTypeAdapter.OnUpdate {
 
         val countName = dialog.findViewById<TextView>(R.id.count_name)
         val countStatus = dialog.findViewById<TextView>(R.id.count_status)
+        val apply:TextView = dialog.findViewById(R.id.apply)
+
+//        apply.setOnClickListener {
+//            // i want to perform the action of filterData here...
+//
+//            dialog.dismiss()
+//        }
+        apply.setOnClickListener {
+            // Get the selected filter data here...
+            // For example, if filtering by name
+            val filterData = list.filter {
+                it.status.contains(itemList,false)
+            }
+
+            // Apply the filter to the adapter
+            reservationTypeAdapter.filterList(filterData as ArrayList<GetReservationTypeData>)
+
+            dialog.dismiss()
+        }
+
 
         countName.text = "${list.size}"
         countStatus.text = "${list.size}"
@@ -233,14 +255,16 @@ class ReservationTypeFragment : Fragment(), ReservationTypeAdapter.OnUpdate {
             rName.isVisible = false
             rStatus.isVisible = false
             recyclerReservation.isVisible = true
-            recyclerReservation.adapter = ReservationTypeDialogAdapter(list,requireContext(),true)
-            recyclerReservation.adapter!!.notifyDataSetChanged()
+            val rAdapter =  ReservationTypeDialogAdapter(list,requireContext(),true)
+            rAdapter.notifyDataSetChanged()
         }
         rStatus.setOnClickListener {
             rName.isVisible = false
             rStatus.isVisible = false
             recyclerReservation.isVisible = true
-            recyclerReservation.adapter = ReservationTypeDialogAdapter(list,requireContext(),false)
+            val rAdapter =  ReservationTypeDialogAdapter(list,requireContext(),false)
+            recyclerReservation.adapter = rAdapter
+            rAdapter.setOnStatusUpdateListener(this)
             recyclerReservation.adapter!!.notifyDataSetChanged()
         }
 
@@ -251,6 +275,17 @@ class ReservationTypeFragment : Fragment(), ReservationTypeAdapter.OnUpdate {
     override fun onUpdateReservationType() {
         reservationTypeRecycler()
     }
+
+    override fun onUpdateStatusType(getReservationTypeData: String) {
+        itemList = getReservationTypeData
+        Toast.makeText(requireContext(), getReservationTypeData, Toast.LENGTH_SHORT).show()
+//        val filterData = list.filter {
+//            it.status.contains(getReservationTypeData,false)
+//        }
+//        reservationTypeAdapter.filterList(filterData as ArrayList<GetReservationTypeData>)
+
+    }
+
 
 
 }

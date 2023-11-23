@@ -14,14 +14,18 @@ import android.view.Window
 import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.others.holiday.DisplayStatusData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AmenitiesIconAdapter
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.shakeAnimation
@@ -32,14 +36,17 @@ import retrofit2.Response
 
 class ReservationTypeDialogAdapter(var list:ArrayList<GetReservationTypeData>, val applicationContext: Context,val isName:Boolean):RecyclerView.Adapter<ReservationTypeDialogAdapter.NotificationHolder>() {
 
-    var mListener : OnUpdate?= null
 
-    fun setOnUpdateListener(listener : OnUpdate){
+    var mListener : OnUpdate?= null
+    var selectedItemPos = -1
+    var lastItemSelectedPos = -1
+
+    fun setOnStatusUpdateListener(listener : OnUpdate){
         mListener = listener
     }
 
     interface OnUpdate {
-        fun onUpdateReservationType()
+        fun onUpdateStatusType(getReservationTypeData: String)
     }
 
     private lateinit var progressDialog : Dialog
@@ -47,6 +54,7 @@ class ReservationTypeDialogAdapter(var list:ArrayList<GetReservationTypeData>, v
     class NotificationHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
 
         val name = itemView.findViewById<TextView>(R.id.name_reservation_dialog)
+        val card = itemView.findViewById<MaterialCardView>(R.id.card_reservation_status)
 
     }
 
@@ -67,53 +75,30 @@ class ReservationTypeDialogAdapter(var list:ArrayList<GetReservationTypeData>, v
         }
         else{
             holder.name.text = item.status
+            holder.card.setOnClickListener {
+                setSelectedItem(position)
+                mListener?.onUpdateStatusType(item.status)
+            }
+            // Set background based on selection
+            if (selectedItemPos == position) {
+                holder.card.setBackgroundResource(R.drawable.rounded_border_black)
+            } else {
+                holder.card.setBackgroundResource(R.drawable.rounded_border_light_black)
+            }
+            }
         }
-
+    private fun setSelectedItem(position: Int) {
+        selectedItemPos = position
+        notifyItemChanged(lastItemSelectedPos)
+        lastItemSelectedPos = selectedItemPos
+        notifyItemChanged(selectedItemPos)
     }
-
-
-
-    private fun saveReservation(context: Context, dialog: Dialog, rName : String, status:String, rId : String) {
-        val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).updateReservationTypeApi(UserSessionManager(context).getUserId().toString(), rId, UpdateReservationTypeDataClass(rName, status))
-        create.enqueue(object : Callback<GetReservationTypeDataClass?> {
-            override fun onResponse(
-                call: Call<GetReservationTypeDataClass?>,
-                response: Response<GetReservationTypeDataClass?>
-            ) {
-                Log.d( "reservation", "${response.code()} ${response.message()}")
-                mListener?.onUpdateReservationType()
-                progressDialog.dismiss()
-                dialog.dismiss()
-            }
-
-            override fun onFailure(call: Call<GetReservationTypeDataClass?>, t: Throwable) {
-                progressDialog.dismiss()
-                Log.d("error", t.localizedMessage)
-            }
-        })
-    }
-    private fun deleteReservation(context: Context,reservationId:String,getReservationTypeData: GetReservationTypeData) {
-        val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).deleteReservationTypeApi(UserSessionManager(context).getUserId().toString(),reservationId,
-            DisplayStatusData(("0"))
-        )
-        create.enqueue(object : Callback<ResponseData?> {
-            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
-                progressDialog.dismiss()
-                if (response.isSuccessful){
-                    Log.d("response success",response.message().toString())
-                    list.remove(getReservationTypeData)
-                    notifyDataSetChanged()
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
-        })
-    }
-
-    fun filterList(inputText: ArrayList<GetReservationTypeData>) {
-        list = inputText
+    fun filterList(filteredData: List<GetReservationTypeData>) {
+        list.clear()
+        list.addAll(filteredData)
         notifyDataSetChanged()
     }
+
+
 }
+

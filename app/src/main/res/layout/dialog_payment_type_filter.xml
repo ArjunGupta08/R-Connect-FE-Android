@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.cardview.widget.CardView
         android:layout_width="400dp"
@@ -48,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="19dp"
                 android:fontFamily="@font/roboto_medium"
-                android:text="Clear All"
+                android:text="Apply"
                 android:textColor="@color/black"
                 android:textSize="@dimen/H3"
                 app:layout_constraintBottom_toBottomOf="@id/iv_back"
@@ -57,7 +58,7 @@
 
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_reservation_status"
+                android:id="@+id/card_received_payment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
@@ -87,6 +88,65 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    app:layout_constraintEnd_toStartOf="@id/next_icon1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginEnd="6dp"
+                    app:cardBackgroundColor="#6750A4"
+                    app:cardCornerRadius="12dp">
+                    <TextView
+                        android:id="@+id/count_received"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/H4"
+                        android:layout_gravity="center"/>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.constraintlayout.utils.widget.ImageFilterView
+                    android:id="@+id/next_icon1"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:src="@drawable/right_arrow"
+                    android:layout_marginEnd="9dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_paymentType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="19dp"
+                android:layout_marginTop="12dp"
+                app:strokeWidth="0.6dp"
+                app:cardBackgroundColor="@color/white"
+                app:strokeColor="@color/lightBlack"
+                app:cardCornerRadius="4dp"
+                app:layout_constraintStart_toStartOf="@id/iv_back"
+                app:layout_constraintTop_toBottomOf="@id/card_received_payment">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="9dp"
+                android:layout_marginHorizontal="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="6dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="Payment Type"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/H4"/>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     app:layout_constraintEnd_toStartOf="@id/next_icon"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -94,6 +154,7 @@
                     app:cardBackgroundColor="#6750A4"
                     app:cardCornerRadius="12dp">
                     <TextView
+                        android:id="@+id/count_payment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="2"
@@ -114,6 +175,15 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_payment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/iv_back"
+                tools:listitem="@layout/item_reservation_dialog_layout"
+                android:layout_marginTop="21dp"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
