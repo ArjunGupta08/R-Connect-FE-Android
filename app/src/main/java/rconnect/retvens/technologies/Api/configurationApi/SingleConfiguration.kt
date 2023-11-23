@@ -16,6 +16,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.creat
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlaneDiscount.AddDiscountDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlaneDiscount.GetBarRatePlanForDiscountDataClass
 import rconnect.retvens.technologies.onboarding.ResponseData
+import rconnect.retvens.technologies.onboarding.RoomResponseData
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -33,7 +34,7 @@ interface SingleConfiguration {
     @POST("createRoom")
     fun createRoomApi(
         @Body createRoomData: CreateRoomData
-    ): Call<ResponseData>
+    ): Call<RoomResponseData>
 
     /*---------------------------------------Edit Room-----------------------------------------*/
     @PATCH("updateRoom")

@@ -40,11 +40,12 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.NullPointerException
 
-class AddReservationAdapter(val applicationContext: Context,val reservationList:ArrayList<RoomDetail>,val availableList:ArrayList<AvailableRoomType>):RecyclerView.Adapter<AddReservationAdapter.ReservationHolder>() {
+class AddReservationAdapter(val applicationContext: Context,val reservationList:ArrayList<RoomDetail>,val availableList:ArrayList<AvailableRoomType>,val checkInDate:String,val checkOutDate:String):RecyclerView.Adapter<AddReservationAdapter.ReservationHolder>() {
     var cc = 1
     var ac = 1
     var isCharge = false
     private var roomDetailList:ArrayList<RoomDetail> = ArrayList()
+    private var roomDetailCharges:ArrayList<RoomDetailCharges> = ArrayList()
     private var roomTypeList:ArrayList<RoomItem> = ArrayList()
     private var ratePlanList:ArrayList<RatePlanItem> = ArrayList()
     private var roomDetailPricess:ArrayList<RoomDetailPrices> = ArrayList()
@@ -68,6 +69,7 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
         // Initialize roomDetailList with the initial values from reservationList
         userId = UserSessionManager(applicationContext).getUserId().toString()
         propertyId = UserSessionManager(applicationContext).getPropertyId().toString()
+
     }
 
     class ReservationHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
@@ -118,7 +120,9 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
             "",
             "",
             "",
-            ""
+            emptyList(),
+            emptyList(),
+            emptyList()
         )
 
         val emptyPrices = RoomDetailPrices(0,0,0.0,0.0,0.0,0.0,0.0)
@@ -374,7 +378,7 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
             cc = selectedItem?.baseChild!!.toInt()
             ac = selectedItem?.baseAdult!!.toInt()
             child.text = selectedItem?.baseChild
-            roomDetailList[positions].ratePlan = selectedItem?.roomTypeName.toString()
+            roomDetailList[positions].charge = selectedItem?.roomTypeName.toString()
             roomDetailList[positions].adults = selectedItem?.baseAdult.toString()
             roomDetailList[positions].childs = selectedItem?.baseChild.toString()
             roomDetailList[positions].roomTypeId = selectedItem?.roomTypeId.toString()
@@ -389,10 +393,10 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
 
 
     fun getRatePlan(){
-        Log.e("roomTypeId",roomTypeId.toString())
-        Log.e("userId",userId.toString())
+        Log.e("in",checkInDate.toString())
+        Log.e("out",checkOutDate.toString())
         Log.e("token",UserSessionManager(applicationContext).getToken().toString())
-        val getRatePlan =  OAuthClient<AddReservationApis>(applicationContext).create(AddReservationApis::class.java).getRatePlan(roomTypeId,userId)
+        val getRatePlan =  OAuthClient<AddReservationApis>(applicationContext).create(AddReservationApis::class.java).getRatePlanUpdated(roomTypeId,checkInDate,checkOutDate,userId)
 
         getRatePlan.enqueue(object : Callback<RatePlanDataClass?> {
             override fun onResponse(
@@ -404,6 +408,7 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
                         val response = response.body()!!
                         ratePlanList.clear()
                         ratePlanList.addAll(response.data)
+                        Log.e("res",response.toString())
                     }catch (e:NullPointerException){
                         Toast.makeText(applicationContext, "No Rate Plan For This Room", Toast.LENGTH_SHORT).show()
                     }

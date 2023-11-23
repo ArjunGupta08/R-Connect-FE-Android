@@ -79,13 +79,11 @@ class ChargesAndRatesFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setUpRecycler()
-
         handlePlusMinus()
 
         setUpRecycler()
 
-        val continueBtn = requireActivity().findViewById<CardView>(R.id.continueBtnRoom)
+        val continueBtn = requireActivity().findViewById<CardView>(R.id.continueBtn)
         continueBtn?.setOnClickListener {
             if (ratePlanDetailsList.isEmpty()) {
                 shakeAnimation(binding.addMealPlanCard, requireContext())
@@ -163,7 +161,7 @@ class ChargesAndRatesFragment : Fragment(),
                     progressDialog.dismiss()
                     if (response.isSuccessful) {
 
-//                        Const.isAddingNewRoom = false
+                        Const.isAddingNewRoom = false
 
                         val childFragment: Fragment = RoomTypeFragment()
                         val transaction = requireActivity().supportFragmentManager.beginTransaction()
