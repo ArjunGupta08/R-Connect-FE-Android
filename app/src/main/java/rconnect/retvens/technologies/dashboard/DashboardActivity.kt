@@ -31,6 +31,7 @@ import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.configurationApi.ChainConfiguration
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.channelManager.AddReservationFragment.AddReservationFragment
+import rconnect.retvens.technologies.dashboard.channelManager.BookingFragment
 import rconnect.retvens.technologies.dashboard.channelManager.ChannelsManagement.ChannelManagementFragment
 import rconnect.retvens.technologies.dashboard.channelManager.DashboardFragment.DashBoardFragment
 import rconnect.retvens.technologies.utils.UserSessionManager
@@ -297,7 +298,7 @@ class DashboardActivity : AppCompatActivity() {
         }
         binding.bookingCard.setOnClickListener {
             isCardSelected(binding.bookingCard, binding.bookingTxt)
-            replaceFragment(ViewPropertiesFragment())
+            replaceFragment(BookingFragment())
             if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
                 binding.drawerLayout.closeDrawer(GravityCompat.START)
             }
