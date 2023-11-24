@@ -36,6 +36,7 @@ import rconnect.retvens.technologies.dashboard.channelManager.DashboardFragment.
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.dashboard.channelManager.QuickReservation.QuickReservationAdapter
 import rconnect.retvens.technologies.dashboard.channelManager.RatesAndInventory.RatesAndInventoryFragment
+import rconnect.retvens.technologies.dashboard.channelManager.Reservations.ReservationsFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AddPropertyFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddRoomTypeFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ReviewRatePlanFragment
@@ -306,7 +307,7 @@ class DashboardActivity : AppCompatActivity() {
         }
         binding.promotionsCard.setOnClickListener {
             isCardSelected(binding.promotionsCard, binding.promotionsTxt)
-            replaceFragment(PromotionsFragment())
+            replaceFragment(ReservationsFragment())
 
 
             if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {

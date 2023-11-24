@@ -708,7 +708,7 @@
                                     android:id="@+id/promotions_txt"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="Promotions"
+                                    android:text="Reservations"
                                     android:fontFamily="@font/roboto"
                                     android:textColor="@color/textColor"
                                     android:layout_marginStart="10dp"
