@@ -69,16 +69,12 @@ class AddMealPlanAdapter(val list:ArrayList<GetMealPlanData>, val applicationCon
         holder.charges.text = "₹${item.chargesPerOccupancy}/Per Occupancy"
 
         holder.card.setOnClickListener {
-            if (selectedList.contains(item)) {
-                selectedList.remove(item)
-                holder.card.strokeWidth = 1
-                holder.card.strokeColor = ContextCompat.getColor(applicationContext, R.color.lightBlack)
-            } else {
+            if (!selectedList.contains(item)) {
                 selectedList.add(item)
                 holder.card.strokeWidth = 3
                 holder.card.strokeColor = ContextCompat.getColor(applicationContext, R.color.black)
+                mListener?.onUpdateMealPlan(selectedList)
             }
-            mListener?.onUpdateMealPlan(selectedList)
         }
 
     }

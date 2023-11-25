@@ -26,28 +26,31 @@
             android:layout_height="match_parent"
             android:padding="10dp">
 
-            <TextView
+            <EditText
                 android:id="@+id/enterH"
-                android:layout_width="wrap_content"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="2dp"
+                android:background="@null"
                 android:fontFamily="@font/roboto_medium"
-                android:text="Room"
-
+                android:hint="Enter Category Name"
+                android:paddingVertical="4dp"
                 android:textColor="@color/secondary"
                 android:textSize="@dimen/H5"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="@id/addImages"
+                app:layout_constraintEnd_toStartOf="@id/addImages"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/addImages" />
 
             <ImageView
                 android:id="@+id/delete"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/svg_delete_lite"
                 android:layout_margin="10dp"
+                android:src="@drawable/svg_delete_lite"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/edit_category"
@@ -55,22 +58,22 @@
                 android:layout_height="30dp"
                 android:layout_margin="5dp"
                 android:src="@drawable/svg_edit"
+                android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@id/delete"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/addImages"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/roboto_medium"
                 android:text="Add Images"
                 android:textColor="@color/black"
-                app:layout_constraintEnd_toStartOf="@+id/edit_category"
-                app:layout_constraintTop_toTopOf="@+id/edit_category"
-                app:layout_constraintBottom_toBottomOf="@+id/edit_category"
-                android:layout_marginEnd="10dp"
                 android:textSize="@dimen/H4"
-                android:fontFamily="@font/roboto_medium"
-                />
+                app:layout_constraintBottom_toBottomOf="@+id/delete"
+                app:layout_constraintEnd_toStartOf="@+id/delete"
+                app:layout_constraintTop_toTopOf="@+id/delete" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/imagesRecycler"
@@ -79,9 +82,9 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/enterH"
                 app:spanCount="6"
-                tools:listitem="@layout/item_image"
-                app:layout_constraintTop_toBottomOf="@id/enterH"/>
+                tools:listitem="@layout/item_image" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

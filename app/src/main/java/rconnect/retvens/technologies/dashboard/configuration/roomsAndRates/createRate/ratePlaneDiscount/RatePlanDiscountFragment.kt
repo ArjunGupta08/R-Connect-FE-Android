@@ -14,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.card.MaterialCardView
 import rconnect.retvens.technologies.Api.OAuthClient
@@ -30,10 +31,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class RatePlanDiscountFragment : Fragment(), CreateRatePlanAdapter.OnRateTypeListChangeListener {
+class RatePlanDiscountFragment : Fragment(), CreateRatePlanAdapter.OnRateTypeListChangeListener, BlackOutDateAdapter.OnBlackOutDateListChangeListener {
     private lateinit var binding : FragmentRatePlanDiscountBinding
 
     var startDate: Date?= null
@@ -51,6 +53,9 @@ class RatePlanDiscountFragment : Fragment(), CreateRatePlanAdapter.OnRateTypeLis
     var discountType = ""
     var discountPrice = ""
 
+
+    private var dateArray = ArrayList<String>()
+    private lateinit var blackOutDateAdapter: BlackOutDateAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,6 +83,11 @@ class RatePlanDiscountFragment : Fragment(), CreateRatePlanAdapter.OnRateTypeLis
         createRatePlanAdapter.notifyDataSetChanged()
         createRatePlanAdapter.setOnListUpdateListener(this)
 
+        binding.dateRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
+
+        binding.addDate.setOnClickListener {
+            showDatePicker()
+        }
 
         binding.amountCard.setOnClickListener {
             discountType = "Amount"
@@ -335,6 +345,41 @@ class RatePlanDiscountFragment : Fragment(), CreateRatePlanAdapter.OnRateTypeLis
         return inputDate // Return the original date if parsing fails
     }
 
+    private fun showDatePicker() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
 
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            DatePickerDialog.OnDateSetListener { view, selectedYear, selectedMonth, selectedDay ->
+                val selectedCalendar = Calendar.getInstance()
+                selectedCalendar.set(selectedYear, selectedMonth, selectedDay)
+
+                val dateFormat = SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.getDefault())
+                val formattedDate = dateFormat.format(selectedCalendar.time)
+
+                dateArray.add(formattedDate)
+//                binding.addDate.text = formattedDate
+
+                blackOutDateAdapter = BlackOutDateAdapter(requireContext(), dateArray)
+                binding.dateRecycler.adapter = blackOutDateAdapter
+                blackOutDateAdapter.setOnBlackOutDateListUpdateListener(this)
+            },
+            year,
+            month,
+            dayOfMonth
+        )
+
+        // Set a minimum date if needed
+        // datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
+
+        datePickerDialog.show()
+    }
+
+    override fun onBlackOutDateDelete(position: Int) {
+        dateArray.removeAt(position)
+    }
 
 }

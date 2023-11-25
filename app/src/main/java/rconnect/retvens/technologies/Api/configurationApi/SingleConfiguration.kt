@@ -91,4 +91,11 @@ interface SingleConfiguration {
         @Query("userId")userId:String,
         @Body addDiscountDataClass: AddDiscountDataClass
     ):Call<ResponseData>
+
+    @GET("getAllRatePlans")
+    fun getAllRatePlans (
+        @Query("propertyId")propertyId:String,
+        @Query("userId")userId:String
+    ):Call<ResponseData>
+
 }

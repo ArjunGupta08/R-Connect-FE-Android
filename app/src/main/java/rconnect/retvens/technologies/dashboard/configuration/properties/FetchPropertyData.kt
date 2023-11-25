@@ -8,6 +8,7 @@ data class FetchPropertyData(
 data class PropData(
     val propertyName : String,
     val propertyId : String,
+    val propertyType : String,
     val city : String,
     val country : String,
     val hotelLogo : String,

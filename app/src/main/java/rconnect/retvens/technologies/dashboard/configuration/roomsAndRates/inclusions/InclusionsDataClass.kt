@@ -25,18 +25,18 @@ data class GetInclusionsDataClass(
     val message : String
 )
 data class GetInclusionsData(
-    val propertyId : String,
-    val inclusionId : String,
-    val shortCode : String,
-    val createdOn : String,
-    val createdBy : String,
-    val modifiedBy : String,
-    val modifiedOn : String,
-    val charge : String,
-    val inclusionName : String,
-    val inclusionType : String,
-    val chargeRule : String,
-    val postingRule : String,
+    val propertyId : String ?= "",
+    var inclusionId : String,
+    val shortCode : String ?= "",
+    val createdOn : String ?= "",
+    val createdBy : String ?= "",
+    val modifiedBy : String ?= "",
+    val modifiedOn : String ?= "",
+    var charge : String,
+    var inclusionName : String,
+    var inclusionType : String,
+    var chargeRule : String,
+    var postingRule : String,
 )
 
 data class GetPostingRuleArray (

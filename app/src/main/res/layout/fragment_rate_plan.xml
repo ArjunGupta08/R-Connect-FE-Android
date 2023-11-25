@@ -170,7 +170,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         style="@style/listTextHeading"
-                        android:text="Short Code"
+                        android:text="Rate Code"
                         app:layout_constraintEnd_toStartOf="@id/propertyName"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -181,7 +181,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         style="@style/listTextHeading"
-                        android:text="Room Type"
+                        android:text="Rate Plan Name"
                         android:layout_marginStart="5dp"
                         app:layout_constraintEnd_toStartOf="@id/guide1"
                         app:layout_constraintStart_toEndOf="@id/shortCode"
@@ -196,14 +196,26 @@
                         app:layout_constraintGuide_percent="0.28"/>
 
                     <TextView
+                        android:id="@+id/roomType"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        style="@style/listTextHeading"
+                        android:text="Room Type"
+                        android:layout_marginStart="5dp"
+                        app:layout_constraintEnd_toStartOf="@id/bedType"
+                        app:layout_constraintStart_toEndOf="@id/guide1"
+                        app:layout_constraintBottom_toBottomOf="@id/shortCode"
+                        app:layout_constraintTop_toTopOf="@id/shortCode"/>
+
+                    <TextView
                         android:id="@+id/bedType"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         style="@style/listTextHeading"
-                        android:text="Bed Type"
+                        android:text="Rate Type"
                         android:layout_marginStart="5dp"
                         app:layout_constraintEnd_toStartOf="@id/adultChild"
-                        app:layout_constraintStart_toEndOf="@id/guide1"
+                        app:layout_constraintStart_toEndOf="@id/roomType"
                         app:layout_constraintBottom_toBottomOf="@id/shortCode"
                         app:layout_constraintTop_toTopOf="@id/shortCode"/>
 
@@ -212,7 +224,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         style="@style/listTextHeading"
-                        android:text="Adult &amp; Child"
+                        android:text="Rate Plan Total"
                         android:layout_marginStart="5dp"
                         app:layout_constraintEnd_toStartOf="@id/maxOccupancy"
                         app:layout_constraintStart_toEndOf="@id/bedType"
@@ -224,7 +236,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         style="@style/listTextHeading"
-                        android:text="Max Occupancy"
+                        android:text="Extra Adult"
                         android:layout_marginStart="5dp"
                         app:layout_constraintEnd_toStartOf="@id/baseRate"
                         app:layout_constraintStart_toEndOf="@id/adultChild"
@@ -236,7 +248,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         style="@style/listTextHeading"
-                        android:text="Base Rate"
+                        android:text="Extra Child"
                         android:layout_marginStart="5dp"
                         app:layout_constraintEnd_toStartOf="@id/amenities"
                         app:layout_constraintStart_toEndOf="@id/maxOccupancy"
@@ -248,7 +260,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         style="@style/listTextHeading"
-                        android:text="Amenities"
+                        android:text="Inclusions"
                         android:layout_marginStart="5dp"
                         app:layout_constraintEnd_toStartOf="@id/actions"
                         app:layout_constraintStart_toEndOf="@id/baseRate"
@@ -262,6 +274,7 @@
                         style="@style/listTextHeading"
                         android:text="Actions"
                         android:layout_marginStart="5dp"
+                        android:paddingStart="10dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/amenities"
                         app:layout_constraintBottom_toBottomOf="@id/shortCode"
@@ -276,10 +289,10 @@
                     app:layout_constraintTop_toBottomOf="@id/propertyName"/>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/roomTypeRecycler"
+                    android:id="@+id/rateTypeRecycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:listitem="@layout/item_room_types"/>
+                    tools:listitem="@layout/item_rate_types"/>
 
             </LinearLayout>
 

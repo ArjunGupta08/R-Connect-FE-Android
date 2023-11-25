@@ -28,7 +28,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AddInclusionsAdapter(val list:ArrayList<GetInclusionsData>, val applicationContext: Context):RecyclerView.Adapter<AddInclusionsAdapter.NotificationHolder>() {
+class AddInclusionsAdapter(var list:ArrayList<GetInclusionsData>, val applicationContext: Context):RecyclerView.Adapter<AddInclusionsAdapter.NotificationHolder>() {
 
     var selectedList = ArrayList<GetInclusionsData>()
 
@@ -66,11 +66,7 @@ class AddInclusionsAdapter(val list:ArrayList<GetInclusionsData>, val applicatio
         holder.charges.text = "₹${item.charge}/Person"
 
         holder.card.setOnClickListener {
-            if (selectedList.contains(item)) {
-                selectedList.remove(item)
-                holder.card.strokeWidth = 1
-                holder.card.strokeColor = ContextCompat.getColor(applicationContext, R.color.lightBlack)
-            } else {
+            if (!selectedList.contains(item)) {
                 selectedList.add(item)
                 holder.card.strokeWidth = 3
                 holder.card.strokeColor = ContextCompat.getColor(applicationContext, R.color.black)
@@ -78,5 +74,9 @@ class AddInclusionsAdapter(val list:ArrayList<GetInclusionsData>, val applicatio
             mListener?.onUpdateList(selectedList)
         }
 
+    }
+    fun filterData (filteredList : ArrayList<GetInclusionsData>) {
+        list = filteredList
+        notifyDataSetChanged()
     }
 }

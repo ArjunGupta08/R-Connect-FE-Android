@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -38,8 +39,6 @@ class ImagesCategoryAdapter(val context: Context, private val itemList: ArrayLis
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = itemList[position]
-
-        holder.textH.text = "Enter Category Name"
 
         holder.imagesRecycler.layoutManager = GridLayoutManager(context, 6)
 
@@ -76,7 +75,7 @@ class ImagesCategoryAdapter(val context: Context, private val itemList: ArrayLis
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val textH = itemView.findViewById<TextView>(R.id.enterH)
+        val textH = itemView.findViewById<EditText>(R.id.enterH)
         val imagesRecycler = itemView.findViewById<RecyclerView>(R.id.imagesRecycler)
         val addImage = itemView.findViewById<TextView>(R.id.addImages)
         lateinit var selectImagesAdapter: SelectRoomImagesAdapter

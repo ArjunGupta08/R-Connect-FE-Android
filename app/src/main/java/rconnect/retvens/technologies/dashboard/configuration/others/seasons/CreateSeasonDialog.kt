@@ -153,6 +153,7 @@ class CreateSeasonDialog( private val getSeasonData: GetSeasonData ?=
             shortCode.setText(getSeasonData.shortCode)
 
             startDate = convertStringToDate(getSeasonData.startDate)
+            endDate = convertStringToDate(getSeasonData.endDate)
 
             getSeasonData.days.forEach {
                 when (it) {
@@ -366,6 +367,10 @@ class CreateSeasonDialog( private val getSeasonData: GetSeasonData ?=
             }
             else if(shortCode.text!!.isEmpty()){
                 shakeAnimation(shortCodeLayout,requireContext())
+            }
+            else if(startDate!!.after(endDate)){
+                shakeAnimation(from_date,requireContext())
+                shakeAnimation(to_date,requireContext())
             }
             else if (!isDateSelected){
                 shakeAnimation(from_date,requireContext())

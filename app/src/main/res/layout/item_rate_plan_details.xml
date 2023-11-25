@@ -784,9 +784,10 @@
                                 android:paddingHorizontal="10dp">
 
                                 <LinearLayout
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical"
+                                    app:layout_constraintEnd_toStartOf="@id/svg_edit"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintStart_toStartOf="parent">
@@ -797,14 +798,14 @@
                                         android:fontFamily="@font/roboto_medium"
                                         android:text="Rate Plan Total"
                                         android:textColor="@color/black"
-                                        android:textSize="@dimen/H5"
+                                        android:textSize="@dimen/H6"
                                         app:layout_constraintBottom_toBottomOf="@id/rateCard"
                                         app:layout_constraintEnd_toStartOf="@id/rateCard"
                                         app:layout_constraintTop_toTopOf="@id/rateCard" />
 
                                     <EditText
                                         android:id="@+id/ratePlanTotalTxtCalculated"
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         style="@style/TextAppearance.AppCompat.Body1"
                                         android:background="@null"
@@ -812,12 +813,14 @@
                                         android:drawableStart="@drawable/baseline_currency_rupee_12"
                                         android:drawablePadding="4dp"
                                         android:text="00.00"
+                                        android:inputType="number"
                                         android:textColor="@color/textColor"
                                         android:textSize="@dimen/H5" />
 
                                 </LinearLayout>
 
                                 <ImageView
+                                    android:id="@+id/svg_edit"
                                     android:layout_width="35dp"
                                     android:layout_height="35dp"
                                     android:layout_marginEnd="5dp"

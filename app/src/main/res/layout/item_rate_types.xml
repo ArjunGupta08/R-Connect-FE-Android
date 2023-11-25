@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/items_linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/shortCode"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            style="@style/listText"
+            android:text="DLX"
+            android:layout_marginStart="10dp"
+            app:layout_constraintEnd_toStartOf="@id/propertyName"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/propertyName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/listText"
+            android:text="Room Type Name"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/guide1"
+            app:layout_constraintStart_toEndOf="@id/shortCode"
+            app:layout_constraintBottom_toBottomOf="@id/shortCode"
+            app:layout_constraintTop_toTopOf="@id/shortCode"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.28"/>
+
+        <TextView
+            android:id="@+id/roomType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/listTextHeading"
+            android:text="Room Type"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/bedType"
+            app:layout_constraintStart_toEndOf="@id/guide1"
+            app:layout_constraintBottom_toBottomOf="@id/shortCode"
+            app:layout_constraintTop_toTopOf="@id/shortCode"/>
+
+        <TextView
+            android:id="@+id/bedType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/listText"
+            android:text="King Size"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/adultChild"
+            app:layout_constraintStart_toEndOf="@id/roomType"
+            app:layout_constraintBottom_toBottomOf="@id/shortCode"
+            app:layout_constraintTop_toTopOf="@id/shortCode"/>
+
+        <LinearLayout
+            android:id="@+id/adultChild"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/maxOccupancy"
+            app:layout_constraintStart_toEndOf="@id/bedType"
+            app:layout_constraintBottom_toBottomOf="@id/shortCode"
+            app:layout_constraintTop_toTopOf="@id/shortCode">
+
+            <TextView
+                android:id="@+id/ratePlanTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ratePlanTotal"
+                android:layout_marginHorizontal="3dp"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/item_text"
+                android:textSize="@dimen/H6"
+                android:singleLine="true"/>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/maxOccupancy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/listText"
+            android:text="5"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/baseRate"
+            app:layout_constraintStart_toEndOf="@id/adultChild"
+            app:layout_constraintBottom_toBottomOf="@id/shortCode"
+            app:layout_constraintTop_toTopOf="@id/shortCode"/>
+
+        <TextView
+            android:id="@+id/baseRate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/listText"
+            android:text="2,799.00"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/amenities"
+            app:layout_constraintStart_toEndOf="@id/maxOccupancy"
+            app:layout_constraintBottom_toBottomOf="@id/shortCode"
+            app:layout_constraintTop_toTopOf="@id/shortCode"/>
+
+        <LinearLayout
+            android:id="@+id/amenities"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toStartOf="@id/actions"
+            app:layout_constraintStart_toEndOf="@id/baseRate"
+            app:layout_constraintBottom_toBottomOf="@id/shortCode"
+            app:layout_constraintTop_toTopOf="@id/shortCode">
+
+            <TextView
+                android:id="@+id/amenitiesCountTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/listText"
+                android:text="30"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                style="@style/listText"
+                android:text="View"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/actions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:layout_marginStart="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/amenities"
+            app:layout_constraintBottom_toBottomOf="@id/shortCode"
+            app:layout_constraintTop_toTopOf="@id/shortCode">
+
+            <ImageView
+                android:id="@+id/edit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/svg_pen" />
+
+            <ImageView
+                android:id="@+id/delete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/svg_delete_lite" />
+
+            <ImageView
+                android:id="@+id/info"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/svg_info" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey5"
+        app:layout_constraintTop_toBottomOf="@id/propertyName"
+        android:layout_marginTop="9dp"/>
+
+</LinearLayout>

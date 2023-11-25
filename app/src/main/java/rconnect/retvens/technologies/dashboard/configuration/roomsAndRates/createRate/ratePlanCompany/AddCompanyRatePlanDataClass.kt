@@ -26,7 +26,7 @@ data class InclusionPlan(
     val inclusionId: String,
     val inclusionType: String,
     val inclusionName: String,
-    val postingRule: String,
-    val chargeRule: String,
-    val rate: String
+    var postingRule: String,
+    var chargeRule: String,
+    var rate: String
 )

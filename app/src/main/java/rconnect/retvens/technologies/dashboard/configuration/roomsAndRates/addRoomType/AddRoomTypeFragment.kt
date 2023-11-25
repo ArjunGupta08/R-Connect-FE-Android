@@ -96,7 +96,7 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        onTabClick()
+        onTabClick()
 
         roboto = ResourcesCompat.getFont(requireContext(), R.font.roboto)!!
         robotoMedium = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)!!
@@ -346,6 +346,7 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
                     binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
 
                     Toast.makeText(requireContext(),  "roomTypeId : ${response.body()!!.roomTypeId.toString()}", Toast.LENGTH_SHORT).show()
+                    UserSessionManager(requireContext()).saveRoomTypeId(response.body()!!.roomTypeId)
                     val childFragment: Fragment = AddImagesFragment(response.body()!!.roomTypeId.toString(), true)
                     val transaction = requireActivity().supportFragmentManager.beginTransaction()
                     transaction.replace(R.id.createRoomFragContainer,childFragment)
@@ -564,7 +565,7 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
 
             page = 1
 
-            binding.roomProfile.textSize = 20.0f
+            binding.roomProfile.textSize = 18.0f
             binding.roomProfile.typeface = robotoMedium
             binding.roomProfile.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
 
@@ -589,7 +590,7 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
 
              page = 2
 
-            binding.roomImages.textSize = 20.0f
+            binding.roomImages.textSize = 18.0f
             binding.roomImages.typeface = robotoMedium
             binding.roomImages.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
 
@@ -618,7 +619,7 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
 
             page = 3
 
-            binding.chargePlans.textSize = 20.0f
+            binding.chargePlans.textSize = 18.0f
             binding.chargePlans.typeface = robotoMedium
             binding.chargePlans.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
 

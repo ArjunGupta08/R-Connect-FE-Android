@@ -10,6 +10,7 @@
         android:layout_height="70dp"
         style="@style/CardViewTheme"
         app:cardCornerRadius="10dp"
+        android:visibility="gone"
         android:layout_margin="3dp"
         android:layout_marginStart="10dp"
         app:cardBackgroundColor="@color/unselectedBackground"

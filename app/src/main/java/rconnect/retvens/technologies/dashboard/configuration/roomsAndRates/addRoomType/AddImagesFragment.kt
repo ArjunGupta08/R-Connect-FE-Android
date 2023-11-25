@@ -256,17 +256,18 @@ class AddImagesFragment(val idForImg : String ?= "", val isRoom : Boolean ?= fal
                     call: Call<ResponseData?>,
                     response: Response<ResponseData?>
                 ) {
+                    progressDialog.dismiss()
                     if (response.isSuccessful) {
                         val responseData = response.body()!!
                         Toast.makeText(requireContext(),responseData.message,Toast.LENGTH_SHORT).show()
                         Log.e("res", responseData?.message.toString())
 
                         continueBtnRoom.setOnClickListener {
-                                Const.isAddingNewRoom = false
+//                                Const.isAddingNewRoom = false
 
-                                val childFragment: Fragment = RoomTypeFragment()
+                                val childFragment: Fragment = ChargesAndRatesFragment()
                                 val transaction = requireActivity().supportFragmentManager.beginTransaction()
-                                transaction.replace(R.id.dashboardFragmentContainer,childFragment)
+                                transaction.replace(R.id.createRoomFragContainer,childFragment)
                                 transaction.commit()
                         }
 
@@ -274,7 +275,6 @@ class AddImagesFragment(val idForImg : String ?= "", val isRoom : Boolean ?= fal
                     } else {
                         Log.e("res", "Error: ${response.code().toString()}")
                     }
-                    progressDialog.dismiss()
                 }
 
                 override fun onFailure(call: Call<ResponseData?>, t: Throwable) {

@@ -13,7 +13,7 @@ data class AddBarsRatePlanDataClass(
     val ratePlanName : String,
     val mealPlanId : String,
     val shortCode : String,
-    val inclusionPlan : ArrayList<InclusionPlan>,
+    var inclusionPlan : ArrayList<InclusionPlan>,
     val roomBaseRate : String,
     val mealCharge : String,
     val inclusionCharge : String,

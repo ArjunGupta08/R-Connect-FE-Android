@@ -29,6 +29,8 @@ class ViewPropertiesAdapterView2(val context: Context, private var itemList: Arr
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = itemList[position]
 
+        holder.hCode.text = item.propertyId
+        holder.propertyType.text = item.propertyType
         holder.propertyName.text = (item.propertyName)
         holder.location.text = "${item.city}, ${item.country}"
         holder.totalRooms.text = "${item.totalRooms}"
@@ -50,7 +52,9 @@ class ViewPropertiesAdapterView2(val context: Context, private var itemList: Arr
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+        val hCode = itemView.findViewById<TextView>(R.id.hCode)
         val propertyName = itemView.findViewById<TextView>(R.id.propertyName)
+        val propertyType = itemView.findViewById<TextView>(R.id.propertyType)
         val location = itemView.findViewById<TextView>(R.id.location)
         val totalRooms = itemView.findViewById<TextView>(R.id.totalRoomsTxt)
         val amenitiesTxt = itemView.findViewById<TextView>(R.id.amenitiesTxt)

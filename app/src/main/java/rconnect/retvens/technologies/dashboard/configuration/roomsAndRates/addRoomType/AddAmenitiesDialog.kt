@@ -99,8 +99,10 @@ class AddAmenitiesDialog(var selectedAmenitiesList: ArrayList<GetAmenityData>, p
         amenitiesRecycler.layoutManager = GridLayoutManager(requireContext(), 5)
 
         if (isAddingForRoom!!) {
+            createNewAmenityBtn.visibility = View.VISIBLE
             getRoomAmenityRecycler()
         } else {
+            createNewAmenityBtn.visibility = View.GONE
             getPropertyAmenityRecycler()
         }
 

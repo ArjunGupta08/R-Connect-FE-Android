@@ -33,6 +33,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.creat
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.InclusionPlan
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.GetMealPlanData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.GetMealPlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.MealPlanAdapter
@@ -115,7 +116,7 @@ class ChargesAndRatesFragment : Fragment(),
         update.enqueue(object : Callback<ResponseData?> {
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
                 if (isAdded){
-                    Log.e("errorUpdateRoom", response.message().toString())
+                    Log.e("errorUpdateRoom","${response.message().toString()}, ${response.code().toString()}")
                     if (response.isSuccessful) {
                         Toast.makeText(requireContext(), "Clicked", Toast.LENGTH_SHORT).show()
                         sendRatePlanData()
@@ -304,9 +305,12 @@ class ChargesAndRatesFragment : Fragment(),
     private fun setUpRecycler() {
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        ratePlanDetailsAdapter = RatePlanDetailsAdapter(requireContext(),ratePlanDetailsList)
+        ratePlanDetailsAdapter = RatePlanDetailsAdapter(requireContext(), childFragmentManager,ratePlanDetailsList)
         binding.recyclerView.adapter = ratePlanDetailsAdapter
         ratePlanDetailsAdapter.notifyDataSetChanged()
+        ratePlanDetailsAdapter.getChargeRule()
+        ratePlanDetailsAdapter.getPostingRule()
+        ratePlanDetailsAdapter.getInclusions()
         ratePlanDetailsAdapter.setOnListUpdateListener(this)
 
     }
@@ -372,7 +376,7 @@ class ChargesAndRatesFragment : Fragment(),
             ratePlanDataClass =  AddBarsRatePlanDataClass(
                  UserSessionManager(requireContext()).getUserId().toString(),
                  UserSessionManager(requireContext()).getPropertyId().toString(),
-                "",
+                 UserSessionManager(requireContext()).getRoomTypeId().toString(),
                 "Bar",
                 "",
                 "",
@@ -380,10 +384,10 @@ class ChargesAndRatesFragment : Fragment(),
                 "${it.mealPlanId}",
                 "${Const.addedRoomTypeShortCode}${it.shortCode}",
                 selectedInclusionList,
-                "",
+                binding.countBaseRate.text.toString(),
                 "${it.chargesPerOccupancy}",
                 "",
-                "",
+                "0.00",
                 binding.countExtraAdultRate.text.toString(),
                 binding.countMaxChildRate.text.toString(),
                 "${binding.countBaseRate.text.toString()}",
@@ -397,10 +401,14 @@ class ChargesAndRatesFragment : Fragment(),
     }
 
 
-    override fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddBarsRatePlanDataClass>) {
-        ratePlanDetailsList.addAll(updatedRateTypeList)
+    override fun onRateTypeListChanged(updatedRateTypeList: AddBarsRatePlanDataClass, position : Int) {
+        ratePlanDetailsList.removeAt(position)
+        ratePlanDetailsList.add(updatedRateTypeList)
         Log.d("ratePlanDL", ratePlanDetailsList.toString())
         setUpRecycler()
     }
 
+    override fun onRateTypeDelete(position: Int) {
+        ratePlanDetailsList.removeAt(position)
+    }
 }

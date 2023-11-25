@@ -7,10 +7,13 @@ import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.View
 import android.view.Window
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ListPopupWindow
+import androidx.core.content.ContextCompat.getSystemService
 import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
 import rconnect.retvens.technologies.R
@@ -123,6 +126,20 @@ fun showDropdownMenu(context: Context, et : TextInputEditText, anchorView: View,
     listPopupWindow.show()
 }
 
+fun showDropdownMenuWithListener(context: Context,anchorView: View, arr : ArrayList<String>, onClick : (String) -> Unit) {
+    val adapter = ArrayAdapter(context, R.layout.simple_spinner_item1, arr)
+
+    val listPopupWindow = ListPopupWindow(context)
+    listPopupWindow.setAdapter(adapter)
+    listPopupWindow.anchorView = anchorView
+    listPopupWindow.setOnItemClickListener { _, _, position, _ ->
+        val selectedItem = adapter.getItem(position)
+        onClick.invoke(selectedItem!!)
+        listPopupWindow.dismiss()
+    }
+    listPopupWindow.show()
+}
+
 fun showProgressDialog (context: Context) : Dialog {
     val progressDialog = Dialog(context)
     progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -166,4 +183,9 @@ fun convertStringToDate(dateString: String): Date {
     val pattern = "dd/MM/yyyy"
     val sdf = SimpleDateFormat(pattern)
     return sdf.parse(dateString) ?: Date()
+}
+
+fun hideKeyboard(editText: EditText, context: Context) {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(editText.windowToken, 0)
 }
