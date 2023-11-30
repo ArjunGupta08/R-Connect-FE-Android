@@ -34,6 +34,7 @@ import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.shakeAnimation
 import rconnect.retvens.technologies.utils.showDropdownMenu
+import rconnect.retvens.technologies.utils.showProgressDialog
 import rconnect.retvens.technologies.utils.utilCreateDatePickerDialog
 import retrofit2.Call
 import retrofit2.Callback
@@ -62,12 +63,15 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
     private var bookingSource:ArrayList<BookingItem> = ArrayList()
     private var roomDetailsList:ArrayList<RoomDetail> = ArrayList()
     private lateinit var addReservationAdapter:AddReservationAdapter
+    private lateinit var guestInfoAdapter: GuestInfoAdapter
     private  var userId = ""
     private var propertyId = ""
     private  var  listRoom:ArrayList<RoomDetail> = ArrayList()
+    private var guestList:ArrayList<GuestInfo> = ArrayList()
     private var availableList:ArrayList<AvailableRoomType> = ArrayList()
     private var apiCheckInDate:String = ""
     private var apiCheckOutDate:String = ""
+    private lateinit var dialog: Dialog
     private var barRateReservation:ArrayList<BarRateReservation> = ArrayList()
     private var reservationSummary:ArrayList<ReservationSummary> = ArrayList()
     private var guestInfo:ArrayList<GuestInfo> = ArrayList()
@@ -91,15 +95,19 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
         getBookingSource()
         getReservationType()
 
-        guestInfo.add(GuestInfo("Shubham Singh","88464","shub@gmail.com","kujqwhdukbs","kujqhubd","India","MP","INdore","501401",
-            emptyList()
-        ))
+        guestInfo.add(GuestInfo("","","","","","","","","", emptyList()))
+
+        binding.guestInfoRecycler.layoutManager = LinearLayoutManager(requireContext())
+        guestInfoAdapter = GuestInfoAdapter(guestInfo,requireContext())
+        binding.guestInfoRecycler.adapter = guestInfoAdapter
+        guestList = guestInfoAdapter.list
 
         binding.recyclerRoomDetails.layoutManager = LinearLayoutManager(requireContext())
-        addReservationAdapter = AddReservationAdapter(requireContext(), roomDetailsList,availableList,apiCheckInDate,apiCheckOutDate)
+        addReservationAdapter = AddReservationAdapter(requireContext(), roomDetailsList,availableList)
         binding.recyclerRoomDetails.adapter = addReservationAdapter
         addReservationAdapter.notifyDataSetChanged()
         addReservationAdapter.setOnClickListener(this)
+        listRoom = addReservationAdapter.reservationList
 
         binding.roomCount.text = "1 Room Added"
 
@@ -128,14 +136,7 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
                 binding.countNight2.text = nights.toString()
                 apiCheckOutDate = ApiformatDate(date.toString())
                 getAvailableRoom()
-                binding.recyclerRoomDetails.layoutManager = LinearLayoutManager(requireContext())
-                addReservationAdapter = AddReservationAdapter(requireContext(), roomDetailsList,availableList,apiCheckInDate,apiCheckOutDate)
-                binding.recyclerRoomDetails.adapter = addReservationAdapter
-
-                addReservationAdapter.setOnClickListener(this)
-
-                addReservationAdapter.addItem()
-                listRoom = addReservationAdapter.reservationList
+                addReservationAdapter.updateDate(apiCheckInDate,apiCheckOutDate)
             }
 
         binding.CheckInLayout.setEndIconOnClickListener {
@@ -186,7 +187,25 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
         }
 
         binding.submitCard.setOnClickListener {
+            dialog = showProgressDialog(requireContext())
             generateBooking()
+        }
+
+
+
+        binding.checkBox.setOnClickListener {
+            if (binding.checkBox.isChecked){
+                guestInfo.clear()
+                for (i in 0 until listRoom.size) {
+                    guestInfo.add(GuestInfo("","","","","","","","","", emptyList()))
+                }
+                guestInfoAdapter.notifyDataSetChanged()
+
+            }else{
+                guestInfo.clear()
+                guestInfo.add(GuestInfo("","","","","","","","","", emptyList()))
+                guestInfoAdapter.notifyDataSetChanged()
+            }
         }
 
     }
@@ -201,7 +220,7 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
             apiCheckInDate,
             apiCheckOutDate,
             nights,
-            emptyList(),
+            guestList,
             barRateReservation,
             listRoom,
             reservationSummary,
@@ -223,13 +242,16 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
                     val response = response.body()!!
                     Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show()
                     Log.e("response",response.message.toString())
+                    dialog.dismiss()
                 }else{
                     Log.e("error",response.code().toString())
+                    dialog.dismiss()
                 }
             }
 
             override fun onFailure(call: Call<BookingResponse?>, t: Throwable) {
                 Log.e("error",t.message.toString())
+                dialog.dismiss()
             }
         })
     }
@@ -463,8 +485,12 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
         return inputDate // Return the original date if parsing fails
     }
 
-    override fun onItemDelete(count: String) {
+
+    override fun onItemDelete(count: String, positions: Int) {
         binding.roomCount.text = "(${count} Rooms Added)"
+        if (binding.checkBox.isChecked){
+            guestInfoAdapter.removeItem(positions)
+        }
     }
 
     override fun updateRates() {
@@ -489,5 +515,12 @@ class AddReservationFragment : Fragment(), AddReservationAdapter.OnItemClick {
         reservationSummary.clear()
 
         reservationSummary.add(ReservationSummary(totalCharge.toString(),"","",apiCheckInDate,apiCheckOutDate,grandTotal.toString()))
+    }
+    override fun onAddItem() {
+        if (binding.checkBox.isChecked){
+            guestInfo.add(GuestInfo("","","","","","","","","", emptyList()))
+            guestInfoAdapter.notifyDataSetChanged()
+        }
+
     }
 }

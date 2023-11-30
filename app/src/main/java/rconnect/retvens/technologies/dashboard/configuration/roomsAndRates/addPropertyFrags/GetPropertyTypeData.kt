@@ -36,4 +36,5 @@ data class GetPropertyDataClass(
     val reservationPhone: String,
     val latitude: String,
     val longitude: String,
+    val propertyRating:String
 )

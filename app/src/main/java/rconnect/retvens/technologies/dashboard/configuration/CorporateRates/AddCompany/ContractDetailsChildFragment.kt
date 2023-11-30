@@ -2,6 +2,7 @@ package rconnect.retvens.technologies.dashboard.configuration.CorporateRates.Add
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -9,22 +10,37 @@ import android.graphics.pdf.PdfRenderer
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.ListPopupWindow
+import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import rconnect.retvens.technologies.Api.RetrofitObject
+import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.channelManager.AddReservationFragment.RateType
 import rconnect.retvens.technologies.databinding.FragmentContractDetailsChildBinding
+import rconnect.retvens.technologies.utils.utilCreateDatePickerDialog
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
+import java.util.Date
 
 
-class ContractDetailsChildFragment : Fragment(), ContractPDFAdapter.OnViewListener {
+class ContractDetailsChildFragment(val companyId:String) : Fragment(), ContractPDFAdapter.OnViewListener {
     private lateinit var binding : FragmentContractDetailsChildBinding
-
+    var startDate: Date? = null
+    var endDate: Date? = null
+    lateinit var startDatePickerDialog: DatePickerDialog
+    lateinit var endDatePickerDialog: DatePickerDialog
     private lateinit var scaleGestureDetector: ScaleGestureDetector
 
     val pdfList = ArrayList<ContractPDFData>()
@@ -80,9 +96,34 @@ class ContractDetailsChildFragment : Fragment(), ContractPDFAdapter.OnViewListen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         binding.selectCard.setOnClickListener {
             pickFileFromGallery()
         }
+
+        startDatePickerDialog =
+            utilCreateDatePickerDialog(requireContext(), binding.checkIn) { date ->
+                startDate = date
+            }
+        endDatePickerDialog =
+            utilCreateDatePickerDialog(requireContext(), binding.checkOut) { date ->
+                endDate = date
+            }
+
+        binding.CheckInLayout.setEndIconOnClickListener {
+            endDate = null
+
+            // Set the minimum date for the start date picker to be the current date
+            startDatePickerDialog.datePicker.minDate = System.currentTimeMillis()
+            startDatePickerDialog.show()
+        }
+        binding.CheckOutLayout.setEndIconOnClickListener {
+            if (startDate != null) {
+                endDatePickerDialog.datePicker.minDate = startDate!!.time
+                endDatePickerDialog.show()
+            }
+        }
+
         binding.pdfRecycler.layoutManager = LinearLayoutManager(requireContext())
 
 //        scaleGestureDetector = ScaleGestureDetector(requireContext(), ScaleListener())
@@ -124,7 +165,7 @@ class ContractDetailsChildFragment : Fragment(), ContractPDFAdapter.OnViewListen
         val bitmap = Bitmap.createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
         page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
 
-        binding.pdfPageCount.text = "$currentPage/$pageCount"
+        binding.pdfPageCount.text = "$currentPage/${pageCount-1}"
         binding.pdfPreview.setImageBitmap(bitmap)
 
         page.close()
@@ -142,7 +183,7 @@ class ContractDetailsChildFragment : Fragment(), ContractPDFAdapter.OnViewListen
                 val bitmap = Bitmap.createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
                 page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
 
-                binding.pdfPageCount.text = "$currentPage/$pageCount"
+                binding.pdfPageCount.text = "$currentPage/${pageCount-1}"
                 binding.pdfPreview.setImageBitmap(bitmap)
                 page.close()
             }
@@ -157,7 +198,7 @@ class ContractDetailsChildFragment : Fragment(), ContractPDFAdapter.OnViewListen
                 val bitmap = Bitmap.createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
                 page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
 
-                binding.pdfPageCount.text = "$currentPage/$pageCount"
+                binding.pdfPageCount.text = "$currentPage/${pageCount-1}"
                 binding.pdfPreview.setImageBitmap(bitmap)
                 page.close()
             }
@@ -186,5 +227,6 @@ class ContractDetailsChildFragment : Fragment(), ContractPDFAdapter.OnViewListen
 //        }
         binding.pdfPreview.setImageBitmap(null)
     }
+
 
 }

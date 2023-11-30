@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -90,6 +90,208 @@
                     android:visibility="gone" />
             </com.google.android.material.card.MaterialCardView>
 
+
+
+            <LinearLayout
+                android:id="@+id/ll6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/propertyLogoCard"
+                app:layout_constraintTop_toBottomOf="@id/propertyDetailsText">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/companyName_Layout"
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Company Name"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/companyName_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:hint="Alphabet Tech"
+                        android:inputType="text"
+                        android:textColor="@color/secondary"
+                        android:textColorHint="@drawable/hint_selector"
+                        android:textSize="@dimen/H5" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/companyType_Layout"
+                    style="@style/ClickableTextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:hint="Account type">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/companyType_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="text"
+                        android:textColor="@color/secondary"
+                        android:textColorHint="@color/secondary"
+                        android:textSize="@dimen/H5" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/shortCode_Layout"
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Short Code"
+                    android:layout_marginTop="5dp"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/shortCode_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:hint="Enter short code"
+                        android:inputType="text"
+                        android:textColor="@color/secondary"
+                        android:textColorHint="@drawable/hint_selector"
+                        android:textSize="@dimen/H5" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                app:layout_constraintEnd_toEndOf="@id/ll6"
+                app:layout_constraintStart_toStartOf="@id/propertyDetailsText"
+                app:layout_constraintTop_toBottomOf="@id/ll6">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/registrationNum_Layout"
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/textInputLayoutHeight"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:hint="Registration No"
+                    app:placeholderText=""
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/registrationNum_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="number"
+                        android:maxLength="12"
+                        android:hint="Enter Registration No"
+                        android:textColor="@color/secondary"
+                        android:textColorHint="@drawable/hint_selector"
+                        android:textSize="@dimen/H5" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/taxId_Layout"
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/textInputLayoutHeight"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:hint="Tax ID"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/taxId_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="text"
+                        android:hint="Enter Tax ID"
+                        android:textColor="@color/secondary"
+                        android:textColorHint="@drawable/hint_selector"
+                        android:textSize="@dimen/H5" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll2_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                app:layout_constraintEnd_toEndOf="@id/ll6"
+                app:layout_constraintStart_toStartOf="@id/propertyDetailsText"
+                app:layout_constraintTop_toBottomOf="@id/ll2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/companyWeb_Layout"
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/textInputLayoutHeight"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:hint="Company Website"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/companyWeb_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="text"
+                        android:hint="Enter Registration No"
+                        android:textColor="@color/secondary"
+                        android:textColorHint="@drawable/hint_selector"
+                        android:textSize="@dimen/H5" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/companyMail_Layout"
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/textInputLayoutHeight"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:hint="Company Email"
+                    app:placeholderText="Enter Tax ID"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/black">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/companyMail_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:inputType="text"
+                        android:textColor="@color/secondary"
+                        android:textColorHint="@color/secondary"
+                        android:textSize="@dimen/H5" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/imageEditLayout"
                 android:layout_width="wrap_content"
@@ -97,7 +299,7 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@id/propertyLogoCard"
+                app:layout_constraintBottom_toBottomOf="@+id/propertyLogoCard"
                 app:layout_constraintEnd_toEndOf="@id/propertyLogoCard"
                 app:layout_constraintStart_toStartOf="@id/propertyLogoCard"
                 app:layout_constraintTop_toBottomOf="@id/propertyLogoCard">
@@ -173,189 +375,6 @@
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
 
-
-            <LinearLayout
-                android:id="@+id/ll6"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/propertyLogoCard"
-                app:layout_constraintTop_toBottomOf="@id/propertyDetailsText">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/TextInputLayoutStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Company Name"
-                    app:endIconMode="clear_text"
-                    app:endIconTint="@color/black">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/roboto"
-                        android:hint="Alphabet Tech"
-                        android:inputType="text"
-                        android:textColor="@color/secondary"
-                        android:textColorHint="@drawable/hint_selector"
-                        android:textSize="@dimen/H5" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/ClickableTextInputLayoutStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:hint="Company type">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:clickable="true"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:fontFamily="@font/roboto"
-                        android:inputType="text"
-                        android:textColor="@color/secondary"
-                        android:textColorHint="@color/secondary"
-                        android:textSize="@dimen/H5" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/TextInputLayoutStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Short Code"
-                    android:layout_marginTop="5dp"
-                    app:endIconMode="clear_text"
-                    app:endIconTint="@color/black">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/roboto"
-                        android:hint="Enter short code"
-                        android:inputType="text"
-                        android:textColor="@color/secondary"
-                        android:textColorHint="@drawable/hint_selector"
-                        android:textSize="@dimen/H5" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2"
-                app:layout_constraintEnd_toEndOf="@id/ll6"
-                app:layout_constraintStart_toStartOf="@id/propertyDetailsText"
-                app:layout_constraintTop_toBottomOf="@id/ll6">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/TextInputLayoutStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/textInputLayoutHeight"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:hint="Registration No"
-                    app:placeholderText=""
-                    app:endIconMode="clear_text"
-                    app:endIconTint="@color/black">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/roboto"
-                        android:inputType="text"
-                        android:hint="Enter Registration No"
-                        android:textColor="@color/secondary"
-                        android:textColorHint="@drawable/hint_selector"
-                        android:textSize="@dimen/H5" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/TextInputLayoutStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/textInputLayoutHeight"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_weight="1"
-                    android:hint="Tax ID"
-                    app:endIconMode="clear_text"
-                    app:endIconTint="@color/black">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/roboto"
-                        android:inputType="text"
-                        android:hint="Enter Tax ID"
-                        android:textColor="@color/secondary"
-                        android:textColorHint="@drawable/hint_selector"
-                        android:textSize="@dimen/H5" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/ll2_2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2"
-                app:layout_constraintEnd_toEndOf="@id/ll6"
-                app:layout_constraintStart_toStartOf="@id/propertyDetailsText"
-                app:layout_constraintTop_toBottomOf="@id/ll2">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/TextInputLayoutStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/textInputLayoutHeight"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:hint="Company Website"
-                    app:endIconMode="clear_text"
-                    app:endIconTint="@color/black">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/roboto"
-                        android:inputType="text"
-                        android:hint="Enter Registration No"
-                        android:textColor="@color/secondary"
-                        android:textColorHint="@drawable/hint_selector"
-                        android:textSize="@dimen/H5" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/TextInputLayoutStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/textInputLayoutHeight"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_weight="1"
-                    android:hint="Company Email"
-                    app:placeholderText="Enter Tax ID"
-                    app:endIconMode="clear_text"
-                    app:endIconTint="@color/black">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/roboto"
-                        android:inputType="text"
-                        android:textColor="@color/secondary"
-                        android:textColorHint="@color/secondary"
-                        android:textSize="@dimen/H5" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
             <TextView
                 android:id="@+id/txtAccInfo"
                 android:layout_width="wrap_content"
@@ -382,6 +401,7 @@
                 app:layout_constraintTop_toBottomOf="@id/txtAccInfo">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/openingBalance_Layout"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/textInputLayoutHeight"
@@ -392,10 +412,11 @@
                     app:endIconTint="@color/black">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/openingBalance_text"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/roboto"
-                        android:inputType="text"
+                        android:inputType="numberDecimal"
                         android:hint="enter rate plan name"
                         android:textColor="@color/secondary"
                         android:textColorHint="@drawable/hint_selector"
@@ -403,6 +424,7 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/creditLimit_Layout"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/textInputLayoutHeight"
@@ -414,10 +436,11 @@
                     app:endIconTint="@color/black">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/creditLimit_text"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/roboto"
-                        android:inputType="text"
+                        android:inputType="numberDecimal"
                         android:textColor="@color/secondary"
                         android:textColorHint="@drawable/hint_selector"
                         android:hint="Enter short code"
@@ -435,14 +458,17 @@
                 android:text="Billing Cycle"
                 android:layout_marginTop="24dp"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/count_days"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="@id/txt_billing"
                 app:layout_constraintEnd_toEndOf="@id/ll2_3"
                 app:layout_constraintBottom_toBottomOf="@id/txt_billing"
-                android:text="1"
+                android:hint="1"
+                android:maxLength="2"
+                android:textAlignment="center"
+                android:inputType="number"
                 android:textSize="@dimen/H5"
                 android:textColor="@color/black"
                 android:background="@drawable/rounded_border_light_black"
@@ -458,7 +484,7 @@
                 android:textSize="@dimen/H5"
                 android:textColor="@color/black"
                 android:layout_marginEnd="9dp"/>
-            <TextView
+            <EditText
                 android:id="@+id/count_months"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -466,7 +492,10 @@
                 app:layout_constraintEnd_toStartOf="@id/txt_days"
                 app:layout_constraintBottom_toBottomOf="@id/txt_billing"
                 android:layout_marginEnd="9dp"
-                android:text="6"
+                android:hint="6"
+                android:maxLength="4"
+                android:textAlignment="center"
+                android:inputType="number"
                 android:textSize="@dimen/H5"
                 android:textColor="@color/black"
                 android:background="@drawable/rounded_border_light_black"
@@ -521,6 +550,7 @@
                     android:weightSum="2">
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/contactPerson_Layout"
                         style="@style/TextInputLayoutStyle"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/textInputLayoutHeight"
@@ -531,6 +561,7 @@
                         app:endIconTint="@color/black">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/contactPerson_text"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
@@ -542,6 +573,7 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/personDesignation_Layout"
                         style="@style/TextInputLayoutStyle"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/textInputLayoutHeight"
@@ -553,6 +585,7 @@
                         app:endIconTint="@color/black">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/personDesignation_text"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
@@ -571,6 +604,7 @@
                     android:weightSum="2">
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/phoneLayout"
                         style="@style/TextInputLayoutStyle"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/textInputLayoutHeight"
@@ -581,17 +615,20 @@
                         app:endIconTint="@color/black">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/phoneText"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
-                            android:inputType="text"
+                            android:inputType="number"
                             android:hint="+91 9876543210"
+                            android:maxLength="10"
                             android:textColor="@color/secondary"
                             android:textColorHint="@drawable/hint_selector"
                             android:textSize="@dimen/H5" />
 
                     </com.google.android.material.textfield.TextInputLayout>
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/email_layout"
                         style="@style/TextInputLayoutStyle"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/textInputLayoutHeight"
@@ -603,6 +640,7 @@
                         app:endIconTint="@color/black">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/email_text"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
@@ -643,11 +681,13 @@
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/black">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <AutoCompleteTextView
+                    android:id="@+id/addressLine1ET"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/roboto"
                     android:inputType="text"
+                    android:paddingStart="15dp"
                     android:textColor="@color/secondary"
                     android:textColorHint="@drawable/hint_selector"
                     android:hint="Earth, Solar System, Milky Way"
@@ -669,6 +709,7 @@
                 app:endIconTint="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_address_line2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/roboto"
@@ -689,6 +730,7 @@
                 android:weightSum="2">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/country_Layout"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/textInputLayoutHeight"
@@ -698,11 +740,13 @@
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/black">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <AutoCompleteTextView
+                        android:id="@+id/country_text"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/roboto"
                         android:inputType="text"
+                        android:paddingStart="15dp"
                         android:hint="United States"
                         android:textColor="@color/secondary"
                         android:textColorHint="@drawable/hint_selector"
@@ -710,6 +754,7 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/state_Layout"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/textInputLayoutHeight"
@@ -720,10 +765,12 @@
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/black">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <AutoCompleteTextView
+                        android:id="@+id/state_text"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/roboto"
+                        android:paddingStart="15dp"
                         android:inputType="text"
                         android:textColor="@color/secondary"
                         android:textColorHint="@drawable/hint_selector"
@@ -740,20 +787,24 @@
                 android:weightSum="2">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/city_Layout"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/textInputLayoutHeight"
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:hint="City"
+                    android:layout_marginBottom="5dp"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/black">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <AutoCompleteTextView
+                        android:id="@+id/city_text"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/roboto"
                         android:inputType="text"
+                        android:paddingStart="15dp"
                         android:hint="Caltek"
                         android:textColor="@color/secondary"
                         android:textColorHint="@drawable/hint_selector"
@@ -761,6 +812,7 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/pinCode_Layout"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/textInputLayoutHeight"
@@ -772,10 +824,12 @@
                     app:endIconTint="@color/black">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/pincode_text"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/roboto"
-                        android:inputType="text"
+                        android:inputType="number"
+                        android:maxLength="10"
                         android:textColor="@color/secondary"
                         android:textColorHint="@drawable/hint_selector"
                         android:hint="4563212"
@@ -783,11 +837,9 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

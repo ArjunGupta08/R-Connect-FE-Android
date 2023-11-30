@@ -24,6 +24,7 @@ import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.others.holiday.DisplayStatusData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.RatePlan
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.generateShortCode
@@ -33,7 +34,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RatePlanAdapter(var list:ArrayList<String>, val applicationContext: Context):RecyclerView.Adapter<RatePlanAdapter.NotificationHolder>() {
+class RatePlanAdapter(var list:ArrayList<RatePlan>, val applicationContext: Context):RecyclerView.Adapter<RatePlanAdapter.NotificationHolder>() {
 
     var mListener : OnUpdate?= null
 
@@ -57,7 +58,7 @@ class RatePlanAdapter(var list:ArrayList<String>, val applicationContext: Contex
         val ratePlanTotal = itemView.findViewById<TextView>(R.id.ratePlanTotal)
         val extraAdult = itemView.findViewById<TextView>(R.id.maxOccupancy)
         val extraChild = itemView.findViewById<TextView>(R.id.baseRate)
-        val amenitiesCountTxt = itemView.findViewById<TextView>(R.id.amenitiesCountTxt)
+        val amenitiesCountTxt = itemView.findViewById<TextView>(R.id.InclusionCountTxt)
 
         val edit = itemView.findViewById<ImageView>(R.id.edit)
         val delete = itemView.findViewById<ImageView>(R.id.delete)
@@ -78,6 +79,15 @@ class RatePlanAdapter(var list:ArrayList<String>, val applicationContext: Contex
     override fun onBindViewHolder(holder: NotificationHolder, position: Int) {
         val currentData = list[position]
 
+        holder.rateCode.setText(currentData.shortCode)
+        holder.ratePlanName.setText(currentData.ratePlanName)
+        holder.roomType.setText(currentData.roomTypeName)
+        holder.rateType.setText(currentData.rateType)
+        holder.ratePlanTotal.setText(currentData.ratePlanTotal)
+        holder.extraAdult.setText(currentData.extraAdultRate)
+        holder.extraChild.setText(currentData.extraChildRate)
+        holder.amenitiesCountTxt.setText(currentData.inclusion.toString())
+
         holder.delete.setOnClickListener {
             showDeleteConfirmationDialog(applicationContext){
 
@@ -86,7 +96,7 @@ class RatePlanAdapter(var list:ArrayList<String>, val applicationContext: Contex
         }
     }
 
-    fun filterList(inputString : ArrayList<String>) {
+    fun filterList(inputString : ArrayList<RatePlan>) {
         list = inputString
         notifyDataSetChanged()
     }

@@ -25,15 +25,15 @@ data class ReservationDataClass(
 )
 
 data class GuestInfo(
-    val guestName: String,
+    var guestName: String,
     val phoneNumber: String,
-    val emailAddress: String,
-    val addressLine1: String,
-    val addressLine2: String,
-    val country: String,
-    val state: String,
-    val city: String,
-    val pincode: String,
+    var emailAddress: String,
+    var addressLine1: String,
+    var addressLine2: String,
+    var country: String,
+    var state: String,
+    var city: String,
+    var pincode: String,
     val c_form: List<CForm>
 )
 

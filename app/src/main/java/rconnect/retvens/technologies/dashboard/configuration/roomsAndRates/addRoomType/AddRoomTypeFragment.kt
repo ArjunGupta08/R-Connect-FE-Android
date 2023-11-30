@@ -61,7 +61,7 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
     val bedTypeList = ArrayList<GetBedTypeDataClass>()
     val bedSuggestionList = ArrayList<String>()
 
-    private val amenityIdsList = ArrayList<String>()
+    private var amenityIdsList = ArrayList<String>()
 
     private var page = 1
 
@@ -124,14 +124,12 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
                     shakeAnimation(binding.add, requireContext())
                 } else {
                     progressDialog = showProgressDialog(requireContext())
+                    Log.e("update",roomTypeId.toString())
                     if (roomTypeId != "") {
-
+                        updateData()
+                        Log.e("update","updateData")
                     } else {
-                        if (roomTypeId != "") {
-                            updateData()
-                        } else {
-                            sendData()
-                        }
+                       sendData()
                     }
                     Const.addedRoomTypeName = binding.roomTypeNameEt.text.toString()
                     Const.addedRoomTypeShortCode = binding.shortCodeET.text.toString()
@@ -155,7 +153,7 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
                 binding.roomProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
                 binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
 
-                val childFragment: Fragment = ChargesAndRatesFragment()
+                val childFragment: Fragment = ChargesAndRatesFragment(roomTypeId!!)
                 val transaction = requireActivity().supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.createRoomFragContainer,childFragment)
                 transaction.commit()
@@ -166,7 +164,7 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
 
                 binding.continueTxt.text = "Save"
             } else {
-//                sendData()
+                sendData()
             }
         }
 
@@ -260,7 +258,7 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
                             maxAdultCount = (data.maxAdult).toInt()
                             maxChildCount = (data.maxChild).toInt()
                             maxOccupancyCount = (data.maxOccupancy).toInt()
-
+                            roomTypeId = data.roomTypeId
                             binding.baseAdultText.text = (data.baseAdult)
                             binding.baseChildText.text = (data.baseChild)
                             binding.maxAdultText.text = (data.maxAdult)
@@ -271,6 +269,7 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
 
                             selectedAmenitiesListFinal.addAll(data.amenities)
 
+                            Log.e("amenitiesIds",data.amenities.toString())
                             binding.selectedAmenitiesRecycler.layoutManager = GridLayoutManager(requireContext(), 4)
 
                             selectedAmenitiesAdapter = SelectedAmenitiesAdapter(requireContext(), selectedAmenitiesListFinal)
@@ -315,8 +314,8 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
                 binding.maxOccupancyText.text.toString(),
                 roomTypeInventoryCount,
                 binding.bedCount.text.toString(),
-                bedTypeIds.joinToString(", ").removeSurrounding("[", "]"),
-               amenityIdsList.joinToString(", ").removeSurrounding("[", "]"),
+                bedTypeIds.joinToString(",").removeSurrounding("[", "]"),
+               amenityIdsList.joinToString(",").removeSurrounding("[", "]"),
                 "Android"
                 )
         )
@@ -367,6 +366,7 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
     }
 
     private fun updateData(){
+        Log.d("roomTypeId", roomTypeId!!)
         val send = OAuthClient<SingleConfiguration>(requireContext()).create(SingleConfiguration::class.java).updateRoomApi(
             roomTypeId!!,
             CreateRoomData(
@@ -382,8 +382,8 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
                 binding.maxOccupancyText.text.toString(),
                 roomTypeInventoryCount,
                 binding.bedCount.text.toString(),
-                bedTypeIds.joinToString(", ").removeSurrounding("[", "]"),
-               amenityIdsList.joinToString(", ").removeSurrounding("[", "]"),
+                bedTypeIds.joinToString(",").removeSurrounding("[", "]"),
+               amenityIdsList.joinToString(",").removeSurrounding("[", "]"),
                 "Android"
                 )
         )
@@ -412,7 +412,7 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
                     binding.roomProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
                     binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
 
-                    val childFragment: Fragment = AddImagesFragment()
+                    val childFragment: Fragment = AddImagesFragment(roomTypeId!!,true)
                     val transaction = requireActivity().supportFragmentManager.beginTransaction()
                     transaction.replace(R.id.createRoomFragContainer,childFragment)
                     transaction.commit()
@@ -421,6 +421,9 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
                     binding.createRoomFragContainer.visibility = View.VISIBLE
                     rightInAnimation(binding.createRoomFragContainer, requireContext())
 
+                }else{
+                    Log.e("error", response.code().toString())
+                    progressDialog.dismiss()
                 }
             }
 
@@ -604,7 +607,7 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
             binding.roomProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
             binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
 
-            val childFragment: Fragment = AddImagesFragment()
+            val childFragment: Fragment = AddImagesFragment(roomTypeId!!,true)
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(R.id.createRoomFragContainer,childFragment)
             transaction.commit()
@@ -633,7 +636,7 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
             binding.roomProfile.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
             binding.chargePlans.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
 
-            val childFragment: Fragment = ChargesAndRatesFragment()
+            val childFragment: Fragment = ChargesAndRatesFragment(roomTypeId!!)
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(R.id.createRoomFragContainer,childFragment)
             transaction.commit()
@@ -671,17 +674,13 @@ class AddRoomTypeFragment(private var roomTypeId : String ?= "") : Fragment(),
         selectedAmenitiesAdapter.setOnAmenityRemoveListener(this)
         selectedAmenitiesAdapter.notifyDataSetChanged()
 
-        selectedAmenitiesListFinal.forEach {
-            if (!amenityIdsList.contains(it.amenityId)) {
-                amenityIdsList.add(it.amenityId)
-            } else {
-                amenityIdsList.remove(it.amenityId)
-            }
-        }
+        amenityIdsList = selectedAmenitiesListFinal.distinctBy { it.amenityId }.map { it.amenityId }.toMutableList() as ArrayList<String>
+
     }
 
     override fun onSelectedAmenityRemove(currentItem : GetAmenityData) {
         selectedAmenitiesListFinal.remove(currentItem)
+        amenityIdsList = selectedAmenitiesListFinal.distinctBy { it.amenityId }.map { it.amenityId }.toMutableList() as ArrayList<String>
         selectedAmenitiesAdapter.notifyDataSetChanged()
     }
 

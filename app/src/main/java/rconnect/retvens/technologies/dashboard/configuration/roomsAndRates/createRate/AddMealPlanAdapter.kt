@@ -28,6 +28,7 @@ import rconnect.retvens.technologies.utils.UserSessionManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.roundToInt
 
 class AddMealPlanAdapter(val list:ArrayList<GetMealPlanData>, val applicationContext: Context):RecyclerView.Adapter<AddMealPlanAdapter.NotificationHolder>() {
 
@@ -69,12 +70,20 @@ class AddMealPlanAdapter(val list:ArrayList<GetMealPlanData>, val applicationCon
         holder.charges.text = "₹${item.chargesPerOccupancy}/Per Occupancy"
 
         holder.card.setOnClickListener {
-            if (!selectedList.contains(item)) {
+            if (selectedList.contains(item)) {
+                // Item is already selected, so remove it to unselect
+                selectedList.remove(item)
+                holder.card.strokeColor = ContextCompat.getColor(applicationContext, R.color.grey40)
+                holder.card.strokeWidth = 1.5.roundToInt() // Assuming you want to remove the stroke
+                // You can set the stroke color to the default color or remove the stroke as needed
+            } else {
+                // Item is not selected, so add it to select
                 selectedList.add(item)
                 holder.card.strokeWidth = 3
                 holder.card.strokeColor = ContextCompat.getColor(applicationContext, R.color.black)
-                mListener?.onUpdateMealPlan(selectedList)
             }
+
+            mListener?.onUpdateMealPlan(selectedList)
         }
 
     }

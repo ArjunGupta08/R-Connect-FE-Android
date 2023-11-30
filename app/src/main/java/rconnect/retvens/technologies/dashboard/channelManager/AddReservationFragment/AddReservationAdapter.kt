@@ -19,6 +19,7 @@ import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -28,8 +29,11 @@ import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddInclusionsAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.AddInclusionsDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetChargeRuleArray
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetPostingRuleArray
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
@@ -40,7 +44,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.NullPointerException
 
-class AddReservationAdapter(val applicationContext: Context,val reservationList:ArrayList<RoomDetail>,val availableList:ArrayList<AvailableRoomType>,val checkInDate:String,val checkOutDate:String):RecyclerView.Adapter<AddReservationAdapter.ReservationHolder>() {
+class AddReservationAdapter(val applicationContext: Context,val reservationList:ArrayList<RoomDetail>,val availableList:ArrayList<AvailableRoomType>):RecyclerView.Adapter<AddReservationAdapter.ReservationHolder>() {
     var cc = 1
     var ac = 1
     var isCharge = false
@@ -51,7 +55,10 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
     private var roomDetailPricess:ArrayList<RoomDetailPrices> = ArrayList()
     var roomTypeId:String = ""
     var userId:String = ""
+    var checkOutDate = ""
+    var checkInDate = ""
     var propertyId:String = ""
+    private lateinit var inclusionList:ArrayList<GetInclusionsData>
     var clickListener : OnItemClick ?= null
     private  var chargeRuleArray = ArrayList<String>()
     var postingList = ArrayList<String>()
@@ -61,8 +68,10 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
         clickListener = listener
     }
     interface OnItemClick{
-        fun onItemDelete(count:String)
+        fun onItemDelete(count:String,positions: Int)
         fun updateRates()
+
+        fun onAddItem()
     }
 
     init {
@@ -70,6 +79,11 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
         userId = UserSessionManager(applicationContext).getUserId().toString()
         propertyId = UserSessionManager(applicationContext).getPropertyId().toString()
 
+    }
+
+    fun updateDate(checkInDates:String,checkOutDates:String){
+        checkInDate = checkInDates
+        checkOutDate = checkOutDates
     }
 
     class ReservationHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
@@ -125,174 +139,184 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
             emptyList()
         )
 
-        val emptyPrices = RoomDetailPrices(0,0,0.0,0.0,0.0,0.0,0.0)
+        val inclusionList:ArrayList<Double> = ArrayList()
+        val emptyPrices = RoomDetailPrices(0,0,0.0,0.0,0.0,0.0,0.0, inclusionList)
 
         // Add the new item to the list
         reservationList.add(emptyRoomDetails)
         roomDetailList.add(emptyRoomDetails)
         roomDetailPricess.add(emptyPrices)
+        clickListener?.onAddItem()
         // Notify the adapter about the change
         notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: ReservationHolder, position: Int) {
 
+        if (position < roomDetailList.size) {
+            val roomDetails = roomDetailList[position]
+            val roomDetailPrices = roomDetailPricess[position]
 
-        val roomDetails = roomDetailList[position]
-        val roomDetailPrices = roomDetailPricess[position]
+            holder.room_count.text = "Room ${position+1}"
+            holder.delete.setOnClickListener {
+                if (position >= 1 && position < reservationList.size && position < roomDetailList.size) {
+                    reservationList.removeAt(position)
+                    roomDetailList.removeAt(position)
+                    notifyDataSetChanged()
+                    clickListener?.onItemDelete(reservationList.size.toString(),position)
+                } else {
+                    // Handle the case where position is out of bounds
+                    // You can show a message or perform some other action
+                    // For example, you can display a Toast message:
 
-        holder.room_count.text = "Room ${position+1}"
-        holder.delete.setOnClickListener {
-            if (position >= 1 && position < reservationList.size && position < roomDetailList.size) {
-                reservationList.removeAt(position)
-                roomDetailList.removeAt(position)
-                notifyDataSetChanged()
-                clickListener?.onItemDelete(reservationList.size.toString())
-            } else {
-                // Handle the case where position is out of bounds
-                // You can show a message or perform some other action
-                // For example, you can display a Toast message:
-
+                }
             }
-        }
-        holder.add_extra.setOnClickListener {
-            openCreateNewDialog()
-        }
+            holder.add_extra.setOnClickListener {
+               openAddInclusionDialog(position)
+            }
 
-        holder.txt_remark.setOnClickListener {
-            openCreateRemarkDialog()
-        }
-
-
-        if (roomDetails.charge != ""){
-            var totalCharges = roomDetailPrices.totalCharges
-            totalCharges += roomDetailPrices.totalPriceForExtraAdult + roomDetailPrices.totalPriceForExtraChild
-            holder.grandTotal.text = "₹${totalCharges}.00"
-            roomDetails.charge = totalCharges.toString()
-            clickListener?.updateRates()
-        }
+            holder.txt_remark.setOnClickListener {
+                openCreateRemarkDialog()
+            }
 
 
+            if (roomDetails.charge != ""){
+                var InclusionsTotal = 0.0
 
-        holder.addChild.setOnClickListener {
-            cc++
-            holder.countChild.text = "$cc"
-            roomDetails.childs = cc.toString()
+                roomDetailPrices.totalInclusions.forEach {
+                    InclusionsTotal += it
+                }
+                var totalCharges = roomDetailPrices.totalCharges
+                totalCharges += roomDetailPrices.totalPriceForExtraAdult + roomDetailPrices.totalPriceForExtraChild + InclusionsTotal
+                holder.grandTotal.text = "₹${totalCharges}.00"
+                roomDetails.charge = totalCharges.toString()
+                clickListener?.updateRates()
+            }
 
-            // Calculate the increase in child count
-            val increaseInChildCount = cc - roomDetailPrices.baseChildCount.toInt()
-
-            // Calculate the total price for extra children
-            roomDetailPrices.totalPriceForExtraChild = increaseInChildCount * roomDetailPrices.pricePerExtraChild
-
-            // Update roomDetails.extraChild with the calculated total price
-            holder.extraChildCharges.text = "₹${roomDetailPrices.totalPriceForExtraChild}.00"
-            roomDetails.extraChild = roomDetailPrices.totalPriceForExtraChild.toString()
-
-            notifyDataSetChanged()
-        }
-        holder.removeChild.setOnClickListener {
-            if (cc > roomDetailPrices.baseChildCount.toInt()) {
-                cc--
+            holder.addChild.setOnClickListener {
+                cc++
                 holder.countChild.text = "$cc"
                 roomDetails.childs = cc.toString()
 
-                // Calculate the decrease in child count, ensuring it's non-negative
-                val decreaseInChildCount = maxOf(0, cc - roomDetailPrices.baseChildCount.toInt())
+                // Calculate the increase in child count
+                val increaseInChildCount = cc - roomDetailPrices.baseChildCount.toInt()
 
-                // Calculate the total price for reduced extra children
-                roomDetailPrices.totalPriceForExtraChild = decreaseInChildCount * roomDetailPrices.pricePerExtraChild
+                // Calculate the total price for extra children
+                roomDetailPrices.totalPriceForExtraChild = increaseInChildCount * roomDetailPrices.pricePerExtraChild
+
                 // Update roomDetails.extraChild with the calculated total price
-                holder.extraChildCharges.text = "₹ ${roomDetailPrices.totalPriceForExtraChild.toString()}.00"
+                holder.extraChildCharges.text = "₹${roomDetailPrices.totalPriceForExtraChild}.00"
+                roomDetails.extraChild = roomDetailPrices.totalPriceForExtraChild.toString()
 
                 notifyDataSetChanged()
             }
-        }
+            holder.removeChild.setOnClickListener {
+                if (cc > roomDetailPrices.baseChildCount.toInt()) {
+                    cc--
+                    holder.countChild.text = "$cc"
+                    roomDetails.childs = cc.toString()
+
+                    // Calculate the decrease in child count, ensuring it's non-negative
+                    val decreaseInChildCount = maxOf(0, cc - roomDetailPrices.baseChildCount.toInt())
+
+                    // Calculate the total price for reduced extra children
+                    roomDetailPrices.totalPriceForExtraChild = decreaseInChildCount * roomDetailPrices.pricePerExtraChild
+                    // Update roomDetails.extraChild with the calculated total price
+                    holder.extraChildCharges.text = "₹ ${roomDetailPrices.totalPriceForExtraChild.toString()}.00"
+
+                    notifyDataSetChanged()
+                }
+            }
 
 
 
-        holder.addAdult.setOnClickListener {
-            ac++
-            holder.countAdult.text = "$ac"
-            roomDetails.adults = ac.toString()
-
-            // Calculate the increase in adult count
-            val increaseInAdultCount = ac - roomDetailPrices.baseAdultCount.toInt()
-
-            // Calculate the total price for extra adults
-            roomDetailPrices.totalPriceForExtraAdult = increaseInAdultCount * roomDetailPrices.pricePerExtraAdult.toDouble()
-
-            // Update roomDetails.extraAdult with the calculated total price
-            holder.extraAdultCharges.text = "₹${roomDetailPrices.totalPriceForExtraAdult}.00"
-            roomDetails.extraAdult = roomDetailPrices.totalPriceForExtraAdult.toString()
-
-           notifyDataSetChanged()
-
-        }
-        holder.removeAdult.setOnClickListener {
-            if (ac > roomDetailPrices.baseAdultCount.toInt()) {
-                ac--
+            holder.addAdult.setOnClickListener {
+                ac++
                 holder.countAdult.text = "$ac"
                 roomDetails.adults = ac.toString()
 
-                // Calculate the decrease in adult count, ensuring it's non-negative
-                val decreaseInAdultCount = maxOf(0, ac - roomDetailPrices.baseAdultCount.toInt())
+                // Calculate the increase in adult count
+                val increaseInAdultCount = ac - roomDetailPrices.baseAdultCount.toInt()
 
-                // Calculate the total price for reduced extra adults
-                roomDetailPrices.totalPriceForExtraAdult = decreaseInAdultCount * roomDetailPrices.pricePerExtraAdult
+                // Calculate the total price for extra adults
+                roomDetailPrices.totalPriceForExtraAdult = increaseInAdultCount * roomDetailPrices.pricePerExtraAdult.toDouble()
 
+                // Update roomDetails.extraAdult with the calculated total price
                 holder.extraAdultCharges.text = "₹${roomDetailPrices.totalPriceForExtraAdult}.00"
+                roomDetails.extraAdult = roomDetailPrices.totalPriceForExtraAdult.toString()
 
                 notifyDataSetChanged()
+
             }
-        }
-        holder.drop.setOnClickListener {
-            if (isCharge){
-                holder.chargesDetails.isVisible = false
-                holder.drop.rotation = 0f
-                isCharge = false
+            holder.removeAdult.setOnClickListener {
+                if (ac > roomDetailPrices.baseAdultCount.toInt()) {
+                    ac--
+                    holder.countAdult.text = "$ac"
+                    roomDetails.adults = ac.toString()
+
+                    // Calculate the decrease in adult count, ensuring it's non-negative
+                    val decreaseInAdultCount = maxOf(0, ac - roomDetailPrices.baseAdultCount.toInt())
+
+                    // Calculate the total price for reduced extra adults
+                    roomDetailPrices.totalPriceForExtraAdult = decreaseInAdultCount * roomDetailPrices.pricePerExtraAdult
+
+                    holder.extraAdultCharges.text = "₹${roomDetailPrices.totalPriceForExtraAdult}.00"
+
+                    notifyDataSetChanged()
+                }
             }
-            else{
-                holder.chargesDetails.isVisible = true
-                holder.drop.rotation = 180f
-                isCharge= true
+            holder.drop.setOnClickListener {
+                if (isCharge){
+                    holder.chargesDetails.isVisible = false
+                    holder.drop.rotation = 0f
+                    isCharge = false
+                }
+                else{
+                    holder.chargesDetails.isVisible = true
+                    holder.drop.rotation = 180f
+                    isCharge= true
+                }
             }
-        }
 
-        holder.addDuplicate.setOnClickListener {
-            val positionClicked = holder.adapterPosition
+            holder.addDuplicate.setOnClickListener {
+                val positionClicked = holder.adapterPosition
 
-            // Check if the clicked position is valid and there is at least one item in the list
-            if (positionClicked in 0 until roomDetailList.size) {
-                val itemToDuplicate = roomDetailList[positionClicked]
-                val itemToPrice = roomDetailPricess[positionClicked]
+                // Check if the clicked position is valid and there is at least one item in the list
+                if (positionClicked in 0 until roomDetailList.size) {
+                    val itemToDuplicate = roomDetailList[positionClicked]
+                    val itemToPrice = roomDetailPricess[positionClicked]
 
-                // Create a duplicate item using the copy method (assuming your RoomDetails class has a copy method)
-                val duplicatedItem = itemToDuplicate.copy()
-                val duplicatePrice = itemToPrice.copy()
+                    // Create a duplicate item using the copy method (assuming your RoomDetails class has a copy method)
+                    val duplicatedItem = itemToDuplicate.copy()
+                    val duplicatePrice = itemToPrice.copy()
 
-                // Add the duplicated item to both lists
-                reservationList.add(positionClicked + 1, duplicatedItem)
-                roomDetailList.add(positionClicked + 1, duplicatedItem)  // Fix this line
-                roomDetailPricess.add(positionClicked + 1, duplicatePrice)  // Fix this line
+                    // Add the duplicated item to both lists
+                    reservationList.add(positionClicked + 1, duplicatedItem)
+                    roomDetailList.add(positionClicked + 1, duplicatedItem)  // Fix this line
+                    roomDetailPricess.add(positionClicked + 1, duplicatePrice)  // Fix this line
 
-                // Notify the adapter about the change
-                notifyItemInserted(positionClicked + 1)
+                    // Notify the adapter about the change
+                    notifyItemInserted(positionClicked + 1)
+                }
             }
+
+            val roomTypeAdapter = ArrayAdapter(applicationContext,R.layout.simple_dropdown_item_1line,availableList)
+
+            holder.roomTypeText.setOnClickListener {
+                showRoomTypeDropDown(roomTypeAdapter,it,holder.roomTypeLayout,holder.countAdult,holder.countChild,holder.position)
+            }
+
+            val ratePlanAdapter = ArrayAdapter(applicationContext,R.layout.simple_dropdown_item_1line,ratePlanList)
+
+
+            holder.ratePlanText.setOnClickListener {
+                showRatePlan(ratePlanAdapter,it,holder.ratePlanLayout,holder.chargesPrice,holder.position,holder.grandTotal,holder.roomCharges)
+            }
+        } else {
+           Log.e("error","Empty List")
         }
 
-        val roomTypeAdapter = ArrayAdapter(applicationContext,R.layout.simple_dropdown_item_1line,availableList)
 
-        holder.roomTypeText.setOnClickListener {
-            showRoomTypeDropDown(roomTypeAdapter,it,holder.roomTypeLayout,holder.countAdult,holder.countChild,holder.position)
-        }
-
-        val ratePlanAdapter = ArrayAdapter(applicationContext,R.layout.simple_dropdown_item_1line,ratePlanList)
-
-
-        holder.ratePlanText.setOnClickListener {
-            showRatePlan(ratePlanAdapter,it,holder.ratePlanLayout,holder.chargesPrice,holder.position,holder.grandTotal,holder.roomCharges)
-        }
 
     }
 
@@ -340,7 +364,6 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
             listPopupWindow.dismiss()
             clickListener?.updateRates()
         }
-
             listPopupWindow.show()
 
     }
@@ -464,104 +487,62 @@ class AddReservationAdapter(val applicationContext: Context,val reservationList:
 
     }
 
-    private fun openCreateNewDialog() {
-        val dialog = Dialog(applicationContext) // Use 'this' as the context, assuming this code is within an Activity
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+    private fun openAddInclusionDialog(positions: Int) {
+        val dialog = Dialog(applicationContext)
         dialog.setCancelable(true)
-        dialog.setCanceledOnTouchOutside(true)
-        dialog.setContentView(R.layout.dialog_create_inclusion)
-        dialog.window?.apply {
-            setBackgroundDrawableResource(android.R.color.transparent) // Makes the background transparent
-            setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-        }
-        getPostingRule()
-        getChargeRule()
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_add_inclusion)
 
-        val inclusionNameLayout = dialog.findViewById<TextInputLayout>(R.id.inclusionNameLayout)
-        val shortCodeLayout = dialog.findViewById<TextInputLayout>(R.id.shortCodeLayout)
-        val chargeLayout = dialog.findViewById<TextInputLayout>(R.id.chargeLayout)
-
-        val inclusionName = dialog.findViewById<TextInputEditText>(R.id.inclusionName)
-        val inclusionType = dialog.findViewById<TextInputEditText>(R.id.inclusionType)
-        val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCode)
-        val charge = dialog.findViewById<TextInputEditText>(R.id.charge)
-        val chargeRule = dialog.findViewById<TextInputEditText>(R.id.chargeRule)
-        val postingRule = dialog.findViewById<TextInputEditText>(R.id.postingRule)
+        val createNewInclusionBtn = dialog.findViewById<TextView>(R.id.createNewInclusionBtn)
+        createNewInclusionBtn.visibility = View.GONE
 
         val cancel = dialog.findViewById<TextView>(R.id.cancel)
-        val save = dialog.findViewById<CardView>(R.id.saveBtn)
-
-        val postingRuleLayout = dialog.findViewById<TextInputLayout>(R.id.postingRuleLayout)
-        val chargeRuleLayout = dialog.findViewById<TextInputLayout>(R.id.chargeRuleLayout)
-
-        postingRule.setOnClickListener {
-            Toast.makeText(applicationContext, "4", Toast.LENGTH_SHORT).show()
-            showDropdownMenu(applicationContext, postingRule, it, postingRuleArray)
-        }
-
-        chargeRule.setOnClickListener {
-            showDropdownMenu(applicationContext, chargeRule, it, chargeRuleArray)
-        }
-
         cancel.setOnClickListener {
             dialog.dismiss()
         }
-        save.setOnClickListener {
-            if (inclusionName.text!!.isEmpty()) {
-                inclusionNameLayout.isErrorEnabled = true
-                shakeAnimation(inclusionNameLayout, applicationContext)
-            } else if (shortCode.text!!.isEmpty()) {
-                inclusionNameLayout.isErrorEnabled = false
-                shortCodeLayout.isErrorEnabled = true
-                shakeAnimation(shortCodeLayout, applicationContext)
-            } else if (chargeRule.text!!.isEmpty()) {
-                inclusionNameLayout.isErrorEnabled = false
-                shortCodeLayout.isErrorEnabled = false
-                chargeRuleLayout.isErrorEnabled = true
-                shakeAnimation(chargeRuleLayout, applicationContext)
-            } else if (postingRule.text!!.isEmpty()) {
-                inclusionNameLayout.isErrorEnabled = false
-                shortCodeLayout.isErrorEnabled = false
-                chargeRuleLayout.isErrorEnabled = false
-                postingRuleLayout.isErrorEnabled = true
-                shakeAnimation(postingRuleLayout, applicationContext)
-            } else if (charge.text!!.isEmpty()) {
-                inclusionNameLayout.isErrorEnabled = false
-                shortCodeLayout.isErrorEnabled = false
-                chargeRuleLayout.isErrorEnabled = false
-                postingRuleLayout.isErrorEnabled = false
-                chargeLayout.isErrorEnabled = true
-                shakeAnimation(chargeLayout, applicationContext)
-            } else {
-                saveInclusion(
-                    applicationContext,
-                    dialog,
-                    shortCode.text.toString(),
-                    charge.text.toString(),
-                    inclusionName.text.toString(),
-                    inclusionType.text.toString(),
-                    chargeRule.text.toString(),
-                    postingRule.text.toString()
-                )
-            }
+
+        val saveBtn = dialog.findViewById<CardView>(R.id.saveBtn)
+        saveBtn.setOnClickListener {
+            dialog.dismiss()
         }
 
-        val adapter = ArrayAdapter(applicationContext, R.layout.simple_spinner_item1, postingList)
-        // Set a click listener for the end icon
-//        binding.sourceText.setOnClickListener {
-//            // Show dropdown menu
-//            showDropdownMenu(adapter,it)
-//        }
+        val recyclerView = dialog.findViewById<RecyclerView>(R.id.recyclerView)
+        recyclerView.layoutManager = GridLayoutManager(applicationContext, 2)
 
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-        dialog.window?.setGravity(Gravity.END)
+        val identity = OAuthClient<GeneralsAPI>(applicationContext).create(GeneralsAPI::class.java).getInclusionApi(
+            UserSessionManager(applicationContext).getUserId().toString(), UserSessionManager(applicationContext).getPropertyId().toString())
+        identity.enqueue(object : Callback<GetInclusionsDataClass?>, AddInclusionsAdapter.OnUpdate {
+            override fun onResponse(
+                call: Call<GetInclusionsDataClass?>,
+                response: Response<GetInclusionsDataClass?>
+            ) {
+                if (response.isSuccessful) {
+                    val adapter = AddInclusionsAdapter(response.body()!!.data, applicationContext)
+                    recyclerView.adapter = adapter
+                    adapter.setOnUpdateListener(this)
+                    adapter.notifyDataSetChanged()
+                } else {
+                    Log.d("error", "${response.code()} ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<GetInclusionsDataClass?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+
+            override fun onUpdateList(selectedList: ArrayList<GetInclusionsData>) {
+                selectedList.forEach {
+                    roomDetailPricess[positions].totalInclusions.add(it.charge.toDouble())
+                    inclusionList.add(it)
+                    notifyDataSetChanged()
+                }
+            }
+        })
 
         dialog.show()
-
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
     }
 
     private fun saveInclusion(context: Context, dialog: Dialog, shortCodeTxt : String, charge:String, inclusionName:String, inclusionType:String, chargeRule:String, postingRule:String) {

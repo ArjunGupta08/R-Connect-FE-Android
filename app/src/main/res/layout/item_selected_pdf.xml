@@ -61,7 +61,7 @@
                     android:textSize="@dimen/H5"
                     android:maxWidth="250dp"
                     android:maxLines="2"
-                    android:text="By Arjun on 17-08-2023"
+                    android:text="By Rahul on 1-12-2023"
                     android:fontFamily="@font/roboto"/>
                 <LinearLayout
                     android:layout_width="match_parent"

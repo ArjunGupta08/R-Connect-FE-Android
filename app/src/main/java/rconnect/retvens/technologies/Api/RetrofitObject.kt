@@ -36,4 +36,5 @@ object RetrofitObject {
     val dropDownApis: DropDownApis = retrofit.create(DropDownApis::class.java)
     val getGeneralsAPI: GeneralsAPI = retrofit.create(GeneralsAPI::class.java)
     val reservationApis:AddReservationApis = retrofit.create(AddReservationApis::class.java)
+    val corporatesApi:CorporatesApi = retrofit.create(CorporatesApi::class.java)
 }

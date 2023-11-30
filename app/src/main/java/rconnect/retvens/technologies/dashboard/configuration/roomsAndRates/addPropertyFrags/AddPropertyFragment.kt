@@ -80,7 +80,7 @@ import retrofit2.Response
 import java.lang.IndexOutOfBoundsException
 import java.lang.NullPointerException
 
-class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapReadyCallback, AddAmenitiesDialog.OnAmenityAdd, SelectedAmenitiesAdapter.OnSelectedAmenityRemove {
+class AddPropertyFragment(val propertyIds : String ?= "") : Fragment(), OnMapReadyCallback, AddAmenitiesDialog.OnAmenityAdd, SelectedAmenitiesAdapter.OnSelectedAmenityRemove {
 
     private lateinit var binding : FragmentAddPropertyBinding
     private lateinit var roboto : Typeface
@@ -94,11 +94,12 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
 
     private var isImageSelected = false
     private var isImageEdited = false
+    private  var tempId:String = ""
 
     private lateinit var selectedAmenitiesAdapter : SelectedAmenitiesAdapter
     private var selectedAmenitiesListFinal = ArrayList<GetAmenityData>()
 
-    val amenityIdsList = ArrayList<String>()
+    var amenityIdsList = ArrayList<String>()
 
     val itemsPropertyType = ArrayList<String>()
 
@@ -130,7 +131,7 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
         leftInAnimation(binding.propertyProfileLayout, requireContext())
         loader = showProgressDialog(requireContext())
 
-        if (propertyId != "") {
+        if (propertyIds != "") {
             fetchProperty()
             getPropertyType()
             placesAPI()
@@ -147,7 +148,6 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
         binding.continueBtn.setOnClickListener {
 
             if (page == 1){
-
                 if (binding.propertyNameET.text!!.isEmpty()) {
                     shakeAnimation(binding.propertyNameLayout, requireContext())
                 } else if (binding.propertyTypeET.text!!.isEmpty()) {
@@ -222,10 +222,12 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
                 }
                 else {
                     loader = showProgressDialog(requireContext())
-                    if (propertyId != "") {
+                    if (propertyIds != "") {
                         updateData()
+                        Log.e("amenityIds",amenityIdsList.toString())
                     } else {
                         sendData()
+                        Log.e("amenityIds",amenityIdsList.toString())
                     }
                 }
             } else {
@@ -272,7 +274,7 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
     private fun fetchProperty() {
         val get = OAuthClient<ChainConfiguration>(requireContext()).create(ChainConfiguration::class.java).getPropertyById(
             UserSessionManager(requireContext()).getUserId().toString(),
-            propertyId!!
+            propertyIds!!
         )
         get.enqueue(object : Callback<GetPropertyData?> {
             override fun onResponse(
@@ -306,6 +308,7 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
                             binding.pincodeText.setText(data.postCode)
                             binding.cityText.setText(data.city)
                             binding.stateText.setText(data.state)
+                            binding.propertyRatingET.setText(data.propertyRating.toString())
                             binding.countryText.setText(data.country)
                             binding.phoneText.setText(data.phone)
                             binding.reservationPhoneText.setText(data.reservationPhone)
@@ -313,7 +316,7 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
                             latitude = data.latitude.toDouble()
                             longitude = data.longitude.toDouble()
 
-                            Toast.makeText(requireContext(), data.amenities.size.toString(), Toast.LENGTH_SHORT).show()
+                            Log.e("amenity",data.amenities.toString())
 
                             selectedAmenitiesAdapter = SelectedAmenitiesAdapter(requireContext(), data.amenities)
                             binding.selectedAmenitiesRecycler.adapter = selectedAmenitiesAdapter
@@ -408,7 +411,8 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
         val propertyRating = binding.propertyRatingET.text.toString()
         val websiteUrl = binding.websiteET.text.toString()
         val description = binding.descriptionET.text.toString()
-        val amenityIds = amenityIdsList.joinToString(", ").removeSurrounding("[", "]")
+        val amenityIds = amenityIdsList.joinToString(",").removeSurrounding("[", "]")
+        Log.e("ids",amenityIds.toString())
         val address1 = binding.addressLine1ET.text.toString()
         val address2 = binding.addressLine2ET.text.toString()
         val postCode = binding.pincodeText.text.toString()
@@ -418,8 +422,8 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
         val phone = binding.phoneText.text.toString()
         val reservationPhoneText = binding.reservationPhoneText.text.toString()
         val email = binding.emailText.text.toString()
-        val lat = binding.emailText.text.toString()
-        val long = binding.emailText.text.toString()
+        val lat = latitude.toString()
+        val long = longitude.toString()
         val userId = UserSessionManager(requireContext()).getUserId().toString()
 
         if (imageUri != null) {
@@ -454,7 +458,7 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
                     loader.dismiss()
                     if (response.isSuccessful) {
                         val respons = response.body()!!
-
+                        tempId = respons.propertyId.toString()
                         Toast.makeText(
                             requireContext(),
                             respons.message.toString(),
@@ -477,7 +481,7 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
                         binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
                         binding.propertyImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
 
-                        val childFragment: Fragment = AddImagesFragment()
+                        val childFragment: Fragment = AddImagesFragment(tempId,false)
                         val transaction = requireActivity().supportFragmentManager.beginTransaction()
                         transaction.replace(R.id.propertyImagesFrameLayout,childFragment)
                         transaction.commit()
@@ -527,7 +531,7 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
                     if (response.isSuccessful) {
                         val respons = response.body()!!
 
-                        UserSessionManager(requireContext()).savePropertyId(response.body()?.propertyId.toString())
+                        tempId = respons.propertyId.toString()
 
                         Toast.makeText(
                             requireContext(),
@@ -551,7 +555,7 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
                         binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
                         binding.propertyImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
 
-                        val childFragment: Fragment = AddImagesFragment(respons.propertyId)
+                        val childFragment: Fragment = AddImagesFragment(tempId,false)
                         val transaction = requireActivity().supportFragmentManager.beginTransaction()
                         transaction.replace(R.id.propertyImagesFrameLayout,childFragment)
                         transaction.commit()
@@ -579,7 +583,7 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
         val propertyRating = binding.propertyRatingET.text.toString()
         val websiteUrl = binding.websiteText.text.toString()
         val description = binding.descriptionET.text.toString()
-        val amenityIds = amenityIdsList.joinToString(", ").removeSurrounding("[", "]")
+        val amenityIds = amenityIdsList.joinToString(",").removeSurrounding("[", "]")
         val address1 = binding.addressLine1ET.text.toString()
         val address2 = binding.addressLine2ET.text.toString()
         val postCode = binding.pincodeText.text.toString()
@@ -589,15 +593,15 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
         val phone = binding.phoneText.text.toString()
         val reservationPhoneText = binding.reservationPhoneText.text.toString()
         val email = binding.emailText.text.toString()
-        val lat = binding.emailText.text.toString()
-        val long = binding.emailText.text.toString()
+        val lat = latitude.toString()
+        val long = longitude.toString()
         val userId = UserSessionManager(requireContext()).getUserId().toString()
-        val propertyId = UserSessionManager(requireContext()).getPropertyId().toString()
+
 
         if (imageUri != null) {
             val hotelLogo = prepareFilePart(imageUri!!, "hotelLogo", requireContext())
             val addProperty = OAuthClient<ChainConfiguration>(requireContext()).create(ChainConfiguration::class.java).editPropertyApi(
-                userId, propertyId,
+                userId, propertyIds!!,
                 hotelLogo!!,
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyName),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyType),
@@ -629,6 +633,8 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
 
                         page = 3
 
+                        tempId = propertyIds
+
                         binding.propertyImages.textSize = 18.0f
                         binding.propertyImages.typeface = robotoMedium
                         binding.propertyImages.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
@@ -643,7 +649,7 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
                         binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
                         binding.propertyImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
 
-                        val childFragment: Fragment = AddImagesFragment()
+                        val childFragment: Fragment = AddImagesFragment(propertyIds!!,false)
                         val transaction = requireActivity().supportFragmentManager.beginTransaction()
                         transaction.replace(R.id.propertyImagesFrameLayout,childFragment)
                         transaction.commit()
@@ -664,7 +670,7 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
             })
         } else {
             val addProperty = OAuthClient<ChainConfiguration>(requireContext()).create(ChainConfiguration::class.java).editPropertyWithoutLogoApi(
-                userId, propertyId,
+                userId, propertyIds!!,
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyName),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyType),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyRating),
@@ -694,7 +700,7 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
                     if (response.isSuccessful) {
                         val respons = response.body()!!
 
-                        UserSessionManager(requireContext()).savePropertyId(response.body()?.propertyId.toString())
+                        tempId = propertyIds
 
                         page = 3
 
@@ -712,7 +718,7 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
                         binding.addressAndContacts.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
                         binding.propertyImages.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
 
-                        val childFragment: Fragment = AddImagesFragment()
+                        val childFragment: Fragment = AddImagesFragment(propertyIds!!,false)
                         val transaction = requireActivity().supportFragmentManager.beginTransaction()
                         transaction.replace(R.id.propertyImagesFrameLayout,childFragment)
                         transaction.commit()
@@ -830,11 +836,18 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
             // Handle the selected address as needed
             val lastThreeWords = extractLastThreeWords(selectedAddress)
             println("Last Three Words: $lastThreeWords")
+
             try {
                 autoCompleteTextView.setText(removeLastThreeWords(selectedAddress))
-                binding.cityText.setText(lastThreeWords.get(0))
-                binding.stateText.setText(lastThreeWords.get(1))
-                binding.countryText.setText(lastThreeWords.get(2))
+
+                if (lastThreeWords.size >= 3) {
+                    binding.cityText.setText(lastThreeWords[0])
+                    binding.stateText.setText(lastThreeWords[1])
+                    binding.countryText.setText(lastThreeWords[2])
+                } else {
+                    // Handle the case when lastThreeWords doesn't have enough elements
+                    // You might want to log a message or take appropriate action
+                }
 
                 val mapFrag = childFragmentManager.findFragmentById(R.id.mapFragContainer) as SupportMapFragment
                 mapFrag.getMapAsync { googleMap ->
@@ -842,9 +855,11 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
                     fetchPlaceDetails(selectedAddress, placesClient, googleMap)
                 }
             } catch (e: IndexOutOfBoundsException) {
-                println(e.toString())
+                println("IndexOutOfBoundsException: ${e.message}")
+                // Handle the exception as needed
             }
         }
+
 
         autoCompleteTextView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -901,8 +916,8 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
                     val latLng = place.latLng
 
                     if (latLng != null) {
-                        val latitude = latLng.latitude
-                        val longitude = latLng.longitude
+                        latitude = latLng.latitude
+                        longitude = latLng.longitude
 
                         // Create a LatLng object for the location
                         val location = LatLng(latitude, longitude)
@@ -1070,6 +1085,7 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
 
 
     override fun onAmenityAdd(selectedAmenitiesList: ArrayList<GetAmenityData>) {
+        Log.e("finalamenity",selectedAmenitiesList.toString())
         binding.selectedAmenitiesRecycler.layoutManager = GridLayoutManager(requireContext(), 4)
         selectedAmenitiesList.forEach {
             if (!selectedAmenitiesListFinal.contains(it)) {
@@ -1081,13 +1097,8 @@ class AddPropertyFragment(val propertyId : String ?= "") : Fragment(), OnMapRead
         selectedAmenitiesAdapter.setOnAmenityRemoveListener(this)
         selectedAmenitiesAdapter.notifyDataSetChanged()
 
-        selectedAmenitiesListFinal.forEach {
-            if (!amenityIdsList.contains(it.amenityId)) {
-                amenityIdsList.add(it.amenityId)
-            } else {
-                amenityIdsList.remove(it.amenityId)
-            }
-        }
+        amenityIdsList = selectedAmenitiesListFinal.distinctBy { it.amenityId }.map { it.amenityId }.toMutableList() as ArrayList<String>
+
     }
 
     override fun onSelectedAmenityRemove(currentItem : GetAmenityData) {

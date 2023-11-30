@@ -10,6 +10,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRo
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.GetRoomData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.GetRoomDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.UpdateRoomData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetAllRatePlans
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.AddBarsRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanPackage.AddPackageDataClass
@@ -37,9 +38,9 @@ interface SingleConfiguration {
     ): Call<RoomResponseData>
 
     /*---------------------------------------Edit Room-----------------------------------------*/
-    @PATCH("updateRoom")
+    @PATCH("updateRoom/{roomTypeId}")
     fun updateRoomApi(
-        @Query("roomTypeId") roomTypeId : String,
+        @Path("roomTypeId") roomTypeId : String,
         @Body createRoomData: CreateRoomData
     ): Call<ResponseData>
 
@@ -96,6 +97,6 @@ interface SingleConfiguration {
     fun getAllRatePlans (
         @Query("propertyId")propertyId:String,
         @Query("userId")userId:String
-    ):Call<ResponseData>
+    ):Call<GetAllRatePlans>
 
 }

@@ -18,7 +18,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclu
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.showDropdownMenu
 
-class RoomTypePlanAdapter(val applicationContext:Context, val rateTypeList:ArrayList<RoomTypePlanDataClass>):RecyclerView.Adapter<RoomTypePlanAdapter.ViewHolder>(),
+class RoomTypePlanAdapter(val applicationContext:Context, val rateTypeList:ArrayList<RoomTypePlanDataClass>,val supportFragmentManager: androidx.fragment.app.FragmentManager):RecyclerView.Adapter<RoomTypePlanAdapter.ViewHolder>(),
     RatePlanBarAdapter.OnRateTypeListChangeListener {
 
     private var ratePlan:ArrayList<AddBarsRatePlanDataClass> = ArrayList()
@@ -50,33 +50,32 @@ class RoomTypePlanAdapter(val applicationContext:Context, val rateTypeList:Array
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentData = rateTypeList[position]
 
-        Log.e("currentData",rateTypeList.toString())
+
 
         holder.roomTypeName.text = currentData.roomTypeName
 
         ratePlan.clear()
+
         currentData.getMeal.forEach {
             val mealName = it.mealPlanName
             val shortCode = generateShortCode(currentData.roomTypeName,mealName)
 
 
         val ratePlans = AddBarsRatePlanDataClass(
-            UserSessionManager(applicationContext).getUserId().toString(),currentData.propertyId,currentData.roomTypeId,"Bar",currentData.roomTypeId,
-            "",it.mealPlanName,it.mealPlanId,shortCode, selectedInclusionList,"",it.chargesPerOccupancy,"","",currentData.extraAdultRate,currentData.extraChildRate,currentData.roomBasePrice,it.mealPlanName
+            UserSessionManager(applicationContext).getUserId().toString(),currentData.propertyId,currentData.roomTypeId,"Bar","",
+            "",it.mealPlanName,it.mealPlanId,shortCode, selectedInclusionList,currentData.roomBasePrice,it.chargesPerOccupancy,"","",currentData.extraAdultRate,currentData.extraChildRate,currentData.roomBasePrice,it.mealPlanName
         )
 
         ratePlan.add(ratePlans)
         }
 
         holder.recyclerRoom.layoutManager = LinearLayoutManager(applicationContext)
-        val adapter = RatePlanBarAdapter(applicationContext,ratePlan)
+        val adapter = RatePlanBarAdapter(applicationContext,supportFragmentManager,ratePlan)
         holder.recyclerRoom.adapter = adapter
-        Log.e("check",rateTypeList.toString())
         adapter.notifyDataSetChanged()
 
         adapter.setOnListUpdateListener(this)
-
-
+        Log.e("fuckList",ratePlan.toString())
     }
 
     fun generateShortCode(type1: String, type2: String): String {
@@ -90,9 +89,15 @@ class RoomTypePlanAdapter(val applicationContext:Context, val rateTypeList:Array
         return (code1 + code2).toUpperCase()
     }
 
-    override fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddBarsRatePlanDataClass>) {
+
+    override fun onRateTypeListChanged(
+        updatedRateTypeList: ArrayList<AddBarsRatePlanDataClass>,
+        position: Int
+    ) {
         onRateTypeListChangeListener?.onRateTypeListChanged(updatedRateTypeList)
-        Log.e("updatedRateTypeList",updatedRateTypeList.toString())
-        notifyDataSetChanged()
+    }
+
+    override fun onRateTypeDelete(position: Int) {
+
     }
 }

@@ -50,7 +50,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class ChargesAndRatesFragment : Fragment(),
+class ChargesAndRatesFragment(val roomTypeId:String) : Fragment(),
     AddMealPlanAdapter.OnUpdate,
     RatePlanDetailsAdapter.OnRateTypeListChangeListener {
 
@@ -58,6 +58,7 @@ class ChargesAndRatesFragment : Fragment(),
 
     private lateinit var ratePlanDataClass : AddBarsRatePlanDataClass
     private lateinit var ratePlanDetailsAdapter : RatePlanDetailsAdapter
+    private  var selectedMealList:ArrayList<GetMealPlanData> = ArrayList()
     private var ratePlanDetailsList = ArrayList<AddBarsRatePlanDataClass>()
 //    private val rateTypeList = ArrayList<RatePlanDataClass>()
     var minRate = 1000.00
@@ -86,12 +87,8 @@ class ChargesAndRatesFragment : Fragment(),
 
         val continueBtn = requireActivity().findViewById<CardView>(R.id.continueBtn)
         continueBtn?.setOnClickListener {
-            if (ratePlanDetailsList.isEmpty()) {
-                shakeAnimation(binding.addMealPlanCard, requireContext())
-            } else {
                 progressDialog = showProgressDialog(requireContext())
                 updateRoomAndSendRatePlaneData()
-            }
         }
 
         binding.addMealPlanCard.setOnClickListener {
@@ -100,17 +97,20 @@ class ChargesAndRatesFragment : Fragment(),
 
     }
     private fun updateRoomAndSendRatePlaneData() {
-        Log.e("roomTypeId", UserSessionManager(requireContext()).getRoomTypeId().toString())
+        Log.e("1", binding.countExtraAdultRate.text.toString())
+        Log.e("2",binding.countBaseRate.text.toString())
+
+        Log.e("propertyId",UserSessionManager(requireContext()).getPropertyId().toString())
         val update = OAuthClient<SingleConfiguration>(requireContext()).create(SingleConfiguration::class.java).updateRoomApi(
-            UserSessionManager(requireContext()).getRoomTypeId().toString(),
+            roomTypeId,
             UpdateRoomData(
                 UserSessionManager(requireContext()).getUserId().toString(),
                 UserSessionManager(requireContext()).getPropertyId().toString(),
-                binding.countBaseRate.toString(),
-                binding.countExtraAdultRate.toString(),
-                binding.countMaxChildRate.toString(),
-                binding.countMinimumRate.toString(),
-                binding.countMaximumCharges.toString()
+                binding.countBaseRate.text.toString(),
+                binding.countExtraAdultRate.text.toString(),
+                binding.countMaxChildRate.text.toString(),
+                binding.countMinimumRate.text.toString() ,
+                binding.countMaximumCharges.text.toString()
             )
         )
         update.enqueue(object : Callback<ResponseData?> {
@@ -118,10 +118,22 @@ class ChargesAndRatesFragment : Fragment(),
                 if (isAdded){
                     Log.e("errorUpdateRoom","${response.message().toString()}, ${response.code().toString()}")
                     if (response.isSuccessful) {
-                        Toast.makeText(requireContext(), "Clicked", Toast.LENGTH_SHORT).show()
-                        sendRatePlanData()
+                        val responseData = response.body()!!
+                        Log.e("res",responseData.message.toString())
+                        if (ratePlanDetailsList.size != 0){
+                            sendRatePlanData()
+                        }else{
+                            Const.isAddingNewRoom = false
+
+                            val childFragment: Fragment = RoomTypeFragment()
+                            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                            transaction.replace(R.id.dashboardFragmentContainer,childFragment)
+                            transaction.commit()
+                            progressDialog.dismiss()
+                        }
                     } else {
                         progressDialog.dismiss()
+                        Log.e("error",response.code().toString())
                     }
                 }
             }
@@ -235,6 +247,34 @@ class ChargesAndRatesFragment : Fragment(),
 
         val saveBtn = dialog.findViewById<CardView>(R.id.saveBtn)
         saveBtn.setOnClickListener {
+            selectedMealList.forEach {
+                val selectedInclusionList: ArrayList<InclusionPlan> = arrayListOf()
+
+                ratePlanDataClass =  AddBarsRatePlanDataClass(
+                    UserSessionManager(requireContext()).getUserId().toString(),
+                    UserSessionManager(requireContext()).getPropertyId().toString(),
+                    roomTypeId,
+                    "Bar",
+                    "",
+                    "",
+                    "${Const.addedRoomTypeName} ${it.shortCode}",
+                    "${it.mealPlanId}",
+                    "${Const.addedRoomTypeShortCode}${it.shortCode}",
+                    selectedInclusionList,
+                    binding.countBaseRate.text.toString(),
+                    "${it.chargesPerOccupancy}",
+                    "",
+                    "0.00",
+                    binding.countExtraAdultRate.text.toString(),
+                    binding.countMaxChildRate.text.toString(),
+                    "${binding.countBaseRate.text.toString()}",
+                    "${it.mealPlanName}"
+                )
+                if (!ratePlanDetailsList.contains(ratePlanDataClass)) {
+                    ratePlanDetailsList.add(ratePlanDataClass)
+                    ratePlanDetailsAdapter.notifyDataSetChanged()
+                }
+            }
             dialog.dismiss()
         }
 
@@ -319,85 +359,60 @@ class ChargesAndRatesFragment : Fragment(),
         binding.removeMinimumRate.setOnClickListener {
             if (minRate>0){
                 minRate -= 100
-                binding.countMinimumRate.text = "₹ ${minRate}"
+                binding.countMinimumRate.text = "${minRate}"
             }
         }
         binding.addMinimumRate.setOnClickListener {
             minRate += 100
-            binding.countMinimumRate.text = "₹ ${minRate}"
+            binding.countMinimumRate.text = "${minRate}"
         }
 
         binding.addMaximumCharges.setOnClickListener {
             maxRate += 100
-            binding.countMaximumCharges.text = "₹ ${maxRate}" }
+            binding.countMaximumCharges.text = "${maxRate}" }
         binding.removeMaximumCharges.setOnClickListener {
             if (maxRate>0){
                 maxRate -= 100
-                binding.countMaximumCharges.text = "₹ ${maxRate}"
+                binding.countMaximumCharges.text = "${maxRate}"
             }
         }
 
         binding.addBaseRate.setOnClickListener {
             baseRate+=100
-            binding.countBaseRate.text = "₹ ${baseRate}"
+            binding.countBaseRate.text = "${baseRate}"
         }
         binding.removeBaseRate.setOnClickListener {
             if (baseRate>0){
                 baseRate-=100
-                binding.countBaseRate.text = "₹ ${baseRate}"
+                binding.countBaseRate.text = "${baseRate}"
             }
         }
         binding.addExtraAdultRate.setOnClickListener {
             adultRate+=100
-            binding.countExtraAdultRate.text = "₹ ${adultRate}"
+            binding.countExtraAdultRate.text = "${adultRate}"
         }
         binding.removeExtraAdultRate.setOnClickListener {
             if (adultRate>0){
                 adultRate-=100
-                binding.countExtraAdultRate.text = "₹ ${adultRate}"
+                binding.countExtraAdultRate.text = "${adultRate}"
             }
         }
         binding.addMaxChildRate.setOnClickListener {
             childRate+=100
-            binding.countMaxChildRate.text = "₹ ${childRate}"
+            binding.countMaxChildRate.text = "${childRate}"
         }
         binding.removeMaxChildRate.setOnClickListener {
             if (childRate>0){
                 childRate-=100
-                binding.countMaxChildRate.text = "₹ ${childRate}"
+                binding.countMaxChildRate.text = "${childRate}"
             }
         }
     }
 
     override fun onUpdateMealPlan(selectedList: ArrayList<GetMealPlanData>) {
-        selectedList.forEach {
-            val selectedInclusionList: ArrayList<InclusionPlan> = arrayListOf()
+        selectedMealList.clear()
+        selectedMealList.addAll(selectedList)
 
-            ratePlanDataClass =  AddBarsRatePlanDataClass(
-                 UserSessionManager(requireContext()).getUserId().toString(),
-                 UserSessionManager(requireContext()).getPropertyId().toString(),
-                 UserSessionManager(requireContext()).getRoomTypeId().toString(),
-                "Bar",
-                "",
-                "",
-                "${Const.addedRoomTypeName} ${it.shortCode}",
-                "${it.mealPlanId}",
-                "${Const.addedRoomTypeShortCode}${it.shortCode}",
-                selectedInclusionList,
-                binding.countBaseRate.text.toString(),
-                "${it.chargesPerOccupancy}",
-                "",
-                "0.00",
-                binding.countExtraAdultRate.text.toString(),
-                binding.countMaxChildRate.text.toString(),
-                "${binding.countBaseRate.text.toString()}",
-                "${it.mealPlanName}"
-            )
-            if (!ratePlanDetailsList.contains(ratePlanDataClass)) {
-                ratePlanDetailsList.add(ratePlanDataClass)
-                ratePlanDetailsAdapter.notifyDataSetChanged()
-            }
-        }
     }
 
 

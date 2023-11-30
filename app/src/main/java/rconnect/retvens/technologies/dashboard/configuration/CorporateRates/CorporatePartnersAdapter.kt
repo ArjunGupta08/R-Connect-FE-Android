@@ -9,16 +9,17 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.AddCompany.Company
 
-class CorporatePartnersAdapter(val list:ArrayList<CorporatesData>, val applicationContext: Context):RecyclerView.Adapter<CorporatePartnersAdapter.NotificationHolder>() {
+class CorporatePartnersAdapter(val list:ArrayList<Company>, val applicationContext: Context):RecyclerView.Adapter<CorporatePartnersAdapter.NotificationHolder>() {
 
-    private  var list2:ArrayList<String> = ArrayList()
 
     class NotificationHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
         val company:TextView = itemView.findViewById(R.id.company)
-
-//        val recyclerView = itemView.findViewById<RecyclerView>(R.id.nestedroomDetails_recycler);
-//        val add = itemView.findViewById<ImageView>(R.id.addBaseAdult);
+        val contactPerson:TextView = itemView.findViewById(R.id.personName)
+        val ratePlan:TextView = itemView.findViewById(R.id.ratePlanCount)
+        val expiration:TextView = itemView.findViewById(R.id.expiration)
+        val ledgerBalance:TextView = itemView.findViewById(R.id.balance)
 
     }
 
@@ -33,6 +34,11 @@ class CorporatePartnersAdapter(val list:ArrayList<CorporatesData>, val applicati
     }
 
     override fun onBindViewHolder(holder: NotificationHolder, position: Int) {
-        holder.company.text = list[position].company
+        val currentData = list[position]
+
+        holder.company.text = currentData.companyName
+        holder.contactPerson.text = currentData.contactPerson
+        holder.ratePlan.text = currentData.ratePlans.toString()
+        holder.expiration.text = currentData.expiration
     }
 }

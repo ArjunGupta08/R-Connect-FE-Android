@@ -315,7 +315,7 @@ class CreateRateTypeFragment : Fragment(),
 //                    Toast.makeText(requireContext(), "Mission SuccessFull", Toast.LENGTH_SHORT).show()
                     val data = response.body()!!.data
                     roomTypeList.addAll(data)
-
+                    Log.e("ress",data.toString())
                 }
                 else{
                     Toast.makeText(requireContext(), response.code().toString(), Toast.LENGTH_SHORT).show()

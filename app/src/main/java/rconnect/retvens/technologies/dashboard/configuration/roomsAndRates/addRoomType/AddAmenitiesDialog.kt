@@ -41,6 +41,7 @@ import retrofit2.Response
 
 class AddAmenitiesDialog(var selectedAmenitiesList: ArrayList<GetAmenityData>, private var isAddingForRoom : Boolean ?= false) : DialogFragment(), AddAmenitiesAdapter.OnItemClick, CreateAmenityDialog.OnAmenitySave {
 
+    private  var finalAmenitiesList:ArrayList<GetAmenityData> = ArrayList()
     private var mListener: OnAmenityAdd? = null
     fun setOnAddAmenityDialogListener(listener: OnAmenityAdd) {
         mListener = listener
@@ -108,6 +109,7 @@ class AddAmenitiesDialog(var selectedAmenitiesList: ArrayList<GetAmenityData>, p
 
         val saveBtn = view.findViewById<CardView>(R.id.saveBtn)
         saveBtn.setOnClickListener {
+            mListener?.onAmenityAdd(finalAmenitiesList)
             dismiss()
         }
 
@@ -252,7 +254,8 @@ class AddAmenitiesDialog(var selectedAmenitiesList: ArrayList<GetAmenityData>, p
     }
 
     override fun onItemListUpdate(selectedAmenitiesList: ArrayList<GetAmenityData>) {
-        mListener?.onAmenityAdd(selectedAmenitiesList)
+        finalAmenitiesList.clear()
+        finalAmenitiesList.addAll(selectedAmenitiesList)
     }
 
     override fun onAmenitySave() {

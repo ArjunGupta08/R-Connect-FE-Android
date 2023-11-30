@@ -122,5 +122,7 @@ interface AuthenticationInterface {
         @Part("propertyName") propertyName: RequestBody,
     ):Call<ResponseData>
 
+
+
 }
 

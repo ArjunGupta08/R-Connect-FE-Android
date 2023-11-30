@@ -7,6 +7,7 @@ data class RoomDetailPrices(
     var pricePerExtraChild:Double = 0.0,
     var totalCharges:Double = 0.0,
     var totalPriceForExtraChild:Double = 0.0,
-    var  totalPriceForExtraAdult:Double = 0.0,
+    var totalPriceForExtraAdult:Double = 0.0,
+    var totalInclusions:ArrayList<Double>,
 ) {
 }

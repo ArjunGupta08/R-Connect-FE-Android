@@ -1,22 +1,33 @@
 package rconnect.retvens.technologies.dashboard.configuration.CorporateRates
 
+import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import rconnect.retvens.technologies.Api.CorporatesApi
+import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.AddCompany.AddCompanyFragment
+import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.AddCompany.Company
+import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.AddCompany.CorporatesDataClass
 import rconnect.retvens.technologies.dashboard.configuration.properties.ViewPropertiesFragment
 import rconnect.retvens.technologies.databinding.FragmentCorporatesPartnersBinding
+import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.showProgressDialog
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class CorporatesPartnersFragment : Fragment() {
-    val corporatesList = ArrayList<CorporatesData>()
+    val corporatesList = ArrayList<Company>()
+    private lateinit var progressDialog:Dialog
     lateinit var binding: FragmentCorporatesPartnersBinding
-
-
+    private lateinit var corporatePartnersAdapter:CorporatePartnersAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,17 +40,11 @@ class CorporatesPartnersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        corporatesList.add(CorporatesData("Retvens"))
-        corporatesList.add(CorporatesData("HCL"))
-        corporatesList.add(CorporatesData("IBM"))
-        corporatesList.add(CorporatesData("SAMSUNG"))
-        corporatesList.add(CorporatesData("AMAZON"))
-        corporatesList.add(CorporatesData("GOOGLE"))
-        corporatesList.add(CorporatesData("MICROSOFT"))
-        corporatesList.add(CorporatesData("TESLA"))
-        corporatesList.add(CorporatesData("META"))
+        progressDialog = showProgressDialog(requireContext())
+        getCorporate()
+
         binding.corporatePartnersRecycler.layoutManager = LinearLayoutManager(requireContext())
-        val corporatePartnersAdapter = CorporatePartnersAdapter(corporatesList,requireContext())
+        corporatePartnersAdapter = CorporatePartnersAdapter(corporatesList,requireContext())
         binding.corporatePartnersRecycler.adapter = corporatePartnersAdapter
         corporatePartnersAdapter.notifyDataSetChanged()
 
@@ -50,6 +55,36 @@ class CorporatesPartnersFragment : Fragment() {
             transaction.replace(R.id.dashboardFragmentContainer,childFragment)
             transaction.commit()
         }
+    }
+
+    private fun getCorporate() {
+        val getCorporate = OAuthClient<CorporatesApi>(requireContext()).create(CorporatesApi::class.java).getCorporates(
+            UserSessionManager(requireContext()).getPropertyId().toString(),
+            UserSessionManager(requireContext()).getUserId().toString()
+        )
+
+        getCorporate.enqueue(object : Callback<CorporatesDataClass?> {
+            override fun onResponse(
+                call: Call<CorporatesDataClass?>,
+                response: Response<CorporatesDataClass?>
+            ) {
+                if (response.isSuccessful){
+                    progressDialog.dismiss()
+                    val response = response.body()!!
+                    corporatesList.addAll(response.data)
+                    corporatePartnersAdapter.notifyDataSetChanged()
+                }else{
+                    progressDialog.dismiss()
+                    Log.e("error",response.code().toString())
+                }
+            }
+
+            override fun onFailure(call: Call<CorporatesDataClass?>, t: Throwable) {
+                progressDialog.dismiss()
+                Log.e("error",t.message.toString())
+            }
+        })
+
     }
 
 

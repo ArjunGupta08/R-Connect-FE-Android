@@ -3,18 +3,29 @@ package rconnect.retvens.technologies.dashboard.configuration.CorporateRates.Add
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.ListPopupWindow
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.channelManager.AddReservationFragment.RateType
 import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.ViewCompany.ViewCompanyFragment
 import rconnect.retvens.technologies.dashboard.configuration.properties.ViewPropertiesFragment
 import rconnect.retvens.technologies.databinding.FragmentAddCompanyBinding
 import rconnect.retvens.technologies.utils.leftInAnimation
 import rconnect.retvens.technologies.utils.rightInAnimation
+import rconnect.retvens.technologies.utils.shakeAnimation
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
 
 
 class AddCompanyFragment : Fragment() {
@@ -37,11 +48,14 @@ class AddCompanyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
+
         roboto = ResourcesCompat.getFont(requireContext(), R.font.roboto)!!
         robotoMedium = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)!!
 
         leftInAnimation(binding.companyDetailsFrag, requireContext())
-        changeChildFragment(CompanyDetailsChildFragment())
+        changeChildFragment(ContractDetailsChildFragment())
 
 
         binding.continueBtn.setOnClickListener {
@@ -76,43 +90,51 @@ class AddCompanyFragment : Fragment() {
 
 
         binding.companyDetailsFrag.setOnClickListener {
-            page = 1
-            binding.buttonTxt.text = "Save"
 
-            binding.companyDetailsFrag.textSize = 18.0f
-            binding.companyDetailsFrag.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
-            binding.companyDetailsFrag.typeface = robotoMedium
 
-            binding.contractDetailsFag.textSize = 14.0f
-            binding.contractDetailsFag.typeface = roboto
 
-            leftInAnimation(binding.addCompanyFragContainer, requireContext())
-            changeChildFragment(CompanyDetailsChildFragment())
-
-            binding.contractDetailsFag.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-            binding.companyDetailsFrag.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+//            page = 1
+//            binding.buttonTxt.text = "Save"
+//
+//            binding.companyDetailsFrag.textSize = 18.0f
+//            binding.companyDetailsFrag.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+//            binding.companyDetailsFrag.typeface = robotoMedium
+//
+//            binding.contractDetailsFag.textSize = 14.0f
+//            binding.contractDetailsFag.typeface = roboto
+//
+//            leftInAnimation(binding.addCompanyFragContainer, requireContext())
+//            changeChildFragment(CompanyDetailsChildFragment())
+//
+//            binding.contractDetailsFag.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+//            binding.companyDetailsFrag.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
         }
 
         binding.contractDetailsFag.setOnClickListener {
-            page = 2
 
-            binding.contractDetailsFag.textSize = 18.0f
-            binding.contractDetailsFag.typeface = robotoMedium
-            binding.contractDetailsFag.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+            shakeAnimation(binding.continueBtn,requireContext())
 
-            binding.companyDetailsFrag.textSize = 14.0f
-            binding.companyDetailsFrag.typeface = roboto
-
-            changeChildFragment(ContractDetailsChildFragment())
-
-            rightInAnimation(binding.addCompanyFragContainer, requireContext())
-
-            binding.companyDetailsFrag.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-            binding.contractDetailsFag.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+//            page = 2
+//
+//            binding.contractDetailsFag.textSize = 18.0f
+//            binding.contractDetailsFag.typeface = robotoMedium
+//            binding.contractDetailsFag.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+//
+//            binding.companyDetailsFrag.textSize = 14.0f
+//            binding.companyDetailsFrag.typeface = roboto
+//
+//            changeChildFragment(ContractDetailsChildFragment())
+//
+//            rightInAnimation(binding.addCompanyFragContainer, requireContext())
+//
+//            binding.companyDetailsFrag.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+//            binding.contractDetailsFag.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
         }
 
 
     }
+
+
 
     fun changeChildFragment( fragment: Fragment){
         val childFragment: Fragment = fragment

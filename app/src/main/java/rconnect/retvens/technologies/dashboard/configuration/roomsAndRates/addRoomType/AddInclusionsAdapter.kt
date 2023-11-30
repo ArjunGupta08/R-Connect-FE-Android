@@ -66,7 +66,13 @@ class AddInclusionsAdapter(var list:ArrayList<GetInclusionsData>, val applicatio
         holder.charges.text = "₹${item.charge}/Person"
 
         holder.card.setOnClickListener {
-            if (!selectedList.contains(item)) {
+            if (selectedList.contains(item)) {
+                // Item is already selected, so remove it
+                selectedList.remove(item)
+                holder.card.strokeWidth = 0 // Assuming 0 means no stroke
+                holder.card.strokeColor = Color.TRANSPARENT
+            } else {
+                // Item is not selected, so add it
                 selectedList.add(item)
                 holder.card.strokeWidth = 3
                 holder.card.strokeColor = ContextCompat.getColor(applicationContext, R.color.black)

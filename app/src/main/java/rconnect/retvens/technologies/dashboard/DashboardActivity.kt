@@ -392,6 +392,10 @@ class DashboardActivity : AppCompatActivity() {
                 }
                 binding.amenitiesLL.setOnClickListener {
                     replaceFragment(AmenitiesFragment())
+
+                }
+                binding.corporatesLL.setOnClickListener {
+                    replaceFragment(CorporatesPartnersFragment())
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
                 }
             }
@@ -511,8 +515,8 @@ class DashboardActivity : AppCompatActivity() {
             }
         }
         binding.pmsCard.setOnClickListener {
-            replaceFragment(CorporatesPartnersFragment())
-            isCardSelected(binding.pmsCard, binding.txtPms)
+//            replaceFragment(CorporatesPartnersFragment())
+//            isCardSelected(binding.pmsCard, binding.txtPms)
         }
 
     }

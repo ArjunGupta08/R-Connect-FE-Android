@@ -13,6 +13,8 @@ import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.configurationApi.SingleConfiguration
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateTypeFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetAllRatePlans
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.RatePlan
 import rconnect.retvens.technologies.databinding.FragmentRatePlanBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
@@ -27,7 +29,7 @@ class RatePlanFragment : Fragment() {
 
     lateinit var progressDialog : Dialog
     lateinit var ratePlanAdapter: RatePlanAdapter
-    var ratePlanList = ArrayList<String>()
+    var ratePlanList = ArrayList<RatePlan>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +44,9 @@ class RatePlanFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.rateTypeRecycler.layoutManager = LinearLayoutManager(requireContext())
+        ratePlanAdapter = RatePlanAdapter(ratePlanList,requireContext())
+        binding.rateTypeRecycler.adapter = ratePlanAdapter
+
 
         roomTypeRecycler()
 
@@ -58,27 +63,31 @@ class RatePlanFragment : Fragment() {
             UserSessionManager(requireContext()).getPropertyId().toString(),
             UserSessionManager(requireContext()).getUserId().toString()
         )
-        get.enqueue(object : Callback<ResponseData?> {
-            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
-                if (isAdded) {
-                    try {
-                        Toast.makeText(requireContext(), response.message(), Toast.LENGTH_SHORT).show()
-                        progressDialog.dismiss()
 
-                        ratePlanList.add("1")
-                        ratePlanList.add("1")
-                        ratePlanList.add("1")
-
-                        ratePlanAdapter = RatePlanAdapter(ratePlanList, requireContext())
-                        binding.rateTypeRecycler.adapter = ratePlanAdapter
-                    } catch (e : Exception) {
-                        e.printStackTrace()
-                    }
+        get.enqueue(object : Callback<GetAllRatePlans?> {
+            override fun onResponse(
+                call: Call<GetAllRatePlans?>,
+                response: Response<GetAllRatePlans?>
+            ) {
+                if (response.isSuccessful && isAdded){
+                    Log.e("ratePlan",response.body().toString())
+                    progressDialog.dismiss()
+                    val responseData = response.body()!!
+                    ratePlanList.clear()
+                    ratePlanList.addAll(responseData.barRatePlan)
+                    ratePlanList.addAll(responseData.companyRatePlan)
+                    ratePlanList.addAll(responseData.packageRatePlan)
+                    ratePlanList.addAll(responseData.discountplans)
+                    ratePlanAdapter.notifyDataSetChanged()
+                }else{
+                    progressDialog.dismiss()
+                    Log.e("error",response.code().toString())
                 }
             }
-            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+
+            override fun onFailure(call: Call<GetAllRatePlans?>, t: Throwable) {
                 progressDialog.dismiss()
-                Log.d("error", t.localizedMessage)
+                Log.e("error",t.message.toString())
             }
         })
     }

@@ -538,7 +538,7 @@
                     android:id="@+id/addressLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:paddingBottom="12dp"
                     android:layout_marginBottom="20dp"
                     android:layout_marginHorizontal="20dp"

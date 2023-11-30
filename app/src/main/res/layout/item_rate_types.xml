@@ -129,7 +129,7 @@
             app:layout_constraintTop_toTopOf="@id/shortCode">
 
             <TextView
-                android:id="@+id/amenitiesCountTxt"
+                android:id="@+id/InclusionCountTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/listText"
