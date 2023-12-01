@@ -213,7 +213,7 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/roboto"
                     android:textSize="@dimen/H5"
-                    android:text="Company"
+                    android:text="Select Rate Type"
                     android:inputType="text"
                     android:textColorHint="@color/secondary"
                     android:textColor="@color/secondary"
@@ -227,7 +227,6 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/textInputLayoutHeight"
                 android:background="@color/secondaryBackground"
-                android:hint="Company Name"
                 android:layout_weight="1"
                 android:visibility="gone"
                 android:layout_marginStart="10dp"
@@ -235,12 +234,16 @@
                 app:endIconMode="custom"
                 app:endIconTint="@color/black">
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/companyNameText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/roboto"
                     android:textSize="@dimen/H5"
-                    android:hint="Select Company"
-                    android:inputType="text"
+                    android:text="Select Company"
+                    android:inputType="none"
+                    android:clickable="true"
+                    android:editable="false"
+                    android:focusable="false"
                     android:textColorHint="@drawable/hint_selector"
                     android:textColor="@color/secondary" />
             </com.google.android.material.textfield.TextInputLayout>

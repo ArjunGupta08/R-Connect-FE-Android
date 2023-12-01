@@ -49,19 +49,19 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RatePlanBarAdapter(
+class RatePlanBarUpdateAdapter(
     val applicationContext:Context,
     val supportFragmentManager: androidx.fragment.app.FragmentManager,
-    val rateTypeList:ArrayList<AddBarsRatePlanDataClass>):RecyclerView.Adapter<RatePlanBarAdapter.ViewHolder>(){
+    val rateTypeList:ArrayList<UpdateRatePlanDataClass>):RecyclerView.Adapter<RatePlanBarUpdateAdapter.ViewHolder>(){
 
-    private var updatedRateTypeList = ArrayList<AddBarsRatePlanDataClass>()
+    private var updatedRateTypeList = ArrayList<UpdateRatePlanDataClass>()
 
     private var onRateTypeListChangeListener : OnRateTypeListChangeListener ?= null
     fun setOnListUpdateListener (listener : OnRateTypeListChangeListener) {
         onRateTypeListChangeListener = listener
     }
     interface OnRateTypeListChangeListener {
-        fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddBarsRatePlanDataClass>, position: Int)
+        fun onRateTypeListChanged(updatedRateTypeList: ArrayList<UpdateRatePlanDataClass>, position: Int)
         fun onRateTypeDelete(position: Int)
     }
 
@@ -142,6 +142,7 @@ class RatePlanBarAdapter(
 
         holder.selectedInclusions = rateTypeList[position].inclusionPlan
 
+        holder.delete.visibility = View.GONE
 
         holder.delete.setOnClickListener {
             if (position in 0 until rateTypeList.size) {
@@ -168,7 +169,7 @@ class RatePlanBarAdapter(
 
         holder.ratePlanEText.setText(currentData.ratePlanName)
         holder.rate_codeEText.setText(currentData.shortCode)
-        holder.mealPlanETxt.setText(currentData.mealPlanName)
+        holder.mealPlanETxt.setText("")
 
         try {
             holder.barRoomBaseRateET.setText(currentData.roomBaseRate.toString())
@@ -340,12 +341,10 @@ class RatePlanBarAdapter(
 
                 rateTypeList[position].userId = currentData.userId
                 rateTypeList[position].propertyId = currentData.propertyId
-                rateTypeList[position].rateTypeId = currentData.rateTypeId
                 rateTypeList[position].roomTypeId = currentData.roomTypeId
                 rateTypeList[position].rateType = currentData.rateType
-                rateTypeList[position].ratePlanName = currentData.ratePlanName
-                rateTypeList[position].mealPlanId = currentData.mealPlanId
-                rateTypeList[position].shortCode = currentData.shortCode
+                rateTypeList[position].ratePlanName = holder.ratePlanEText.text.toString()
+                rateTypeList[position].shortCode = holder.rateCode.text.toString()
                 rateTypeList[position].inclusionPlan = selectedInclusionsCopy  // Use the copied list
                 rateTypeList[position].roomBaseRate = holder.barRoomBaseRateET.text.toString()
                 rateTypeList[position].mealCharge = holder.mealChargesET.text.toString()
@@ -354,7 +353,7 @@ class RatePlanBarAdapter(
                 rateTypeList[position].extraAdultRate = holder.extraAdultMealRateET.text.toString()
                 rateTypeList[position].extraChildRate = holder.extraChildMealRateET.text.toString()
                 rateTypeList[position].ratePlanTotal = holder.ratePlanTotalTxtCalculated.text.toString()
-                rateTypeList[position].mealPlanName = holder.mealPlanETxt.text.toString()
+
 
                 onRateTypeListChangeListener?.onRateTypeListChanged(rateTypeList, position)
                 notifyItemChanged(position)

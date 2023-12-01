@@ -15,6 +15,7 @@ import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.AddCompany.AddCompanyFragment
 import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.AddCompany.Company
 import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.AddCompany.CorporatesDataClass
+import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.ViewCompany.ViewCompanyFragment
 import rconnect.retvens.technologies.dashboard.configuration.properties.ViewPropertiesFragment
 import rconnect.retvens.technologies.databinding.FragmentCorporatesPartnersBinding
 import rconnect.retvens.technologies.utils.UserSessionManager
@@ -23,7 +24,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CorporatesPartnersFragment : Fragment() {
+class CorporatesPartnersFragment : Fragment(), CorporatePartnersAdapter.OnInclusionChange {
     val corporatesList = ArrayList<Company>()
     private lateinit var progressDialog:Dialog
     lateinit var binding: FragmentCorporatesPartnersBinding
@@ -47,6 +48,7 @@ class CorporatesPartnersFragment : Fragment() {
         corporatePartnersAdapter = CorporatePartnersAdapter(corporatesList,requireContext())
         binding.corporatePartnersRecycler.adapter = corporatePartnersAdapter
         corporatePartnersAdapter.notifyDataSetChanged()
+        corporatePartnersAdapter.setOnInclusionChangeListener(this)
 
         binding.createNewBtn.setOnClickListener {
 
@@ -85,6 +87,14 @@ class CorporatesPartnersFragment : Fragment() {
             }
         })
 
+    }
+
+
+    override fun onClick(companyId: String) {
+        val childFragment: Fragment = ViewCompanyFragment(companyId)
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.dashboardFragmentContainer,childFragment)
+        transaction.commit()
     }
 
 

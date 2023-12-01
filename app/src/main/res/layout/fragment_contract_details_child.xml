@@ -141,6 +141,7 @@
                     app:layout_constraintStart_toStartOf="@id/cT">
 
                     <EditText
+                        android:id="@+id/contact_terms"
                         style="@style/TextAppearance.AppCompat.Body1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

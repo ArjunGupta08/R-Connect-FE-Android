@@ -43,7 +43,7 @@ class RatePlanAdapter(var list:ArrayList<RatePlan>, val applicationContext: Cont
     }
 
     interface OnUpdate {
-        fun onUpdateIdentityType()
+        fun onUpdateIdentityType(rateTypeId:String,type:String)
     }
 
     lateinit var progressDialog: Dialog
@@ -63,6 +63,7 @@ class RatePlanAdapter(var list:ArrayList<RatePlan>, val applicationContext: Cont
         val edit = itemView.findViewById<ImageView>(R.id.edit)
         val delete = itemView.findViewById<ImageView>(R.id.delete)
         val info = itemView.findViewById<ImageView>(R.id.info)
+
 
     }
 
@@ -93,6 +94,10 @@ class RatePlanAdapter(var list:ArrayList<RatePlan>, val applicationContext: Cont
 
             }
 
+        }
+
+        holder.edit.setOnClickListener {
+            mListener?.onUpdateIdentityType(currentData.ratePlanId,currentData.rateType)
         }
     }
 

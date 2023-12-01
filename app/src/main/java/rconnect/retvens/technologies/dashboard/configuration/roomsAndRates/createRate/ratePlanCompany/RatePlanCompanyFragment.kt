@@ -46,7 +46,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class RatePlanCompanyFragment(val roomList:ArrayList<GetRoomType>, val mealList:ArrayList<GetMealPlanItem>,val isSend:Boolean) : Fragment(), AddMealPlanAdapter.OnUpdate, RatePlanCompanyDetailsAdapter.OnRateTypeListChangeListener,
+class RatePlanCompanyFragment(val roomList:ArrayList<GetRoomType>, val mealList:ArrayList<GetMealPlanItem>,val isSend:Boolean,val companyId:String) : Fragment(), AddMealPlanAdapter.OnUpdate, RatePlanCompanyDetailsAdapter.OnRateTypeListChangeListener,
     RatePlanCompanyAdapter.OnRateTypeListChangeListener,
     RoomTypeCompanyPlanAdapter.OnRateTypeListChangeListener {
     private lateinit var binding : FragmentRatePlanCompanyBinding
@@ -74,7 +74,6 @@ class RatePlanCompanyFragment(val roomList:ArrayList<GetRoomType>, val mealList:
         continueBtn?.setOnClickListener {
             sendData()
         }
-
 
     }
 
@@ -227,7 +226,7 @@ class RatePlanCompanyFragment(val roomList:ArrayList<GetRoomType>, val mealList:
 
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        ratePlanDetailsAdapter = RoomTypeCompanyPlanAdapter(requireContext(),roomTypePlanList)
+        ratePlanDetailsAdapter = RoomTypeCompanyPlanAdapter(requireContext(),roomTypePlanList,companyId,childFragmentManager)
         binding.recyclerView.adapter = ratePlanDetailsAdapter
         ratePlanDetailsAdapter.notifyDataSetChanged()
 
@@ -272,6 +271,17 @@ class RatePlanCompanyFragment(val roomList:ArrayList<GetRoomType>, val mealList:
 //        ratePlanDetailsAdapter.notifyDataSetChanged()
     }
 
+    override fun onRateTypeListChanged(
+        updatedRateTypeList: ArrayList<AddCompanyRatePlanDataClass>,
+        position: Int
+    ) {
+        ratePlanDetailsList.clear()
+        ratePlanDetailsList.addAll(updatedRateTypeList)
+    }
+
+    override fun onRateTypeDelete(position: Int) {
+
+    }
 
 
 }

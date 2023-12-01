@@ -7,7 +7,8 @@ data class RatePlan(
     val inclusion: Int,
     val extraAdultRate: String,
     val extraChildRate: String,
-    val ratePlanTotal: String
+    val ratePlanTotal: String,
+    val ratePlanId:String
 )
 
 data class GetAllRatePlans(

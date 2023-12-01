@@ -15,7 +15,7 @@ import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.AddC
 import rconnect.retvens.technologies.databinding.FragmentViewCompanyBinding
 import rconnect.retvens.technologies.utils.leftInAnimation
 
-class ViewCompanyFragment : Fragment() {
+class ViewCompanyFragment(val companyId:String) : Fragment() {
     lateinit var binding:FragmentViewCompanyBinding
 
     private lateinit var roboto : Typeface
@@ -37,11 +37,12 @@ class ViewCompanyFragment : Fragment() {
         robotoMedium = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)!!
 
         leftInAnimation(binding.viewCompanyFragContainer, requireContext())
-        changeChildFragment(ViewCompanyDetailsChildFragment())
+        tabSelected(binding.companyDetailsFrag)
+        changeChildFragment(CompanyDetailsUpdateFragment(companyId))
 
         binding.companyDetailsFrag.setOnClickListener {
             tabSelected(binding.companyDetailsFrag)
-            changeChildFragment(CompanyDetailsChildFragment())
+            changeChildFragment(CompanyDetailsUpdateFragment(companyId))
         }
         binding.stayHistory.setOnClickListener {
             tabSelected(binding.stayHistory)
@@ -53,7 +54,7 @@ class ViewCompanyFragment : Fragment() {
         }
         binding.contractDetailsFag.setOnClickListener {
             tabSelected(binding.contractDetailsFag)
-            changeChildFragment(ContractDetailsChildFragment())
+            changeChildFragment(ContractDetailsUpdateFragment(companyId))
         }
 
     }

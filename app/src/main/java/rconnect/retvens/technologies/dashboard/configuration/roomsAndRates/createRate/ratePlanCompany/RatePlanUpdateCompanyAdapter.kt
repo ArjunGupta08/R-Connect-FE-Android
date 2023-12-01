@@ -1,11 +1,9 @@
-package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar
+package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany
 
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Handler
-import android.os.Looper
 import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
@@ -32,8 +30,9 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRo
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddInclusionsAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.RatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateTypeAdapter
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.AddBarsRatePlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.UpdateCompanyRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.InclusionPlan
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.AddInclusionsDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.CreateInclusionDialogSheet
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetChargeRuleArray
@@ -49,19 +48,19 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RatePlanBarAdapter(
+class RatePlanUpdateCompanyAdapter(
     val applicationContext:Context,
     val supportFragmentManager: androidx.fragment.app.FragmentManager,
-    val rateTypeList:ArrayList<AddBarsRatePlanDataClass>):RecyclerView.Adapter<RatePlanBarAdapter.ViewHolder>(){
+    val rateTypeList:ArrayList<UpdateCompanyRatePlanDataClass>):RecyclerView.Adapter<RatePlanUpdateCompanyAdapter.ViewHolder>(){
 
-    private var updatedRateTypeList = ArrayList<AddBarsRatePlanDataClass>()
+    private var updatedRateTypeList = ArrayList<AddCompanyRatePlanDataClass>()
 
     private var onRateTypeListChangeListener : OnRateTypeListChangeListener ?= null
     fun setOnListUpdateListener (listener : OnRateTypeListChangeListener) {
         onRateTypeListChangeListener = listener
     }
     interface OnRateTypeListChangeListener {
-        fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddBarsRatePlanDataClass>, position: Int)
+        fun onRateTypeListChanged(updatedRateTypeList: ArrayList<UpdateCompanyRatePlanDataClass>, position: Int)
         fun onRateTypeDelete(position: Int)
     }
 
@@ -131,17 +130,18 @@ class RatePlanBarAdapter(
 
         holder.ratePlanText.text = currentData.ratePlanName
         holder.rateCode.text = currentData.shortCode
-        if (currentData.inclusionPlan.size == 0) {
+        if (currentData.ratePlanInclusion.size == 0) {
             holder.totalInclusions.text = "No Inclusions"
         } else {
-            holder.totalInclusions.text = "${currentData.inclusionPlan.size} Inclusions"
+            holder.totalInclusions.text = "${currentData.ratePlanInclusion.size} Inclusions"
         }
         holder.extraAdultRateTxt.text = currentData.extraAdultRate
         holder.extraChildRateTxt.text = currentData.extraChildRate
         holder.ratePlanTotalTxt.text = currentData.ratePlanTotal
 
-        holder.selectedInclusions = rateTypeList[position].inclusionPlan
+        holder.selectedInclusions = rateTypeList[position].ratePlanInclusion
 
+        holder.delete.visibility = View.GONE
 
         holder.delete.setOnClickListener {
             if (position in 0 until rateTypeList.size) {
@@ -168,7 +168,7 @@ class RatePlanBarAdapter(
 
         holder.ratePlanEText.setText(currentData.ratePlanName)
         holder.rate_codeEText.setText(currentData.shortCode)
-        holder.mealPlanETxt.setText(currentData.mealPlanName)
+        holder.mealPlanETxt.setText("")
 
         try {
             holder.barRoomBaseRateET.setText(currentData.roomBaseRate.toString())
@@ -185,8 +185,29 @@ class RatePlanBarAdapter(
 
         var totalInclusionCharge = 0.00
         var ratePlanTotalTxtCalculated = 0.00
-        var barRoomBaseRate = holder.barRoomBaseRateET.text.toString().toDouble()
-        var mealCharges = holder.mealChargesET.text.toString().toDouble()
+        var barRoomBaseRate = 0.0
+        var mealCharges = 0.0
+
+// Get text from EditText and check if it's not empty before converting to Double
+        val barRoomBaseRateText = holder.barRoomBaseRateET.text.toString()
+        if (barRoomBaseRateText.isNotEmpty()) {
+            try {
+                barRoomBaseRate = barRoomBaseRateText.toDouble()
+            } catch (e: NumberFormatException) {
+                // Handle the exception, e.g., show an error message
+            }
+        }
+
+// Get text from EditText and check if it's not empty before converting to Double
+        val mealChargesText = holder.mealChargesET.text.toString()
+        if (mealChargesText.isNotEmpty()) {
+            try {
+                mealCharges = mealChargesText.toDouble()
+            } catch (e: NumberFormatException) {
+                // Handle the exception, e.g., show an error message
+            }
+        }
+
 
         if (holder.selectedInclusions.isNotEmpty()) {
             holder.selectedInclusions.forEach {
@@ -264,7 +285,6 @@ class RatePlanBarAdapter(
             }
         }
 
-
         /*On Add Inclusion Interface Implementation from AddInclusion Dialog Sheet*/
         val myInterfaceImplementation = object : AddInclusionDialogSheet.OnInclusionAdd {
             override fun onInclusionAdded(
@@ -290,8 +310,26 @@ class RatePlanBarAdapter(
                 holder.selectedInclusions.forEach {
                     totalInclusionCharge += it.rate.toDouble()
                 }
-                barRoomBaseRate = holder.barRoomBaseRateET.text.toString().toDouble()
-                mealCharges = holder.mealChargesET.text.toString().toDouble()
+
+// Get text from EditText and check if it's not empty before converting to Double
+                val barRoomBaseRateText = holder.barRoomBaseRateET.text.toString()
+                if (barRoomBaseRateText.isNotBlank()) {
+                    try {
+                        barRoomBaseRate = barRoomBaseRateText.toDouble()
+                    } catch (e: NumberFormatException) {
+                        // Handle the exception, e.g., show an error message
+                    }
+                }
+
+// Get text from EditText and check if it's not empty before converting to Double
+                val mealChargesText = holder.mealChargesET.text.toString()
+                if (mealChargesText.isNotBlank()) {
+                    try {
+                        mealCharges = mealChargesText.toDouble()
+                    } catch (e: NumberFormatException) {
+                        // Handle the exception, e.g., show an error message
+                    }
+                }
                 ratePlanTotalTxtCalculated = mealCharges + barRoomBaseRate + totalInclusionCharge
 
                 holder.totalInclusionChargesET.setText("$totalInclusionCharge")
@@ -340,27 +378,31 @@ class RatePlanBarAdapter(
 
                 rateTypeList[position].userId = currentData.userId
                 rateTypeList[position].propertyId = currentData.propertyId
-                rateTypeList[position].rateTypeId = currentData.rateTypeId
                 rateTypeList[position].roomTypeId = currentData.roomTypeId
                 rateTypeList[position].rateType = currentData.rateType
-                rateTypeList[position].ratePlanName = currentData.ratePlanName
-                rateTypeList[position].mealPlanId = currentData.mealPlanId
-                rateTypeList[position].shortCode = currentData.shortCode
-                rateTypeList[position].inclusionPlan = selectedInclusionsCopy  // Use the copied list
+                rateTypeList[position].ratePlanName = holder.ratePlanEText.text.toString()
+                rateTypeList[position].shortCode = holder.rateCode.text.toString()
+                rateTypeList[position].ratePlanInclusion = selectedInclusionsCopy  // Use the copied list
                 rateTypeList[position].roomBaseRate = holder.barRoomBaseRateET.text.toString()
                 rateTypeList[position].mealCharge = holder.mealChargesET.text.toString()
-                rateTypeList[position].inclusionCharge = holder.totalInclusions.text.toString()
+                rateTypeList[position].inclusionCharge = holder.totalInclusionChargesET.text.toString()
                 rateTypeList[position].roundUp = holder.roundUpET.text.toString()
                 rateTypeList[position].extraAdultRate = holder.extraAdultMealRateET.text.toString()
                 rateTypeList[position].extraChildRate = holder.extraChildMealRateET.text.toString()
                 rateTypeList[position].ratePlanTotal = holder.ratePlanTotalTxtCalculated.text.toString()
-                rateTypeList[position].mealPlanName = holder.mealPlanETxt.text.toString()
 
                 onRateTypeListChangeListener?.onRateTypeListChanged(rateTypeList, position)
                 notifyItemChanged(position)
                 Log.e("fuckingFinalList", rateTypeList.toString())
             }
         }
+
+
+
+
+
+
+
 
 
 

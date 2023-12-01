@@ -55,7 +55,7 @@ class AddCompanyFragment : Fragment() {
         robotoMedium = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)!!
 
         leftInAnimation(binding.companyDetailsFrag, requireContext())
-        changeChildFragment(ContractDetailsChildFragment())
+        changeChildFragment(CompanyDetailsChildFragment())
 
 
         binding.continueBtn.setOnClickListener {
@@ -75,15 +75,12 @@ class AddCompanyFragment : Fragment() {
                 binding.companyDetailsFrag.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
                 binding.contractDetailsFag.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
 
-                changeChildFragment(ContractDetailsChildFragment())
+                changeChildFragment(ContractDetailsChildFragment(""))
                 rightInAnimation(binding.addCompanyFragContainer, requireContext())
 
             } else {
 
-                val childFragment: Fragment = ViewCompanyFragment()
-                val transaction = requireActivity().supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.dashboardFragmentContainer,childFragment)
-                transaction.commit()
+
 
             }
         }

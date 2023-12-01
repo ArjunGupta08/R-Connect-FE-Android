@@ -1,4 +1,4 @@
-package rconnect.retvens.technologies.dashboard.configuration.CorporateRates.AddCompany
+package rconnect.retvens.technologies.dashboard.configuration.CorporateRates.ViewCompany
 
 import android.app.Dialog
 import android.content.Intent
@@ -25,6 +25,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
+import com.bumptech.glide.Glide
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
@@ -43,6 +44,9 @@ import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.channelManager.AddReservationFragment.RateType
+import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.AddCompany.AccountType
+import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.AddCompany.AccountTypeDataClass
+import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.AddCompany.CompanyResponse
 import rconnect.retvens.technologies.databinding.FragmentCompanyDetailsChild2Binding
 import rconnect.retvens.technologies.databinding.FragmentContractDetailsChildBinding
 import rconnect.retvens.technologies.databinding.FragmentViewCompanyBinding
@@ -61,7 +65,7 @@ import retrofit2.Response
 import java.lang.IndexOutOfBoundsException
 
 
-class CompanyDetailsChildFragment : Fragment() {
+class CompanyDetailsUpdateFragment(val companyId:String) : Fragment() {
 
     private lateinit var binding:FragmentCompanyDetailsChild2Binding
     private  var accountTypeList:ArrayList<AccountType> = ArrayList()
@@ -86,7 +90,9 @@ class CompanyDetailsChildFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        progressDialog = showProgressDialog(requireContext())
         getAccountType()
+        getCompanyDetails()
 
         roboto = ResourcesCompat.getFont(requireContext(), R.font.roboto)!!
         robotoMedium = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)!!
@@ -162,16 +168,77 @@ class CompanyDetailsChildFragment : Fragment() {
 
     }
 
+    private fun getCompanyDetails() {
+
+        val userId = UserSessionManager(requireContext()).getUserId().toString()
+        val propertyId = UserSessionManager(requireContext()).getPropertyId().toString()
+
+        val getCompanyDetails = OAuthClient<CorporatesApi>(requireContext()).create(CorporatesApi::class.java).getCompanyDetails(companyId,propertyId,userId)
+
+        getCompanyDetails.enqueue(object : Callback<CompanyDetailsData?> {
+            override fun onResponse(
+                call: Call<CompanyDetailsData?>,
+                response: Response<CompanyDetailsData?>
+            ) {
+                if (response.isSuccessful){
+                    progressDialog.dismiss()
+                    val response = response.body()!!
+                    response.data.forEach { companyData ->
+                        if (companyData.companyLogo.isNotEmpty()){
+                            binding.propertyLogoImage.setImageURI(imageUri)
+                            binding.propertyLogoImage.isVisible = true
+                            binding.propertyLogoLayout.isVisible = false
+                            isImageSelected = true
+                            Glide.with(requireContext()).load(companyData.companyLogo).into(binding.propertyLogoImage)
+                        }
+                        binding.companyNameText.setText(companyData.companyName)
+                        binding.companyTypeText.setText(companyData.accountType)
+                        binding.shortCodeText.setText(companyData.shortCode)
+                        binding.registrationNumText.setText(companyData.registrationNumber)
+                        binding.taxIdText.setText(companyData.taxId)
+                        binding.companyWebText.setText(companyData.companyWebsite)
+                        binding.companyMailText.setText(companyData.companyEmail)
+                        binding.openingBalanceText.setText(companyData.openingBalance)
+                        binding.creditLimitText.setText(companyData.creditLimit)
+                        binding.countMonths.setText(companyData.month)
+                        binding.countDays.setText(companyData.days)
+                        binding.contactPersonText.setText(companyData.contactPerson)
+                        binding.personDesignationText.setText(companyData.personDesignation)
+                        binding.phoneText.setText(companyData.phoneNumber)
+                        binding.emailText.setText(companyData.personEmail)
+                        binding.addressLine1ET.setText(companyData.addressLine1)
+                        binding.textAddressLine2.setText(companyData.addressLine2)
+                        binding.countryText.setText(companyData.country)
+                        binding.stateText.setText(companyData.state)
+                        binding.cityText.setText(companyData.city)
+                        binding.pincodeText.setText(companyData.zipCode)
+                    }
+                }else{
+                    progressDialog.dismiss()
+                    Log.e("error",response.code().toString())
+                }
+            }
+
+            override fun onFailure(call: Call<CompanyDetailsData?>, t: Throwable) {
+                progressDialog.dismiss()
+                Log.e("error",t.message.toString())
+            }
+        })
+    }
+
     private fun sendData() {
 
         val userId = UserSessionManager(requireContext()).getUserId().toString()
         val propertyId = UserSessionManager(requireContext()).getPropertyId().toString()
 
+
+        Log.e("error",companyId.toString())
+
         if (imageUri != null){
             val propertyLogo = prepareFilePart(imageUri!!,"companyLogo",requireContext())
-            val sendData = OAuthClient<CorporatesApi>(requireContext()).create(CorporatesApi::class.java).addCompany(
-                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
-                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyId),
+            val sendData = OAuthClient<CorporatesApi>(requireContext()).create(CorporatesApi::class.java).updateCompany(
+                userId,
+                companyId,
                 propertyLogo!!,
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), binding.companyNameText.text.toString()),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), binding.companyTypeText.text.toString()),
@@ -205,23 +272,6 @@ class CompanyDetailsChildFragment : Fragment() {
                         progressDialog.dismiss()
                         val response = response.body()!!
                         Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show()
-                        val contractDetailsFag = requireActivity().findViewById<TextView>(R.id.contractDetailsFag)
-                        contractDetailsFag.textSize = 18.0f
-                        contractDetailsFag.typeface = robotoMedium
-                        contractDetailsFag.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
-
-                        val companyDetailsFrag = requireActivity().findViewById<TextView>(R.id.companyDetailsFrag)
-                        companyDetailsFrag.textSize = 14.0f
-                        companyDetailsFrag.typeface = roboto
-
-                        changeChildFragment(ContractDetailsChildFragment(response.companyId))
-
-                        val addCompanyFragContainer = requireActivity().findViewById<FrameLayout>(R.id.addCompanyFragContainer)
-
-                        rightInAnimation(addCompanyFragContainer, requireContext())
-
-                        companyDetailsFrag.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-                        contractDetailsFag.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
                     }else{
                         Log.e("error",response.code().toString())
                         Log.e("errorMessage",response.message().toString())
@@ -235,9 +285,9 @@ class CompanyDetailsChildFragment : Fragment() {
                 }
             })
         }else{
-            val sendData = OAuthClient<CorporatesApi>(requireContext()).create(CorporatesApi::class.java).addCompanyWithoutImage(
-                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), userId),
-                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), propertyId),
+            val sendData = OAuthClient<CorporatesApi>(requireContext()).create(CorporatesApi::class.java).updateCompanyWithoutImage(
+                userId,
+                companyId,
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), binding.companyNameText.text.toString()),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), binding.companyTypeText.text.toString()),
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), binding.companyMailText.text.toString()),
@@ -270,23 +320,6 @@ class CompanyDetailsChildFragment : Fragment() {
                         progressDialog.dismiss()
                         val response = response.body()!!
                         Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show()
-                        val contractDetailsFag = requireActivity().findViewById<TextView>(R.id.contractDetailsFag)
-                        contractDetailsFag.textSize = 18.0f
-                        contractDetailsFag.typeface = robotoMedium
-                        contractDetailsFag.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
-
-                        val companyDetailsFrag = requireActivity().findViewById<TextView>(R.id.companyDetailsFrag)
-                        companyDetailsFrag.textSize = 14.0f
-                        companyDetailsFrag.typeface = roboto
-
-                        changeChildFragment(ContractDetailsChildFragment(response.companyId))
-
-                        val addCompanyFragContainer = requireActivity().findViewById<FrameLayout>(R.id.addCompanyFragContainer)
-
-                        rightInAnimation(addCompanyFragContainer, requireContext())
-
-                        companyDetailsFrag.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-                        contractDetailsFag.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
                     }else{
                         Log.e("error",response.code().toString())
                         progressDialog.dismiss()

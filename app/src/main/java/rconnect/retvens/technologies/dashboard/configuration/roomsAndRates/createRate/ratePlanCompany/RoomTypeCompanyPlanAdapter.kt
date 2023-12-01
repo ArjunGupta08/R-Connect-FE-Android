@@ -19,7 +19,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclu
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.showDropdownMenu
 
-class RoomTypeCompanyPlanAdapter(val applicationContext:Context, val rateTypeList:ArrayList<RoomTypePlanDataClass>):RecyclerView.Adapter<RoomTypeCompanyPlanAdapter.ViewHolder>(),
+class RoomTypeCompanyPlanAdapter(val applicationContext:Context, val rateTypeList:ArrayList<RoomTypePlanDataClass>,val companyId:String,val supportFragmentManager: androidx.fragment.app.FragmentManager):RecyclerView.Adapter<RoomTypeCompanyPlanAdapter.ViewHolder>(),
     RatePlanCompanyAdapter.OnRateTypeListChangeListener {
 
     private var ratePlan:ArrayList<AddCompanyRatePlanDataClass> = ArrayList()
@@ -62,8 +62,8 @@ class RoomTypeCompanyPlanAdapter(val applicationContext:Context, val rateTypeLis
 
 
         val ratePlans = AddCompanyRatePlanDataClass(
-            UserSessionManager(applicationContext).getUserId().toString(),currentData.propertyId,currentData.roomTypeId,"Bar",currentData.roomTypeId,
-            "",it.mealPlanName,it.mealPlanId,shortCode, selectedInclusionList,"",it.chargesPerOccupancy,"","",currentData.extraAdultRate,currentData.extraChildRate,"",it.mealPlanName
+            UserSessionManager(applicationContext).getUserId().toString(),currentData.propertyId,currentData.roomTypeId,"Company",currentData.roomTypeId,
+            companyId,it.mealPlanName,it.mealPlanId,shortCode, selectedInclusionList,currentData.roomBasePrice,it.chargesPerOccupancy,"","",currentData.extraAdultRate,currentData.extraChildRate,"",it.mealPlanName
         )
 
         ratePlan.add(ratePlans)
@@ -72,7 +72,7 @@ class RoomTypeCompanyPlanAdapter(val applicationContext:Context, val rateTypeLis
 
 
         holder.recyclerRoom.layoutManager = LinearLayoutManager(applicationContext)
-        val adapter = RatePlanCompanyAdapter(applicationContext,ratePlan)
+        val adapter = RatePlanCompanyAdapter(applicationContext,supportFragmentManager,ratePlan)
         holder.recyclerRoom.adapter = adapter
         Log.e("check",rateTypeList.toString())
         adapter.notifyDataSetChanged()
@@ -92,7 +92,15 @@ class RoomTypeCompanyPlanAdapter(val applicationContext:Context, val rateTypeLis
         // Combine the two codes and convert to uppercase
         return (code1 + code2).toUpperCase()
     }
-    override fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddCompanyRatePlanDataClass>) {
+
+    override fun onRateTypeListChanged(
+        updatedRateTypeList: ArrayList<AddCompanyRatePlanDataClass>,
+        position: Int
+    ) {
         onRateTypeListChangeListener?.onRateTypeListChanged(updatedRateTypeList)
+    }
+
+    override fun onRateTypeDelete(position: Int) {
+
     }
 }

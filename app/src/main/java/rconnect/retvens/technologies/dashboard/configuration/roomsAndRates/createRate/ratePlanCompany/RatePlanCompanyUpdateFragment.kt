@@ -1,4 +1,4 @@
-package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar
+package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany
 
 import android.app.Dialog
 import android.content.Context
@@ -23,23 +23,24 @@ import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.configurationApi.SingleConfiguration
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.RatePlan.RatePlanFragment
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddInclusionsAdapter
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.RatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.AddMealPlanAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateTypeAdapter
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateTypeFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetRoomType
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.RatePlanDetailsAdapter
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.InclusionPlan
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.AddInclusionsDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.AddBarsRatePlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.GetBarDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.GetMealPlanItem
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.RoomTypePlanAdapter
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.RoomTypePlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.UpdateCompanyRatePlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.UpdateRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsData
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.GetMealPlanData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.GetMealPlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.MealPlanDataClass
-import rconnect.retvens.technologies.databinding.FragmentRatePlanBarBinding
+import rconnect.retvens.technologies.databinding.FragmentRatePlanCompanyBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.Const
 import rconnect.retvens.technologies.utils.UserSessionManager
@@ -49,69 +50,108 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:ArrayList<GetMealPlanItem>,val isSend:Boolean) : Fragment(),
+class RatePlanCompanyUpdateFragment(val companyPlanId:String) : Fragment(), AddMealPlanAdapter.OnUpdate, RatePlanCompanyDetailsAdapter.OnRateTypeListChangeListener,
+    RatePlanUpdateCompanyAdapter.OnRateTypeListChangeListener {
+    private lateinit var binding : FragmentRatePlanCompanyBinding
 
-    RoomTypePlanAdapter.OnRateTypeListChangeListener {
-    private lateinit var progressDialog: Dialog
-    private lateinit var binding : FragmentRatePlanBarBinding
-    private  var roomTypePlanList:ArrayList<RoomTypePlanDataClass> = ArrayList()
     val rateList = ArrayList<CreateRateData>()
-    private lateinit var ratePlanDetailsAdapter : RoomTypePlanAdapter
-    private var ratePlanDetailsList = ArrayList<AddBarsRatePlanDataClass>()
-    private var onRateTypeListChangeListener : OnRateTypeListChangeListener ?= null
-    fun setOnListUpdateListener (listener : OnRateTypeListChangeListener) {
-        onRateTypeListChangeListener = listener
-    }
-
-    interface OnRateTypeListChangeListener {
-        fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddCompanyRatePlanDataClass>)
-    }
+    private  var roomTypePlanList:ArrayList<UpdateCompanyRatePlanDataClass> = ArrayList()
+    private lateinit var ratePlanDetailsAdapter : RatePlanUpdateCompanyAdapter
+    private var ratePlanDetailsList = ArrayList<UpdateCompanyRatePlanDataClass>()
+    private var getCompanyRates:ArrayList<UpdateCompanyRatePlanDataClass> = ArrayList()
+    private lateinit var progressDialog: Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentRatePlanBarBinding.inflate(inflater, container, false)
+        binding = FragmentRatePlanCompanyBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         setUpRecycler()
-
-
+        progressDialog = showProgressDialog(requireContext())
+        getCompanyRatePlan()
 
         val continueBtn = requireActivity().findViewById<CardView>(R.id.continueBtnRate)
         continueBtn?.setOnClickListener {
             progressDialog = showProgressDialog(requireContext())
-            sendRatePlanData()
+            sendData()
         }
 
     }
 
-    private fun sendRatePlanData() {
+    private fun getCompanyRatePlan() {
 
-        ratePlanDetailsList.forEach {
-            val send = OAuthClient<SingleConfiguration>(requireContext()).create(SingleConfiguration::class.java).barRatePlanApi(it)
+        val getCompanyRatePlan = OAuthClient<SingleConfiguration>(requireContext()).create(SingleConfiguration::class.java).getCompanyRatePlan(
+            UserSessionManager(requireContext()).getUserId().toString(),
+            companyPlanId
+        )
+
+        getCompanyRatePlan.enqueue(object : Callback<GetCompanyDataClass?> {
+            override fun onResponse(
+                call: Call<GetCompanyDataClass?>,
+                response: Response<GetCompanyDataClass?>
+            ) {
+                if (response.isSuccessful){
+                    progressDialog.dismiss()
+                    val response = response.body()!!
+                    val updateCompany = UpdateCompanyRatePlanDataClass(
+                        UserSessionManager(requireContext()).getUserId().toString(),
+                        UserSessionManager(requireContext()).getPropertyId().toString(),
+                        response.data.rateType,
+                        response.data.roomTypeId,
+                        response.data.ratePlanName,
+                        response.data.shortCode,
+                        response.data.ratePlanInclusion,
+                        response.data.roomBaseRate,
+                        response.data.mealCharge,
+                        response.data.inclusionCharge,
+                        response.data.roundUp,
+                        response.data.extraAdultRate,
+                        response.data.extraChildRate,
+                        response.data.ratePlanTotal
+                    )
+
+                    getCompanyRates.add(updateCompany)
+                    ratePlanDetailsAdapter.notifyDataSetChanged()
+                }else{
+                    progressDialog.dismiss()
+                }
+            }
+
+            override fun onFailure(call: Call<GetCompanyDataClass?>, t: Throwable) {
+                progressDialog.dismiss()
+            }
+        })
+
+    }
+
+    private fun sendData () {
+        ratePlanDetailsAdapter.rateTypeList.forEach {
+            val send = OAuthClient<SingleConfiguration>(requireContext()).create(SingleConfiguration::class.java).updateCompany(companyPlanId,it)
             send.enqueue(object : Callback<ResponseData?> {
                 override fun onResponse(
                     call: Call<ResponseData?>,
                     response: Response<ResponseData?>
                 ) {
-                    if (response.isSuccessful) {
+                    if (response.isSuccessful){
                         progressDialog.dismiss()
-                        Toast.makeText(requireContext(),response.body()?.message,Toast.LENGTH_SHORT).show()
-                        replaceFragment(RatePlanFragment())
-                    } else {
+                        val response = response.body()!!
+                        Toast.makeText(requireContext(),response.message,Toast.LENGTH_SHORT).show()
+                    }else{
                         progressDialog.dismiss()
-                        Log.e("error", response.message())
+                        Log.e("error",response.code().toString())
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
                     progressDialog.dismiss()
-                    Log.e("error", t.localizedMessage)
+                    Log.d("error", t.localizedMessage)
                 }
             })
         }
@@ -139,7 +179,8 @@ class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:Arra
         val recyclerView = dialog.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        val mp = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).getMealPlanApi(UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString())
+        val mp = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).getMealPlanApi(
+            UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString())
         mp.enqueue(object : Callback<GetMealPlanDataClass?> {
             override fun onResponse(
                 call: Call<GetMealPlanDataClass?>,
@@ -151,6 +192,7 @@ class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:Arra
                         try {
                             val adapter = AddMealPlanAdapter(response.body()!!.data, requireContext())
                             recyclerView.adapter = adapter
+                            adapter.setOnUpdateListener(this@RatePlanCompanyUpdateFragment)
                             adapter.notifyDataSetChanged()
                         } catch (e : NullPointerException){
                             print(e)
@@ -223,7 +265,7 @@ class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:Arra
                         dialog.dismiss()
                         Toast.makeText(context, response.body()!!.message, Toast.LENGTH_SHORT).show()
                     } else {
-                        Log.d("error", "${response.code()} ${response.message()}")
+                        Log.e("error", "${response.code()} ${response.message()}")
                     }
                 }
             }
@@ -232,18 +274,12 @@ class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:Arra
                 Log.d("error", t.localizedMessage)
             }
         })
-
     }
     private fun setUpRecycler() {
 
-        Log.e("checkList",roomList.toString())
-
-        roomList.forEach {
-            roomTypePlanList.add(RoomTypePlanDataClass(it.propertyId,it.roomTypeId,it.roomTypeName,it.extraAdultRate,it.extraChildRate,it.baseRate,mealList))
-        }
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        ratePlanDetailsAdapter = RoomTypePlanAdapter(requireContext(),roomTypePlanList,childFragmentManager)
+        ratePlanDetailsAdapter = RatePlanUpdateCompanyAdapter(requireContext(),childFragmentManager,getCompanyRates)
         binding.recyclerView.adapter = ratePlanDetailsAdapter
         ratePlanDetailsAdapter.notifyDataSetChanged()
 
@@ -251,18 +287,29 @@ class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:Arra
 
     }
 
-    override fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddBarsRatePlanDataClass>) {
+
+
+    override fun onRateTypeListChanged(
+        updatedRateTypeList: ArrayList<UpdateCompanyRatePlanDataClass>,
+        position: Int
+    ) {
+        ratePlanDetailsList.clear()
         ratePlanDetailsList.addAll(updatedRateTypeList)
-        Log.e("finalList",ratePlanDetailsList.toString())
-        ratePlanDetailsAdapter.notifyDataSetChanged()
     }
 
-    private fun replaceFragment(fragment: Fragment) {
-        if (fragment != null) {
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.dashboardFragmentContainer, fragment)
-            transaction.commit()
-        }
+
+
+    override fun onRateTypeDelete(position: Int) {
+
     }
+
+    override fun onUpdateMealPlan(selectedList: ArrayList<GetMealPlanData>) {
+
+    }
+
+    override fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddCompanyRatePlanDataClass>) {
+
+    }
+
 
 }

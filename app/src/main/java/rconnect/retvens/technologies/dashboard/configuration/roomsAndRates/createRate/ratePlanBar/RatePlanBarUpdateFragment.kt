@@ -23,6 +23,7 @@ import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.configurationApi.SingleConfiguration
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.RatePlan.RatePlanAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.RatePlan.RatePlanFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddInclusionsAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.AddMealPlanAdapter
@@ -40,6 +41,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealP
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.GetMealPlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.MealPlanDataClass
 import rconnect.retvens.technologies.databinding.FragmentRatePlanBarBinding
+import rconnect.retvens.technologies.databinding.FragmentRatePlanUpdateBarBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.Const
 import rconnect.retvens.technologies.utils.UserSessionManager
@@ -49,16 +51,17 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:ArrayList<GetMealPlanItem>,val isSend:Boolean) : Fragment(),
+class RatePlanBarUpdateFragment(val barId:String) : Fragment(),
 
     RoomTypePlanAdapter.OnRateTypeListChangeListener {
     private lateinit var progressDialog: Dialog
-    private lateinit var binding : FragmentRatePlanBarBinding
+    private lateinit var binding : FragmentRatePlanUpdateBarBinding
     private  var roomTypePlanList:ArrayList<RoomTypePlanDataClass> = ArrayList()
     val rateList = ArrayList<CreateRateData>()
-    private lateinit var ratePlanDetailsAdapter : RoomTypePlanAdapter
+    private lateinit var ratePlanDetailsAdapter : RatePlanBarUpdateAdapter
     private var ratePlanDetailsList = ArrayList<AddBarsRatePlanDataClass>()
     private var onRateTypeListChangeListener : OnRateTypeListChangeListener ?= null
+    private var getBarRates:ArrayList<UpdateRatePlanDataClass> = ArrayList()
     fun setOnListUpdateListener (listener : OnRateTypeListChangeListener) {
         onRateTypeListChangeListener = listener
     }
@@ -72,7 +75,7 @@ class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:Arra
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentRatePlanBarBinding.inflate(inflater, container, false)
+        binding = FragmentRatePlanUpdateBarBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -80,6 +83,8 @@ class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:Arra
         super.onViewCreated(view, savedInstanceState)
         setUpRecycler()
 
+        progressDialog = showProgressDialog(requireContext())
+        getBarRatesData()
 
 
         val continueBtn = requireActivity().findViewById<CardView>(R.id.continueBtnRate)
@@ -90,10 +95,59 @@ class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:Arra
 
     }
 
+    private fun getBarRatesData() {
+
+        val getData = OAuthClient<SingleConfiguration>(requireContext()).create(SingleConfiguration::class.java).getBarRatePlan(
+            UserSessionManager(requireContext()).getUserId().toString(),
+            barId
+        )
+
+        getData.enqueue(object : Callback<GetBarDataClass?> {
+            override fun onResponse(
+                call: Call<GetBarDataClass?>,
+                response: Response<GetBarDataClass?>
+            ) {
+                if (response.isSuccessful){
+                    progressDialog.dismiss()
+                    val response = response.body()!!
+
+                    val addBarsRatePlanDataClass = UpdateRatePlanDataClass(
+                        UserSessionManager(requireContext()).getUserId().toString(),
+                        UserSessionManager(requireContext()).getPropertyId().toString(),
+                        "Bar",
+                        response.data.roomTypeId,
+                        response.data.ratePlanName,
+                        response.data.shortCode,
+                        response.data.inclusion,
+                        response.data.barRates.roomBaseRate,
+                        response.data.barRates.mealCharge,
+                        response.data.barRates.inclusionCharge,
+                        response.data.barRates.roundUp,
+                        response.data.barRates.extraAdultRate,
+                        response.data.barRates.extraChildRate,
+                        response.data.barRates.ratePlanTotal
+                    )
+                    getBarRates.add(addBarsRatePlanDataClass)
+                    ratePlanDetailsAdapter.notifyDataSetChanged()
+                }else{
+                    progressDialog.dismiss()
+                    Log.e("error",response.code().toString())
+                }
+            }
+
+            override fun onFailure(call: Call<GetBarDataClass?>, t: Throwable) {
+                progressDialog.dismiss()
+                Log.e("error",t.message.toString())
+
+            }
+        })
+
+    }
+
     private fun sendRatePlanData() {
 
-        ratePlanDetailsList.forEach {
-            val send = OAuthClient<SingleConfiguration>(requireContext()).create(SingleConfiguration::class.java).barRatePlanApi(it)
+        ratePlanDetailsAdapter.rateTypeList.forEach {
+            val send = OAuthClient<SingleConfiguration>(requireContext()).create(SingleConfiguration::class.java).updateBar(barId,it)
             send.enqueue(object : Callback<ResponseData?> {
                 override fun onResponse(
                     call: Call<ResponseData?>,
@@ -105,7 +159,7 @@ class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:Arra
                         replaceFragment(RatePlanFragment())
                     } else {
                         progressDialog.dismiss()
-                        Log.e("error", response.message())
+                        Log.e("error", response.code().toString())
                     }
                 }
 
@@ -236,18 +290,13 @@ class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:Arra
     }
     private fun setUpRecycler() {
 
-        Log.e("checkList",roomList.toString())
-
-        roomList.forEach {
-            roomTypePlanList.add(RoomTypePlanDataClass(it.propertyId,it.roomTypeId,it.roomTypeName,it.extraAdultRate,it.extraChildRate,it.baseRate,mealList))
-        }
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        ratePlanDetailsAdapter = RoomTypePlanAdapter(requireContext(),roomTypePlanList,childFragmentManager)
+        ratePlanDetailsAdapter = RatePlanBarUpdateAdapter(requireContext(),childFragmentManager,getBarRates)
         binding.recyclerView.adapter = ratePlanDetailsAdapter
         ratePlanDetailsAdapter.notifyDataSetChanged()
 
-        ratePlanDetailsAdapter.setOnListUpdateListener(this)
+
 
     }
 
@@ -255,6 +304,7 @@ class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:Arra
         ratePlanDetailsList.addAll(updatedRateTypeList)
         Log.e("finalList",ratePlanDetailsList.toString())
         ratePlanDetailsAdapter.notifyDataSetChanged()
+
     }
 
     private fun replaceFragment(fragment: Fragment) {

@@ -23,6 +23,20 @@ fun prepareFilePart(fileUri: Uri, schema : String, context: Context): MultipartB
     return MultipartBody.Part.createFormData(schema, file.name, requestBody)
 }
 
+fun preparePdfPart(fileUri: Uri, schema : String, context: Context): MultipartBody.Part? {
+
+    val filesDir = context.filesDir
+    val file = File(filesDir,"${getRandomString(6)}.pdf")
+
+    val inputStream = context.contentResolver.openInputStream(fileUri)
+    val outputStream = FileOutputStream(file)
+    inputStream!!.copyTo(outputStream)
+
+    val requestBody = file.asRequestBody("pdf/*".toMediaTypeOrNull())
+
+    return MultipartBody.Part.createFormData(schema, file.name, requestBody)
+}
+
 fun getRandomString(length: Int) : String {
     val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
     return (1..length)

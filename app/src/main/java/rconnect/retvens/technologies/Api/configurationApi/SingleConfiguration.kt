@@ -12,7 +12,11 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRo
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.UpdateRoomData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetAllRatePlans
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.AddBarsRatePlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.GetBarDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.UpdateCompanyRatePlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.UpdateRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.GetCompanyDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanPackage.AddPackageDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlaneDiscount.AddDiscountDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlaneDiscount.GetBarRatePlanForDiscountDataClass
@@ -98,5 +102,29 @@ interface SingleConfiguration {
         @Query("propertyId")propertyId:String,
         @Query("userId")userId:String
     ):Call<GetAllRatePlans>
+
+    @GET("getBarPlanById")
+    fun getBarRatePlan (
+        @Query("userId")userId:String,
+        @Query("barRatePlanId")barRatePlanId:String,
+    ):Call<GetBarDataClass>
+
+    @GET("getCompanyRatePlans")
+    fun getCompanyRatePlan (
+        @Query("userId")userId:String,
+        @Query("companyRatePlanId")companyRatePlanId:String,
+    ):Call<GetCompanyDataClass>
+
+    @PATCH("updateBarRatePlan/{barRatePlanId}")
+    fun updateBar(
+        @Path("barRatePlanId")barRatePlanId:String,
+        @Body updateRatePlanDataClass: UpdateRatePlanDataClass
+    ):Call<ResponseData>
+
+    @PATCH("updateCompanyRatePlan")
+    fun updateCompany(
+        @Query("companyRatePlanId")companyRatePlanId:String,
+        @Body updateRatePlanDataClass: UpdateCompanyRatePlanDataClass
+    ):Call<ResponseData>
 
 }

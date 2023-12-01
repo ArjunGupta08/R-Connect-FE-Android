@@ -63,7 +63,7 @@ class RoomTypePlanAdapter(val applicationContext:Context, val rateTypeList:Array
 
         val ratePlans = AddBarsRatePlanDataClass(
             UserSessionManager(applicationContext).getUserId().toString(),currentData.propertyId,currentData.roomTypeId,"Bar","",
-            "",it.mealPlanName,it.mealPlanId,shortCode, selectedInclusionList,currentData.roomBasePrice,it.chargesPerOccupancy,"","",currentData.extraAdultRate,currentData.extraChildRate,currentData.roomBasePrice,it.mealPlanName
+            "","${currentData.roomTypeName+it.shortCode}",it.mealPlanId,shortCode, selectedInclusionList,currentData.roomBasePrice,it.chargesPerOccupancy,"","",currentData.extraAdultRate,currentData.extraChildRate,currentData.roomBasePrice,it.mealPlanName
         )
 
         ratePlan.add(ratePlans)

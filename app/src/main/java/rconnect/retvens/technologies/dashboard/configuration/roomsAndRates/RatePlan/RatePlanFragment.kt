@@ -15,6 +15,9 @@ import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateTypeFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetAllRatePlans
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.RatePlan
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.RatePlanBarUpdateAdapter
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.RatePlanBarUpdateFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.RatePlanCompanyUpdateFragment
 import rconnect.retvens.technologies.databinding.FragmentRatePlanBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
@@ -23,7 +26,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RatePlanFragment : Fragment() {
+class RatePlanFragment : Fragment(), RatePlanAdapter.OnUpdate {
 
     lateinit var binding: FragmentRatePlanBinding
 
@@ -46,7 +49,7 @@ class RatePlanFragment : Fragment() {
         binding.rateTypeRecycler.layoutManager = LinearLayoutManager(requireContext())
         ratePlanAdapter = RatePlanAdapter(ratePlanList,requireContext())
         binding.rateTypeRecycler.adapter = ratePlanAdapter
-
+        ratePlanAdapter.setOnUpdateListener(this)
 
         roomTypeRecycler()
 
@@ -97,6 +100,14 @@ class RatePlanFragment : Fragment() {
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(R.id.dashboardFragmentContainer, fragment)
             transaction.commit()
+        }
+    }
+
+    override fun onUpdateIdentityType(rateTypeId: String, type: String) {
+        if (type == "Bar"){
+            replaceFragment(RatePlanBarUpdateFragment(rateTypeId))
+        }else if (type == "Company"){
+            replaceFragment(RatePlanCompanyUpdateFragment(rateTypeId))
         }
     }
 }

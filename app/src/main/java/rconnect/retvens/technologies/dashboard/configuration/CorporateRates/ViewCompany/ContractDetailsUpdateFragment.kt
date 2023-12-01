@@ -1,15 +1,18 @@
-package rconnect.retvens.technologies.dashboard.configuration.CorporateRates.AddCompany
+package rconnect.retvens.technologies.dashboard.configuration.CorporateRates.ViewCompany
 
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
 import android.net.Uri
 import android.os.Bundle
+import android.os.ParcelFileDescriptor
 import android.provider.OpenableColumns
 import android.util.Log
 import android.view.LayoutInflater
@@ -27,6 +30,7 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import rconnect.retvens.technologies.Api.CorporatesApi
@@ -34,12 +38,14 @@ import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.channelManager.AddReservationFragment.RateType
+import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.AddCompany.CompanyResponse
+import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.AddCompany.ContractPDFAdapter
+import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.AddCompany.ContractPDFData
 import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.CorporatesPartnersFragment
 import rconnect.retvens.technologies.databinding.FragmentContractDetailsChildBinding
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.bottomSlideInAnimation
 import rconnect.retvens.technologies.utils.prepareFilePart
-import rconnect.retvens.technologies.utils.preparePdfPart
 import rconnect.retvens.technologies.utils.shakeAnimation
 import rconnect.retvens.technologies.utils.showProgressDialog
 import rconnect.retvens.technologies.utils.utilCreateDatePickerDialog
@@ -47,10 +53,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import java.io.FileNotFoundException
+import java.io.IOException
 import java.util.Date
 
 
-class ContractDetailsChildFragment(val companyId:String) : Fragment(), ContractPDFAdapter.OnViewListener {
+class ContractDetailsUpdateFragment(val companyId:String) : Fragment(), ContractPDFAdapter.OnViewListener {
     private lateinit var binding : FragmentContractDetailsChildBinding
     var startDate: Date? = null
     var endDate: Date? = null
@@ -60,6 +68,7 @@ class ContractDetailsChildFragment(val companyId:String) : Fragment(), ContractP
     private lateinit var progressDialog: Dialog
 
     val pdfList = ArrayList<ContractPDFData>()
+    val getPdfList = ArrayList<ContractPdf>()
     lateinit var pdfAdapter: ContractPDFAdapter
     private var scaleFactor = 1.0f
 //    private lateinit var pdfPreview: ImageView
@@ -111,6 +120,8 @@ class ContractDetailsChildFragment(val companyId:String) : Fragment(), ContractP
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        progressDialog = showProgressDialog(requireContext())
+        getCompanyDetails()
 
         binding.selectCard.setOnClickListener {
             pickFileFromGallery()
@@ -162,11 +173,16 @@ class ContractDetailsChildFragment(val companyId:String) : Fragment(), ContractP
             }
 
         }
+
+        pdfAdapter = ContractPDFAdapter(pdfList, requireContext())
+        binding.pdfRecycler.adapter = pdfAdapter
+        pdfAdapter.setOnClickListener(this)
+        pdfAdapter.notifyDataSetChanged()
     }
 
     private fun sendData() {
         if (pdfList.size == 1){
-            val contractPdf1 = preparePdfPart(pdfList[0].pdfUri, "contractPdf", requireContext())
+            val contractPdf1 = prepareFilePart(pdfList[0].pdfUri, "contractPdf", requireContext())
             val sendData = OAuthClient<CorporatesApi>(requireContext()).create(CorporatesApi::class.java)
                 .addContract(
                     UserSessionManager(requireContext()).getUserId().toString(),
@@ -208,8 +224,8 @@ class ContractDetailsChildFragment(val companyId:String) : Fragment(), ContractP
                 }
             })
         }else if (pdfList.size == 2){
-            val contractPdf1 = preparePdfPart(pdfList[0].pdfUri, "contractPdf", requireContext())
-            val contractPdf2 = preparePdfPart(pdfList[1].pdfUri,"contractPdf",requireContext())
+            val contractPdf1 = prepareFilePart(pdfList[0].pdfUri, "contractPdf", requireContext())
+            val contractPdf2 = prepareFilePart(pdfList[1].pdfUri,"contractPdf",requireContext())
 
             val sendData = OAuthClient<CorporatesApi>(requireContext()).create(CorporatesApi::class.java)
                 .addContract2(
@@ -269,65 +285,82 @@ class ContractDetailsChildFragment(val companyId:String) : Fragment(), ContractP
 
     private fun openPdfRenderer(uri: Uri) {
 
-        pdfAdapter = ContractPDFAdapter(pdfList, requireContext())
-        binding.pdfRecycler.adapter = pdfAdapter
-        pdfAdapter.setOnClickListener(this)
-        pdfAdapter.notifyDataSetChanged()
+        try {
+            binding.counterCard.isVisible = true
 
-        binding.counterCard.isVisible = true
-
-        var currentPage = 1
+            var currentPage = 1
 //        pdfRenderer?.close() // Close the previous PDF renderer, if any.
 
-        val parcelFileDescriptor = requireContext().contentResolver.openFileDescriptor(uri, "r")
-        val pdfRenderer = PdfRenderer(parcelFileDescriptor!!)
+            val parcelFileDescriptor = requireContext().contentResolver.openFileDescriptor(uri, "r")
+            val pdfRenderer = PdfRenderer(parcelFileDescriptor!!)
 
-        // Get the total number of pages in the PDF
-        val pageCount = pdfRenderer.pageCount
+            // Get the total number of pages in the PDF
+            val pageCount = pdfRenderer.pageCount
 
-        // Assume that PDF has only one page.
-        val page = pdfRenderer.openPage(0)
+            // Assume that PDF has only one page.
+            val page = pdfRenderer.openPage(0)
 
-        val bitmap = Bitmap.createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
-        page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+            val bitmap = Bitmap.createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
+            page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
 
-        binding.pdfPageCount.text = "$currentPage/${pageCount-1}"
-        binding.pdfPreview.setImageBitmap(bitmap)
+            binding.pdfPageCount.text = "$currentPage/${pageCount-1}"
+            binding.pdfPreview.setImageBitmap(bitmap)
 
-        page.close()
+            page.close()
 //        pdfRenderer.close()
 
-        this.pdfRenderer = pdfRenderer
+            this.pdfRenderer = pdfRenderer
 
-        binding.previousPage.setOnClickListener {
+            binding.previousPage.setOnClickListener {
 
-            if (currentPage >  1) {
-                currentPage--
+                if (currentPage >  1) {
+                    currentPage--
 
-                val page = pdfRenderer.openPage(if (currentPage == 1){0}else{currentPage})
+                    val page = pdfRenderer.openPage(if (currentPage == 1){0}else{currentPage})
 
-                val bitmap = Bitmap.createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
-                page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+                    val bitmap = Bitmap.createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
+                    page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
 
-                binding.pdfPageCount.text = "$currentPage/${pageCount-1}"
-                binding.pdfPreview.setImageBitmap(bitmap)
-                page.close()
+                    binding.pdfPageCount.text = "$currentPage/${pageCount-1}"
+                    binding.pdfPreview.setImageBitmap(bitmap)
+                    page.close()
+                }
             }
+            binding.nextPage.setOnClickListener {
+
+                if (currentPage < pageCount-1) {
+                    currentPage++
+
+                    val page = pdfRenderer.openPage(currentPage)
+
+                    val bitmap = Bitmap.createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
+                    page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+
+                    binding.pdfPageCount.text = "$currentPage/${pageCount-1}"
+                    binding.pdfPreview.setImageBitmap(bitmap)
+                    page.close()
+                }
+            }
+        }catch (e:FileNotFoundException){
+
+
+            val pdfUri = Uri.parse(uri.toString())
+            val mimeType = "application/pdf"
+            openPdfWithIntent(pdfUri, mimeType, requireContext())
         }
-        binding.nextPage.setOnClickListener {
 
-            if (currentPage < pageCount-1) {
-                currentPage++
 
-                val page = pdfRenderer.openPage(currentPage)
+    }
 
-                val bitmap = Bitmap.createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
-                page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+    private fun openPdfWithIntent(pdfUri: Uri?, mimeType: String, requireContext: Context) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.setDataAndType(pdfUri, mimeType)
+        intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_CLEAR_TOP
 
-                binding.pdfPageCount.text = "$currentPage/${pageCount-1}"
-                binding.pdfPreview.setImageBitmap(bitmap)
-                page.close()
-            }
+        try {
+            requireContext.startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            e.printStackTrace()
         }
     }
 
@@ -363,5 +396,47 @@ class ContractDetailsChildFragment(val companyId:String) : Fragment(), ContractP
 
 
     }
+
+    private fun getCompanyDetails() {
+
+        val userId = UserSessionManager(requireContext()).getUserId().toString()
+        val propertyId = UserSessionManager(requireContext()).getPropertyId().toString()
+
+        val getCompanyDetails = OAuthClient<CorporatesApi>(requireContext()).create(CorporatesApi::class.java).getCompanyDetails(companyId,propertyId,userId)
+
+        getCompanyDetails.enqueue(object : Callback<CompanyDetailsData?> {
+            override fun onResponse(
+                call: Call<CompanyDetailsData?>,
+                response: Response<CompanyDetailsData?>
+            ) {
+                if (response.isSuccessful){
+                    progressDialog.dismiss()
+                    val response = response.body()!!
+                    response.data.forEach { companyData ->
+                        binding.checkIn.setText(companyData.effectiveFrom)
+                        binding.checkOut.setText(companyData.expiration)
+                        binding.contactTerms.setText(companyData.contractTerms)
+                        companyData.contractPdf.forEach { contractPdf ->
+                            getPdfList.add(contractPdf)
+                            getPdfList.forEach {
+                                val uri: Uri = Uri.parse(it.contractPdf)
+                                pdfList.add(ContractPDFData(it.uploadedBy,uri))
+                                pdfAdapter.notifyDataSetChanged()
+                            }
+                        }
+                    }
+                }else{
+                    progressDialog.dismiss()
+                    Log.e("error",response.code().toString())
+                }
+            }
+
+            override fun onFailure(call: Call<CompanyDetailsData?>, t: Throwable) {
+                progressDialog.dismiss()
+                Log.e("error",t.message.toString())
+            }
+        })
+    }
+
 
 }

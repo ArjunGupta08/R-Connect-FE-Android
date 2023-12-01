@@ -1,6 +1,7 @@
 package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,15 +10,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ListPopupWindow
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import rconnect.retvens.technologies.Api.CorporatesApi
 import rconnect.retvens.technologies.Api.DropDownApis
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.channelManager.AddReservationFragment.BookingItem
+import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.AddCompany.Company
+import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.AddCompany.CorporatesDataClass
+import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.CorporatesData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.AddBarsRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.GetMealData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.GetMealPlanItem
@@ -30,6 +37,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.creat
 import rconnect.retvens.technologies.databinding.FragmentCreateRateTypeBinding
 import rconnect.retvens.technologies.databinding.FragmentViewPropertiesBinding
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.showProgressDialog
 import rconnect.retvens.technologies.utils.topInAnimation
 import retrofit2.Call
 import retrofit2.Callback
@@ -50,6 +58,9 @@ class CreateRateTypeFragment : Fragment(),
     private var mealPlanList = ArrayList<GetMealPlanItem>()
     private val selectedItemsMealList = mutableListOf<Int>()
     private val selectedMealList = ArrayList<GetMealPlanItem>()
+    private lateinit var progressDialog:Dialog
+    private  var companyId:String = ""
+    private var corporatesList:ArrayList<Company> = ArrayList()
     var type = ""
     private val ratePlanBarList:ArrayList<AddCompanyRatePlanDataClass> = ArrayList()
     interface DataUpdateListener {
@@ -76,9 +87,11 @@ class CreateRateTypeFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        progressDialog = showProgressDialog(requireContext())
         rateTypeSelection()
         getRateType()
         getMealPlan()
+        getCorporate()
 
         selectedRoomType = BooleanArray(roomTypeList.size)
         selectedMealPlan = BooleanArray(mealPlanList.size)
@@ -97,6 +110,10 @@ class CreateRateTypeFragment : Fragment(),
 
         binding.mealPlanET.setOnClickListener {
             showMultiChoiceMealDialog()
+        }
+
+        binding.companyNameText.setOnClickListener {
+            showCompanyDropDown(it)
         }
 
 
@@ -149,7 +166,7 @@ class CreateRateTypeFragment : Fragment(),
                 replaceChildFrag(RatePlanBarFragment(selectedRoomTypeList,selectedMealList,false))
             }else if (type == "Company"){
                     Log.e("check11",type.toString())
-                replaceChildFrag(RatePlanCompanyFragment(selectedRoomTypeList,selectedMealList,false))
+                replaceChildFrag(RatePlanCompanyFragment(selectedRoomTypeList,selectedMealList,false,companyId))
             }
             binding.dropRoom.setText(stringBuilder.toString())
         }
@@ -217,6 +234,78 @@ class CreateRateTypeFragment : Fragment(),
         })
     }
 
+
+    private fun showCompanyDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        var selectedItem = -1
+
+        builder.setSingleChoiceItems(
+            corporatesList.map { it.companyName }.toTypedArray(),
+            selectedItem
+        ) { _, i ->
+            // Save the selected item position
+            selectedItem = i
+        }
+
+        builder.setPositiveButton("OK") { _, _ ->
+            if (selectedItem != -1) {
+                // Process the selected item
+                val selectedMeal = corporatesList[selectedItem]
+                // Set text on textView
+                binding.companyNameText.setText(selectedMeal.companyName)
+
+            }
+        }
+
+        builder.setNegativeButton("Cancel") { dialogInterface, _ ->
+            // Dismiss dialog
+            dialogInterface.dismiss()
+        }
+
+        builder.setNeutralButton("Clear Selection") { _, _ ->
+            // Clear the selected item
+            selectedItem = -1
+            // Clear text view value
+            binding.companyNameText.setText("")
+        }
+
+        // Show dialog
+        builder.show()
+    }
+
+    private fun showCompanyDropDown( it: View?) {
+        val listPopupWindow = ListPopupWindow(requireContext())
+
+        // Create a custom adapter to display only the rateType property
+        val customAdapter = object : ArrayAdapter<Company>(requireContext(), R.layout.simple_dropdown_item_1line, corporatesList) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getView(position, convertView, parent)
+                val bookingSource = getItem(position)?.companyName
+                (view as TextView).text = bookingSource
+                return view
+            }
+
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                val bookingSource = getItem(position)?.companyName
+                (view as TextView).text = bookingSource
+                return view
+            }
+        }
+
+        listPopupWindow.setAdapter(customAdapter)
+
+        listPopupWindow.anchorView = it
+        listPopupWindow.setOnItemClickListener { _, _, position, _ ->
+            val selectedItem = customAdapter.getItem(position)
+            binding.companyNameLayout.editText?.setText(selectedItem?.companyName)
+            companyId = selectedItem?.companyId.toString()
+            listPopupWindow.dismiss()
+        }
+
+        listPopupWindow.show()
+    }
+
     private fun showMultiChoiceMealDialog() {
         val builder = AlertDialog.Builder(requireContext())
         val selectedItems = BooleanArray(mealPlanList.size)
@@ -263,7 +352,7 @@ class CreateRateTypeFragment : Fragment(),
                 replaceChildFrag(RatePlanBarFragment(selectedRoomTypeList,selectedMealList,false))
             }else if (type == "Company"){
                 Log.e("check11",type.toString())
-                replaceChildFrag(RatePlanCompanyFragment(selectedRoomTypeList,selectedMealList,false))
+                replaceChildFrag(RatePlanCompanyFragment(selectedRoomTypeList,selectedMealList,false,companyId))
             }
             Log.e("list",selectedMealList.toString())
         }
@@ -332,6 +421,37 @@ class CreateRateTypeFragment : Fragment(),
 
     }
 
+
+    private fun getCorporate() {
+        val getCorporate = OAuthClient<CorporatesApi>(requireContext()).create(CorporatesApi::class.java).getCorporates(
+            UserSessionManager(requireContext()).getPropertyId().toString(),
+            UserSessionManager(requireContext()).getUserId().toString()
+        )
+
+        getCorporate.enqueue(object : Callback<CorporatesDataClass?> {
+            override fun onResponse(
+                call: Call<CorporatesDataClass?>,
+                response: Response<CorporatesDataClass?>
+            ) {
+                if (response.isSuccessful){
+                    progressDialog.dismiss()
+                    val response = response.body()!!
+                    corporatesList.addAll(response.data)
+                    Log.e("corporate",corporatesList.toString())
+                }else{
+                    progressDialog.dismiss()
+                    Log.e("error",response.code().toString())
+                }
+            }
+
+            override fun onFailure(call: Call<CorporatesDataClass?>, t: Throwable) {
+                progressDialog.dismiss()
+                Log.e("error",t.message.toString())
+            }
+        })
+
+    }
+
     private fun rateTypeSelection() {
 
         binding.rateTypeET.setOnClickListener {
@@ -346,7 +466,7 @@ class CreateRateTypeFragment : Fragment(),
         }
 
         binding.companyRateType.setOnClickListener {
-            replaceChildFrag(RatePlanCompanyFragment(selectedRoomTypeList,selectedMealList,false))
+            replaceChildFrag(RatePlanCompanyFragment(selectedRoomTypeList,selectedMealList,false,companyId))
             binding.rateTypeET.setText("Company")
             type = "Company"
             binding.companyNameLayout.isVisible = true
