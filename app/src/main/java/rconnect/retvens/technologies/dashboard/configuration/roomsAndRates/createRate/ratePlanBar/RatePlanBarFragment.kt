@@ -251,11 +251,6 @@ class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:Arra
 
     }
 
-    override fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddBarsRatePlanDataClass>) {
-        ratePlanDetailsList.addAll(updatedRateTypeList)
-        Log.e("finalList",ratePlanDetailsList.toString())
-        ratePlanDetailsAdapter.notifyDataSetChanged()
-    }
 
     private fun replaceFragment(fragment: Fragment) {
         if (fragment != null) {
@@ -263,6 +258,15 @@ class RatePlanBarFragment(val roomList:ArrayList<GetRoomType>, val mealList:Arra
             transaction.replace(R.id.dashboardFragmentContainer, fragment)
             transaction.commit()
         }
+    }
+
+    override fun onRateTypeListChanged(
+        updatedRateTypeList: AddBarsRatePlanDataClass,
+        position: Int
+    ) {
+        ratePlanDetailsList.add(updatedRateTypeList)
+        Log.e("finalList",ratePlanDetailsList.toString())
+
     }
 
 }

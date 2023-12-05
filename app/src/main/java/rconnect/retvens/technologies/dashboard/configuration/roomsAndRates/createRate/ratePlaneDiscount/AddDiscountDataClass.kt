@@ -1,19 +1,18 @@
 package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlaneDiscount
 
-data class RatePlan(
-    val rateplanId: String,
-    val newRatePlanPrice: String
-)
-
-
-data class ApplicableOn(
-    val roomTypeId: String,
-    val ratePlans: List<RatePlan>
+data class RatePlanInclusion(
+    val inclusionId: String,
+    val inclusionName: String,
+    val postingRule: String,
+    val chargeRule: String,
+    val rate: String
 )
 
 data class AddDiscountDataClass(
-    val deviceType: String,
+    val rateType: String,
     val propertyId: String,
+    val roomTypeId: String,
+    val ratePlanId: String,
     val discountName: String,
     val shortCode: String,
     val discountType: String,
@@ -22,5 +21,9 @@ data class AddDiscountDataClass(
     val validityPeriodFrom: String,
     val validityPeriodTo: String,
     val blackOutDates: List<String>,
-    val applicableOn: List<ApplicableOn>
+    val ratePlanInclusion: List<RatePlanInclusion>,
+    val discountTotal: String,
+    val extraAdultRate: String,
+    val extraChildRate: String
 )
+

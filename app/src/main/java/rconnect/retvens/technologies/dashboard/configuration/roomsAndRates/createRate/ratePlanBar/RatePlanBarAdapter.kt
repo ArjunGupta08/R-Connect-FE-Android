@@ -61,7 +61,7 @@ class RatePlanBarAdapter(
         onRateTypeListChangeListener = listener
     }
     interface OnRateTypeListChangeListener {
-        fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddBarsRatePlanDataClass>, position: Int)
+        fun onRateTypeListChanged(updatedRateTypeList: AddBarsRatePlanDataClass, position: Int)
         fun onRateTypeDelete(position: Int)
     }
 
@@ -126,6 +126,7 @@ class RatePlanBarAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int){
         val currentData = rateTypeList[position]
+
 
         var isRateCardEdit = true
 
@@ -272,6 +273,7 @@ class RatePlanBarAdapter(
                 totalInclusionCharges: Double
             ) {
 
+                holder.selectedInclusions.clear()
                 holder.selectedInclusions.addAll(selectedInclusionPlan)
 
                 holder.recycler_inclusion.layoutManager = LinearLayoutManager(applicationContext)
@@ -298,6 +300,8 @@ class RatePlanBarAdapter(
                 holder.ratePlanTotalTxtCalculated.setText("$ratePlanTotalTxtCalculated")
                 holder.ratePlanTotalTxt.text = ("$ratePlanTotalTxtCalculated")
 
+
+                selectedInclusionPlan.clear()
             }
         }
 
@@ -326,6 +330,7 @@ class RatePlanBarAdapter(
                 holder.ratePlanTotalTxt.text = holder.ratePlanTotalTxtCalculated.text.toString()
             }
         }
+
 
         holder.saveIC.setOnClickListener {
             if (holder.selectedInclusions.isEmpty()) {
@@ -356,7 +361,7 @@ class RatePlanBarAdapter(
                 rateTypeList[position].ratePlanTotal = holder.ratePlanTotalTxtCalculated.text.toString()
                 rateTypeList[position].mealPlanName = holder.mealPlanETxt.text.toString()
 
-                onRateTypeListChangeListener?.onRateTypeListChanged(rateTypeList, position)
+                onRateTypeListChangeListener?.onRateTypeListChanged(rateTypeList[position], position)
                 notifyItemChanged(position)
                 Log.e("fuckingFinalList", rateTypeList.toString())
             }

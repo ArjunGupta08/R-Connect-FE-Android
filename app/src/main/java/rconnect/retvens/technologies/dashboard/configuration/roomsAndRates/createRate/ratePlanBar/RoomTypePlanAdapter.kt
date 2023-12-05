@@ -29,7 +29,7 @@ class RoomTypePlanAdapter(val applicationContext:Context, val rateTypeList:Array
     }
 
     interface OnRateTypeListChangeListener {
-        fun onRateTypeListChanged(updatedRateTypeList: ArrayList<AddBarsRatePlanDataClass>)
+        fun onRateTypeListChanged(updatedRateTypeList: AddBarsRatePlanDataClass,position: Int)
     }
 
     class ViewHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
@@ -91,10 +91,10 @@ class RoomTypePlanAdapter(val applicationContext:Context, val rateTypeList:Array
 
 
     override fun onRateTypeListChanged(
-        updatedRateTypeList: ArrayList<AddBarsRatePlanDataClass>,
+        updatedRateTypeList: AddBarsRatePlanDataClass,
         position: Int
     ) {
-        onRateTypeListChangeListener?.onRateTypeListChanged(updatedRateTypeList)
+        onRateTypeListChangeListener?.onRateTypeListChanged(updatedRateTypeList,position)
     }
 
     override fun onRateTypeDelete(position: Int) {

@@ -409,7 +409,12 @@ class RatePlanDetailsAdapter(
                 response: Response<GetInclusionsDataClass?>
             ) {
                 if (response.isSuccessful) {
-                    inclusionsArray = response.body()!!.data
+                    try {
+                        inclusionsArray = response.body()!!.data
+                    }catch (e:NullPointerException){
+                        Log.e("error",e.message.toString())
+                    }
+
                 } else {
                     Log.d("error", "${response.code()} ${response.message()}")
                 }

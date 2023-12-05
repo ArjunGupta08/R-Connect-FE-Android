@@ -290,6 +290,7 @@ class RatePlanCompanyAdapter(
                 totalInclusionCharges: Double
             ) {
 
+                holder.selectedInclusions.clear()
                 holder.selectedInclusions.addAll(selectedInclusionPlan)
 
                 holder.recycler_inclusion.layoutManager = LinearLayoutManager(applicationContext)

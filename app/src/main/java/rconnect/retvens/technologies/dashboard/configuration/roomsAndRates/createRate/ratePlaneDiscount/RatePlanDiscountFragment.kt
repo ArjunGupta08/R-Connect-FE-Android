@@ -43,9 +43,8 @@ class RatePlanDiscountFragment : Fragment(), CreateRatePlanAdapter.OnRateTypeLis
     lateinit var startDatePickerDialog: DatePickerDialog
     lateinit var endDatePickerDialog: DatePickerDialog
     private lateinit var progressDialog: Dialog
-    private var getBarRate:ArrayList<GetBarRate> = ArrayList()
+    private var getBarRate:ArrayList<RoomData> = ArrayList()
     private lateinit var createRatePlanAdapter:CreateRatePlanAdapter
-    private var applicableOn:ArrayList<ApplicableOn> = ArrayList()
     var discountPercentages = ""
     var discountAmounts = ""
     var apiFromDate = ""
@@ -223,11 +222,12 @@ class RatePlanDiscountFragment : Fragment(), CreateRatePlanAdapter.OnRateTypeLis
             }else if (startDate == null || endDate == null) {
                 Toast.makeText(requireContext(), "Please Select Proper Date", Toast.LENGTH_SHORT).show()
             }else{
-                if (createRatePlanAdapter.applicableList.size == 0){
+                if (createRatePlanAdapter.discountList.size == 0){
                     Toast.makeText(requireContext(), "Select Plan", Toast.LENGTH_SHORT).show()
                 }else{
                     progressDialog = showProgressDialog(requireContext())
                     setDiscount()
+                    Log.e("finalList",createRatePlanAdapter.discountList.toString())
                 }
 
             }
@@ -237,43 +237,53 @@ class RatePlanDiscountFragment : Fragment(), CreateRatePlanAdapter.OnRateTypeLis
 
     private fun setDiscount() {
 
-        val discountData = AddDiscountDataClass(
-            "Android",
-            UserSessionManager(requireContext()).getPropertyId().toString(),
-            binding.ratePlanName.text.toString(),
-            binding.shortCodeText.text.toString(),
-            discountType,
-            discountPercentages,
-            discountPrice,
-            apiFromDate,
-            apiToDate,
-            emptyList(),
-            createRatePlanAdapter.applicableList
 
-        )
 
-        val sendData = OAuthClient<SingleConfiguration>(requireContext()).create(SingleConfiguration::class.java).addDiscount(
-            UserSessionManager(requireContext()).getUserId().toString(),
-            discountData
-        )
+        createRatePlanAdapter.discountList.forEach {
+            val discountData = AddDiscountDataClass(
+                "Discount",
+                UserSessionManager(requireContext()).getPropertyId().toString(),
+                it.roomTypeId,
+                it.ratePlanId,
+                binding.ratePlanName.text.toString(),
+                binding.shortCodeText.text.toString(),
+                discountType,
+                it.discountPercent,
+                it.discountPrice,
+                apiFromDate,
+                apiToDate,
+                emptyList(),
+                it.ratePlanInclusion,
+                it.discountTotal,
+                it.extraAdultRate,
+                it.extraChildRate
+            )
 
-        sendData.enqueue(object : Callback<ResponseData?> {
-            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
-                if (response.isSuccessful){
-                    val response = response.body()!!
-                    Toast.makeText(requireContext(), response.message.toString(), Toast.LENGTH_SHORT).show()
-                    progressDialog.dismiss()
-                }else{
-                    Log.e("error",response.code().toString())
+            val sendData = OAuthClient<SingleConfiguration>(requireContext()).create(SingleConfiguration::class.java).addDiscount(
+                UserSessionManager(requireContext()).getUserId().toString(),
+                discountData
+            )
+
+            sendData.enqueue(object : Callback<ResponseData?> {
+                override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                    if (response.isSuccessful){
+                        val response = response.body()!!
+                        Toast.makeText(requireContext(), response.message.toString(), Toast.LENGTH_SHORT).show()
+                        progressDialog.dismiss()
+                    }else{
+                        Log.e("error",response.code().toString())
+                        progressDialog.dismiss()
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                    Log.e("error",t.message.toString())
                     progressDialog.dismiss()
                 }
-            }
+            })
+        }
 
-            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
-                Log.e("error",t.message.toString())
-                progressDialog.dismiss()
-            }
-        })
+
 
     }
 
@@ -328,7 +338,7 @@ class RatePlanDiscountFragment : Fragment(), CreateRatePlanAdapter.OnRateTypeLis
 
 
     override fun onRateTypeList() {
-        Log.e("list",createRatePlanAdapter.applicableList.toString())
+
     }
 
     fun ApiformatDate(inputDate: String): String {

@@ -87,7 +87,7 @@
                 android:layout_marginHorizontal="3dp"
                 android:fontFamily="@font/roboto"
                 android:textColor="@color/item_text"
-                android:textSize="@dimen/H6"
+                android:textSize="@dimen/H5"
                 android:singleLine="true"/>
 
 

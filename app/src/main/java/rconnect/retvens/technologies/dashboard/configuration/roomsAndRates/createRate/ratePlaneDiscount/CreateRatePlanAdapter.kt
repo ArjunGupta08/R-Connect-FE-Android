@@ -13,11 +13,11 @@ import com.google.android.material.checkbox.MaterialCheckBox
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateData
 
-class CreateRatePlanAdapter(val applicationContext:Context, val rateTypeList:ArrayList<GetBarRate>,val discountAmount:String,val discountPercentage:String):RecyclerView.Adapter<CreateRatePlanAdapter.ViewHolder>(),
+class CreateRatePlanAdapter(val applicationContext:Context, val rateTypeList:ArrayList<RoomData>,val discountAmount:String,val discountPercentage:String):RecyclerView.Adapter<CreateRatePlanAdapter.ViewHolder>(),
     RoomTypeCategoryAdapter.OnRateTypeListChangeListener {
 
-    public var applicableList:ArrayList<ApplicableOn> = ArrayList()
     private var onRateTypeListChangeListener : OnRateTypeListChangeListener ?= null
+    public var discountList:ArrayList<AddDiscountDataClass> = ArrayList()
     fun setOnListUpdateListener (listener : OnRateTypeListChangeListener) {
         onRateTypeListChangeListener = listener
     }
@@ -68,12 +68,12 @@ class CreateRatePlanAdapter(val applicationContext:Context, val rateTypeList:Arr
         holder.checkBox.setOnCheckedChangeListener { checkbox, isChecked ->
             if (isChecked){
                 holder.recycler.layoutManager=LinearLayoutManager(applicationContext)
-                val adapter = RoomTypeCategoryAdapter(applicationContext, currentData.barRatePlans,discountAmount,discountPercentage,true,position)
+                val adapter = RoomTypeCategoryAdapter(applicationContext,currentData.barRatePlans,discountAmount,discountPercentage,true,position,currentData.roomTypeId)
                 holder.recycler.adapter = adapter
                 adapter.notifyDataSetChanged()
             }else{
                 holder.recycler.layoutManager=LinearLayoutManager(applicationContext)
-                val adapter = RoomTypeCategoryAdapter(applicationContext, currentData.barRatePlans,discountAmount,discountPercentage,false,position)
+                val adapter = RoomTypeCategoryAdapter(applicationContext, currentData.barRatePlans,discountAmount,discountPercentage,false,position,currentData.roomTypeId)
                 holder.recycler.adapter = adapter
                 adapter.notifyDataSetChanged()
             }
@@ -81,18 +81,21 @@ class CreateRatePlanAdapter(val applicationContext:Context, val rateTypeList:Arr
 
 
         holder.recycler.layoutManager=LinearLayoutManager(applicationContext)
-        val adapter = RoomTypeCategoryAdapter(applicationContext, currentData.barRatePlans,discountAmount,discountPercentage,false,position)
+        val adapter = RoomTypeCategoryAdapter(applicationContext, currentData.barRatePlans,discountAmount,discountPercentage,false,position,currentData.roomTypeId)
         holder.recycler.adapter = adapter
         adapter.notifyDataSetChanged()
 
         adapter.setOnListUpdateListener(this)
+
     }
 
-    override fun onRateTypeListChanged(updatedRateTypeList: ArrayList<RatePlan>,position: Int) {
-        applicableList.clear()
+    override fun onRateTypeListChanged(
+        updatedRateTypeList: ArrayList<AddDiscountDataClass>,
+        position: Int
+    ) {
+        Log.e("fuckingList",updatedRateTypeList.toString())
         val roomId = rateTypeList[position].roomTypeId
-       applicableList.add(ApplicableOn(roomId,updatedRateTypeList))
-        Log.e("asnd",applicableList.toString())
         onRateTypeListChangeListener?.onRateTypeList()
+        discountList.addAll(updatedRateTypeList)
     }
 }

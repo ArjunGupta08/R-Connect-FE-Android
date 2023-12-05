@@ -41,6 +41,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealP
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.GetMealPlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.MealPlanDataClass
 import rconnect.retvens.technologies.databinding.FragmentRatePlanCompanyBinding
+import rconnect.retvens.technologies.databinding.FragmentRatePlanUpdateCompanyBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.Const
 import rconnect.retvens.technologies.utils.UserSessionManager
@@ -52,7 +53,7 @@ import retrofit2.Response
 
 class RatePlanCompanyUpdateFragment(val companyPlanId:String) : Fragment(), AddMealPlanAdapter.OnUpdate, RatePlanCompanyDetailsAdapter.OnRateTypeListChangeListener,
     RatePlanUpdateCompanyAdapter.OnRateTypeListChangeListener {
-    private lateinit var binding : FragmentRatePlanCompanyBinding
+    private lateinit var binding : FragmentRatePlanUpdateCompanyBinding
 
     val rateList = ArrayList<CreateRateData>()
     private  var roomTypePlanList:ArrayList<UpdateCompanyRatePlanDataClass> = ArrayList()
@@ -66,7 +67,7 @@ class RatePlanCompanyUpdateFragment(val companyPlanId:String) : Fragment(), AddM
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentRatePlanCompanyBinding.inflate(inflater, container, false)
+        binding = FragmentRatePlanUpdateCompanyBinding.inflate(inflater, container, false)
         return binding.root
     }
 

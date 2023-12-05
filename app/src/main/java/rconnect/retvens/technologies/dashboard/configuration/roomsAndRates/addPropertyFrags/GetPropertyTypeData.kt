@@ -28,7 +28,6 @@ data class GetPropertyDataClass(
     val hotelLogo: String,
     val propertyEmail: String,
     val propertyType: String,
-    val starCategory: String,
     val propertyDescription: String,
     val rating: String,
     val websiteUrl: String,
