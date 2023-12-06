@@ -130,8 +130,8 @@ interface SingleConfiguration {
 
     @GET("getRatePlansList")
     fun getPackageRatePlan (
-        @Query("roomTypeId")roomTypeId:String,
         @Query("userId")userId:String,
+        @Query("roomTypeId")roomTypeId:String,
     ):Call<GetBarRateDataClass>
 
 }

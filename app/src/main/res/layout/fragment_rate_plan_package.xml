@@ -80,7 +80,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
-                            android:text="Deluxe CP"
+                            android:text=""
                             android:inputType="text"
                             android:textColor="@color/secondary"
                             android:textColorHint="@drawable/hint_selector"
@@ -103,7 +103,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto"
-                            android:text="DLXCP"
+                            android:text=""
                             android:textColor="@color/secondary"
                             android:textColorHint="@drawable/hint_selector"
                             android:textSize="@dimen/H5" />
@@ -618,6 +618,7 @@
                                 android:layout_weight=".7">
 
                                 <androidx.cardview.widget.CardView
+                                    android:id="@+id/addImg"
                                     android:layout_width="40dp"
                                     android:layout_height="40dp"
                                     app:cardCornerRadius="11dp"
@@ -636,6 +637,7 @@
                                 </androidx.cardview.widget.CardView>
 
                                 <androidx.cardview.widget.CardView
+                                    android:id="@+id/removeImg"
                                     android:layout_width="40dp"
                                     android:layout_height="40dp"
                                     app:cardCornerRadius="11dp"
@@ -658,7 +660,7 @@
                                 android:id="@+id/adjistmentLayout"
                                 android:layout_width="60dp"
                                 android:layout_height="@dimen/textInputLayoutHeight"
-                                android:hint="Adjustment ₹"
+                                android:hint="Discount %"
                                 style="@style/TextInputLayoutStyle"
                                 android:layout_weight="1.3"
                                 app:endIconMode="clear_text"
@@ -669,7 +671,7 @@
                                     android:layout_height="match_parent"
                                     android:fontFamily="@font/roboto"
                                     android:textSize="@dimen/H5"
-                                    android:hint="₹"
+                                    android:hint="%"
                                     android:inputType="numberDecimal"
                                     android:textColorHint="@drawable/hint_selector"
                                     android:textColor="@color/secondary" />

@@ -13,7 +13,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -41,13 +43,14 @@ import rconnect.retvens.technologies.databinding.FragmentRatePlanPackageBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.shakeAnimation
+import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import kotlin.math.max
 
 
-class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusionsAdapter.OnUpdate, AddInclusionDialogSheet.OnInclusionAdd {
+class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusionsAdapter.OnUpdate, AddInclusionDialogSheet.OnInclusionAdd, CreateRateTypeAdapter.OnInclusionChange {
     private lateinit var binding: FragmentRatePlanPackageBinding
 
     var totalInclusionCharges = 0.00
@@ -66,6 +69,12 @@ class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusions
     private  var chargeRuleArray = ArrayList<String>()
 
     private var mLastClickTime : Long = 0
+
+    private var adjustment = 0.0
+    private var packageTotal = 0.0
+
+    private lateinit var progressDialog : Dialog
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -104,6 +113,9 @@ class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusions
         getPostingRule()
         getChargeRule()
 
+        binding.packageTotalText.text = barData.ratePlanTotal.toString()
+        packageTotal = barData.ratePlanTotal.toDouble()
+
         binding.addInclusions.setOnClickListener {
             // mis-clicking prevention, using threshold of 1000 ms
             if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
@@ -117,7 +129,58 @@ class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusions
             openDialog.setOnAddInclusionDialogListener(this)
         }
 
+        binding.adjustmentET.doAfterTextChanged {
+            if ( binding.adjustmentET.text.toString() != "" &&  binding.adjustmentET.text.toString() != ".") {
+                adjustment = binding.adjustmentET.text.toString().toDouble()
+            }
+        }
+
+        binding.addImg.setOnClickListener {
+            if (isPercentageType) {
+                var packageAdjustment = packageTotal * (adjustment/100)
+                Toast.makeText(requireContext(), "$packageAdjustment", Toast.LENGTH_SHORT).show()
+                packageTotal += packageAdjustment
+                packageTotal = String.format("%.2f", packageTotal).toDouble()
+                binding.packageTotalText.text = packageTotal.toString()
+            } else {
+                packageTotal += adjustment
+                binding.packageTotalText.text = packageTotal.toString()
+            }
+        }
+
+        binding.removeImg.setOnClickListener {
+            if (isPercentageType) {
+                var packageAdjustment = String.format("%.2f", packageTotal * (adjustment/100) ).toDouble()
+                Toast.makeText(requireContext(), "$packageAdjustment", Toast.LENGTH_SHORT).show()
+                packageTotal -= packageAdjustment
+                packageTotal = String.format("%.2f", packageTotal).toDouble()
+                binding.packageTotalText.text = packageTotal.toString()
+            } else {
+                packageTotal -= adjustment
+                binding.packageTotalText.text = packageTotal.toString()
+            }
+        }
+
         inclusionsRecycler()
+
+        val continueBtn = requireActivity().findViewById<CardView>(R.id.continueBtnRate)
+        continueBtn?.setOnClickListener {
+            if (binding.ratePlanNameET.text!!.isEmpty()) {
+                shakeAnimation(binding.ratePlanNameET, requireContext())
+            } else if (binding.shortCodeText.text!!.isEmpty()) {
+                shakeAnimation(binding.shortCodeLayout, requireContext())
+            } else if (selectedInclusionsList.isEmpty()) {
+                shakeAnimation(binding.addInclusions, requireContext())
+            } else {
+                if (isPercentageType) {
+                    percentage = binding.adjustmentET.text.toString()
+                } else {
+                    amount = binding.adjustmentET.text.toString()
+                }
+                progressDialog = showProgressDialog(requireContext())
+                saveData()
+            }
+        }
 
         binding.saveIC.setOnClickListener {
             if (binding.ratePlanNameET.text!!.isEmpty()) {
@@ -132,6 +195,8 @@ class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusions
                 } else {
                     amount = binding.adjustmentET.text.toString()
                 }
+                progressDialog = showProgressDialog(requireContext())
+
                 saveData()
             }
         }
@@ -139,10 +204,18 @@ class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusions
     }
 
     private fun inclusionsRecycler() {
+
+        totalInclusionCharges = 0.0
+
+        selectedInclusionsList.forEach {
+            totalInclusionCharges += it.rate.toDouble()
+        }
+
         binding.recyclerInclusion.layoutManager = LinearLayoutManager(requireContext())
 
         val createRateTypeAdapter = CreateRateTypeAdapter(requireContext(), selectedInclusionsList, postingRuleArray, chargeRuleArray)
         binding.recyclerInclusion.adapter = createRateTypeAdapter
+        createRateTypeAdapter.setOnInclusionChangeListener(this)
         createRateTypeAdapter.notifyDataSetChanged()
     }
 
@@ -162,7 +235,7 @@ class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusions
                 UserSessionManager(requireContext()).getUserId().toString(),
                 UserSessionManager(requireContext()).getPropertyId().toString(),
                 "Package",
-                UserSessionManager(requireContext()).getRoomTypeId().toString(),
+                roomTypeId = barData.roomTypeId,
                 "",
                 binding.shortCodeText.text.toString(),
                 selectedInclusionsList,
@@ -177,6 +250,7 @@ class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusions
 
         send.enqueue(object : Callback<ResponseData?> {
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                progressDialog.dismiss()
                 if (response.isSuccessful){
 
                 }
@@ -184,6 +258,7 @@ class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusions
             }
 
             override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                progressDialog.dismiss()
                 Log.d("error", t.localizedMessage)
             }
         })
@@ -299,9 +374,36 @@ class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusions
                 selectedInclusionsList.add(it)
             }
         }
+        packageTotal += totalInclusionCharges
+        binding.packageTotalText.text = packageTotal.toString()
+        inclusionsRecycler()
+
+    }
+
+    override fun onInclusionDelete(item: InclusionPlan) {
+
+        selectedInclusionsList.remove(item)
+        barData.inclusion.remove(item)
 
         inclusionsRecycler()
 
+        packageTotal -= item.rate.toDouble()
+        binding.packageTotalText.text = packageTotal.toString()
+    }
+
+    override fun onInclusionUpdate(updatedInclusionList: ArrayList<InclusionPlan>) {
+        selectedInclusionsList = updatedInclusionList
+        inclusionsRecycler()
+    }
+
+    override fun onInclusionPriceUpdate(position: Int, price: String) {
+        packageTotal -= selectedInclusionsList.get(position).rate.toDouble()
+        selectedInclusionsList.get(position).rate = price
+        packageTotal += price.toDouble()
+
+        binding.packageTotalText.text = packageTotal.toString()
+
+        inclusionsRecycler()
     }
 
 }

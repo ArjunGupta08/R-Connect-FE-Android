@@ -100,8 +100,6 @@ class CreateRateTypeFragment : Fragment(),
         getMealPlan()
         getCorporate()
 
-        getBars()
-
         selectedRoomType = BooleanArray(roomTypeList.size)
         selectedMealPlan = BooleanArray(mealPlanList.size)
 
@@ -565,6 +563,8 @@ class CreateRateTypeFragment : Fragment(),
             Toast.makeText(requireContext(), roomTypeId, Toast.LENGTH_SHORT).show()
             binding.masterRatePlanLayout.isVisible = true
 
+            getBars()
+
             listPopupWindow.dismiss()
         }
 
@@ -617,7 +617,7 @@ class CreateRateTypeFragment : Fragment(),
 //        val roomTypeId = UserSessionManager(requireContext()).getRoomTypeId().toString()
         Log.d("roomTypeId", roomTypeId)
 
-        val getBar = OAuthClient<SingleConfiguration>(requireContext()).create(SingleConfiguration::class.java).getPackageRatePlan(roomTypeId, userId)
+        val getBar = OAuthClient<SingleConfiguration>(requireContext()).create(SingleConfiguration::class.java).getPackageRatePlan(userId, roomTypeId)
         getBar.enqueue(object : Callback<GetBarRateDataClass?> {
             override fun onResponse(
                 call: Call<GetBarRateDataClass?>,
