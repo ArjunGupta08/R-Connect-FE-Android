@@ -13,6 +13,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRo
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.GetAllRatePlans
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.AddBarsRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.GetBarDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.GetBarRateDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.UpdateCompanyRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.UpdateRatePlanDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.AddCompanyRatePlanDataClass
@@ -126,5 +127,11 @@ interface SingleConfiguration {
         @Query("companyRatePlanId")companyRatePlanId:String,
         @Body updateRatePlanDataClass: UpdateCompanyRatePlanDataClass
     ):Call<ResponseData>
+
+    @GET("getRatePlansList")
+    fun getPackageRatePlan (
+        @Query("roomTypeId")roomTypeId:String,
+        @Query("userId")userId:String,
+    ):Call<GetBarRateDataClass>
 
 }

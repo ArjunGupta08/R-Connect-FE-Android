@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -22,12 +23,16 @@ import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.Api.configurationApi.SingleConfiguration
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddInclusionDialogSheet
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddInclusionsAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateTypeAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.RatePlanDetailsAdapter
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.BarData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.GetCompanyDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.InclusionPlan
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.AddInclusionsDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.CreateInclusionDialogSheet
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetChargeRuleArray
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclusions.GetInclusionsDataClass
@@ -42,7 +47,7 @@ import retrofit2.Response
 import kotlin.math.max
 
 
-class RatePlanPackageFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
+class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusionsAdapter.OnUpdate, AddInclusionDialogSheet.OnInclusionAdd {
     private lateinit var binding: FragmentRatePlanPackageBinding
 
     var totalInclusionCharges = 0.00
@@ -60,6 +65,7 @@ class RatePlanPackageFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
     private  var postingRuleArray = ArrayList<String>()
     private  var chargeRuleArray = ArrayList<String>()
 
+    private var mLastClickTime : Long = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -71,6 +77,9 @@ class RatePlanPackageFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        selectedInclusionsList = barData.inclusion
+
 
         setUpAddRemoveClicks()
 
@@ -96,8 +105,19 @@ class RatePlanPackageFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
         getChargeRule()
 
         binding.addInclusions.setOnClickListener {
-            openAddInclusionDialog()
+            // mis-clicking prevention, using threshold of 1000 ms
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                return@setOnClickListener;
+            }
+            mLastClickTime = SystemClock.elapsedRealtime()
+
+            val openDialog = AddInclusionDialogSheet(selectedInclusionsList)
+            val fragManager = childFragmentManager
+            fragManager.let{openDialog.show(it, AddInclusionDialogSheet.TAG)}
+            openDialog.setOnAddInclusionDialogListener(this)
         }
+
+        inclusionsRecycler()
 
         binding.saveIC.setOnClickListener {
             if (binding.ratePlanNameET.text!!.isEmpty()) {
@@ -116,6 +136,14 @@ class RatePlanPackageFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
             }
         }
 
+    }
+
+    private fun inclusionsRecycler() {
+        binding.recyclerInclusion.layoutManager = LinearLayoutManager(requireContext())
+
+        val createRateTypeAdapter = CreateRateTypeAdapter(requireContext(), selectedInclusionsList, postingRuleArray, chargeRuleArray)
+        binding.recyclerInclusion.adapter = createRateTypeAdapter
+        createRateTypeAdapter.notifyDataSetChanged()
     }
 
     private fun saveData() {
@@ -185,105 +213,6 @@ class RatePlanPackageFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
             }
         }
 
-    }
-    private fun openAddInclusionDialog() {
-        val dialog = Dialog(requireContext())
-        dialog.setCancelable(true)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.dialog_add_inclusion)
-
-        val createNewInclusionBtn = dialog.findViewById<TextView>(R.id.createNewInclusionBtn)
-        createNewInclusionBtn.setOnClickListener {
-            openCreateInclusionDialog()
-        }
-
-        val cancel = dialog.findViewById<TextView>(R.id.cancel)
-        cancel.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        val saveBtn = dialog.findViewById<CardView>(R.id.saveBtn)
-        saveBtn.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        val recyclerView = dialog.findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-
-        val identity = OAuthClient<GeneralsAPI>(requireContext()).create(GeneralsAPI::class.java).getInclusionApi(
-            UserSessionManager(requireContext()).getUserId().toString(), UserSessionManager(requireContext()).getPropertyId().toString())
-        identity.enqueue(object : Callback<GetInclusionsDataClass?> {
-            override fun onResponse(
-                call: Call<GetInclusionsDataClass?>,
-                response: Response<GetInclusionsDataClass?>
-            ) {
-                if (response.isSuccessful) {
-//                    val adapter = AddInclusionsAdapter(response.body()!!.data, requireContext())
-//                    recyclerView.adapter = adapter
-//                    adapter.setOnUpdateListener(this@RatePlanPackageFragment)
-//                    adapter.notifyDataSetChanged()
-                } else {
-                    Log.d("error", "${response.code()} ${response.message()}")
-                }
-            }
-
-            override fun onFailure(call: Call<GetInclusionsDataClass?>, t: Throwable) {
-                Log.d("error", t.localizedMessage)
-            }
-        })
-
-        dialog.show()
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-
-    }
-    private fun openCreateInclusionDialog() {
-        val dialog = Dialog(requireContext())
-        dialog.setCancelable(true)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.dialog_create_inclusion)
-
-        val cancel = dialog.findViewById<TextView>(R.id.cancel)
-        cancel.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        val inclusionName = dialog.findViewById<TextInputEditText>(R.id.inclusionName)
-        val inclusionType = dialog.findViewById<TextInputEditText>(R.id.inclusionType)
-        val shortCode = dialog.findViewById<TextInputEditText>(R.id.shortCode)
-        val charge = dialog.findViewById<TextInputEditText>(R.id.charge)
-        val chargeRule = dialog.findViewById<TextInputEditText>(R.id.chargeRule)
-        val postingRule = dialog.findViewById<TextInputEditText>(R.id.postingRule)
-
-        val save = dialog.findViewById<CardView>(R.id.saveBtn)
-
-        save.setOnClickListener {
-            saveInclusion(requireContext(), dialog, shortCode.text.toString(), charge.text.toString(), inclusionName.text.toString(), inclusionType.text.toString(), chargeRule.text.toString(), postingRule.text.toString())
-        }
-
-        dialog.show()
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-
-    }
-    private fun saveInclusion(context: Context, dialog: Dialog, shortCodeTxt : String, charge:String, inclusionName:String, inclusionType:String, chargeRule:String, postingRule:String) {
-        val create = OAuthClient<GeneralsAPI>(context).create(GeneralsAPI::class.java).addInclusionsApi(
-            AddInclusionsDataClass(UserSessionManager(context).getUserId().toString(), UserSessionManager(context).getPropertyId().toString(), shortCodeTxt, charge, inclusionName, inclusionType, chargeRule, postingRule)
-        )
-
-        create.enqueue(object : Callback<ResponseData?> {
-            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
-                Log.d( "inclusion", "${response.code()} ${response.message()}")
-//                setUpRecycler()
-                dialog.dismiss()
-            }
-
-            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
-                Log.d("error", t.localizedMessage)
-            }
-        })
     }
 
     override fun onUpdateList(selectedList: ArrayList<GetInclusionsData>) {
@@ -362,6 +291,17 @@ class RatePlanPackageFragment : Fragment(), AddInclusionsAdapter.OnUpdate {
                 Log.d("error", t.localizedMessage)
             }
         })
+    }
+
+    override fun onInclusionAdded(selectedInclusionPlan: ArrayList<InclusionPlan>, totalInclusionCharges: Double) {
+        selectedInclusionPlan.forEach {
+            if (!selectedInclusionsList.contains(it)) {
+                selectedInclusionsList.add(it)
+            }
+        }
+
+        inclusionsRecycler()
+
     }
 
 }

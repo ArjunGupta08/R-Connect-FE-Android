@@ -19,13 +19,18 @@ import rconnect.retvens.technologies.Api.CorporatesApi
 import rconnect.retvens.technologies.Api.DropDownApis
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.RetrofitObject
+import rconnect.retvens.technologies.Api.configurationApi.SingleConfiguration
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.channelManager.AddReservationFragment.BookingItem
+import rconnect.retvens.technologies.dashboard.channelManager.AddReservationFragment.RateType
 import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.AddCompany.Company
 import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.AddCompany.CorporatesDataClass
 import rconnect.retvens.technologies.dashboard.configuration.CorporateRates.CorporatesData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.AddBarsRatePlanDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.BarData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.BarRates
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.GetBarRateDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.GetMealData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.GetMealPlanItem
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.RatePlanBarAdapter
@@ -67,6 +72,7 @@ class CreateRateTypeFragment : Fragment(),
         fun onDataUpdated(updatedDataList: ArrayList<GetRoomType>)
     }
 
+    private var ratePlanList = ArrayList<BarData>()
     // Instance of the listener
     private var dataUpdateListener: DataUpdateListener? = null
 
@@ -75,6 +81,7 @@ class CreateRateTypeFragment : Fragment(),
         this.dataUpdateListener = listener
     }
 
+    var roomTypeId = ""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -92,6 +99,8 @@ class CreateRateTypeFragment : Fragment(),
         getRateType()
         getMealPlan()
         getCorporate()
+
+        getBars()
 
         selectedRoomType = BooleanArray(roomTypeList.size)
         selectedMealPlan = BooleanArray(mealPlanList.size)
@@ -498,15 +507,142 @@ class CreateRateTypeFragment : Fragment(),
         }
 
         binding.packageRateType.setOnClickListener {
-            replaceChildFrag(RatePlanPackageFragment())
             binding.rateTypeET.setText("Package")
             type = "Package"
             binding.roomTypeLayout.isVisible = true
             binding.companyNameLayout.isVisible = false
             binding.mealPlanLayout.isVisible = false
-            binding.masterRatePlanLayout.isVisible = true
+
+            binding.dropDownLayout.isVisible = false
+            isRateDropDownOpen = false
+
+            packageRateEdit()
         }
 
+    }
+
+    private fun packageRateEdit() {
+        binding.dropRoom.setOnClickListener {
+            showRoomDropDown(it)
+        }
+
+        binding.masterRatePlanET.setOnClickListener {
+            if (ratePlanList.isNotEmpty()) {
+                showBarDropDown(it)
+            }
+        }
+    }
+    private fun showRoomDropDown(it: View?) {
+        val listPopupWindow = ListPopupWindow(requireContext())
+
+        // Create a custom adapter to display only the rateType property
+        val customAdapter = object : ArrayAdapter<GetRoomType>(requireContext(), R.layout.simple_dropdown_item_1line, roomTypeList) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getView(position, convertView, parent)
+                val room = getItem(position)?.roomTypeName
+
+                (view as TextView).text = room
+                return view
+            }
+
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                val rateType = getItem(position)?.roomTypeName
+                (view as TextView).text = rateType
+
+                return view
+            }
+        }
+
+        listPopupWindow.setAdapter(customAdapter)
+
+        listPopupWindow.anchorView = it
+        listPopupWindow.setOnItemClickListener { _, _, position, _ ->
+            val selectedItem = customAdapter.getItem(position)
+            binding.dropRoom.setText(selectedItem?.roomTypeName)
+            roomTypeId = selectedItem?.roomTypeId.toString()
+
+            Toast.makeText(requireContext(), roomTypeId, Toast.LENGTH_SHORT).show()
+            binding.masterRatePlanLayout.isVisible = true
+
+            listPopupWindow.dismiss()
+        }
+
+        listPopupWindow.show()
+    }
+
+    private fun showBarDropDown(it: View?) {
+        val listPopupWindow = ListPopupWindow(requireContext())
+
+        // Create a custom adapter to display only the rateType property
+        val customAdapter = object : ArrayAdapter<BarData>(requireContext(), R.layout.simple_dropdown_item_1line, ratePlanList) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getView(position, convertView, parent)
+                val room = getItem(position)?.ratePlanName
+
+                (view as TextView).text = room
+                return view
+            }
+
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                val rateType = getItem(position)?.ratePlanName
+                (view as TextView).text = rateType
+
+                return view
+            }
+        }
+
+        listPopupWindow.setAdapter(customAdapter)
+
+        listPopupWindow.anchorView = it
+        listPopupWindow.setOnItemClickListener { _, _, position, _ ->
+            val selectedItem = customAdapter.getItem(position)
+            binding.masterRatePlanET.setText(selectedItem!!.ratePlanName)
+//            roomTypeId = selectedItem?.roomTypeId.toString()
+
+            Log.d("data", selectedItem.toString())
+            Toast.makeText(requireContext(), selectedItem.ratePlanName, Toast.LENGTH_SHORT).show()
+
+            replaceChildFrag(RatePlanPackageFragment(selectedItem))
+
+            listPopupWindow.dismiss()
+        }
+
+        listPopupWindow.show()
+    }
+
+    private fun getBars() {
+        val userId = UserSessionManager(requireContext()).getUserId().toString()
+//        val roomTypeId = UserSessionManager(requireContext()).getRoomTypeId().toString()
+        Log.d("roomTypeId", roomTypeId)
+
+        val getBar = OAuthClient<SingleConfiguration>(requireContext()).create(SingleConfiguration::class.java).getPackageRatePlan(roomTypeId, userId)
+        getBar.enqueue(object : Callback<GetBarRateDataClass?> {
+            override fun onResponse(
+                call: Call<GetBarRateDataClass?>,
+                response: Response<GetBarRateDataClass?>
+            ) {
+                try{
+
+                        Toast.makeText(requireContext(), response.code().toString(), Toast.LENGTH_SHORT).show()
+
+                    if (response.isSuccessful) {
+                        val data = response.body()!!.data
+                        ratePlanList = data
+
+                        Log.d("data", data.toString())
+                    }
+
+                } catch (e : Exception){
+                    e.printStackTrace()
+                }
+            }
+
+            override fun onFailure(call: Call<GetBarRateDataClass?>, t: Throwable) {
+                Log.d("error", t.localizedMessage)
+            }
+        })
     }
 
     private fun replaceChildFrag(fragment: Fragment){

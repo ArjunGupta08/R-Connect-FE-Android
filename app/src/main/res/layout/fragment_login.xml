@@ -34,7 +34,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/roboto"
                 android:inputType="text"
-                android:text="Rah789"
+                android:text="tes894"
                 android:textColorHint="@color/secondary"
                 android:textColor="@color/secondary" />
 
@@ -59,7 +59,7 @@
                 android:textColorHint="@color/secondary"
                 android:fontFamily="@font/roboto"
                 android:inputType="text"
-                android:text="150860"
+                android:text="567797"
                 android:textColor="@color/secondary" />
 
         </com.google.android.material.textfield.TextInputLayout>

@@ -38,3 +38,20 @@ data class GetBarDataClass(
     val statuscode: Int
 )
 
+
+data class BarData(
+    val propertyId: String,
+    val roomTypeId: String,
+    val barRatePlanId: String,
+    val ratePlanTotal: String,
+    val inclusion: ArrayList<InclusionPlan>,
+    val extraChildRate: String,
+    val extraAdultRate: String,
+    val ratePlanName: String,
+)
+
+data class GetBarRateDataClass(
+    val `data`: ArrayList<BarData>,
+    val statuscode: Int
+)
+
