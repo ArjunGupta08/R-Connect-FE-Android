@@ -1,9 +1,7 @@
 package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType
 
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
-import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -16,23 +14,18 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.isVisible
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import rconnect.retvens.technologies.Api.OAuthClient
 import rconnect.retvens.technologies.Api.configurationApi.ChainConfiguration
-import rconnect.retvens.technologies.Api.configurationApi.SingleConfiguration
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.properties.ViewPropertiesFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.ImageCategoryDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.ImagesCategoryAdapter
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectImagesDataClass
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.ImagesDataResponse
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.SelectRoomImagesAdapter
-import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.roomType.RoomTypeFragment
 import rconnect.retvens.technologies.databinding.FragmentAddImagesBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.Const
@@ -49,12 +42,14 @@ class AddImagesFragment(val idForImg : String, val isRoom : Boolean) : Fragment(
     ImagesCategoryAdapter.OnItemClickListener {
     private lateinit var binding : FragmentAddImagesBinding
 
-    private var imageUri: Uri?= null
+    private var imagesUri: ArrayList<Uri> = ArrayList()
     private val PICK_IMAGE_REQUEST_CODE = 123
     private val MAX_IMAGE_LIMIT = 5
     private var selectedImagesList:ArrayList<ImageCategoryDataClass> = ArrayList()
+    private var responseImageList:ArrayList<ImagesDataResponse> = ArrayList()
     var isImgCategoryLayoutVisible = true
     private  var positions: Int = 0
+    private var categories:String = ""
 
     lateinit var imagesCategoryAdapter: ImagesCategoryAdapter
     lateinit var selectRoomImagesAdapter: SelectRoomImagesAdapter
@@ -143,47 +138,15 @@ class AddImagesFragment(val idForImg : String, val isRoom : Boolean) : Fragment(
     }
 
     private fun processSelectedImages(selectedImages: List<Uri>) {
-        // Process each selected image
-        for (imageUri in selectedImages) {
-            processImageUri(imageUri)
-        }
+        imagesUri.addAll(selectedImages)
+        uploadPropImages()
     }
 
-    private fun processImageUri(imageUri: Uri) {
-        try {
-            // Your existing logic to handle imageUri
-            // Check if there is an existing item at the specified position
-            if (positions < selectedImagesList.size) {
-                // Update the existing item at the specified position
-                val existingItem = selectedImagesList[positions]
-                existingItem.imageList.add(imageUri)
-            } else {
-                // Add a new item to the list
-                val newImageCategory = ImageCategoryDataClass("room", arrayListOf(imageUri))
-                selectedImagesList.add(newImageCategory)
-            }
-
-            // Log the contents of selectedImagesList
-            Log.e("list", selectedImagesList.toString())
-
-            // Notify the adapter that the data at the specified position has changed
-            imagesCategoryAdapter.notifyItemChanged(positions)
-            isImgCategoryLayoutVisible = !isImgCategoryLayoutVisible
-
-        } catch (e: RuntimeException) {
-            Log.d("cropperOnPersonal", e.toString())
-        } catch (e: ClassCastException) {
-            Log.d("cropperOnPersonal", e.toString())
-        }
-    }
-
-
-
-
-    override fun onAddRoomImage(position: Int) {
+    override fun onAddRoomImage(position: Int, category: String) {
         pickMultipleImages()
         positions = position
-        Log.e("postion",position.toString())
+        categories = category
+        Log.e("position",position.toString())
     }
 
     override fun setImages(imageCategoryDataClass: ImageCategoryDataClass) {
@@ -196,13 +159,13 @@ class AddImagesFragment(val idForImg : String, val isRoom : Boolean) : Fragment(
         } else {
             if (imageCategoryDataClass.imageList.size != 0)
             {
-                uploadPropImages(imageCategoryDataClass)
+                uploadPropImages()
             }
 
         }
     }
 
-    private fun uploadPropImages(imageCategoryDataClass: ImageCategoryDataClass) {
+    private fun uploadPropImages() {
         progressDialog = showProgressDialog(requireContext())
 
         val userId = UserSessionManager(requireContext()).getUserId().toString()
@@ -210,10 +173,10 @@ class AddImagesFragment(val idForImg : String, val isRoom : Boolean) : Fragment(
         Log.e("user", userId)
         Log.e("property", idForImg.toString())
 
-        val totalImages = imageCategoryDataClass.imageList.size
+        val totalImages = imagesUri.size
         var uploadedImages = 0
 
-        imageCategoryDataClass.imageList.forEach { imageUri ->
+        imagesUri.forEach { imageUri ->
             val propertyImage = prepareFilePart(imageUri, "hotelImage", requireContext())
 
             val uploadRoomImage = OAuthClient<ChainConfiguration>(requireContext())
@@ -221,19 +184,19 @@ class AddImagesFragment(val idForImg : String, val isRoom : Boolean) : Fragment(
                 .uploadPropertyImages(
                     userId,
                     idForImg!!,
-                    createPartFromString(imageCategoryDataClass.imageType),
+                    createPartFromString(categories),
                     propertyImage!!
                 )
-
-            uploadRoomImage.enqueue(object : Callback<ResponseData?> {
+            uploadRoomImage.enqueue(object : Callback<ImagesDataResponse?> {
                 override fun onResponse(
-                    call: Call<ResponseData?>,
-                    response: Response<ResponseData?>
+                    call: Call<ImagesDataResponse?>,
+                    response: Response<ImagesDataResponse?>
                 ) {
                     progressDialog.dismiss()  // Dismiss the dialog here to handle both success and failure cases
 
                     if (response.isSuccessful) {
                         val responseData = response.body()!!
+                        responseImageList.add(responseData)
                         Log.e("res", responseData?.message.toString())
                     } else {
                         Log.e("res", "Error: ${response.code().toString()}")
@@ -241,6 +204,14 @@ class AddImagesFragment(val idForImg : String, val isRoom : Boolean) : Fragment(
 
                     uploadedImages++
                     if (uploadedImages == totalImages) {
+
+                        responseImageList.forEach {
+                            var imageList:ArrayList<String> = ArrayList()
+                            imageList.add(it.data.image)
+                            selectedImagesList.add(ImageCategoryDataClass(it.data.imageId,it.data.imageTag,imageList))
+                            imagesCategoryAdapter.notifyItemChanged(positions)
+                        }
+
                         // Set your click listener outside the loop
                         continueBtnRoom.setOnClickListener {
                             Toast.makeText(requireContext(), "Images Uploaded Successfully", Toast.LENGTH_SHORT).show()
@@ -256,7 +227,7 @@ class AddImagesFragment(val idForImg : String, val isRoom : Boolean) : Fragment(
                     }
                 }
 
-                override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                override fun onFailure(call: Call<ImagesDataResponse?>, t: Throwable) {
                     Log.e("res", "Failure: ${t.message}")
                 }
             })
@@ -267,8 +238,7 @@ class AddImagesFragment(val idForImg : String, val isRoom : Boolean) : Fragment(
     private fun uploadRoomImages(imageCategoryDataClass: ImageCategoryDataClass) {
         progressDialog = showProgressDialog(requireContext())
 
-        imageCategoryDataClass.imageList.forEach { imageUri ->
-
+        imagesUri.forEach { imageUri ->
 
             val propertyImage = prepareFilePart(imageUri, "roomImage", requireContext())
             val userId = UserSessionManager(requireContext()).getUserId().toString()
@@ -279,7 +249,7 @@ class AddImagesFragment(val idForImg : String, val isRoom : Boolean) : Fragment(
 
             val uploadRoomImage = OAuthClient<ChainConfiguration>(requireContext())
                 .create(ChainConfiguration::class.java)
-                .uploadRoomsImages(userId,idForImg!! ,createPartFromString(imageCategoryDataClass.imageType),propertyImage!!)
+                .uploadRoomsImages(userId,idForImg!! ,createPartFromString(categories),propertyImage!!)
 
             uploadRoomImage.enqueue(object : Callback<ResponseData?> {
                 override fun onResponse(

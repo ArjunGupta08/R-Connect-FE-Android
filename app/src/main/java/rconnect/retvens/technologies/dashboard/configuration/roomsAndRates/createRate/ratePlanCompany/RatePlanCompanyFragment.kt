@@ -283,5 +283,13 @@ class RatePlanCompanyFragment(val roomList:ArrayList<GetRoomType>, val mealList:
 
     }
 
+    private fun replaceFragment(fragment: Fragment) {
+        if (fragment !=null){
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.dashboardFragmentContainer,fragment)
+            transaction.commit()
+        }
 
+
+    }
 }

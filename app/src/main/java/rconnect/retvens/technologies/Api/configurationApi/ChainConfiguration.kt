@@ -7,6 +7,7 @@ import org.json.JSONObject
 import rconnect.retvens.technologies.dashboard.configuration.properties.FetchPropertyData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.AddPropertyResponseDataClass
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.GetPropertyData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter.ImagesDataResponse
 import rconnect.retvens.technologies.onboarding.ResponseData
 import retrofit2.Call
 import retrofit2.Response
@@ -147,5 +148,5 @@ interface ChainConfiguration {
         @Query("propertyId") propertyId: String,
         @Part("imageTags[0][imageTags]") tag1: RequestBody,
         @Part image: MultipartBody.Part
-    ): Call<ResponseData>
+    ): Call<ImagesDataResponse>
 }

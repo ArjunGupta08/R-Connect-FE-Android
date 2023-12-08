@@ -1,10 +1,9 @@
 package rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.imageAdapter
 
-import android.net.Uri
-
 data class ImageCategoryDataClass(
-    val imageType: String,
-    val imageList: ArrayList<Uri>
+    val imageId:String,
+    val imageTag: String,
+    val imageList: ArrayList<String>
 ) {
-    constructor(imageType: String) : this(imageType, ArrayList())
+    constructor(imageId: String,imageTag: String) : this(imageId,imageTag, ArrayList())
 }

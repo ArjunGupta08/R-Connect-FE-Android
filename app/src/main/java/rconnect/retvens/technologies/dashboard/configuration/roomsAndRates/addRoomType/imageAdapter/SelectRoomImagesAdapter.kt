@@ -8,11 +8,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddImagesFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddRoomTypeFragment
 
-class SelectRoomImagesAdapter(val context: Context, private val itemList: ArrayList<Uri>,private val position: Int) : RecyclerView.Adapter<SelectRoomImagesAdapter.ViewHolder>() {
+class SelectRoomImagesAdapter(val context: Context, private val itemList: ArrayList<String>,private val position: Int) : RecyclerView.Adapter<SelectRoomImagesAdapter.ViewHolder>() {
 
     val VIEW_TYPE_DYNAMIC_ITEM = 1
     val VIEW_TYPE_STATIC_ITEM = 2
@@ -43,7 +44,7 @@ class SelectRoomImagesAdapter(val context: Context, private val itemList: ArrayL
         if (position < itemList.size) {
             // Handle dynamic items
             val item = itemList[position]
-            holder.image.setImageURI(item)
+            Glide.with(context).load(item).into(holder.image)
 
             holder.deleteImage.setOnClickListener {
                 itemList.remove(item)

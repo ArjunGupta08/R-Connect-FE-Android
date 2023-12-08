@@ -16,6 +16,7 @@ import okhttp3.MultipartBody
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddImagesFragment
 import rconnect.retvens.technologies.utils.prepareFilePart
+import rconnect.retvens.technologies.utils.shakeAnimation
 
 class ImagesCategoryAdapter(val context: Context, private val itemList: ArrayList<ImageCategoryDataClass>) : RecyclerView.Adapter<ImagesCategoryAdapter.ViewHolder>(),
     SelectRoomImagesAdapter.OnItemClickListener {
@@ -28,7 +29,7 @@ class ImagesCategoryAdapter(val context: Context, private val itemList: ArrayLis
         onItemClickListener = listener
     }
     interface OnItemClickListener {
-        fun onAddRoomImage(position: Int)
+        fun onAddRoomImage(position: Int,category:String)
         fun setImages(imageCategoryDataClass: ImageCategoryDataClass)
     }
 
@@ -50,7 +51,12 @@ class ImagesCategoryAdapter(val context: Context, private val itemList: ArrayLis
         holder.selectImagesAdapter.notifyDataSetChanged()
 
         holder.addImage.setOnClickListener {
-            onItemClickListener?.onAddRoomImage(position)
+            if (holder.textH.text.isEmpty()){
+                shakeAnimation(holder.textH,context)
+            }else{
+                onItemClickListener?.onAddRoomImage(position,holder.textH.text.toString())
+            }
+
         }
 
         holder.deleteImage.setOnClickListener {
@@ -58,7 +64,7 @@ class ImagesCategoryAdapter(val context: Context, private val itemList: ArrayLis
             notifyDataSetChanged() // Assuming you are using notifyDataSetChanged to refresh the UI
         }
 
-        onItemClickListener?.setImages(item)
+//        onItemClickListener?.setImages(item)
     }
 
     override fun getItemCount(): Int {
@@ -91,7 +97,7 @@ class ImagesCategoryAdapter(val context: Context, private val itemList: ArrayLis
     }
 
     fun addEmptyItem(imageType: String) {
-        val emptyItem = ImageCategoryDataClass(imageType)
+        val emptyItem = ImageCategoryDataClass("",imageType)
         itemList.add(emptyItem)
         notifyItemInserted(itemList.size - 1) // Notify the adapter that a new item has been inserted
     }

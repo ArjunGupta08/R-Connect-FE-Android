@@ -58,32 +58,32 @@ class AddCompanyFragment : Fragment() {
         changeChildFragment(CompanyDetailsChildFragment())
 
 
-        binding.continueBtn.setOnClickListener {
+//        binding.continueBtn.setOnClickListener {
 
-            if (page == 1){
-
-                page = 2
-                binding.buttonTxt.text = "Save"
-
-                binding.contractDetailsFag.textSize = 18.0f
-                binding.contractDetailsFag.typeface = robotoMedium
-                binding.contractDetailsFag.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
-
-                binding.companyDetailsFrag.textSize = 14.0f
-                binding.companyDetailsFrag.typeface = roboto
-
-                binding.companyDetailsFrag.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
-                binding.contractDetailsFag.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
-
-                changeChildFragment(ContractDetailsChildFragment(""))
-                rightInAnimation(binding.addCompanyFragContainer, requireContext())
-
-            } else {
-
-
-
-            }
-        }
+//            if (page == 1){
+//
+//                page = 2
+//                binding.buttonTxt.text = "Save"
+//
+//                binding.contractDetailsFag.textSize = 18.0f
+//                binding.contractDetailsFag.typeface = robotoMedium
+//                binding.contractDetailsFag.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary))
+//
+//                binding.companyDetailsFrag.textSize = 14.0f
+//                binding.companyDetailsFrag.typeface = roboto
+//
+//                binding.companyDetailsFrag.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+//                binding.contractDetailsFag.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+//
+//                changeChildFragment(ContractDetailsChildFragment(""))
+//                rightInAnimation(binding.addCompanyFragContainer, requireContext())
+//
+//            } else {
+//
+//
+//
+//            }
+//        }
 
 
         binding.companyDetailsFrag.setOnClickListener {
@@ -126,6 +126,10 @@ class AddCompanyFragment : Fragment() {
 //
 //            binding.companyDetailsFrag.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
 //            binding.contractDetailsFag.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_white_background))
+        }
+
+        binding.ratePlanCard.setOnClickListener {
+            shakeAnimation(binding.continueBtn,requireContext())
         }
 
 
