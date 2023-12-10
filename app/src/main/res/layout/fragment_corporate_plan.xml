@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.RatePlanCompanyFragment">
+
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        style="@style/CardViewTheme"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="20dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingVertical="10dp">
+
+            <TextView
+                android:id="@+id/heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondary"
+                android:text="Company's Rate Plan"
+                android:textSize="@dimen/H2"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/roboto_bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <LinearLayout
+                android:id="@+id/ll7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="4"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/heading"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintTop_toBottomOf="@id/heading">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/roomTypeLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/textInputLayoutHeight"
+                    android:background="@color/primaryBackground"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:hint="Room Type"
+                    android:visibility="visible"
+                    style="@style/ClickableTextInputLayoutStyle"
+                    app:endIconMode="custom"
+                    app:endIconTint="@color/black">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/drop_room"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:cursorVisible="false"
+                        android:textSize="@dimen/H5"
+                        android:singleLine="true"
+                        android:text="Select Room Type"
+                        android:textColorHint="@drawable/hint_selector"
+                        android:textColor="@color/secondary" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/mealPlanLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/textInputLayoutHeight"
+                    android:layout_weight="1"
+                    android:background="@color/primaryBackground"
+                    android:layout_marginStart="10dp"
+                    android:hint="Meal Plan"
+                    android:visibility="visible"
+                    style="@style/ClickableTextInputLayoutStyle">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/mealPlanET"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
+                        android:textSize="@dimen/H5"
+                        android:text="Select Meal Plan"
+                        android:inputType="text"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:textColorHint="@drawable/hint_selector"
+                        android:textColor="@color/secondary"
+                        android:clickable="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginHorizontal="20dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/ll7"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

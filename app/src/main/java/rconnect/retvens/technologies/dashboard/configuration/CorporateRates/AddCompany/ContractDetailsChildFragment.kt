@@ -7,6 +7,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.Typeface
 import android.graphics.pdf.PdfRenderer
 import android.net.Uri
 import android.os.Bundle
@@ -17,12 +18,15 @@ import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.FrameLayout
 import android.widget.ListPopupWindow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -40,6 +44,7 @@ import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.bottomSlideInAnimation
 import rconnect.retvens.technologies.utils.prepareFilePart
 import rconnect.retvens.technologies.utils.preparePdfPart
+import rconnect.retvens.technologies.utils.rightInAnimation
 import rconnect.retvens.technologies.utils.shakeAnimation
 import rconnect.retvens.technologies.utils.showProgressDialog
 import rconnect.retvens.technologies.utils.utilCreateDatePickerDialog
@@ -63,6 +68,8 @@ class ContractDetailsChildFragment(val companyId:String) : Fragment(), ContractP
     lateinit var pdfAdapter: ContractPDFAdapter
     private var scaleFactor = 1.0f
 //    private lateinit var pdfPreview: ImageView
+    private lateinit var roboto : Typeface
+    private lateinit var robotoMedium : Typeface
     private var pdfRenderer: PdfRenderer? = null
     private var pdfUri : Uri? = null
 
@@ -111,6 +118,9 @@ class ContractDetailsChildFragment(val companyId:String) : Fragment(), ContractP
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        roboto = ResourcesCompat.getFont(requireContext(), R.font.roboto)!!
+        robotoMedium = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)!!
 
         binding.selectCard.setOnClickListener {
             pickFileFromGallery()
@@ -165,91 +175,185 @@ class ContractDetailsChildFragment(val companyId:String) : Fragment(), ContractP
     }
 
     private fun sendData() {
-        if (pdfList.size == 1){
+        if (pdfList.size == 1) {
             val contractPdf1 = preparePdfPart(pdfList[0].pdfUri, "contractPdf", requireContext())
-            val sendData = OAuthClient<CorporatesApi>(requireContext()).create(CorporatesApi::class.java)
-                .addContract(
-                    UserSessionManager(requireContext()).getUserId().toString(),
-                    companyId,
-                    RequestBody.create(
-                        "multipart/form-data".toMediaTypeOrNull(),
-                        binding.contactTerms.text.toString()
-                    ),
-                    RequestBody.create(
-                        "multipart/form-data".toMediaTypeOrNull(),
-                        binding.checkIn.text.toString()
-                    ),
-                    RequestBody.create(
-                        "multipart/form-data".toMediaTypeOrNull(),
-                        binding.checkOut.text.toString()
-                    ),
-                    contractPdf1!!
-                )
+            val sendData =
+                OAuthClient<CorporatesApi>(requireContext()).create(CorporatesApi::class.java)
+                    .addContract(
+                        UserSessionManager(requireContext()).getUserId().toString(),
+                        companyId,
+                        RequestBody.create(
+                            "multipart/form-data".toMediaTypeOrNull(),
+                            binding.contactTerms.text.toString()
+                        ),
+                        RequestBody.create(
+                            "multipart/form-data".toMediaTypeOrNull(),
+                            binding.checkIn.text.toString()
+                        ),
+                        RequestBody.create(
+                            "multipart/form-data".toMediaTypeOrNull(),
+                            binding.checkOut.text.toString()
+                        ),
+                        contractPdf1!!
+                    )
 
             sendData.enqueue(object : Callback<CompanyResponse?> {
                 override fun onResponse(
                     call: Call<CompanyResponse?>,
                     response: Response<CompanyResponse?>
                 ) {
-                    if (response.isSuccessful){
+                    if (response.isSuccessful) {
                         progressDialog.dismiss()
                         val response = response.body()!!
-                        Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show()
-                        replaceFragment(CorporatesPartnersFragment())
-                    }else{
+                        Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT)
+                            .show()
+                        changeChildFragment(CorporatePlanFragment(companyId))
+                        val corporateRatePlanFag =
+                            requireActivity().findViewById<TextView>(R.id.ratePlanCard)
+                        corporateRatePlanFag.textSize = 18.0f
+                        corporateRatePlanFag.typeface = robotoMedium
+                        corporateRatePlanFag.setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.secondary
+                            )
+                        )
+                        val contractDetailsFag = requireActivity().findViewById<TextView>(R.id.contractDetailsFag)
+                        contractDetailsFag.textSize = 14.0f
+                        contractDetailsFag.typeface = roboto
+
+                        val companyDetailsFrag =
+                            requireActivity().findViewById<TextView>(R.id.companyDetailsFrag)
+                        companyDetailsFrag.textSize = 14.0f
+                        companyDetailsFrag.typeface = roboto
+
+                        changeChildFragment(CorporatePlanFragment(companyId))
+
+                        val addCompanyFragContainer =
+                            requireActivity().findViewById<FrameLayout>(R.id.addCompanyFragContainer)
+
+                        rightInAnimation(addCompanyFragContainer, requireContext())
+
+                        companyDetailsFrag.setBackgroundDrawable(
+                            ContextCompat.getDrawable(
+                                requireContext(),
+                                R.drawable.corner_top_grey_background
+                            )
+                        )
+
+                        contractDetailsFag.setBackgroundDrawable(
+                            ContextCompat.getDrawable(
+                                requireContext(),
+                                R.drawable.corner_top_grey_background
+                            )
+                        )
+                        corporateRatePlanFag.setBackgroundDrawable(
+                            ContextCompat.getDrawable(
+                                requireContext(),
+                                R.drawable.corner_top_white_background
+                            )
+                        )
+                    } else {
                         progressDialog.dismiss()
-                        Log.e("error",response.code().toString())
+                        Log.e("error", response.code().toString())
                     }
                 }
 
                 override fun onFailure(call: Call<CompanyResponse?>, t: Throwable) {
                     progressDialog.dismiss()
-                    Log.e("error",t.message.toString())
+                    Log.e("error", t.message.toString())
                 }
             })
-        }else if (pdfList.size == 2){
+        } else if (pdfList.size == 2) {
             val contractPdf1 = preparePdfPart(pdfList[0].pdfUri, "contractPdf", requireContext())
-            val contractPdf2 = preparePdfPart(pdfList[1].pdfUri,"contractPdf",requireContext())
+            val contractPdf2 = preparePdfPart(pdfList[1].pdfUri, "contractPdf", requireContext())
 
-            val sendData = OAuthClient<CorporatesApi>(requireContext()).create(CorporatesApi::class.java)
-                .addContract2(
-                    UserSessionManager(requireContext()).getUserId().toString(),
-                    companyId,
-                    RequestBody.create(
-                        "multipart/form-data".toMediaTypeOrNull(),
-                        binding.contactTerms.text.toString()
-                    ),
-                    RequestBody.create(
-                        "multipart/form-data".toMediaTypeOrNull(),
-                        binding.checkIn.text.toString()
-                    ),
-                    RequestBody.create(
-                        "multipart/form-data".toMediaTypeOrNull(),
-                        binding.checkOut.text.toString()
-                    ),
-                    contractPdf1!!,
-                    contractPdf2!!
-                )
+            val sendData =
+                OAuthClient<CorporatesApi>(requireContext()).create(CorporatesApi::class.java)
+                    .addContract2(
+                        UserSessionManager(requireContext()).getUserId().toString(),
+                        companyId,
+                        RequestBody.create(
+                            "multipart/form-data".toMediaTypeOrNull(),
+                            binding.contactTerms.text.toString()
+                        ),
+                        RequestBody.create(
+                            "multipart/form-data".toMediaTypeOrNull(),
+                            binding.checkIn.text.toString()
+                        ),
+                        RequestBody.create(
+                            "multipart/form-data".toMediaTypeOrNull(),
+                            binding.checkOut.text.toString()
+                        ),
+                        contractPdf1!!,
+                        contractPdf2!!
+                    )
 
             sendData.enqueue(object : Callback<CompanyResponse?> {
                 override fun onResponse(
                     call: Call<CompanyResponse?>,
                     response: Response<CompanyResponse?>
                 ) {
-                    if (response.isSuccessful){
+                    if (response.isSuccessful) {
                         progressDialog.dismiss()
                         val response = response.body()!!
-                        Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show()
-                        replaceFragment(CorporatesPartnersFragment())
-                    }else{
+                        Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT)
+                            .show()
+//                        replaceFragment(CorporatesPartnersFragment())
+                        val corporateRatePlanFag =
+                            requireActivity().findViewById<TextView>(R.id.ratePlanCard)
+                        corporateRatePlanFag.textSize = 18.0f
+                        corporateRatePlanFag.typeface = robotoMedium
+                        corporateRatePlanFag.setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.secondary
+                            )
+                        )
+                        val contractDetailsFag = requireActivity().findViewById<TextView>(R.id.contractDetailsFag)
+                        contractDetailsFag.textSize = 14.0f
+                        contractDetailsFag.typeface = roboto
+
+                        val companyDetailsFrag =
+                            requireActivity().findViewById<TextView>(R.id.companyDetailsFrag)
+                        companyDetailsFrag.textSize = 14.0f
+                        companyDetailsFrag.typeface = roboto
+
+                        changeChildFragment(CorporatePlanFragment(companyId))
+
+                        val addCompanyFragContainer =
+                            requireActivity().findViewById<FrameLayout>(R.id.addCompanyFragContainer)
+
+                        rightInAnimation(addCompanyFragContainer, requireContext())
+
+                        companyDetailsFrag.setBackgroundDrawable(
+                            ContextCompat.getDrawable(
+                                requireContext(),
+                                R.drawable.corner_top_grey_background
+                            )
+                        )
+
+                        contractDetailsFag.setBackgroundDrawable(
+                            ContextCompat.getDrawable(
+                                requireContext(),
+                                R.drawable.corner_top_grey_background
+                            )
+                        )
+                        corporateRatePlanFag.setBackgroundDrawable(
+                            ContextCompat.getDrawable(
+                                requireContext(),
+                                R.drawable.corner_top_white_background
+                            )
+                        )
+                    } else {
                         progressDialog.dismiss()
-                        Log.e("error",response.code().toString())
+                        Log.e("error", response.code().toString())
                     }
                 }
 
                 override fun onFailure(call: Call<CompanyResponse?>, t: Throwable) {
                     progressDialog.dismiss()
-                    Log.e("error",t.message.toString())
+                    Log.e("error", t.message.toString())
                 }
             })
         }
@@ -362,6 +466,13 @@ class ContractDetailsChildFragment(val companyId:String) : Fragment(), ContractP
         }
 
 
+    }
+
+    fun changeChildFragment( fragment: Fragment){
+        val childFragment: Fragment = fragment
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.addCompanyFragContainer,childFragment)
+        transaction.commit()
     }
 
 }
