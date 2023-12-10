@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".dashboard.configuration.CorporateRates.ViewCompany.CompanyLedgerChildFragment">
+    tools:context=".dashboard.configuration.CorporateRates.ViewCompany.RatePlanChildFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -155,11 +155,11 @@
 
                     <TextView
                         android:id="@+id/shortCode"
-                        android:layout_width="80dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         style="@style/listTextHeading"
-                        android:text="Date"
+                        android:text="Rate Code"
                         app:layout_constraintEnd_toStartOf="@id/propertyName"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -170,7 +170,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         style="@style/listTextHeading"
-                        android:text="Particular"
+                        android:text="Rate Plan Name"
                         android:layout_marginStart="5dp"
                         app:layout_constraintEnd_toStartOf="@id/guide1"
                         app:layout_constraintStart_toEndOf="@id/shortCode"
@@ -182,29 +182,29 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.3"/>
+                        app:layout_constraintGuide_percent="0.25"/>
 
                     <TextView
-                        android:id="@+id/bedType"
+                        android:id="@+id/roomType"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         style="@style/listTextHeading"
-                        android:text="Voucher No."
+                        android:text="Room Type"
                         android:layout_marginStart="5dp"
-                        app:layout_constraintEnd_toStartOf="@id/maxOccupancy"
+                        app:layout_constraintEnd_toStartOf="@id/baseRate"
                         app:layout_constraintStart_toEndOf="@id/guide1"
                         app:layout_constraintBottom_toBottomOf="@id/shortCode"
                         app:layout_constraintTop_toTopOf="@id/shortCode"/>
 
                     <TextView
-                        android:id="@+id/maxOccupancy"
+                        android:id="@+id/baseRate"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         style="@style/listTextHeading"
-                        android:text="Dr. Amount"
+                        android:text="Meal Plans"
                         android:layout_marginStart="5dp"
                         app:layout_constraintEnd_toStartOf="@id/amenities"
-                        app:layout_constraintStart_toEndOf="@id/bedType"
+                        app:layout_constraintStart_toEndOf="@id/roomType"
                         app:layout_constraintBottom_toBottomOf="@id/shortCode"
                         app:layout_constraintTop_toTopOf="@id/shortCode"/>
 
@@ -213,19 +213,19 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         style="@style/listTextHeading"
-                        android:text="Cr. Amount"
+                        android:text="Inclusions"
                         android:layout_marginStart="5dp"
-                        app:layout_constraintEnd_toStartOf="@id/text7"
-                        app:layout_constraintStart_toEndOf="@id/maxOccupancy"
+                        app:layout_constraintEnd_toStartOf="@id/t8"
+                        app:layout_constraintStart_toEndOf="@id/baseRate"
                         app:layout_constraintBottom_toBottomOf="@id/shortCode"
                         app:layout_constraintTop_toTopOf="@id/shortCode"/>
 
                     <TextView
-                        android:id="@+id/text7"
-                        android:layout_width="80dp"
+                        android:id="@+id/t8"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         style="@style/listTextHeading"
-                        android:text="Balance"
+                        android:text="Offered/Contracted  Rate"
                         android:layout_marginStart="5dp"
                         app:layout_constraintEnd_toStartOf="@id/actions"
                         app:layout_constraintStart_toEndOf="@id/amenities"
@@ -238,10 +238,10 @@
                         android:layout_height="wrap_content"
                         style="@style/listTextHeading"
                         android:text="Actions"
-                        android:textAlignment="center"
                         android:layout_marginStart="5dp"
+                        android:paddingStart="15dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/text7"
+                        app:layout_constraintStart_toEndOf="@id/t8"
                         app:layout_constraintBottom_toBottomOf="@id/shortCode"
                         app:layout_constraintTop_toTopOf="@id/shortCode"/>
 
@@ -257,7 +257,7 @@
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:listitem="@layout/item_compny_ledger"/>
+                    tools:listitem="@layout/item_rate_plan_child"/>
 
             </LinearLayout>
 

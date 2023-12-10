@@ -7,29 +7,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import rconnect.retvens.technologies.R
-import rconnect.retvens.technologies.databinding.FragmentCompanyLedgerChildBinding
+import rconnect.retvens.technologies.databinding.FragmentRatePlanChildBinding
 
-class CompanyLedgerChildFragment : Fragment() {
-    private lateinit var binding : FragmentCompanyLedgerChildBinding
+class RatePlanChildFragment : Fragment() {
+    private lateinit var binding: FragmentRatePlanChildBinding
 
-    private lateinit var companyLedgerAdapter: CompanyLedgerAdapter
+    private lateinit var companyLedgerAdapter: RatePlanChildAdapter
     private var list = ArrayList<String>()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding =  FragmentCompanyLedgerChildBinding.inflate(inflater, container, false)
+        binding = FragmentRatePlanChildBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setUpRecycler()
-
     }
     private fun setUpRecycler() {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -43,10 +40,8 @@ class CompanyLedgerChildFragment : Fragment() {
         list.add("4")
 
 
-        companyLedgerAdapter = CompanyLedgerAdapter(list, requireContext())
+        companyLedgerAdapter = RatePlanChildAdapter(list, requireContext())
         binding.recyclerView.adapter = companyLedgerAdapter
         companyLedgerAdapter.notifyDataSetChanged()
     }
-
-
 }

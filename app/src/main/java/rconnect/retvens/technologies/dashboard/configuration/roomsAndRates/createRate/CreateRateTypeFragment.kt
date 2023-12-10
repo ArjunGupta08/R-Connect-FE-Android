@@ -525,8 +525,12 @@ class CreateRateTypeFragment : Fragment(),
         }
 
         binding.masterRatePlanET.setOnClickListener {
-            if (ratePlanList.isNotEmpty()) {
-                showBarDropDown(it)
+            try {
+                if (ratePlanList.isNotEmpty()) {
+                    showBarDropDown(it)
+                }
+            } catch (e : Exception) {
+                e.printStackTrace()
             }
         }
     }
@@ -560,7 +564,6 @@ class CreateRateTypeFragment : Fragment(),
             binding.dropRoom.setText(selectedItem?.roomTypeName)
             roomTypeId = selectedItem?.roomTypeId.toString()
 
-            Toast.makeText(requireContext(), roomTypeId, Toast.LENGTH_SHORT).show()
             binding.masterRatePlanLayout.isVisible = true
 
             getBars()
@@ -602,7 +605,6 @@ class CreateRateTypeFragment : Fragment(),
 //            roomTypeId = selectedItem?.roomTypeId.toString()
 
             Log.d("data", selectedItem.toString())
-            Toast.makeText(requireContext(), selectedItem.ratePlanName, Toast.LENGTH_SHORT).show()
 
             replaceChildFrag(RatePlanPackageFragment(selectedItem))
 
@@ -613,6 +615,7 @@ class CreateRateTypeFragment : Fragment(),
     }
 
     private fun getBars() {
+        progressDialog = showProgressDialog(requireContext())
         val userId = UserSessionManager(requireContext()).getUserId().toString()
 //        val roomTypeId = UserSessionManager(requireContext()).getRoomTypeId().toString()
         Log.d("roomTypeId", roomTypeId)
@@ -623,10 +626,10 @@ class CreateRateTypeFragment : Fragment(),
                 call: Call<GetBarRateDataClass?>,
                 response: Response<GetBarRateDataClass?>
             ) {
+
+                progressDialog.dismiss()
+
                 try{
-
-                        Toast.makeText(requireContext(), response.code().toString(), Toast.LENGTH_SHORT).show()
-
                     if (response.isSuccessful) {
                         val data = response.body()!!.data
                         ratePlanList = data
@@ -641,6 +644,7 @@ class CreateRateTypeFragment : Fragment(),
 
             override fun onFailure(call: Call<GetBarRateDataClass?>, t: Throwable) {
                 Log.d("error", t.localizedMessage)
+                progressDialog.dismiss()
             }
         })
     }

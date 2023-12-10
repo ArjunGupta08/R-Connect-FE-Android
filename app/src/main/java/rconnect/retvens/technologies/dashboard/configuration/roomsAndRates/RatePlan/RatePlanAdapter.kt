@@ -21,10 +21,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import rconnect.retvens.technologies.Api.OAuthClient
+import rconnect.retvens.technologies.Api.configurationApi.SingleConfiguration
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
 import rconnect.retvens.technologies.dashboard.configuration.others.holiday.DisplayStatusData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.RatePlan
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.BarData
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanBar.RatePlanBarUpdateFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanCompany.RatePlanCompanyUpdateFragment
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.ratePlanPackage.RatePlanPackageFragment
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
 import rconnect.retvens.technologies.utils.generateShortCode
@@ -43,11 +48,12 @@ class RatePlanAdapter(var list:ArrayList<RatePlan>, val applicationContext: Cont
     }
 
     interface OnUpdate {
-        fun onUpdateIdentityType(rateTypeId:String,type:String)
+        fun onUpdateIdentityType(rateTypeId:String,type:String, currentData : RatePlan)
     }
 
-    lateinit var progressDialog: Dialog
     private var mLastClickTime : Long = 0
+
+    private lateinit var progressDialog : Dialog
 
     class NotificationHolder(val itemView:View):RecyclerView.ViewHolder(itemView) {
 
@@ -91,13 +97,25 @@ class RatePlanAdapter(var list:ArrayList<RatePlan>, val applicationContext: Cont
 
         holder.delete.setOnClickListener {
             showDeleteConfirmationDialog(applicationContext){
-
+                if (currentData.rateType == "Bar"){
+                    deleteBar(currentData.ratePlanId)
+                    list.remove(currentData)
+                    notifyDataSetChanged()
+                }else if (currentData.rateType == "Company"){
+                    deleteCompany(currentData.ratePlanId)
+                    list.remove(currentData)
+                    notifyDataSetChanged()
+                }else if (currentData.rateType == "Package"){
+                    deletePackage(currentData.ratePlanId)
+                    list.remove(currentData)
+                    notifyDataSetChanged()
+                }
             }
 
         }
 
         holder.edit.setOnClickListener {
-            mListener?.onUpdateIdentityType(currentData.ratePlanId,currentData.rateType)
+            mListener?.onUpdateIdentityType(currentData.ratePlanId,currentData.rateType, currentData)
         }
     }
 
@@ -123,5 +141,59 @@ class RatePlanAdapter(var list:ArrayList<RatePlan>, val applicationContext: Cont
 
         val alertDialog = alertDialogBuilder.create()
         alertDialog.show()
+    }
+
+    private fun deleteCompany(rateTypeId: String) {
+        progressDialog = showProgressDialog(applicationContext)
+        val d = OAuthClient<SingleConfiguration>(applicationContext).create(SingleConfiguration::class.java).deleteCompanyRatePlan(
+            rateTypeId, DisplayStatusData("0")
+        )
+        d.enqueue(object : Callback<ResponseData?> {
+            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                progressDialog.dismiss()
+                Log.d("deleteRatePlan", response.toString())
+            }
+
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                progressDialog.dismiss()
+                Log.e("error", t.localizedMessage)
+            }
+        })
+    }
+
+    private fun deleteBar(rateTypeId: String) {
+        progressDialog = showProgressDialog(applicationContext)
+        val d = OAuthClient<SingleConfiguration>(applicationContext).create(SingleConfiguration::class.java).deleteBar(
+            rateTypeId, DisplayStatusData("0")
+        )
+        d.enqueue(object : Callback<ResponseData?> {
+            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                progressDialog.dismiss()
+                Log.d("deleteRatePlan", response.toString())
+            }
+
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                progressDialog.dismiss()
+                Log.e("error", t.localizedMessage)
+            }
+        })
+    }
+
+    private fun deletePackage(rateTypeId: String) {
+        progressDialog = showProgressDialog(applicationContext)
+        val d = OAuthClient<SingleConfiguration>(applicationContext).create(SingleConfiguration::class.java).deletePackageRatePlan(
+            rateTypeId, DisplayStatusData("0")
+        )
+        d.enqueue(object : Callback<ResponseData?> {
+            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                progressDialog.dismiss()
+                Log.d("deleteRatePlan", response.toString())
+            }
+
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                progressDialog.dismiss()
+                Log.e("error", t.localizedMessage)
+            }
+        })
     }
 }

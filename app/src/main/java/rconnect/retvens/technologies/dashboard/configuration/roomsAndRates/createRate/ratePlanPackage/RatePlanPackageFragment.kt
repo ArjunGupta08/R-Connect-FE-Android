@@ -25,6 +25,7 @@ import rconnect.retvens.technologies.Api.RetrofitObject
 import rconnect.retvens.technologies.Api.configurationApi.SingleConfiguration
 import rconnect.retvens.technologies.Api.genrals.GeneralsAPI
 import rconnect.retvens.technologies.R
+import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.RatePlan.RatePlanFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddInclusionDialogSheet
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.AddInclusionsAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.createRate.CreateRateData
@@ -42,6 +43,7 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.inclu
 import rconnect.retvens.technologies.databinding.FragmentRatePlanPackageBinding
 import rconnect.retvens.technologies.onboarding.ResponseData
 import rconnect.retvens.technologies.utils.UserSessionManager
+import rconnect.retvens.technologies.utils.generateShortCode
 import rconnect.retvens.technologies.utils.shakeAnimation
 import rconnect.retvens.technologies.utils.showProgressDialog
 import retrofit2.Call
@@ -50,7 +52,7 @@ import retrofit2.Response
 import kotlin.math.max
 
 
-class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusionsAdapter.OnUpdate, AddInclusionDialogSheet.OnInclusionAdd, CreateRateTypeAdapter.OnInclusionChange {
+class RatePlanPackageFragment(private val barData : BarData, private val rateTypeId : String ?= "") : Fragment(), AddInclusionsAdapter.OnUpdate, AddInclusionDialogSheet.OnInclusionAdd, CreateRateTypeAdapter.OnInclusionChange {
     private lateinit var binding: FragmentRatePlanPackageBinding
 
     var totalInclusionCharges = 0.00
@@ -71,9 +73,13 @@ class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusions
     private var mLastClickTime : Long = 0
 
     private var adjustment = 0.0
+    private var percentAdjustment = 0.0
     private var packageTotal = 0.0
 
     private lateinit var progressDialog : Dialog
+
+    private var isAddDiscount = true
+    private var isRemoveDiscount = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -89,8 +95,20 @@ class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusions
 
         selectedInclusionsList = barData.inclusion
 
+        if (rateTypeId != "") {
+            binding.ratePlanNameET.setText(barData.ratePlanName)
+//            binding.shortCodeText.setText(barData.)
+        }
 
         setUpAddRemoveClicks()
+
+        binding.packageTotalText.text = barData.ratePlanTotal.toString()
+        packageTotal = barData.ratePlanTotal.toDouble()
+
+        binding.ratePlanNameET.doAfterTextChanged {
+            if (binding.ratePlanNameET.text!!.length>3)
+                binding.shortCodeText.setText(generateShortCode(binding.ratePlanNameET.text.toString()))
+        }
 
         binding.percentageCard.strokeWidth = 2
 
@@ -100,6 +118,12 @@ class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusions
             binding.adjustmentET.hint = "%"
             binding.adjistmentLayout.hint = "Discount %"
             isPercentageType = true
+
+            packageTotal = barData.ratePlanTotal.toDouble()
+            binding.packageTotalText.text = barData.ratePlanTotal
+
+            adjustment = 0.0
+            binding.adjustmentET.setText("")
         }
 
         binding.amountCard.setOnClickListener {
@@ -108,13 +132,22 @@ class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusions
             binding.adjustmentET.hint = "₹"
             binding.adjistmentLayout.hint = "Discount ₹"
             isPercentageType = false
+
+            packageTotal = barData.ratePlanTotal.toDouble()
+            binding.packageTotalText.text = barData.ratePlanTotal
+
+            percentAdjustment = 0.0
+            binding.adjustmentET.setText("")
+
+            binding.addImg.strokeWidth = 0
+            binding.removeImg.strokeWidth = 0
         }
 
         getPostingRule()
         getChargeRule()
 
-        binding.packageTotalText.text = barData.ratePlanTotal.toString()
-        packageTotal = barData.ratePlanTotal.toDouble()
+        binding.addImg.isClickable = false
+        binding.removeImg.isClickable = false
 
         binding.addInclusions.setOnClickListener {
             // mis-clicking prevention, using threshold of 1000 ms
@@ -130,34 +163,95 @@ class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusions
         }
 
         binding.adjustmentET.doAfterTextChanged {
-            if ( binding.adjustmentET.text.toString() != "" &&  binding.adjustmentET.text.toString() != ".") {
-                adjustment = binding.adjustmentET.text.toString().toDouble()
+            if (binding.adjustmentET.text.toString() != "" ) {
+                if ( binding.adjustmentET.text.toString() != "." ) {
+                    adjustment = binding.adjustmentET.text.toString().toDouble()
+                    binding.addImg.isClickable = true
+                    binding.removeImg.isClickable = true
+                } else {
+                    adjustment = 0.0
+                    binding.adjustmentET.setText("")
+                    binding.addImg.isClickable = false
+                    binding.removeImg.isClickable = false
+                }
+            } else {
+                adjustment = 0.0
+                binding.addImg.isClickable = false
+                binding.removeImg.isClickable = false
             }
         }
 
         binding.addImg.setOnClickListener {
-            if (isPercentageType) {
-                var packageAdjustment = packageTotal * (adjustment/100)
-                Toast.makeText(requireContext(), "$packageAdjustment", Toast.LENGTH_SHORT).show()
-                packageTotal += packageAdjustment
-                packageTotal = String.format("%.2f", packageTotal).toDouble()
-                binding.packageTotalText.text = packageTotal.toString()
+            if (isAddDiscount) {
+                if (isPercentageType) {
+                    percentAdjustment = packageTotal * (adjustment / 100)
+                    Toast.makeText(requireContext(), "$percentAdjustment", Toast.LENGTH_SHORT)
+                        .show()
+                    if (packageTotal == barData.ratePlanTotal.toDouble()) {
+                        packageTotal += percentAdjustment
+                    } else {
+                        packageTotal += (percentAdjustment + percentAdjustment)
+                    }
+                    packageTotal = String.format("%.2f", packageTotal).toDouble()
+                    binding.packageTotalText.text = packageTotal.toString()
+                } else {
+                    if (packageTotal == barData.ratePlanTotal.toDouble()) {
+                        packageTotal += adjustment
+                    } else {
+                        packageTotal += (adjustment + adjustment)
+                    }
+                    binding.packageTotalText.text = packageTotal.toString()
+                }
+                binding.addImg.strokeWidth = 2
+                isAddDiscount = false
+                binding.removeImg.strokeWidth = 0
+                isRemoveDiscount = true
             } else {
-                packageTotal += adjustment
-                binding.packageTotalText.text = packageTotal.toString()
+                packageTotal = barData.ratePlanTotal.toDouble()
+                binding.packageTotalText.text = barData.ratePlanTotal
+
+                binding.addImg.strokeWidth = 0
+                isAddDiscount = true
             }
         }
 
         binding.removeImg.setOnClickListener {
-            if (isPercentageType) {
-                var packageAdjustment = String.format("%.2f", packageTotal * (adjustment/100) ).toDouble()
-                Toast.makeText(requireContext(), "$packageAdjustment", Toast.LENGTH_SHORT).show()
-                packageTotal -= packageAdjustment
-                packageTotal = String.format("%.2f", packageTotal).toDouble()
-                binding.packageTotalText.text = packageTotal.toString()
+            if (isRemoveDiscount) {
+                binding.addImg.strokeWidth = 0
+                isAddDiscount = true
+                binding.removeImg.strokeWidth = 2
+                isRemoveDiscount = false
+                if (isPercentageType) {
+                    percentAdjustment = String.format("%.2f", packageTotal * (adjustment / 100)).toDouble()
+                    Toast.makeText(requireContext(), "$percentAdjustment", Toast.LENGTH_SHORT)
+                        .show()
+                    if (packageTotal == barData.ratePlanTotal.toDouble()) {
+                        packageTotal -= percentAdjustment
+                    } else {
+                        packageTotal -= (percentAdjustment + percentAdjustment)
+                    }
+                    packageTotal = String.format("%.2f", packageTotal).toDouble()
+                    binding.packageTotalText.text = packageTotal.toString()
+                } else {
+                    if (packageTotal == barData.ratePlanTotal.toDouble()) {
+                        packageTotal -= adjustment
+                    } else {
+                        packageTotal -= (adjustment + adjustment)
+                    }
+                    binding.packageTotalText.text = packageTotal.toString()
+                }
             } else {
-                packageTotal -= adjustment
-                binding.packageTotalText.text = packageTotal.toString()
+                if (isPercentageType) {
+                    packageTotal += percentAdjustment
+                    packageTotal = String.format("%.2f", packageTotal).toDouble()
+                    binding.packageTotalText.text = packageTotal.toString()
+                } else {
+                    packageTotal += adjustment
+                    binding.packageTotalText.text = packageTotal.toString()
+                }
+                binding.removeImg.strokeWidth = 0
+                isAddDiscount = true
+                isRemoveDiscount = true
             }
         }
 
@@ -178,8 +272,11 @@ class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusions
                     amount = binding.adjustmentET.text.toString()
                 }
                 progressDialog = showProgressDialog(requireContext())
-                saveData()
-            }
+                if (rateTypeId != "") {
+                    updateData()
+                } else {
+                    saveData()
+                }            }
         }
 
         binding.saveIC.setOnClickListener {
@@ -196,8 +293,11 @@ class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusions
                     amount = binding.adjustmentET.text.toString()
                 }
                 progressDialog = showProgressDialog(requireContext())
-
-                saveData()
+                if (rateTypeId != "") {
+                    updateData()
+                } else {
+                    saveData()
+                }
             }
         }
 
@@ -236,14 +336,17 @@ class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusions
                 UserSessionManager(requireContext()).getPropertyId().toString(),
                 "Package",
                 roomTypeId = barData.roomTypeId,
-                "",
+                barData.barRatePlanId,
                 binding.shortCodeText.text.toString(),
                 selectedInclusionsList,
+                barData.extraAdultRate,
+                barData.extraChildRate,
                 binding.ratePlanNameET.text.toString(),
                 binding.minNightsTextView.text.toString(),
                 binding.maxNightsTextView.text.toString(),
                 packageRateAdjustmentArray,
                 "$totalInclusionCharges",
+                binding.packageTotalText.text.toString(),
                 binding.packageTotalText.text.toString()
             )
         )
@@ -252,7 +355,59 @@ class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusions
             override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
                 progressDialog.dismiss()
                 if (response.isSuccessful){
+                    val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.dashboardFragmentContainer, RatePlanFragment())
+                    transaction.commit()
+                }
+                Log.d("error", response.code().toString())
+            }
 
+            override fun onFailure(call: Call<ResponseData?>, t: Throwable) {
+                progressDialog.dismiss()
+                Log.d("error", t.localizedMessage)
+            }
+        })
+    }
+    private fun updateData() {
+
+        packageRateAdjustmentArray.add(
+            PackageRateAdjustmentData(
+            binding.adjustmentET.text.toString(),
+            percentage,
+            amount,
+            binding.packageTotalText.text.toString()
+            )
+        )
+
+        val send = OAuthClient<SingleConfiguration>(requireContext()).create(SingleConfiguration::class.java).updatePackageRatePlan(
+            barData.barRatePlanId,
+            AddPackageDataClass(
+                UserSessionManager(requireContext()).getUserId().toString(),
+                UserSessionManager(requireContext()).getPropertyId().toString(),
+                "Package",
+                roomTypeId = barData.roomTypeId,
+                barData.barRatePlanId,
+                binding.shortCodeText.text.toString(),
+                selectedInclusionsList,
+                barData.extraAdultRate,
+                barData.extraChildRate,
+                binding.ratePlanNameET.text.toString(),
+                binding.minNightsTextView.text.toString(),
+                binding.maxNightsTextView.text.toString(),
+                packageRateAdjustmentArray,
+                "$totalInclusionCharges",
+                binding.packageTotalText.text.toString(),
+                binding.packageTotalText.text.toString()
+            )
+        )
+
+        send.enqueue(object : Callback<ResponseData?> {
+            override fun onResponse(call: Call<ResponseData?>, response: Response<ResponseData?>) {
+                progressDialog.dismiss()
+                if (response.isSuccessful){
+                    val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.dashboardFragmentContainer, RatePlanFragment())
+                    transaction.commit()
                 }
                 Log.d("error", response.code().toString())
             }
@@ -375,6 +530,7 @@ class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusions
             }
         }
         packageTotal += totalInclusionCharges
+        barData.ratePlanTotal = "${barData.ratePlanTotal.toDouble() + totalInclusionCharges}"
         binding.packageTotalText.text = packageTotal.toString()
         inclusionsRecycler()
 
@@ -388,6 +544,7 @@ class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusions
         inclusionsRecycler()
 
         packageTotal -= item.rate.toDouble()
+        barData.ratePlanTotal = "${barData.ratePlanTotal.toDouble() - item.rate.toDouble()}"
         binding.packageTotalText.text = packageTotal.toString()
     }
 
@@ -400,6 +557,9 @@ class RatePlanPackageFragment(val barData : BarData) : Fragment(), AddInclusions
         packageTotal -= selectedInclusionsList.get(position).rate.toDouble()
         selectedInclusionsList.get(position).rate = price
         packageTotal += price.toDouble()
+
+        barData.ratePlanTotal = "${barData.ratePlanTotal.toDouble() - selectedInclusionsList.get(position).rate.toDouble()}"
+        barData.ratePlanTotal = "${barData.ratePlanTotal.toDouble() + price.toDouble()}"
 
         binding.packageTotalText.text = packageTotal.toString()
 

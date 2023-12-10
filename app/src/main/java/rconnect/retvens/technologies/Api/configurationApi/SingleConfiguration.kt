@@ -4,6 +4,7 @@ package rconnect.retvens.technologies.Api.configurationApi
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.json.JSONObject
+import rconnect.retvens.technologies.dashboard.configuration.others.holiday.DisplayStatusData
 import rconnect.retvens.technologies.dashboard.configuration.properties.FetchPropertyData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.CreateRoomData
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addRoomType.FetchRoomData
@@ -133,5 +134,41 @@ interface SingleConfiguration {
         @Query("userId")userId:String,
         @Query("roomTypeId")roomTypeId:String,
     ):Call<GetBarRateDataClass>
+
+    @GET("getPackage")
+    fun getPackageById (
+        @Query("userId")userId:String,
+        @Query("packageId")packageId:String,
+    ):Call<GetBarRateDataClass>
+
+    @PATCH("updateBarRatePlan/{barRatePlanId}")
+    fun deleteBar(
+        @Path("barRatePlanId")barRatePlanId:String,
+        @Body displayStatusData: DisplayStatusData
+    ):Call<ResponseData>
+
+    @PATCH("updateCompanyRatePlan")
+    fun deleteCompanyRatePlan(
+        @Query("ratePlanId")companyRatePlanId:String,
+        @Body displayStatusData: DisplayStatusData
+    ):Call<ResponseData>
+
+    @PATCH("updatePackageRatePlan")
+    fun deletePackageRatePlan(
+        @Query("packageId") packageId:String,
+        @Body displayStatusData: DisplayStatusData
+    ):Call<ResponseData>
+
+    @PATCH("updatePackageRatePlan")
+    fun updatePackageRatePlan(
+        @Query("packageId") packageId:String,
+        @Body addPackageDataClass: AddPackageDataClass
+    ):Call<ResponseData>
+
+    @GET("getBookingDetails")
+    fun getBookingDetails (
+        @Query("userId")userId:String,
+        @Query("propertyId")propertyId:String
+    ):Call<GetAllRatePlans>
 
 }

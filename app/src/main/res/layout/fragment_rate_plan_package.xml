@@ -154,7 +154,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="Min Nights"
                                         android:textAlignment="center"
-                                        android:textSize="@dimen/H6"
+                                        android:textSize="11sp"
                                         android:textColor="@color/subtitle"
                                         android:fontFamily="@font/roboto"/>
                                     <TextView
@@ -163,7 +163,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="1"
                                         android:textAlignment="center"
-                                        android:textSize="16sp"
+                                        android:textSize="14sp"
                                         android:textColor="@color/black"
                                         android:fontFamily="@font/roboto"/>
                                 </LinearLayout>
@@ -227,7 +227,8 @@
                                         android:layout_height="wrap_content"
                                         android:text="Max Nights"
                                         android:textAlignment="center"
-                                        android:textSize="@dimen/H6"
+                                        android:textSize="11dp"
+                                        android:elevation="10dp"
                                         android:textColor="@color/subtitle"
                                         android:fontFamily="@font/roboto"/>
                                     <TextView
@@ -236,7 +237,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="1"
                                         android:textAlignment="center"
-                                        android:textSize="16sp"
+                                        android:textSize="14sp"
                                         android:textColor="@color/black"
                                         android:fontFamily="@font/roboto"/>
                                 </LinearLayout>
@@ -617,16 +618,18 @@
                                 android:layout_gravity="center_vertical"
                                 android:layout_weight=".7">
 
-                                <androidx.cardview.widget.CardView
+                                <com.google.android.material.card.MaterialCardView
                                     android:id="@+id/addImg"
                                     android:layout_width="40dp"
                                     android:layout_height="40dp"
-                                    app:cardCornerRadius="11dp"
+                                    app:cardCornerRadius="12dp"
                                     app:cardElevation="2dp"
+                                    app:strokeColor="@color/black"
+                                    app:strokeWidth="0dp"
+                                    android:clickable="false"
                                     android:layout_marginStart="4dp"
                                     android:layout_marginVertical="5dp"
-                                    app:cardBackgroundColor="@color/white"
-                                    app:strokeWidth="1dp">
+                                    app:cardBackgroundColor="@color/white">
 
                                     <ImageView
                                         android:layout_width="match_parent"
@@ -634,17 +637,19 @@
                                         android:layout_gravity="center"
                                         android:src="@drawable/svg_add"/>
 
-                                </androidx.cardview.widget.CardView>
+                                </com.google.android.material.card.MaterialCardView>
 
-                                <androidx.cardview.widget.CardView
+                                <com.google.android.material.card.MaterialCardView
                                     android:id="@+id/removeImg"
                                     android:layout_width="40dp"
                                     android:layout_height="40dp"
-                                    app:cardCornerRadius="11dp"
+                                    app:cardCornerRadius="12dp"
                                     app:cardElevation="2dp"
+                                    android:clickable="false"
                                     android:layout_marginStart="10dp"
                                     app:cardBackgroundColor="@color/white"
-                                    app:strokeWidth="1dp">
+                                    app:strokeColor="@color/black"
+                                    app:strokeWidth="0dp">
 
                                     <ImageView
                                         android:layout_width="match_parent"
@@ -652,7 +657,7 @@
                                         android:layout_gravity="center"
                                         android:src="@drawable/svg_remove"/>
 
-                                </androidx.cardview.widget.CardView>
+                                </com.google.android.material.card.MaterialCardView>
 
                             </LinearLayout>
 

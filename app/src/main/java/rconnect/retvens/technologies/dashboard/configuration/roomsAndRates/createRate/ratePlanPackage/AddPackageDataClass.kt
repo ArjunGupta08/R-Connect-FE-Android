@@ -11,12 +11,15 @@ data class AddPackageDataClass(
     val ratePlanId : String,
     val shortCode : String,
     val ratePlanInclusion : ArrayList<InclusionPlan>,
+    val extraAdultRate : String,
+    val extraChildRate : String,
     val ratePlanName : String,
     val minimumNights : String,
     val maximumNights : String,
     val packageRateAdjustment : ArrayList<PackageRateAdjustmentData>,
     val inclusionTotal : String,
     val ratePlanTotal : String,
+    val packageTotal : String,
 )
 
 data class PackageRateAdjustmentData(

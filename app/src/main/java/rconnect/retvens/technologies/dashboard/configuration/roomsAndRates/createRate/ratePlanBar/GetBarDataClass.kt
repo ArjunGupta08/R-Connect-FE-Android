@@ -43,7 +43,7 @@ data class BarData(
     val propertyId: String,
     val roomTypeId: String,
     val barRatePlanId: String,
-    val ratePlanTotal: String,
+    var ratePlanTotal: String,
     val inclusion: ArrayList<InclusionPlan>,
     val extraChildRate: String,
     val extraAdultRate: String,

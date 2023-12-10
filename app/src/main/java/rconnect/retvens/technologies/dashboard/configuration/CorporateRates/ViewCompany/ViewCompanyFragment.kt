@@ -52,6 +52,10 @@ class ViewCompanyFragment(val companyId:String) : Fragment() {
             tabSelected(binding.companyLedger)
             changeChildFragment(CompanyLedgerChildFragment())
         }
+        binding.ratePlan.setOnClickListener {
+            tabSelected(binding.ratePlan)
+            changeChildFragment(RatePlanChildFragment())
+        }
         binding.contractDetailsFag.setOnClickListener {
             tabSelected(binding.contractDetailsFag)
             changeChildFragment(ContractDetailsUpdateFragment(companyId))
@@ -67,6 +71,8 @@ class ViewCompanyFragment(val companyId:String) : Fragment() {
         binding.stayHistory.typeface = roboto
         binding.companyLedger.textSize = 14.0f
         binding.companyLedger.typeface = roboto
+        binding.ratePlan.textSize = 14.0f
+        binding.ratePlan.typeface = roboto
         binding.contractDetailsFag.textSize = 14.0f
         binding.contractDetailsFag.typeface = roboto
 
@@ -75,6 +81,7 @@ class ViewCompanyFragment(val companyId:String) : Fragment() {
         binding.companyDetailsFrag.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
         binding.stayHistory.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
         binding.companyLedger.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
+        binding.ratePlan.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
         binding.contractDetailsFag.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.corner_top_grey_background))
 
         selectedText.textSize = 18.0f
