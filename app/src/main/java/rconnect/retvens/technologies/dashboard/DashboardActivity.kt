@@ -58,6 +58,8 @@ import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPr
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.addPropertyFrags.SelectedAmenitiesAdapter
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.mealPlan.MealPlanFragment
 import rconnect.retvens.technologies.dashboard.configuration.roomsAndRates.roomType.RoomTypeFragment
+import rconnect.retvens.technologies.dashboard.pms.TaskViewFragment
+import rconnect.retvens.technologies.dashboard.pms.houseKeeping.LostFoundFragment
 import rconnect.retvens.technologies.databinding.ActivityDashboardBinding
 import rconnect.retvens.technologies.utils.bottomSlideInAnimation
 import rconnect.retvens.technologies.utils.topInAnimation
@@ -73,6 +75,7 @@ class DashboardActivity : AppCompatActivity() {
     private var isGuestOpen = false
     private var isOtherOpen = false
     var isGuestDropDownOpen = false
+    private var isHousekeepingOpen = false
     var isNotificationNotOpen = true
 
     private lateinit var binding: ActivityDashboardBinding
@@ -245,6 +248,7 @@ class DashboardActivity : AppCompatActivity() {
             binding.dropDownLayout.isVisible = false
             binding.configurationNavLayout.isVisible = true
             binding.channelManagerNavLayout.isVisible = false
+            binding.pmsNavLayout.isVisible = false
         }
 
         binding.channelManager.setOnClickListener {
@@ -255,6 +259,18 @@ class DashboardActivity : AppCompatActivity() {
             binding.dropDownLayout.isVisible = false
             binding.configurationNavLayout.isVisible = false
             binding.channelManagerNavLayout.isVisible = true
+            binding.pmsNavLayout.isVisible = false
+        }
+
+        binding.pms.setOnClickListener {
+            pmsNavLayout()
+            isCardSelected(binding.pmsDashboardCard, binding.pmsDashboardTxt)
+            binding.d2.rotation = 0f
+            isRateDropDownOpen = false
+            binding.dropDownLayout.isVisible = false
+            binding.configurationNavLayout.isVisible = false
+            binding.channelManagerNavLayout.isVisible = false
+            binding.pmsNavLayout.isVisible = true
         }
     }
 
@@ -521,6 +537,51 @@ class DashboardActivity : AppCompatActivity() {
 
     }
 
+    private fun pmsNavLayout() {
+        isCardSelected(binding.pmsDashboardCard, binding.pmsDashboardTxt)
+
+        binding.pmsDashboardCard.setOnClickListener {
+            isCardSelected(binding.pmsDashboardCard, binding.pmsDashboardTxt)
+        }
+
+        binding.housekeepingCard.setOnClickListener {
+            isCardSelected(binding.housekeepingCard, binding.housekeepingTxt)
+
+            if (!isHousekeepingOpen){
+                binding.housekeepingLayout.isVisible = true
+                topInAnimation(binding.housekeepingLayout,applicationContext)
+
+                val draw = ContextCompat.getDrawable(this, R.drawable.svg_up)
+                draw?.colorFilter = PorterDuffColorFilter(Color.WHITE,PorterDuff.Mode.SRC_ATOP)
+                binding.housekeepingDropDown.setImageDrawable(draw)
+                isHousekeepingOpen = true
+
+                binding.houseStatus.setOnClickListener {
+//                    replaceFragment(ReservationTypeFragment())
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                }
+                binding.taskViewLL.setOnClickListener {
+                    replaceFragment(TaskViewFragment())
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                }
+                binding.lostFoundLL.setOnClickListener {
+                    replaceFragment(LostFoundFragment())
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                }
+            }
+            else{
+                binding.housekeepingLayout.isVisible = false
+                val draw = ContextCompat.getDrawable(this, R.drawable.svg_arrow_down)
+                draw?.colorFilter = PorterDuffColorFilter(Color.BLACK,PorterDuff.Mode.SRC_ATOP)
+                binding.housekeepingDropDown.setImageDrawable(draw)
+                binding.housekeepingCard.setCardBackgroundColor(ContextCompat.getColor(applicationContext,R.color.white))
+                binding.housekeepingTxt.setTextColor(ContextCompat.getColor(applicationContext,R.color.black))
+                isHousekeepingOpen = false
+            }
+        }
+
+    }
+
     private fun openQuickReservationDialog() {
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -590,21 +651,14 @@ class DashboardActivity : AppCompatActivity() {
         binding.reportsCard.setCardBackgroundColor(ContextCompat.getColor(applicationContext,R.color.white))
         binding.reportsTxt.setTextColor(ContextCompat.getColor(applicationContext,R.color.textColor))
 
-        binding.bookingCard.setCardBackgroundColor(
-            ContextCompat.getColor(
-                applicationContext,
-                R.color.white
-            )
-        )
-        binding.bookingTxt.setTextColor(
-            ContextCompat.getColor(
-                applicationContext,
-                R.color.textColor
-            )
-        )
+        binding.bookingCard.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.white))
+        binding.bookingTxt.setTextColor(ContextCompat.getColor(applicationContext, R.color.textColor))
 
         binding.propertiesCard.setCardBackgroundColor(ContextCompat.getColor( applicationContext, R.color.white ))
         binding.propertiesText.setTextColor(ContextCompat.getColor(applicationContext, R.color.textColor))
+
+        binding.pmsDashboardCard.setCardBackgroundColor(ContextCompat.getColor( applicationContext, R.color.white ))
+        binding.pmsDashboardTxt.setTextColor(ContextCompat.getColor(applicationContext, R.color.textColor))
 
         binding.promotionsCard.setCardBackgroundColor(
             ContextCompat.getColor(
